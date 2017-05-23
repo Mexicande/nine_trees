@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#fea423</color>
+    <color name="colorPrimaryDark">#fea422</color>
     <color name="colorAccent">#FF4081</color>
+
+
+   <!-- 产品list-->
+    <color name="white">#ffffff</color>
+    <color name="money_color">#ff4b16</color>
+    <color name="product_name_color">#2d2d2d</color>
+    <color name="product_desc_color">#a4aaba</color>
+    <color name="product_limit">#999999</color>
+    <color name="lsit_backpround">#ffc371</color>
+
+    <!--登陆页面-->
+    <color name="gay">#999999</color>
+    <drawable name="colorWhite">#fefefe</drawable>
+    <drawable name="colorBlack">#4c4c4c</drawable>
+    <drawable name="yellow">#fe9b0d</drawable>
 </resources>

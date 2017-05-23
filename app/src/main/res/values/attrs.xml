@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+
+    <!--图片上传进度-->
+    <declare-styleable name="ImageProgress">
+        <attr name="text_size" format="dimension" />
+    </declare-styleable>
+
+    <!--图片上传进度-->
+    <declare-styleable name="ShapeButton">
+        <attr name="buttonColor" format="reference" />
+        <attr name="radius" format="dimension" />
+        <attr name="stroke" format="dimension" />
+        <attr name="shapeStyle" format="dimension" />
+    </declare-styleable>
+
+</resources>
