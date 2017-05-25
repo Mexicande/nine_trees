@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,8 +35,7 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void initView() {
-
+        ivBack.setVisibility(View.VISIBLE);
         titleName.setText("注册");
-
     }
 }

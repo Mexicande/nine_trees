@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         style="@style/BannerDefaultStyle"
+        android:layout_marginBottom="5dp"
         app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
         app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
         app:banner_pointAutoPlayAble="true"

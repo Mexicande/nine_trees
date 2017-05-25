@@ -19,4 +19,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@mipmap/ic_back"/>
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="保存"
+        android:visibility="gone"
+        android:layout_gravity="center|right"
+        android:layout_marginRight="40dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
 </android.support.v7.widget.Toolbar>

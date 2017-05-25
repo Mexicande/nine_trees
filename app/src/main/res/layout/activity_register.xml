@@ -8,26 +8,14 @@
     tools:context="cn.com.stableloan.ui.activity.RegisterActivity">
     <include layout="@layout/toolbar_layout"/>
 
-        <EditText
-            android:layout_marginRight="20dp"
-            android:paddingLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:id="@+id/et_phone"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/reg_edtext"
-            android:textSize="15sp"
-            android:textColorHint="@color/gay"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="请输入手机号"/>
     <RelativeLayout
         android:id="@+id/layout2"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/reg_edtext"
-        android:layout_height="50dp">
+        android:layout_height="45dp">
         <EditText
             android:id="@+id/et_message"
             android:layout_marginLeft="10dp"
@@ -36,7 +24,7 @@
             android:textColorHint="@color/gay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="请输入验证码"/>
+            android:hint="请输入手机号"/>
         <Button
             android:id="@+id/bt_getCode"
             android:layout_alignParentRight="true"
@@ -49,9 +37,22 @@
             android:text="获取验证码"/>
     </RelativeLayout>
     <EditText
-        android:layout_marginTop="30dp"
+        android:paddingLeft="10dp"
+        android:id="@+id/et_CodeMessage"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:maxLength="4"
+        android:inputType="number"
+        android:background="@drawable/reg_edtext"
+        android:textColorHint="@color/gay"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="请输入验证码"/>
+    <EditText
+        android:layout_marginTop="20dp"
         android:id="@+id/et_password"
-        android:digits="0123456789abcdefhijJgklmnopqrstuvwxyzABCDEFHIGKLMNOPQRSTUVWXYZ"
         android:inputType="textPassword"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -60,12 +61,11 @@
         android:background="@drawable/reg_edtext"
         android:textColorHint="@color/gay"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:hint="设置密码(6-10位数字/英文字母组合)"/>
     <EditText
         android:id="@+id/et_Confirm_Password"
-        android:layout_marginTop="30dp"
-        android:digits="0123456789abcdefhijJgklmnopqrstuvwxyzABCDEFHIGKLMNOPQRSTUVWXYZ"
+        android:layout_marginTop="20dp"
         android:inputType="textPassword"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -78,7 +78,7 @@
         android:hint="再输一次密码"/>
 
     <Button
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_width="match_parent"
@@ -88,7 +88,6 @@
         android:background="@color/colorPrimary"
         android:text="确    定"
         />
-
 
    <!-- <RelativeLayout
         android:id="@+id/layout2"

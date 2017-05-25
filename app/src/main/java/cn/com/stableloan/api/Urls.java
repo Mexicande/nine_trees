@@ -6,9 +6,10 @@ package cn.com.stableloan.api;
 
 public interface Urls{
 
-     interface Test{
+     interface Login{
 
-         String TEST_URL="http://sjd.xianjindaikuan.cn/haiqian/Home/ChuanglanSmsApi/sendSMS";
+         String SEND_MESSAGE="http://sjd.xianjindaikuan.cn/haiqian/Home/ChuanglanSmsApi/sendSMS";
+
 
     }
 }

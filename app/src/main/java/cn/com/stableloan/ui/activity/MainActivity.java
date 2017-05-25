@@ -2,30 +2,36 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.widget.Button;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
 
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.utils.LogUtils;
-import okhttp3.Call;
-import okhttp3.Response;
+import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
+import cn.com.stableloan.ui.adapter.NoTouchViewPager;
+import cn.com.stableloan.ui.fragment.HomeFragment;
+import cn.com.stableloan.ui.fragment.UserFragment;
+import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.NormalItemView;
+import me.majiajie.pagerbottomtabstrip.NavigationController;
+import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
+import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 
 public class MainActivity extends BaseActivity {
 
+    @Bind(R.id.tab)
+    PageBottomTabLayout tab;
+    @Bind(R.id.viewPager)
+    NoTouchViewPager viewPager;
+    public  static MyViewPagerAdapter pagerAdapter;
 
-    @Bind(R.id.title_name)
-    TextView titleName;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    private NavigationController navigationController;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -35,12 +41,41 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        titleName.setText("产品列表");
-       /* SystemBarHelper.immersiveStatusBar(this);
-        SystemBarHelper.setHeightAndPadding(this, toolbar);*/
+        initView();
 
     }
 
+    private void initView() {
+        navigationController = tab.custom()
+                .addItem(newItem(R.mipmap.ic_home_defual, R.mipmap.ic_home_down,"产品"))
+                .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
+                .build();
+        ArrayList<Fragment> list=new ArrayList<>();
+        list.add(new HomeFragment());
+        list.add(new UserFragment());
+        pagerAdapter=new MyViewPagerAdapter(getSupportFragmentManager(),list);
+        viewPager.setAdapter(pagerAdapter);
+        navigationController.setupWithViewPager(viewPager);
 
+    }
+    //创建一个Item
+    private BaseTabItem newItem(int drawable, int checkedDrawable, String text){
+        NormalItemView normalItemView = new NormalItemView(this);
+        normalItemView.initialize(drawable,checkedDrawable,text);
+        normalItemView.setTextDefaultColor(Color.GRAY);
+        normalItemView.setTextCheckedColor(0xFFffa900);
+        return normalItemView;
+    }
+    private long mLastBackTime = 0;
+    @Override
+    public void onBackPressed() {
+        // finish while click back key 2 times during 1s.
+        if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+            finish();
+        } else {
+            mLastBackTime = System.currentTimeMillis();
+            ToastUtils.showToast(this,"再按一次退出");
+        }
 
+    }
 }

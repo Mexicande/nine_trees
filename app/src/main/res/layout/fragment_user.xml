@@ -1,13 +1,144 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f2f3f5"
     tools:context="cn.com.stableloan.ui.fragment.UserFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:background="@drawable/user_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="150dp">
+        <ImageView
+            android:id="@+id/User_logo"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_header"/>
+        <TextView
+            android:id="@+id/tv_nick"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/User_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小开发仔"/>
+        <TextView
+            android:id="@+id/tv_UserPhone"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/tv_nick"
+            android:layout_centerHorizontal="true"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15600575837"/>
+    </RelativeLayout>
 
-</FrameLayout>
+    <RelativeLayout
+        android:id="@+id/layout_word"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/iv_pa"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/ic_userpassword"/>
+        <TextView
+            android:textSize="16sp"
+            android:textColor="#999999"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/iv_pa"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改密码"/>
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iv_left"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="2dp"
+        android:id="@+id/layout_nick"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/iv_ni"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/ic_nick"/>
+        <TextView
+            android:textSize="16sp"
+            android:textColor="#999999"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/iv_ni"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改昵称"/>
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iv_left"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="2dp"
+        android:id="@+id/layout_profession"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/iv_profession"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/ic_profession"/>
+        <TextView
+            android:textSize="16sp"
+            android:textColor="#999999"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/iv_profession"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改身份"/>
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iv_left"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/bt_exit"
+        android:layout_marginTop="50dp"
+        android:background="@color/white"
+        android:text="退出登录"
+        android:textColor="#999999"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_height="60dp"
+        style="?android:attr/borderlessButtonStyle"
+
+        />
+</LinearLayout>

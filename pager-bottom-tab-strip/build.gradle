@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    compile 'com.github.traex.rippleeffect:library:1.3'
     compile 'com.android.support:transition:25.2.0'
 }
 
