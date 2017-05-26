@@ -1,5 +1,7 @@
 package cn.com.stableloan.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +32,9 @@ public class UpdatePassWordActivity extends AppCompatActivity {
     @Bind(R.id.et_Confirm_Password)
     EditText etConfirmPassword;
 
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, UpdatePassWordActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,11 @@ public class UpdatePassWordActivity extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.tv_save)
+
+
+    @OnClick(R.id.iv_back)
     public void onViewClicked() {
 
-
+        finish();
     }
 }

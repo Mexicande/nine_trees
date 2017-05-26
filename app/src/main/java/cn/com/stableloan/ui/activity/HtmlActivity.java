@@ -1,9 +1,7 @@
 package cn.com.stableloan.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -18,6 +16,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.NetworkUtils;
@@ -60,24 +59,24 @@ public class HtmlActivity extends BaseActivity {
     private void CheckInternet() {
 
         boolean available = NetworkUtils.isAvailable(this);
-            if(available){
-                getDate();
-            }else {
-                new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("网络异常，请检查网络")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                finish();
-                            }
-                        })
-                        .show();
-            }
-      /*  ConnectivityManager con = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        if (available) {
+            getDate();
+        } else {
+            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("网络异常，请检查网络")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+      /*ConnectivityManager con = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
         boolean internet = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
         if (wifi | internet) {
-            //执行相关操作
+             //执行相关操作
             getDate();
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
@@ -94,7 +93,7 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate() {
-       // String html = getIntent().getStringExtra("html");
+        // String html = getIntent().getStringExtra("html");
         if (html != null) {
             webView.getSettings().setPluginState(WebSettings.PluginState.ON);
             webView.setWebChromeClient(new WebChromeClient());
@@ -155,6 +154,12 @@ public class HtmlActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        webView.onPause();
         webView.destroy();
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        finish();
     }
 }

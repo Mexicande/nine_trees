@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#fea423</color>
     <color name="colorPrimaryDark">#fea422</color>
+    <color name="colorStatus">#40fea422</color>
     <color name="colorAccent">#FF4081</color>
 
 
@@ -15,7 +16,12 @@
 
     <!--登陆页面-->
     <color name="gay">#999999</color>
+    <color name="colorWhite">#fefefe</color>
     <drawable name="colorWhite">#fefefe</drawable>
     <drawable name="colorBlack">#4c4c4c</drawable>
     <drawable name="yellow">#fe9b0d</drawable>
+    
+    <color name="mask">#88000000</color>
+
+    <color name="background">#f2f3f5</color>
 </resources>

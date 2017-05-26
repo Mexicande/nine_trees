@@ -85,7 +85,7 @@
         android:layout_height="50dp"
         android:textSize="18sp"
         android:textColor="@color/white"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/fastloginbutton"
         android:text="确    定"
         />
 

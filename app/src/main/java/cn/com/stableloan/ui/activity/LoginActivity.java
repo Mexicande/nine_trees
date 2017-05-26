@@ -13,8 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +26,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.utils.RegexUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -33,6 +40,7 @@ import okhttp3.Response;
 public class LoginActivity extends BaseActivity {
     /* @Bind(R.id.nts)
      NavigationTabStrip nts;*/
+
     @Bind(R.id.nts)
     TabLayout nts;
     @Bind(R.id.et_phone)
@@ -47,6 +55,12 @@ public class LoginActivity extends BaseActivity {
     Button registerButton;
     @Bind(R.id.tv_forget)
     TextView tvForget;
+
+    private String phone;
+
+    private String code;
+
+    private boolean Flag=false;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -85,12 +99,12 @@ public class LoginActivity extends BaseActivity {
        /* nts.setTitles("短信登陆","密码登陆");
         nts.setTabIndex(0, true);*/
 
-
     }
 
     private void getSwitch(int position) {
             switch (position){
                 case 0:
+                    Flag=false;
                     etLock.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
                     etPhone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
                     etPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
@@ -101,8 +115,12 @@ public class LoginActivity extends BaseActivity {
                     etLock.getText().clear();
                     etPhone.setHint("手机号");
                     etLock.setHint("密码");
+
+
+
                     break;
                 case 1:
+                    Flag=true;
                     etPhone.setHint("请输入手机号码");
                     etLock.setHint("验证码");
                     etPhone.getText().clear();
@@ -127,7 +145,6 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
@@ -147,9 +164,7 @@ public class LoginActivity extends BaseActivity {
                 loginButton.setEnabled(true);
             }else {
                 loginButton.setEnabled(false);
-
             }
-
         }
     };
     /**
@@ -160,8 +175,6 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            // TODO Auto-generated method stub
-
 
         }
 
@@ -199,18 +212,15 @@ public class LoginActivity extends BaseActivity {
             case R.id.bt_getCode:
                 if(etPhone.getText().toString().isEmpty()){
                     ToastUtils.showToast(this,"请填写手机号码");
-                }else if(etPhone.getText().toString().length()!=11){
-                    ToastUtils.showToast(this,"手机号错误");
+                }else if(etPhone.getText().toString().length()!=11||! RegexUtils.isMobileExact(etPhone.getText().toString())){
+                    ToastUtils.showToast(this,"手机号格式");
                 }else {
                     getCodeMessage();
-
-
                 }
 
                 break;
             case R.id.login_button:
                  setLogin();
-
                 break;
             case R.id.tv_forget:
                 break;
@@ -226,9 +236,44 @@ public class LoginActivity extends BaseActivity {
      *
      */
     private void setLogin() {
+        if(Flag){
+            String tel = etPhone.getText().toString();
+            String cd = etLock.getText().toString();
+            if(!tel.isEmpty()&&phone.equals(tel)){
+                if(!cd.isEmpty()&&cd.equals(code)){
+                    TinyDB tinyDB=new TinyDB(this);
+                    UserBean userBean=new UserBean();
+                    userBean.setNickname(phone);
+                    tinyDB.putObject("user",userBean);
+                    finish();
+                }else {
+                    ToastUtils.showToast(this,"验证码不正确");
+                }
+            }else {
+                ToastUtils.showToast(this,"手机号错误");
+            }
+        }else {
 
+            TinyDB tinyDB=new TinyDB(this);
+            String word = tinyDB.getString("word");
+            if(word==null){
+                tinyDB.putString("word","000000");
+            }
+            UserBean bean= (UserBean) tinyDB.getObject("user",UserBean.class);
+            String userphone = bean.getUserphone();
 
-
+            if(etPhone.getText().toString().isEmpty()){
+                ToastUtils.showToast(this,"手机号为空");
+                return;
+            } else if (!etLock.getText().toString().isEmpty()) {
+                ToastUtils.showToast(this,"密码不能为空");
+            }else if( userphone==null &&!etPhone.equals(userphone)&&!etPhone.equals(userphone)&&!word.equals(etLock)){
+                ToastUtils.showToast(this,"手机号或密码错误");
+            }else {
+                MainActivity.launch(this);
+                finish();
+            }
+        }
 
     }
 
@@ -244,11 +289,20 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
 
-                    }
+                        try {
+                            JSONObject js=new JSONObject(s);
+                           if("1".equals(js.getString("status"))){
+                               code=js.getString("check");
+                               phone=etPhone.getText().toString();
+                               ToastUtils.showToast(LoginActivity.this,"发送成功");
+                           }else {
+                               String msg = js.getString("msg");
+                               ToastUtils.showToast(LoginActivity.this,msg);
+                           }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });

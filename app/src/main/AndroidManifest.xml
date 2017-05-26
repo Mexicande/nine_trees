@@ -29,7 +29,8 @@
         <activity android:name=".ui.activity.HtmlActivity" />
         <activity android:name=".ui.activity.ProductDesc" />
         <activity android:name=".ui.activity.UpdatePassWordActivity" />
-        <activity android:name=".ui.activity.UpdateNickActivity"></activity>
+        <activity android:name=".ui.activity.UpdateNickActivity" />
+        <activity android:name=".ui.activity.UpdataProfessionActivity"></activity>
     </application>
 
 </manifest>

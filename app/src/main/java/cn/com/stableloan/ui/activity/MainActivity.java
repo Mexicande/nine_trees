@@ -2,9 +2,13 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
+import com.gyf.barlibrary.BarHide;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
 
@@ -35,7 +39,6 @@ public class MainActivity extends BaseActivity {
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initView() {
+        ImmersionBar.with(this)
+                .navigationBarColor(R.color.mask)
+                .barAlpha(0.2f)
+                .init();
         navigationController = tab.custom()
                 .addItem(newItem(R.mipmap.ic_home_defual, R.mipmap.ic_home_down,"产品"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))

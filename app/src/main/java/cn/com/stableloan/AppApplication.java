@@ -8,6 +8,9 @@ import com.lzy.okgo.cache.CacheMode;
 
 import java.util.logging.Level;
 
+import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.utils.TinyDB;
+
 /**
  * Created by apple on 2017/5/20.
  */
@@ -22,10 +25,10 @@ public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
+
+        sInstance=AppApplication.getsInstance();
         super.onCreate();
         OkGo.init(this);
-
-
         try {
             OkGo.getInstance()
                     .debug("OkGo", Level.INFO, true)
@@ -33,8 +36,11 @@ public class AppApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        UserBean userBean=new UserBean();
+        userBean.setNickname("小开发仔");
+        userBean.setUserphone("15600575837");
+        TinyDB tinyDB=new TinyDB(getsInstance());
+        tinyDB.putObject("user",userBean);
     }
 }
 

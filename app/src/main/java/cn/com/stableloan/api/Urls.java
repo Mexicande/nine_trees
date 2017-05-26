@@ -10,6 +10,6 @@ public interface Urls{
 
          String SEND_MESSAGE="http://sjd.xianjindaikuan.cn/haiqian/Home/ChuanglanSmsApi/sendSMS";
 
-
     }
+
 }

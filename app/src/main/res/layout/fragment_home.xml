@@ -4,11 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.fragment.HomeFragment">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recylerview"
-        android:background="@color/lsit_backpround"
+
+    <cn.com.stableloan.view.EasyRefreshLayout
+        android:id="@+id/easylayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recylerview"
+            android:background="@color/lsit_backpround"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </cn.com.stableloan.view.EasyRefreshLayout>
+
 
 </LinearLayout>

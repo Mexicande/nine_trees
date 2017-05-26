@@ -45,8 +45,19 @@ public class ProductDesc extends BaseActivity {
     }
 
 
-    @OnClick(R.id.apply)
-    public void onViewClicked() {
-        HtmlActivity.launch(this);
+
+
+    @OnClick({R.id.iv_back, R.id.Shops_Product, R.id.apply})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.Shops_Product:
+                break;
+            case R.id.apply:
+                HtmlActivity.launch(this);
+                break;
+        }
     }
 }

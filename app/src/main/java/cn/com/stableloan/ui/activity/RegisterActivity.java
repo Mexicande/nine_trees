@@ -23,9 +23,9 @@ public class RegisterActivity extends BaseActivity {
     Toolbar toolbar;
 
     public static void launch(Context context) {
+
         context.startActivity(new Intent(context, RegisterActivity.class));
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,5 +37,9 @@ public class RegisterActivity extends BaseActivity {
     private void initView() {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("注册");
+        String login = getIntent().getStringExtra("login");
+        if(login!=null){
+
+        }
     }
 }
