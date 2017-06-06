@@ -14,13 +14,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.UserBean;
 import cn.com.stableloan.ui.fragment.UserFragment;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 
-public class UpdataProfessionActivity extends AppCompatActivity {
+public class UpdataProfessionActivity extends BaseActivity {
 
 
 
@@ -154,6 +155,5 @@ public class UpdataProfessionActivity extends AppCompatActivity {
         ivStudent.setColorFilter(null);
         ivCompany.setColorFilter(null);
     }
-
 
 }

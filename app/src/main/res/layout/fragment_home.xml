@@ -1,21 +1,30 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.fragment.HomeFragment">
-
     <cn.com.stableloan.view.EasyRefreshLayout
         android:id="@+id/easylayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recylerview"
-            android:background="@color/lsit_backpround"
+            android:background="@color/base_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
+
     </cn.com.stableloan.view.EasyRefreshLayout>
-
-
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/shape_number_indicator_background"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_message"/>
+    </LinearLayout>
+</RelativeLayout>

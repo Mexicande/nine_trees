@@ -5,7 +5,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
+
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.lang.ref.WeakReference;
 
@@ -22,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ImmersionBar.with(this).transparentBar().init();
         mHandler.sendEmptyMessageDelayed(3, 1000);
 
 
@@ -37,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             SplashActivity activity = mWeakReference.get();
             if (activity != null) {
-                MainActivity.launch(activity);
+                LoginActivity.launch(activity);
                 activity.finish();
             }
         }
@@ -46,12 +49,32 @@ public class SplashActivity extends AppCompatActivity {
         boolean isFirstOpen = SharedPreferencesUtil.getBoolean(this, SharedPreferencesUtil.FIRST_OPEN, true);
         // 如果是第一次启动，则先进入功能引导页
         if (isFirstOpen) {
-            Intent intent = new Intent(this, GuideActivity.class);
-            startActivity(intent);
+            GuideActivity.launch(this);
             finish();
             return;
         }else {
             mHandler.sendEmptyMessageDelayed(1, 1000);
         }
+    }
+    /**
+     * startActivity屏蔽物理返回按钮
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+
     }
 }

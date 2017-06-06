@@ -15,12 +15,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.UserBean;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 
-public class UpdateNickActivity extends AppCompatActivity {
+public class UpdateNickActivity extends BaseActivity {
 
     private  static final int Flag=2000;
 
@@ -78,4 +79,5 @@ public class UpdateNickActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

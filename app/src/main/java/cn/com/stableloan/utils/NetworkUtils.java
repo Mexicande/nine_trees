@@ -181,7 +181,6 @@ public class NetworkUtils {
                 netType = NETWORK_WIFI;
             } else if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
                 switch (info.getSubtype()) {
-
                     case NETWORK_TYPE_GSM:
                     case TelephonyManager.NETWORK_TYPE_GPRS:
                     case TelephonyManager.NETWORK_TYPE_CDMA:
@@ -190,7 +189,6 @@ public class NetworkUtils {
                     case TelephonyManager.NETWORK_TYPE_IDEN:
                         netType = NETWORK_2G;
                         break;
-
                     case NETWORK_TYPE_TD_SCDMA:
                     case TelephonyManager.NETWORK_TYPE_EVDO_A:
                     case TelephonyManager.NETWORK_TYPE_UMTS:

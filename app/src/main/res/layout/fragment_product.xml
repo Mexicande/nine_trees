@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cn.com.stableloan.ui.fragment.ProductFragment">
+    <include layout="@layout/product_toolbar_layout"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="50dp"
+        android:id="@+id/classify_recycl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+    <include layout="@layout/content_slide_down_view"
+        />
+</RelativeLayout>

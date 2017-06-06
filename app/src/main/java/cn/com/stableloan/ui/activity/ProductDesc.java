@@ -8,11 +8,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.PlarformInfo;
+import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.ToastUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class ProductDesc extends BaseActivity {
 
@@ -23,7 +38,7 @@ public class ProductDesc extends BaseActivity {
     ImageView ivBack;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
+    private String   pid;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
     }
@@ -34,6 +49,10 @@ public class ProductDesc extends BaseActivity {
         setContentView(R.layout.activity_product_desc);
         ButterKnife.bind(this);
         initToolbar();
+        pid = getIntent().getStringExtra("pid");
+
+        LogUtils.i("ProductDesc",pid);
+
 
     }
 
@@ -45,8 +64,6 @@ public class ProductDesc extends BaseActivity {
     }
 
 
-
-
     @OnClick({R.id.iv_back, R.id.Shops_Product, R.id.apply})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -54,10 +71,12 @@ public class ProductDesc extends BaseActivity {
                 finish();
                 break;
             case R.id.Shops_Product:
+                startActivity(new Intent(this,PlatformInfoActivity.class).putExtra("pid",pid));
                 break;
             case R.id.apply:
                 HtmlActivity.launch(this);
                 break;
         }
     }
+
 }

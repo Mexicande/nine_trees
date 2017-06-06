@@ -38,6 +38,7 @@ public class ProductListBean implements Serializable{
     }
 
     public static class ProductBean {
+
         /**
          * pname : 安稳贷
          * product_introduction : 风火雷电，急急如律令

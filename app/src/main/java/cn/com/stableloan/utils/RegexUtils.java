@@ -117,6 +117,10 @@ public final class RegexUtils {
         return isMatch(RegexConstants.REGEX_USERNAME, input);
     }
 
+    public static boolean isPassWord(CharSequence input) {
+        return isMatch(RegexConstants.PASSWOED, input);
+    }
+    ///^\w{6,20}$/
     /**
      * 验证yyyy-MM-dd格式的日期校验，已考虑平闰年
      *
@@ -136,6 +140,8 @@ public final class RegexUtils {
     public static boolean isIP(CharSequence input) {
         return isMatch(RegexConstants.REGEX_IP, input);
     }
+
+
 
     /**
      * 判断是否匹配正则

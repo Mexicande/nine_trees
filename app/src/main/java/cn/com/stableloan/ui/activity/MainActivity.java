@@ -19,6 +19,8 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.adapter.NoTouchViewPager;
 import cn.com.stableloan.ui.fragment.HomeFragment;
+import cn.com.stableloan.ui.fragment.LotteryFragment;
+import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
@@ -45,7 +47,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-
     }
 
     private void initView() {
@@ -54,11 +55,15 @@ public class MainActivity extends BaseActivity {
                 .barAlpha(0.2f)
                 .init();
         navigationController = tab.custom()
-                .addItem(newItem(R.mipmap.ic_home_defual, R.mipmap.ic_home_down,"产品"))
+                .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down,"首页"))
+                .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"产品"))
+                .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"彩票"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
                 .build();
         ArrayList<Fragment> list=new ArrayList<>();
         list.add(new HomeFragment());
+        list.add(new ProductFragment());
+        list.add(new LotteryFragment());
         list.add(new UserFragment());
         pagerAdapter=new MyViewPagerAdapter(getSupportFragmentManager(),list);
         viewPager.setAdapter(pagerAdapter);

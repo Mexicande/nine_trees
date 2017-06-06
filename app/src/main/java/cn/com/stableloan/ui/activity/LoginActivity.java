@@ -7,18 +7,16 @@ import android.support.design.widget.TabLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +24,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.CodeMessage;
 import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.utils.CaptchaTimeCount;
+import cn.com.stableloan.utils.Constants;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -62,16 +64,23 @@ public class LoginActivity extends BaseActivity {
 
     private boolean Flag=false;
 
+    private CaptchaTimeCount captchaTimeCount;
+
+    private String MessageCode = null;
+
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
     }
-
+    private CodeMessage message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initView();
+        captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
+
     }
 
     private void initView() {
@@ -115,9 +124,6 @@ public class LoginActivity extends BaseActivity {
                     etLock.getText().clear();
                     etPhone.setHint("手机号");
                     etLock.setHint("密码");
-
-
-
                     break;
                 case 1:
                     Flag=true;
@@ -152,9 +158,8 @@ public class LoginActivity extends BaseActivity {
                                       int after) {
                     if(!etPhone.getText().toString().isEmpty()){
                         loginButton.setEnabled(true);
-                        loginButton.setBackgroundResource(R.drawable.login_button_up);
+                        loginButton.setBackgroundResource(R.drawable.corner_btn);
                         loginButton.setTextColor(getResources().getColor(R.color.white));
-
                     }
         }
 
@@ -164,6 +169,8 @@ public class LoginActivity extends BaseActivity {
                 loginButton.setEnabled(true);
             }else {
                 loginButton.setEnabled(false);
+                loginButton.setBackgroundResource(R.drawable.login_button_start);
+
             }
         }
     };
@@ -185,6 +192,8 @@ public class LoginActivity extends BaseActivity {
                 loginButton.setEnabled(true);
                 loginButton.setBackgroundResource(R.drawable.login_button_up);
 
+            }else {
+
             }
         }
 
@@ -194,10 +203,9 @@ public class LoginActivity extends BaseActivity {
                 loginButton.setEnabled(true);
                 loginButton.setBackgroundResource(R.drawable.login_button_up);
                 loginButton.setTextColor(getResources().getColor(R.color.white));
-
             }else {
                 loginButton.setEnabled(false);
-
+                loginButton.setBackgroundResource(R.drawable.login_button_start);
             }
 
         }
@@ -210,22 +218,23 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_getCode:
+                phone=etPhone.getText().toString();
                 if(etPhone.getText().toString().isEmpty()){
                     ToastUtils.showToast(this,"请填写手机号码");
-                }else if(etPhone.getText().toString().length()!=11||! RegexUtils.isMobileExact(etPhone.getText().toString())){
+                }else if(RegexUtils.isMobileExact(etPhone.getText().toString())){
                     ToastUtils.showToast(this,"手机号格式");
                 }else {
                     getCodeMessage();
                 }
-
                 break;
             case R.id.login_button:
                  setLogin();
                 break;
             case R.id.tv_forget:
+                startActivity(new Intent(this,RegisterActivity.class).putExtra("from",0));
                 break;
             case R.id.register_button:
-                    RegisterActivity.launch(this);
+                startActivity(new Intent(this,RegisterActivity.class).putExtra("from",1));
                  break;
         }
     }
@@ -236,16 +245,23 @@ public class LoginActivity extends BaseActivity {
      *
      */
     private void setLogin() {
+
+            // 验证码登陆
         if(Flag){
             String tel = etPhone.getText().toString();
             String cd = etLock.getText().toString();
             if(!tel.isEmpty()&&phone.equals(tel)){
-                if(!cd.isEmpty()&&cd.equals(code)){
-                    TinyDB tinyDB=new TinyDB(this);
-                    UserBean userBean=new UserBean();
-                    userBean.setNickname(phone);
-                    tinyDB.putObject("user",userBean);
-                    finish();
+                if(message.getCheck()!=null){
+                    if(!cd.isEmpty()&&cd.equals(message.getCheck())){
+                        TinyDB tinyDB=new TinyDB(this);
+                        UserBean userBean=new UserBean();
+                        userBean.setNickname(phone);
+                        tinyDB.putObject("user",userBean);
+                        MainActivity.launch(this);
+                        finish();
+                    }else {
+                        ToastUtils.showToast(this,"验证码错误");
+                    }
                 }else {
                     ToastUtils.showToast(this,"验证码不正确");
                 }
@@ -253,25 +269,32 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showToast(this,"手机号错误");
             }
         }else {
-
+            //账号密码登陆
+            etLock.setTransformationMethod(PasswordTransformationMethod
+                    .getInstance());
             TinyDB tinyDB=new TinyDB(this);
             String word = tinyDB.getString("word");
             if(word==null){
-                tinyDB.putString("word","000000");
-            }
-            UserBean bean= (UserBean) tinyDB.getObject("user",UserBean.class);
-            String userphone = bean.getUserphone();
-
-            if(etPhone.getText().toString().isEmpty()){
-                ToastUtils.showToast(this,"手机号为空");
-                return;
-            } else if (!etLock.getText().toString().isEmpty()) {
-                ToastUtils.showToast(this,"密码不能为空");
-            }else if( userphone==null &&!etPhone.equals(userphone)&&!etPhone.equals(userphone)&&!word.equals(etLock)){
-                ToastUtils.showToast(this,"手机号或密码错误");
+                tinyDB.putObject("word","000000");
             }else {
-                MainActivity.launch(this);
-                finish();
+                String password="000000";
+                tinyDB.putObject("word",password);
+
+                UserBean bean= (UserBean) tinyDB.getObject("user",UserBean.class);
+                String userphone = bean.getUserphone();
+                if(etPhone.getText().toString().isEmpty()){
+                    ToastUtils.showToast(this,"手机号为空");
+                    return;
+                } else if (etLock.getText().toString().isEmpty()) {
+                    ToastUtils.showToast(this,"密码不能为空");
+
+                }else if(!etPhone.getText().toString().equals(userphone)||!password.equals(etLock.getText().toString())){
+                    ToastUtils.showToast(this,"手机号或密码错误");
+                }else {
+                    LogUtils.i("------",etPhone.getText().toString()+":  "+etLock.getText().toString());
+                    MainActivity.launch(this);
+                    finish();
+                }
             }
         }
 
@@ -282,30 +305,38 @@ public class LoginActivity extends BaseActivity {
      *
      */
     private void getCodeMessage() {
+        captchaTimeCount.start();
+
         OkGo.post(Urls.Login.SEND_MESSAGE)
                 .tag(this)
                 .params("userPhone",etPhone.getText().toString())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
-                        try {
-                            JSONObject js=new JSONObject(s);
-                           if("1".equals(js.getString("status"))){
-                               code=js.getString("check");
-                               phone=etPhone.getText().toString();
-                               ToastUtils.showToast(LoginActivity.this,"发送成功");
-                           }else {
-                               String msg = js.getString("msg");
-                               ToastUtils.showToast(LoginActivity.this,msg);
-                           }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        LogUtils.i("login-code",s);
+                        Gson gson=new Gson();
+                        message = gson.fromJson(s, CodeMessage.class);
+                        LogUtils.i(message.toString());
+                        if(message.getStatus()==1){
+                            ToastUtils.showToast(LoginActivity.this,message.getMsg());
+                        }else {
+                            ToastUtils.showToast(LoginActivity.this,message.getMsg());
                         }
-
                     }
                 });
-    }
 
+
+    }
+    private long mLastBackTime = 0;
+    @Override
+    public void onBackPressed() {
+        // finish while click back key 2 times during 1s.
+        if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+            finish();
+        } else {
+            mLastBackTime = System.currentTimeMillis();
+            ToastUtils.showToast(this,"再按一次退出");
+        }
+
+    }
 }

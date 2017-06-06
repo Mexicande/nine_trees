@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_slide_up_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    tools:showIn="@layout/fragment_product">
+    <LinearLayout
+        android:id="@+id/slideView"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+         <!--   <CheckBox
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/colorPrimaryDark"
+                android:text="上班族"
+                style="@style/MyCheckboxStyle"
+                />-->
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <cn.com.stableloan.view.SmoothCheckBox
+                    android:id="@+id/checkbox1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:enabled="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:tint="@color/colorPrimary" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/checkbox1"
+                    android:textSize="14sp"
+                    android:text="上班族"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_weight="1"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <cn.com.stableloan.view.SmoothCheckBox
+                    android:id="@+id/checkbox2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:enabled="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:tint="@color/colorPrimary" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/checkbox2"
+                    android:textSize="14sp"
+                    android:text="学生党"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_weight="1"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <cn.com.stableloan.view.SmoothCheckBox
+                    android:id="@+id/checkbox3"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:enabled="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:tint="@color/colorPrimary" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/checkbox3"
+                    android:textSize="14sp"
+
+                    android:text="逍遥客"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <cn.com.stableloan.view.SmoothCheckBox
+                    android:id="@+id/checkbox4"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:enabled="true"
+                    android:gravity="center_vertical"
+                    android:tint="@color/colorPrimary" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/checkbox4"
+                    android:textSize="14sp"
+                    android:text="企业主"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/button"
+            android:text="重置"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            />
+    </LinearLayout>
+</RelativeLayout>

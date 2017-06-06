@@ -15,22 +15,45 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".ui.activity.SplashActivity">
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.LoginActivity" />
-        <activity android:name=".ui.activity.MainActivity" />
-        <activity android:name=".ui.activity.GuideActivity" />
-        <activity android:name=".ui.activity.RegisterActivity" />
-        <activity android:name=".ui.activity.HtmlActivity" />
-        <activity android:name=".ui.activity.ProductDesc" />
-        <activity android:name=".ui.activity.UpdatePassWordActivity" />
-        <activity android:name=".ui.activity.UpdateNickActivity" />
-        <activity android:name=".ui.activity.UpdataProfessionActivity"></activity>
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GuideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.HtmlActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ProductDesc"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UpdatePassWordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UpdateNickActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UpdataProfessionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.PlatformInfoActivity" />
+        <activity android:name=".ui.activity.ProductClassifyActivity"></activity>
     </application>
 
 </manifest>

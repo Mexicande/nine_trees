@@ -1,7 +1,6 @@
 package cn.com.stableloan.data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.com.stableloan.bean.ProductListBean;
 
@@ -10,6 +9,8 @@ import cn.com.stableloan.bean.ProductListBean;
  */
 
 public class DataServer {
+
+
 
     private DataServer() {
     }
@@ -25,5 +26,7 @@ public class DataServer {
         return null;
 
     }
+
+
 
 }

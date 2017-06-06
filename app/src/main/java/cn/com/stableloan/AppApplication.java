@@ -39,7 +39,7 @@ public class AppApplication extends Application {
         UserBean userBean=new UserBean();
         userBean.setNickname("小开发仔");
         userBean.setUserphone("15600575837");
-        TinyDB tinyDB=new TinyDB(getsInstance());
+        TinyDB tinyDB=new TinyDB(getApplicationContext());
         tinyDB.putObject("user",userBean);
     }
 }

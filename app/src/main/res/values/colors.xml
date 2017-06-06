@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#fea422</color>
     <color name="colorStatus">#40fea422</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="base_white">#f2f3f5</color>
 
    <!-- 产品list-->
     <color name="white">#ffffff</color>
@@ -24,4 +24,15 @@
     <color name="mask">#88000000</color>
 
     <color name="background">#f2f3f5</color>
+
+    <color name="window_background">#FFF5F5F5</color>
+    <color name="gray_light">#dcdcdc</color>
+
+    <color name="color_ffffff">#ffffff</color>
+    <color name="color_code">#b3b1b1</color>
+    <color name="nav_bg_color">#63b953</color>
+    <color name="item_bg">#e0e4e7</color>
+
+    <color name="product_desc">#666666</color>
+
 </resources>

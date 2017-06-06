@@ -157,7 +157,6 @@ public class UserFragment extends ImmersionFragment {
     protected void immersionInit() {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
-                .transparentStatusBar()
                 .navigationBarColor(R.color.colorStatus)
                 .init();
     }

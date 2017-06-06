@@ -14,8 +14,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.utils.ToastUtils;
 
-public class UpdatePassWordActivity extends AppCompatActivity {
+public class UpdatePassWordActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -54,4 +56,5 @@ public class UpdatePassWordActivity extends AppCompatActivity {
 
         finish();
     }
+
 }

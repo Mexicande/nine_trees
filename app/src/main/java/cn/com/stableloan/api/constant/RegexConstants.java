@@ -13,6 +13,7 @@ public final class RegexConstants {
     /**
      * 正则：手机号（简单）
      */
+
     public static final String REGEX_MOBILE_SIMPLE = "^[1]\\d{10}$";
     /**
      * 正则：手机号（精确）
@@ -63,7 +64,7 @@ public final class RegexConstants {
     ///////////////////////////////////////////////////////////////////////////
     // 以下摘自http://tool.oschina.net/regex
     ///////////////////////////////////////////////////////////////////////////
-
+    public  static final String PASSWOED            ="\\w";
     /**
      * 正则：双字节字符(包括汉字在内)
      */
@@ -111,5 +112,6 @@ public final class RegexConstants {
 
     ///////////////////////////////////////////////////////////////////////////
     // If u want more please visit http://toutiao.com/i6231678548520731137
+    //密码(以字母开头，长度在6~18之间，只能包含字母、数字和下划线)：^[a-zA-Z]\w{5,17}$
     ///////////////////////////////////////////////////////////////////////////
 }

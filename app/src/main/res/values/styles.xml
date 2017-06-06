@@ -16,7 +16,33 @@
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
         <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>
     </style>
+    <style name="WrapWrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MatchMatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
    <!-- 展示页轮播-->
+    <style name="AppTheme.Splash">
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@mipmap/loding</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <style name="SplashTheme" parent="Theme.AppCompat">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@mipmap/loding</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
     <style name="BannerDefaultStyle">
         <!-- 自定义属性在styles.xml中不需要命名空间,直接用属性名就可以了 -->
         <!-- 开启自动轮播 -->
@@ -53,4 +79,9 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+
+    <style name="MyCheckboxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+         <item name="android:button">@drawable/checkbox_style</item>
+     </style>
 </resources>
