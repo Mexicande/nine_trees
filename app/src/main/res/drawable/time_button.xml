@@ -4,7 +4,7 @@
     <corners android:radius="10dp" />
 
     <solid
-        android:color="@color/gay" />
+        android:color="#60fea422" />
     <padding
         android:bottom="5dp"
         android:left="5dp"

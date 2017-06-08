@@ -36,7 +36,7 @@ public class PlatformInfoActivity extends AppCompatActivity {
 
         String url = "http://47.93.197.52:8080/anwendai/Home/Api/GetSlotdetail";
         String pid = getIntent().getStringExtra("pid");
-        LogUtils.i("PlatformInfoActivity",pid);
+
 
         if (pid != null) {
             LogUtils.i("PlatformInfoActivity", pid);

@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,11 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,12 +32,27 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.CodeMessage;
 import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.model.UpdateInfoBean;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
+import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cxy.com.validate.IValidateResult;
+import cxy.com.validate.Validate;
+import cxy.com.validate.ValidateAnimation;
+import cxy.com.validate.annotation.Index;
+import cxy.com.validate.annotation.NotNull;
+import cxy.com.validate.annotation.RE;
+import ezy.boost.update.IUpdateAgent;
+import ezy.boost.update.IUpdateParser;
+import ezy.boost.update.IUpdatePrompter;
+import ezy.boost.update.UpdateInfo;
+import ezy.boost.update.UpdateManager;
+import ezy.boost.update.UpdateUtil;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -39,16 +60,26 @@ import okhttp3.Response;
  * 登录注册页
  */
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements IValidateResult {
     /* @Bind(R.id.nts)
      NavigationTabStrip nts;*/
 
     @Bind(R.id.nts)
     TabLayout nts;
+
+    @Index(1)
+    @NotNull(msg = "手机号不能为空！")
+    @RE(re = RE.phone, msg = "手机号格式不正确")
     @Bind(R.id.et_phone)
     EditText etPhone;
+
+
+
+    @Index(2)
+    @NotNull(msg = "不能为空！")
     @Bind(R.id.et_lock)
     EditText etLock;
+
     @Bind(R.id.bt_getCode)
     Button btGetCode;
     @Bind(R.id.login_button)
@@ -79,6 +110,8 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initView();
+        Validate.reg(this);
+
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
 
     }
@@ -107,6 +140,30 @@ public class LoginActivity extends BaseActivity {
         });
        /* nts.setTitles("短信登陆","密码登陆");
         nts.setTabIndex(0, true);*/
+
+        String url="http://www.shoujiweidai.com/update/versions.json";
+
+        UpdateManager.create(this).setUrl(url).setNotifyId(998).setParser(new IUpdateParser() {
+            @Override
+            public UpdateInfo parse(String source) throws Exception {
+                LogUtils.i("source",source);
+                UpdateInfo info = new UpdateInfo();
+                Gson gson=new Gson();
+                UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
+                info.hasUpdate = true;
+                info.updateContent =infoBean.getUpdateContent();
+                info.versionCode = infoBean.getVersionCode();
+                info.versionName = infoBean.getVersionName();
+                info.url = infoBean.getUrl();
+                info.md5 = infoBean.getMd5();
+                info.size = infoBean.getSize();
+                info.isForce = false;
+                info.isIgnorable = false;
+                info.isAutoInstall=true;
+                info.isSilent = false;
+                return info;
+            }
+        }).setManual(true).check();
 
     }
 
@@ -228,13 +285,15 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.login_button:
-                 setLogin();
+                Validate.check(LoginActivity.this, LoginActivity.this);
+
                 break;
             case R.id.tv_forget:
-                startActivity(new Intent(this,RegisterActivity.class).putExtra("from",0));
+                ForgetWordActivity.launch(this);
                 break;
             case R.id.register_button:
-                startActivity(new Intent(this,RegisterActivity.class).putExtra("from",1));
+                UpdateUtil.clean(this);
+                RegisterActivity.launch(this);
                  break;
         }
     }
@@ -270,32 +329,47 @@ public class LoginActivity extends BaseActivity {
             }
         }else {
             //账号密码登陆
+
+            //隐藏密码
             etLock.setTransformationMethod(PasswordTransformationMethod
                     .getInstance());
-            TinyDB tinyDB=new TinyDB(this);
-            String word = tinyDB.getString("word");
-            if(word==null){
-                tinyDB.putObject("word","000000");
-            }else {
-                String password="000000";
-                tinyDB.putObject("word",password);
+            String pass = etLock.getText().toString();
+            if(!pass.isEmpty()){
+                String md5ToString = EncryptUtils.encryptMD5ToString(pass);
+                HashMap<String, String> params = new HashMap<>();
+                params.put("userphone",etPhone.getText().toString());
+                params.put("password",md5ToString);
+                params.put("Status","0");
+                JSONObject jsonObject = new JSONObject(params);
+                OkGo.post(Urls.puk_URL+Urls.Login.LOGIN)
+                        .tag(this)
+                        .upJson(jsonObject.toString())
+                        .execute( new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                LogUtils.i("注册",s);
+                                if(s!=null){
+                                    try {
+                                        JSONObject object=new JSONObject(s);
+                                        if("true".equals(object.getString("isSuccess"))){
+                                            SPUtils.put(LoginActivity.this,"token",object.getString("token"));
+                                            MainActivity.launch(LoginActivity.this);
+                                            finish();
+                                        }else {
+                                            String string = object.getString("msg");
+                                            ToastUtils.showToast(LoginActivity.this,string);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }else {
+                                    ToastUtils.showToast(LoginActivity.this,"服务器异常,请稍后再试");
 
-                UserBean bean= (UserBean) tinyDB.getObject("user",UserBean.class);
-                String userphone = bean.getUserphone();
-                if(etPhone.getText().toString().isEmpty()){
-                    ToastUtils.showToast(this,"手机号为空");
-                    return;
-                } else if (etLock.getText().toString().isEmpty()) {
-                    ToastUtils.showToast(this,"密码不能为空");
-
-                }else if(!etPhone.getText().toString().equals(userphone)||!password.equals(etLock.getText().toString())){
-                    ToastUtils.showToast(this,"手机号或密码错误");
-                }else {
-                    LogUtils.i("------",etPhone.getText().toString()+":  "+etLock.getText().toString());
-                    MainActivity.launch(this);
-                    finish();
-                }
+                                }
+                            }
+                        });
             }
+
         }
 
     }
@@ -338,5 +412,23 @@ public class LoginActivity extends BaseActivity {
             ToastUtils.showToast(this,"再按一次退出");
         }
 
+    }
+
+    @Override
+    public void onValidateSuccess() {
+        setLogin();
+
+    }
+
+    @Override
+    public void onValidateError(String msg, EditText editText) {
+        if (editText != null)
+            editText.setFocusable(true);
+        ToastUtils.showToast(this,msg);
+    }
+
+    @Override
+    public Animation onValidateErrorAnno() {
+        return ValidateAnimation.horizontalTranslate();
     }
 }

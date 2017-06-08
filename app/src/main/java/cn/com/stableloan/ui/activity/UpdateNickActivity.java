@@ -6,22 +6,43 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cxy.com.validate.IValidateResult;
+import cxy.com.validate.Validate;
+import cxy.com.validate.ValidateAnimation;
+import cxy.com.validate.annotation.Index;
+import cxy.com.validate.annotation.NotNull;
+import cxy.com.validate.annotation.Password1;
+import cxy.com.validate.annotation.RE;
+import okhttp3.Call;
+import okhttp3.Response;
 
-public class UpdateNickActivity extends BaseActivity {
+public class UpdateNickActivity extends BaseActivity implements IValidateResult {
 
     private  static final int Flag=2000;
 
@@ -35,8 +56,14 @@ public class UpdateNickActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.bt_commit)
     Button btCommit;
+
+
+    @Index(1)
+    @NotNull(msg = "昵称不为能空！")
+    @RE(re = RE.number_letter_nick, msg = "昵称格式不正确")
     @Bind(R.id.et_nick)
     EditText etNick;
+
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UpdateNickActivity.class));
@@ -47,6 +74,8 @@ public class UpdateNickActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_nick);
         ButterKnife.bind(this);
+        Validate.reg(this);
+
         initView();
     }
 
@@ -63,7 +92,9 @@ public class UpdateNickActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_commit:
-                String nick = etNick.getText().toString();
+                Validate.check(UpdateNickActivity.this, UpdateNickActivity.this);
+
+               /* String nick = etNick.getText().toString();
                 if(!nick.isEmpty()&&RegexUtils.isUsername(etNick.getText().toString())){
                     RegexUtils.isUsername(nick);
                     setResult(Flag, new Intent().putExtra("nick",nick ));
@@ -75,8 +106,67 @@ public class UpdateNickActivity extends BaseActivity {
                     finish();
                 }else {
                     ToastUtils.showToast(this,"昵称不符合");
-                }
+                }*/
                 break;
+        }
+    }
+
+    @Override
+    public void onValidateSuccess() {
+
+        sendUpdateNick();
+    }
+
+
+    @Override
+    public void onValidateError(String msg, EditText editText) {
+        if (editText != null)
+            editText.setFocusable(true);
+        ToastUtils.showToast(this,msg);
+    }
+
+    @Override
+    public Animation onValidateErrorAnno() {
+        return ValidateAnimation.horizontalTranslate();
+    }
+    /**
+     *
+     * 昵称修改
+     */
+    private void sendUpdateNick() {
+        String token = (String) SPUtils.get(this, "token", "1");
+        final String nick = etNick.getText().toString();
+        if(token!=null){
+            HashMap<String, String> params = new HashMap<>();
+            params.put("nickname",nick);
+            params.put("token",token);
+            params.put("status","1");
+            JSONObject jsonObject = new JSONObject(params);
+            OkGo.post(Urls.puk_URL+Urls.update.UPDATE_NICK)
+                    .tag(this)
+                    .upJson(jsonObject.toString())
+                    .execute( new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtils.i("昵称修改",s);
+                            try {
+                                JSONObject object=new JSONObject(s);
+                                if("true".equals(object.getString("isSuccess"))){
+                                    ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
+                                    setResult(Flag, new Intent().putExtra("nick",nick ));
+                                    finish();
+                                }else {
+                                    String string = object.getString("msg");
+                                    ToastUtils.showToast(UpdateNickActivity.this,string);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        }else {
+            ToastUtils.showToast(UpdateNickActivity.this,"系统异常,请稍后再试");
+
         }
     }
 

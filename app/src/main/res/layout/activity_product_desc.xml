@@ -32,21 +32,38 @@
         <Space
             android:id="@+id/space"
             android:layout_centerHorizontal="true"
-            android:layout_width="10dp"
+            android:layout_width="1dp"
             android:layout_height="50dp"
             />
-        <Button
-            android:id="@+id/Shops_Product"
-            android:layout_width="match_parent"
+        <TextView
+            android:paddingTop="5dp"
+            android:id="@+id/ic_strategy"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:layout_toLeftOf="@id/space"
-            android:textSize="20sp"
+            android:drawableTop="@drawable/platform_desc"
+            android:textSize="17sp"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="#999999"
-            android:text="查看平台详情"
+            android:text="攻略"
             android:layout_alignParentBottom="true"
              />
+        <TextView
+            android:id="@+id/platform_desc"
+            android:layout_marginRight="2dp"
+            android:paddingTop="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/ic_strategy"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:textColor="#999999"
+            style="?android:attr/borderlessButtonStyle"
+            android:textSize="17sp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_strategy"
+            android:text="平台详情"
+            />
         <Button
             android:id="@+id/apply"
             android:layout_toRightOf="@id/space"

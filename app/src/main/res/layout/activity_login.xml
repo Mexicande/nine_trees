@@ -162,6 +162,7 @@
             android:layout_marginTop="40dp"
             android:text="立即进入"
             android:background="@drawable/login_button_start"
+            style="?android:attr/borderlessButtonStyle"
             android:enabled="false"
             android:textSize="16sp"
             android:textColor="@color/white"

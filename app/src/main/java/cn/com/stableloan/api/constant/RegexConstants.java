@@ -64,7 +64,7 @@ public final class RegexConstants {
     ///////////////////////////////////////////////////////////////////////////
     // 以下摘自http://tool.oschina.net/regex
     ///////////////////////////////////////////////////////////////////////////
-    public  static final String PASSWOED            ="\\w";
+    public  static final String PASSWOED            ="/^[\\w]{6,16}$/";
     /**
      * 正则：双字节字符(包括汉字在内)
      */

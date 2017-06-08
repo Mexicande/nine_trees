@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -34,10 +36,22 @@ import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cxy.com.validate.IValidateResult;
+import cxy.com.validate.Validate;
+import cxy.com.validate.ValidateAnimation;
+import cxy.com.validate.annotation.Index;
+import cxy.com.validate.annotation.MaxLength;
+import cxy.com.validate.annotation.MinLength;
+import cxy.com.validate.annotation.NotNull;
+import cxy.com.validate.annotation.Password1;
+import cxy.com.validate.annotation.Password2;
+import cxy.com.validate.annotation.RE;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class RegisterActivity extends BaseActivity {
+import static cn.com.stableloan.R.id.msg;
+
+public class RegisterActivity extends BaseActivity implements IValidateResult {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -47,21 +61,43 @@ public class RegisterActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.bt_getCode)
     Button btGetCode;
-    @Bind(R.id.et_message)
-    EditText etMessage;
-    @Bind(R.id.et_CodeMessage)
-    EditText etCodeMessage;
-    @Bind(R.id.et_password)
-    EditText etPassword;
-    @Bind(R.id.et_Confirm_Password)
-    EditText etConfirmPassword;
+
+
     @Bind(R.id.bt_save)
     Button btSave;
+
+
+
+    @Index(1)
+    @NotNull(msg = "手机号不能为空！")
+    @RE(re = RE.phone, msg = "手机号格式不正确")
+    @Bind(R.id.et_phone)
+    EditText etMessage;
+
+    @Index(2)
+    @NotNull(msg = "验证码不能为空！")
+    @Bind(R.id.et_CodeMessage)
+    EditText etCodeMessage;
+
+    @Index(3)
+    @NotNull(msg = "两次密码验证->密码一不为能空！")
+    @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
+    @Password1()
+    @Bind(R.id.et_password)
+    EditText etPassword;
+
+    @Index(4)
+    @NotNull(msg = "两次密码验证->密码二不为能空！")
+    @Password2(msg = "两次密码不一致！！！")
+    @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
+    @Bind(R.id.et_Confirm_Password)
+    EditText etConfirmPassword;
+
+
 
     private CodeMessage message;
 
 
-    private int from;
     private CaptchaTimeCount captchaTimeCount;
 
     private String MessageCode = null;
@@ -78,38 +114,15 @@ public class RegisterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        Validate.reg(this);
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
+
         initView();
-
-        String url="http://47.93.197.52:8080/anwendai/Home/Api/Registered";
-
-        HashMap<String, String> params = new HashMap<>();
-        params.put("userphone", "18500634223");
-        params.put("password", "ca017724dae8cfcdc2d97fa28671db61");
-
-        JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(url).tag(this)
-                .upJson(jsonObject.toString())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("-----------", s + "---" + response.toString());
-                             /*   PlarformInfo info = gson.fromJson(s, PlarformInfo.class);
-                                LogUtils.i("-----------",info.toString());*/
-                    }
-                });
-
 
     }
 
     private void initView() {
-        from = getIntent().getIntExtra("from", 0);
-        if (from == 0) {
-            titleName.setText("找回密码");
-            etConfirmPassword.setVisibility(View.GONE);
-        } else {
-            titleName.setText("注册");
-        }
+        titleName.setText("注册");
         ivBack.setVisibility(View.VISIBLE);
 
     }
@@ -121,12 +134,7 @@ public class RegisterActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_save:
-                if (from==1) {
-                    fromRegister();
-                } else {
-                    fromForgetPassWord();
-                }
-
+                    Validate.check(RegisterActivity.this, RegisterActivity.this);
                 break;
             case R.id.bt_getCode:
                 getCodeMessage();
@@ -134,115 +142,101 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 忘记密码
-     */
-    private void fromForgetPassWord() {
-        String tel = etMessage.getText().toString();
-
-        if (tel.equals(phone)) {
-            if (message.getCheck() != null || !etCodeMessage.equals(message.getCheck())) {
-                if (!RegexUtils.isPassWord(etPassword.getText().toString())) {
-                    //忘记密码
-
-                } else {
-                    ToastUtils.showToast(this, "密码格式不正确");
-                }
-
-            } else {
-                ToastUtils.showToast(this, "验证码错误");
-
-            }
-
-        } else {
-            ToastUtils.showToast(this, "手机号不正确");
-        }
-
-
-    }
 
     /**
      * 注册
      */
     private void fromRegister() {
-        String password = etPassword.getText().toString();
+
         String confirmPassword = etConfirmPassword.getText().toString();
         String tel = etMessage.getText().toString();
-        if (tel.equals(phone)) {
-            if (message.getCheck() != null || !etCodeMessage.equals(message.getCheck())) {
-                if (!RegexUtils.isPassWord(password)||!RegexUtils.isPassWord(confirmPassword)){
-                    if(!password.isEmpty()&&!confirmPassword.isEmpty()&&password.equals(confirmPassword)){
+        String code = etCodeMessage.getText().toString();
+        if (tel.equals(phone)&&MessageCode!=null&&code.equals(MessageCode)) {
                         String md5ToString = EncryptUtils.encryptMD5ToString(confirmPassword);
-                        LogUtils.i("MD5",md5ToString);
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("userphone",phone);
+                        params.put("password",md5ToString);
+                        JSONObject jsonObject = new JSONObject(params);
                         OkGo.post(Urls.register.REGSTER)
                                 .tag(this)
-                                .params("userphone",phone)
-                                .params("password",md5ToString)
-                                .execute(new StringCallback() {
+                                .upJson(jsonObject.toString())
+                                .execute( new StringCallback() {
                                     @Override
                                     public void onSuccess(String s, Call call, Response response) {
                                         LogUtils.i("注册",s);
                                         try {
                                             JSONObject object=new JSONObject(s);
                                             if("true".equals(object.getString("isSuccess"))){
-                                                SPUtils.put(RegisterActivity.this,"token",object.getString("token"));
                                                 finish();
-
                                             }else {
-                                                ToastUtils.showToast(RegisterActivity.this,"系统异常,请稍后再试");
+                                                String string = object.getString("msg");
+                                                ToastUtils.showToast(RegisterActivity.this,string);
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-
                                     }
                                 });
 
                     }else {
-                        ToastUtils.showToast(this,"两次密码不一致");
+                        ToastUtils.showToast(this,"手机号或验证码不正确");
                     }
-                    //忘记密码
-                } else {
-                    ToastUtils.showToast(this, "密码格式不正确");
-                }
-            } else {
-                ToastUtils.showToast(this, "验证码错误");
-
-            }
-
-        } else {
-            ToastUtils.showToast(this, "手机号不正确");
-        }
-
-
 
     }
 
+    /**
+     * 验证码获取
+     *
+     */
     private void getCodeMessage() {
         phone = etMessage.getText().toString();
-        captchaTimeCount.start();
-        OkGo.post(Urls.Login.SEND_MESSAGE)
-                .tag(this)
-                .params("userPhone", etMessage.getText().toString())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("login-code", s);
-                        Gson gson = new Gson();
-                        message = gson.fromJson(s, CodeMessage.class);
-                        LogUtils.i(message.toString());
-                        if (message.getStatus() == 1) {
-                            ToastUtils.showToast(RegisterActivity.this, message.getMsg());
-                        } else {
-                            ToastUtils.showToast(RegisterActivity.this, message.getMsg());
-                        }
-                    }
-                });
 
+        if(RegexUtils.isMobileExact(phone)){
+            captchaTimeCount.start();
+            OkGo.post(Urls.Login.SEND_MESSAGE)
+                    .tag(this)
+                    .params("userPhone", etMessage.getText().toString())
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtils.i("login-code", s);
+                            try {
+                                JSONObject jsonObject=new JSONObject(s);
+                                String status = jsonObject.getString("status");
+                                if (status.equals("1")) {
+                                    MessageCode=jsonObject.getString("check");
+                                    ToastUtils.showToast(RegisterActivity.this,jsonObject.getString("msg"));
+                                } else {
+                                    ToastUtils.showToast(RegisterActivity.this,jsonObject.getString("msg"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+        }else {
+            ToastUtils.showToast(this,"请输入正确的手机号");
+        }
 
     }
 
-    @OnClick(R.id.bt_save)
-    public void onViewClicked() {
+
+    @Override
+    public void onValidateSuccess() {
+        fromRegister();
+    }
+
+    @Override
+    public void onValidateError(String s, EditText editText) {
+        if (editText != null)
+            editText.setFocusable(true);
+            ToastUtils.showToast(this,s);
+    }
+
+    @Override
+    public Animation onValidateErrorAnno() {
+        return ValidateAnimation.horizontalTranslate();
+
     }
 }

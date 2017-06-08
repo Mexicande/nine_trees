@@ -10,7 +10,7 @@
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/iv_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -52,8 +52,15 @@
         <activity
             android:name=".ui.activity.UpdataProfessionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.PlatformInfoActivity" />
-        <activity android:name=".ui.activity.ProductClassifyActivity"></activity>
+        <activity
+            android:name=".ui.activity.PlatformInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ProductClassifyActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.NoticeActivity" />
+        <activity android:name=".ui.activity.StrateActivity" />
+        <activity android:name=".ui.activity.ForgetWordActivity"></activity>
     </application>
 
 </manifest>

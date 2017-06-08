@@ -17,11 +17,12 @@
         android:background="@drawable/reg_edtext"
         android:layout_height="45dp">
         <EditText
-            android:id="@+id/et_message"
+            android:id="@+id/et_phone"
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:textSize="15sp"
             android:maxLength="11"
+            android:inputType="phone"
             android:textColorHint="@color/gay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -69,7 +70,6 @@
     <EditText
         android:id="@+id/et_Confirm_Password"
         android:maxLength="20"
-
         android:layout_marginTop="20dp"
         android:inputType="textPassword"
         android:layout_marginLeft="20dp"

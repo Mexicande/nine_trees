@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -34,6 +36,7 @@ import cn.com.stableloan.bean.Picture;
 import cn.com.stableloan.bean.Product;
 import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.bean.TestProductList;
+import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.ProductClassifyActivity;
 import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
@@ -49,7 +52,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends ImmersionFragment {
 
 
     @Bind(R.id.recylerview)
@@ -65,6 +68,14 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
 
+    }
+
+    @Override
+    protected void immersionInit() {
+        ImmersionBar.with(getActivity())
+                .statusBarDarkFont(false)
+                .navigationBarColor(R.color.colorPrimary)
+                .init();
     }
 
     @Override
@@ -151,22 +162,17 @@ public class HomeFragment extends Fragment {
 
     private void getDate() {
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("var", "1");
-        JSONObject jsonObject = new JSONObject(params);
-        String url="http://47.93.197.52:8080/anwendai/Home/Api/GetProduct";
+
+
+
+        String url="http://47.93.197.52:8080/anwendai/Home/ApiLogin/GetBanner";
 
         OkGo.post(url)
                 .tag(getActivity())
-                .upJson(jsonObject.toString())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
-                        Gson gson=new Gson();
-                        TestProductList list = gson.fromJson(s, TestProductList.class);
-                        P_id= list.getProduct().get(0).getPl_id();
-                        LogUtils.i("pl_id",P_id);
+                        LogUtils.i("banner和热门推荐",s);
 
                     }
 
@@ -175,6 +181,25 @@ public class HomeFragment extends Fragment {
                         super.onError(call, response, e);
                     }
                 });
+
+
+        String url1="http://47.93.197.52:8080/anwendai/Home/ApiLogin/GetProducts";
+        OkGo.post(url1)
+                .tag(getActivity())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtils.i("分类专题和新品",s);
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+
+
 
         list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -211,7 +236,7 @@ public class HomeFragment extends Fragment {
         banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
             @Override
             public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
-                // startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("html", daohang.get(position).getLink()));
+                startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("html", "http://www.jianshu.com/"));
             }
         });
       /*  banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
@@ -245,6 +270,13 @@ public class HomeFragment extends Fragment {
         rc_adapter=new Recycler_Adapter(list);
         re_View.setLayoutManager(new ScrollSpeedLinearLayoutManger(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         re_View.setAdapter(rc_adapter);
+
+        re_View.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(getActivity(),ProductDesc.class).putExtra("pid",P_id));
+            }
+        });
 
 
         // 分类

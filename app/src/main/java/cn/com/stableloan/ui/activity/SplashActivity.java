@@ -1,6 +1,5 @@
 package cn.com.stableloan.ui.activity;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +7,18 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 
+import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.lang.ref.WeakReference;
 
+import cn.com.stableloan.model.UpdateInfoBean;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
+import ezy.boost.update.IUpdateParser;
+import ezy.boost.update.UpdateInfo;
+import ezy.boost.update.UpdateManager;
+
 
 /**
  * 闪屏页
@@ -26,6 +32,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).transparentBar().init();
+
+        UpdateInfoBean updateInfo=new UpdateInfoBean();
+        Gson gson=new Gson();
+        String json = gson.toJson(updateInfo);
+
+
+
+        LogUtils.i("updateInfo",json);
+
         mHandler.sendEmptyMessageDelayed(3, 1000);
 
 
@@ -70,7 +85,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

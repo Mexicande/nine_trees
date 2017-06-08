@@ -14,31 +14,41 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.UserBean;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UpdateNickActivity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SelfDialog;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import okhttp3.Call;
+import okhttp3.Response;
+import z.sye.space.library.PageStateLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UserFragment extends ImmersionFragment {
-    private int a;
-    public void setList(int a){
-
-    }
 
 
     @Bind(R.id.User_logo)
@@ -57,6 +67,8 @@ public class UserFragment extends ImmersionFragment {
     Button btExit;
 
     private SelfDialog selfDialog;
+
+    private PageStateLayout mLayout;
 
     private static final int   FLAG_Profession    = 1;
     private static final int   SEND_Profession_    = 1000;
@@ -77,34 +89,56 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-        initView();
+        mLayout = new PageStateLayout(getActivity());
+
+        getUserInfo();
         return view;
     }
 
-    private void initView() {
-        TinyDB tinyDB=new TinyDB(getActivity());
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        if(user!=null){
-            String nickname = user.getNickname();
-            String userphone = user.getUserphone();
-            if(user.getNickname()!=null){
-                tvNick.setText(nickname);
-            }else if (userphone!=null){
-                tvUserPhone.setText(userphone);
-            }
-        }else {
-            LoginActivity.launch(getActivity());
-            getActivity().finish();
-        }
+    private void getUserInfo() {
+        mLayout.onLoading();
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
+    if(!token.isEmpty()){
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token",token);
+        JSONObject jsonObject = new JSONObject(params);
+        OkGo.post(Urls.puk_URL+Urls.user.USERT_INFO)
+                .tag(this)
+                .upJson(jsonObject.toString())
+                .execute( new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtils.i("用户信息",s);
+                        try {
+                            JSONObject object=new JSONObject(s);
+                            if("true".equals(object.getString("isSuccess"))){
+                                Gson gson=new Gson();
+                                UserBean bean = gson.fromJson(s, UserBean.class);
+
+                                tvNick.setText(bean.getNickname());
+                                tvUserPhone.setText(bean.getUserphone());
+                                mLayout.onSucceed();
+                            }else {
+                                String string = object.getString("msg");
+                                mLayout.onError();
+                                ToastUtils.showToast(getActivity(),string);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
     }
+
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
 
 
     @OnClick({R.id.layout_word, R.id.layout_nick, R.id.layout_profession, R.id.bt_exit})

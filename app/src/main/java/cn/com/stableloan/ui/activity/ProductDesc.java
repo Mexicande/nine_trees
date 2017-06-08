@@ -50,8 +50,9 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         initToolbar();
         pid = getIntent().getStringExtra("pid");
-
-        LogUtils.i("ProductDesc",pid);
+        if(pid!=null){
+            LogUtils.i("ProductDesc",pid);
+        }
 
 
     }
@@ -60,18 +61,20 @@ public class ProductDesc extends BaseActivity {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("产品详情");
 
-
     }
 
 
-    @OnClick({R.id.iv_back, R.id.Shops_Product, R.id.apply})
+    @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply,R.id.ic_strategy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.Shops_Product:
+            case R.id.platform_desc:
                 startActivity(new Intent(this,PlatformInfoActivity.class).putExtra("pid",pid));
+                break;
+            case R.id.ic_strategy:
+                startActivity(new Intent(this,StrateActivity.class).putExtra("pid",pid));
                 break;
             case R.id.apply:
                 HtmlActivity.launch(this);

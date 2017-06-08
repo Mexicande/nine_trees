@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "cn.com.stableloan"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -25,6 +25,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(path: ':pager-bottom-tab-strip')
+    compile project(path: ':validate')
     //SystembarStatus
 
     // okGo
@@ -57,5 +58,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.github.chenBingX:SuperTextView:v1.3'
     compile 'com.github.mancj:SlideUp-Android:2.2.5'
+    compile 'com.github.czy1121:update:1.1.1'
+    compile 'com.github.Syehunter:PageStateLayout:0.1.2.2'
+
     testCompile 'junit:junit:4.12'
 }

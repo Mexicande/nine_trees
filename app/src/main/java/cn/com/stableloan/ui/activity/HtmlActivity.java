@@ -85,7 +85,7 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate() {
-        // String html = getIntent().getStringExtra("html");
+        String html = getIntent().getStringExtra("html");
         if (html != null) {
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);

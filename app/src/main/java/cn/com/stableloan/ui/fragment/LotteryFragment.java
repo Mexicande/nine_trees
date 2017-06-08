@@ -7,16 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.barlibrary.ImmersionFragment;
+
 import cn.com.stableloan.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LotteryFragment extends Fragment {
+public class LotteryFragment extends ImmersionFragment {
 
 
     public LotteryFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    protected void immersionInit() {
+        ImmersionBar.with(getActivity())
+                .statusBarDarkFont(false)
+                .navigationBarColor(R.color.colorPrimary)
+                .init();
     }
 
 
