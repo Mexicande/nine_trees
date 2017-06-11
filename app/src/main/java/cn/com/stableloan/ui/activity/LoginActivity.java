@@ -380,7 +380,8 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                                 if(status){
                                     Gson gson=new Gson();
                                     UserBean bean = gson.fromJson(s, UserBean.class);
-                                    SPUtils.put(LoginActivity.this,"user",bean);
+                                    TinyDB tinyDB=new TinyDB(LoginActivity.this);
+                                    tinyDB.putObject("user",bean);
                                     String from = getIntent().getStringExtra("from");
                                     if(from!=null&&from.equals("user")){
                                         setResult(Flag_User, new Intent().putExtra("user",bean));

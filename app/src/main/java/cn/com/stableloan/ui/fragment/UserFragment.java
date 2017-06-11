@@ -23,7 +23,6 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -33,8 +32,6 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.MainActivity;
-import cn.com.stableloan.ui.activity.RegisterActivity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UpdateNickActivity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
@@ -70,17 +67,16 @@ public class UserFragment extends ImmersionFragment {
 
     private SelfDialog selfDialog;
 
-    private static final int   FLAG_Profession    = 1;
-    private static final int   SEND_Profession_    = 1000;
+    private static final int FLAG_Profession = 1;
+    private static final int SEND_Profession_ = 1000;
 
 
-    private static final int   FLAG_NICK    = 2;
-    private static final int   SEND_NICK    = 2000;
-    private static final int   FLAG_LOGIN    = 3;
-    private static final int   SEND_LOGIN    = 3000;
+    private static final int FLAG_NICK = 2;
+    private static final int SEND_NICK = 2000;
+    private static final int FLAG_LOGIN = 3;
+    private static final int SEND_LOGIN = 3000;
 
-    private static final int    Moon    = 1;
-
+    private static final int Moon = 1;
 
 
     public UserFragment() {
@@ -94,42 +90,43 @@ public class UserFragment extends ImmersionFragment {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
         Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
-        if(!login){
-            startActivityForResult(new Intent(getActivity(),LoginActivity.class).putExtra("from","user"),FLAG_LOGIN);
-        }else {
+        if (!login) {
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
+        } else {
             getUserInfo();
         }
         return view;
     }
+
     private void getUserInfo() {
         UserBean user = (UserBean) SPUtils.get(getActivity(), "user", UserBean.class);
-        if(user!=null){
+        if (user != null) {
             tvNick.setText(user.getNickname());
             tvUserPhone.setText(user.getUserphone());
-        }else {
+        } else {
             String token = (String) SPUtils.get(getActivity(), "token", "1");
-            if(!token.isEmpty()){
+            if (!token.isEmpty()) {
                 HashMap<String, String> params = new HashMap<>();
-                params.put("token",token);
+                params.put("token", token);
                 JSONObject jsonObject = new JSONObject(params);
-                OkGo.post(Urls.puk_URL+Urls.user.USERT_INFO)
+                OkGo.post(Urls.puk_URL + Urls.user.USERT_INFO)
                         .tag(this)
                         .upJson(jsonObject.toString())
-                        .execute( new StringCallback() {
+                        .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
-                                LogUtils.i("用户信息",s);
+                                LogUtils.i("用户信息", s);
                                 try {
-                                    JSONObject object=new JSONObject(s);
-                                    if("true".equals(object.getString("isSuccess"))){
-                                        Gson gson=new Gson();
+                                    JSONObject object = new JSONObject(s);
+                                    boolean isSuccess = object.getBoolean("isSuccess");
+                                    if (isSuccess) {
+                                        Gson gson = new Gson();
                                         UserBean bean = gson.fromJson(s, UserBean.class);
-                                        SPUtils.put(getActivity(),"user",bean);
                                         tvNick.setText(bean.getNickname());
                                         tvUserPhone.setText(bean.getUserphone());
-                                    }else {
+                                    } else {
                                         String string = object.getString("msg");
-                                        ToastUtils.showToast(getActivity(),string);
+                                        ToastUtils.showToast(getActivity(), string);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -141,7 +138,6 @@ public class UserFragment extends ImmersionFragment {
 
 
     }
-
 
 
     @Override
@@ -158,13 +154,15 @@ public class UserFragment extends ImmersionFragment {
                 UpdatePassWordActivity.launch(getActivity());
                 break;
             case R.id.layout_nick://昵称
-                startActivityForResult(new Intent(getActivity(),UpdateNickActivity.class),FLAG_NICK);
+                startActivityForResult(new Intent(getActivity(), UpdateNickActivity.class), FLAG_NICK);
                 break;
             case R.id.layout_profession://职业
-                startActivityForResult(new Intent(getActivity(),UpdataProfessionActivity.class),FLAG_Profession);
+                startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class), FLAG_Profession);
                 break;
             case R.id.bt_exit: //退出登录
                 exit();
+            case R.id.banben:
+                ToastUtils.showToast(getActivity(),"已经是最新版本了");
                 break;
         }
     }
@@ -178,7 +176,7 @@ public class UserFragment extends ImmersionFragment {
             public void onYesClick() {
                 selfDialog.dismiss();
                 SPUtils.clear(getActivity());
-                startActivityForResult(new Intent(getActivity(),LoginActivity.class).putExtra("from","user"),FLAG_LOGIN);
+                startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
             }
         });
         selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
@@ -205,54 +203,51 @@ public class UserFragment extends ImmersionFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-              /*  case FLAG_Profession:
-                    if(SEND_Profession_==resultCode){
-                       int headPhoto1 = data.getExtras().getInt("HeadPhoto");
-                        LogUtils.i("HeadPhoto",headPhoto1);
-                        switch (headPhoto1){
-                            case 1:
-                                setUserHead(R.mipmap.iv_header01);
-                                break;
-                            case 2:
-                                setUserHead(R.mipmap.iv_header02);
-                                break;
-                            case 3:
-                                setUserHead(R.mipmap.iv_header03);
-                                break;
-                            case 4:
-                                setUserHead(R.mipmap.iv_header04);
-                                break;
-                        }
+        switch (requestCode) {
+            case FLAG_Profession:
+                if (SEND_Profession_ == resultCode) {
+                    String Identity = data.getStringExtra("HeadPhoto");
+                    TinyDB tinyDB = new TinyDB(getActivity());
+                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                    user.setIdentity(Identity);
+                    tinyDB.putObject("user", user);
+                    LogUtils.i("修改后的", user);
+                }
+                break;
+            //昵称设置
+            case FLAG_NICK:
+                if (SEND_NICK == resultCode) {
+                    String nick = data.getExtras().getString("nick");
+                    if (nick != null) {
+                        TinyDB tinyDB = new TinyDB(getActivity());
+                        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                        user.setNickname(nick);
+                        tinyDB.putObject("user", user);
+                        tvNick.setText(nick);
                     }
-                    break;*/
-                //昵称设置
-               case FLAG_NICK:
-                   if(SEND_NICK==resultCode){
-                       String nick = data.getExtras().getString("nick");
-                       if(nick!=null){
-                           tvNick.setText(nick);
-                       }
-                   }
+                }
             case FLAG_LOGIN:
-                 if(SEND_LOGIN==resultCode){
-                     UserBean user = (UserBean) data.getSerializableExtra("user");
-                     tvNick.setText(user.getNickname());
-                     tvUserPhone.setText(user.getUserphone());
-                 }
+                if (SEND_LOGIN == resultCode) {
+                    UserBean user = (UserBean) data.getSerializableExtra("user");
+                    tvNick.setText(user.getNickname());
+                    tvUserPhone.setText(user.getUserphone());
+                }
 
-            }
+        }
 
     }
 
     /**
      * 头像职业选择
+     *
      * @param imageView
      */
-    private void setUserHead( int imageView ) {
+    private void setUserHead(int imageView) {
         Glide.with(getActivity()).load(imageView)
                 .centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .bitmapTransform(new CropCircleTransformation(getActivity())).into(UserLogo);
 
     }
+
+
 }

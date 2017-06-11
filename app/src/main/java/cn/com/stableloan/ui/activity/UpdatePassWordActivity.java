@@ -146,7 +146,8 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                                 LogUtils.i("密码修改",s);
                                 try {
                                     JSONObject object=new JSONObject(s);
-                                    if("true".equals(object.getString("isSuccess"))){
+                                    boolean isSuccess = object.getBoolean("isSuccess");
+                                    if(isSuccess){
                                         ToastUtils.showToast(UpdatePassWordActivity.this,"修改成功");
                                         finish();
                                     }else {

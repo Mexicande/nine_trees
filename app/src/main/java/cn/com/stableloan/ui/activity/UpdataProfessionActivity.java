@@ -10,10 +10,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.UserFragment;
@@ -21,6 +30,8 @@ import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class UpdataProfessionActivity extends BaseActivity {
 
@@ -66,10 +77,12 @@ public class UpdataProfessionActivity extends BaseActivity {
         ButterKnife.bind(this);
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("身份修改");
-        UserBean user = (UserBean) SPUtils.get(this, "user",UserBean.class);
+        TinyDB tinyDB=new TinyDB(this);
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         if(user!=null){
             String identity =  user.getIdentity();
             if(identity!=null){
+                ToastUtils.showToast(this,identity+"");
                 int i = Integer.parseInt(identity);
                 switch (i){
                     case 1:
@@ -125,14 +138,52 @@ public class UpdataProfessionActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_Save:
+
+                updateIdentity(Flge+"");
                 LogUtils.i("FLAG",Flge);
-                TinyDB tinyDB=new TinyDB(this);
-                UserBean userBean= (UserBean) tinyDB.getObject("user", UserBean.class);
-                UserBean user = (UserBean) SPUtils.get(this, "user", UserBean.class);
+               /* UserBean user = (UserBean) SPUtils.get(this, "user",UserBean.class);
                 user.setIdentity(""+Flge);
                 setResult(-1,new Intent().putExtra("HeadPhoto",Flge));
-                finish();
+                finish();*/
                 break;
+        }
+
+    }
+
+    private void updateIdentity(final String identity ) {
+
+        String token = (String) SPUtils.get(this, "token", "1");
+        if(token!=null){
+            HashMap<String, String> params = new HashMap<>();
+            params.put("identity",identity);
+            params.put("token",token);
+            params.put("status","2");
+            JSONObject jsonObject = new JSONObject(params);
+            OkGo.post(Urls.puk_URL+Urls.update.UPDATE_PROFRSSION)
+                    .tag(this)
+                    .upJson(jsonObject.toString())
+                    .execute( new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtils.i("昵称修改",s);
+                            try {
+                                JSONObject object=new JSONObject(s);
+                                boolean isSuccess = object.getBoolean("isSuccess");
+                                if(isSuccess){
+                                    setResult(1000,new Intent().putExtra("HeadPhoto",identity));
+                                    finish();
+                                }else {
+                                    String string = object.getString("msg");
+                                    ToastUtils.showToast(UpdataProfessionActivity.this,string);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        }else {
+            ToastUtils.showToast(UpdataProfessionActivity.this,"系统异常,请稍后再试");
+
         }
 
     }

@@ -45,6 +45,8 @@ public interface Urls{
     interface update{
         String UPDATE_NICK="Modify";
         String UPDATE_Word="Modify";
+
+        String UPDATE_PROFRSSION="Modify";
     }
     interface user{
         String USERT_INFO="Personal";

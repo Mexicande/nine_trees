@@ -74,7 +74,6 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
         setContentView(R.layout.activity_update_nick);
         ButterKnife.bind(this);
         Validate.reg(this);
-
         initView();
     }
 
@@ -150,9 +149,9 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                             LogUtils.i("昵称修改",s);
                             try {
                                 JSONObject object=new JSONObject(s);
-                                if("true".equals(object.getString("isSuccess"))){
+                                boolean isSuccess = object.getBoolean("isSuccess");
+                                if(isSuccess){
                                     ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
-                                    setResult(Flag, new Intent().putExtra("nick",nick ));
                                     finish();
                                 }else {
                                     String string = object.getString("msg");

@@ -75,6 +75,7 @@ public class SPUtils {
             return sp.getFloat(key, (Float) defaultObject);
         } else if (defaultObject instanceof Long) {
             return sp.getLong(key, (Long) defaultObject);
+        }else {
         }
 
         return null;

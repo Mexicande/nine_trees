@@ -21,8 +21,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class PlatformInfoActivity extends AppCompatActivity {
-    @Bind(R.id.test)
-    TextView test;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, PlatformInfoActivity.class));
@@ -46,7 +44,6 @@ public class PlatformInfoActivity extends AppCompatActivity {
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            test.setText(s);
                             LogUtils.i("-----------", s + "---" + response.toString());
                              /*   PlarformInfo info = gson.fromJson(s, PlarformInfo.class);
                                 LogUtils.i("-----------",info.toString());*/
