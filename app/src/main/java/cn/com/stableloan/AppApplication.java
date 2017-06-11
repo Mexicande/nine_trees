@@ -8,8 +8,9 @@ import com.lzy.okgo.cache.CacheMode;
 
 import java.util.logging.Level;
 
-import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.TinyDB;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by apple on 2017/5/20.
@@ -28,6 +29,10 @@ public class AppApplication extends Application {
 
         sInstance=AppApplication.getsInstance();
         super.onCreate();
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                .build()
+        );
         OkGo.init(this);
         try {
             OkGo.getInstance()
@@ -36,11 +41,7 @@ public class AppApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        UserBean userBean=new UserBean();
-        userBean.setNickname("小开发仔");
-        userBean.setUserphone("15600575837");
-        TinyDB tinyDB=new TinyDB(getApplicationContext());
-        tinyDB.putObject("user",userBean);
+
     }
 }
 

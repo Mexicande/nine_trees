@@ -13,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +31,7 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.CodeMessage;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
+import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -61,6 +65,8 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
     @Password1()
     @Bind(R.id.et_password)
     EditText etPassword;
+
+
 
 
     @Bind(R.id.title_name)
@@ -126,17 +132,22 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
 
         if(RegexUtils.isMobileExact(phone)){
             captchaTimeCount.start();
+
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userPhone",phone);
+            params.put("status","1");
+
+            JSONObject jsonObject = new JSONObject(params);
             OkGo.post(Urls.Login.SEND_MESSAGE)
                     .tag(this)
-                    .params("userPhone", etMessage.getText().toString())
+                    .upJson(jsonObject.toString())
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("login-code", s);
+                            LogUtils.i("login-code",s);
                             try {
                                 JSONObject jsonObject=new JSONObject(s);
                                 String status = jsonObject.getString("status");
-
                                 if (status.equals("1")) {
                                     MessageCode=jsonObject.getString("check");
                                     ToastUtils.showToast(ForgetWordActivity.this,jsonObject.getString("msg"));
@@ -148,14 +159,66 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                             }
                         }
                     });
-
         }else {
             ToastUtils.showToast(this,"请输入正确的手机号");
         }
 
     }
 
+    /**
+     *
+     * 修改密码请求
+     *
+     */
+
+    private KProgressHUD hud;
+
     private void setPassWord() {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait.....")
+                .setCancellable(true)
+                .show();
+        String confirmPassword = etPassword.getText().toString();
+        String tel = etMessage.getText().toString();
+        String code = etCodeMessage.getText().toString();
+        if (tel.equals(phone)&&MessageCode!=null&&code.equals(MessageCode)) {
+                        String md5ToString = EncryptUtils.encryptMD5ToString(confirmPassword);
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("userphone",phone);
+                        params.put("password",md5ToString);
+                        JSONObject jsonObject = new JSONObject(params);
+                        OkGo.post(Urls.puk_URL+Urls.register.FORGETWORD)
+                                .tag(this)
+                                .upJson(jsonObject.toString())
+                                .execute( new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        LogUtils.i("忘记密码",s);
+                                        try {
+                                            JSONObject object=new JSONObject(s);
+                                            if("true".equals(object.getString("isSuccess"))){
+                                                hud.dismiss();
+                                                String string = object.getString("msg");
+
+                                                ToastUtils.showToast(ForgetWordActivity.this,string);
+                                                finish();
+                                            }else {
+                                                String string = object.getString("msg");
+                                                hud.dismiss();
+
+                                                ToastUtils.showToast(ForgetWordActivity.this,string);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                    }else {
+                        ToastUtils.showToast(this,"手机号或验证码不正确");
+                    }
+        hud.dismiss();
 
     }
 

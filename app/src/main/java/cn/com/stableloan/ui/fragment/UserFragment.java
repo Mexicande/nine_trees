@@ -23,6 +23,7 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -30,8 +31,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.RegisterActivity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UpdateNickActivity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
@@ -43,7 +46,6 @@ import cn.com.stableloan.view.SelfDialog;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Response;
-import z.sye.space.library.PageStateLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,18 +70,20 @@ public class UserFragment extends ImmersionFragment {
 
     private SelfDialog selfDialog;
 
-    private PageStateLayout mLayout;
-
     private static final int   FLAG_Profession    = 1;
     private static final int   SEND_Profession_    = 1000;
 
 
     private static final int   FLAG_NICK    = 2;
     private static final int   SEND_NICK    = 2000;
+    private static final int   FLAG_LOGIN    = 3;
+    private static final int   SEND_LOGIN    = 3000;
+
     private static final int    Moon    = 1;
 
+
+
     public UserFragment() {
-        // Required empty public constructor
     }
 
 
@@ -89,46 +93,52 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-        mLayout = new PageStateLayout(getActivity());
-
-        getUserInfo();
+        Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
+        if(!login){
+            startActivityForResult(new Intent(getActivity(),LoginActivity.class).putExtra("from","user"),FLAG_LOGIN);
+        }else {
+            getUserInfo();
+        }
         return view;
     }
-
     private void getUserInfo() {
-        mLayout.onLoading();
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
-    if(!token.isEmpty()){
-        HashMap<String, String> params = new HashMap<>();
-        params.put("token",token);
-        JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.puk_URL+Urls.user.USERT_INFO)
-                .tag(this)
-                .upJson(jsonObject.toString())
-                .execute( new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("用户信息",s);
-                        try {
-                            JSONObject object=new JSONObject(s);
-                            if("true".equals(object.getString("isSuccess"))){
-                                Gson gson=new Gson();
-                                UserBean bean = gson.fromJson(s, UserBean.class);
-
-                                tvNick.setText(bean.getNickname());
-                                tvUserPhone.setText(bean.getUserphone());
-                                mLayout.onSucceed();
-                            }else {
-                                String string = object.getString("msg");
-                                mLayout.onError();
-                                ToastUtils.showToast(getActivity(),string);
+        UserBean user = (UserBean) SPUtils.get(getActivity(), "user", UserBean.class);
+        if(user!=null){
+            tvNick.setText(user.getNickname());
+            tvUserPhone.setText(user.getUserphone());
+        }else {
+            String token = (String) SPUtils.get(getActivity(), "token", "1");
+            if(!token.isEmpty()){
+                HashMap<String, String> params = new HashMap<>();
+                params.put("token",token);
+                JSONObject jsonObject = new JSONObject(params);
+                OkGo.post(Urls.puk_URL+Urls.user.USERT_INFO)
+                        .tag(this)
+                        .upJson(jsonObject.toString())
+                        .execute( new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                LogUtils.i("用户信息",s);
+                                try {
+                                    JSONObject object=new JSONObject(s);
+                                    if("true".equals(object.getString("isSuccess"))){
+                                        Gson gson=new Gson();
+                                        UserBean bean = gson.fromJson(s, UserBean.class);
+                                        SPUtils.put(getActivity(),"user",bean);
+                                        tvNick.setText(bean.getNickname());
+                                        tvUserPhone.setText(bean.getUserphone());
+                                    }else {
+                                        String string = object.getString("msg");
+                                        ToastUtils.showToast(getActivity(),string);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
+                        });
+            }
+        }
+
 
     }
 
@@ -155,7 +165,6 @@ public class UserFragment extends ImmersionFragment {
                 break;
             case R.id.bt_exit: //退出登录
                 exit();
-
                 break;
         }
     }
@@ -168,8 +177,8 @@ public class UserFragment extends ImmersionFragment {
             @Override
             public void onYesClick() {
                 selfDialog.dismiss();
-                LoginActivity.launch(getActivity());
-                getActivity().finish();
+                SPUtils.clear(getActivity());
+                startActivityForResult(new Intent(getActivity(),LoginActivity.class).putExtra("from","user"),FLAG_LOGIN);
             }
         });
         selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
@@ -184,7 +193,6 @@ public class UserFragment extends ImmersionFragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -226,6 +234,12 @@ public class UserFragment extends ImmersionFragment {
                            tvNick.setText(nick);
                        }
                    }
+            case FLAG_LOGIN:
+                 if(SEND_LOGIN==resultCode){
+                     UserBean user = (UserBean) data.getSerializableExtra("user");
+                     tvNick.setText(user.getNickname());
+                     tvUserPhone.setText(user.getUserphone());
+                 }
 
             }
 

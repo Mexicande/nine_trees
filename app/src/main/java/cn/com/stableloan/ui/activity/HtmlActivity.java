@@ -15,11 +15,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -39,7 +42,6 @@ public class HtmlActivity extends BaseActivity {
 
     private WebView mWebView;
 
-    private String html = "https://microservice.wacai.com/loan/welfare/apply/xianjindai4/28a00071?af=LW23XIANJINDAI4&sign=473083f62891026d5019c6e1571f3e3e";
 
 
     public static void launch(Context context) {
@@ -51,7 +53,6 @@ public class HtmlActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
-        initView();
 
         mWebView = new WebView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
@@ -62,8 +63,7 @@ public class HtmlActivity extends BaseActivity {
 
     private void initView() {
 
-        ivBack.setVisibility(View.VISIBLE);
-        titleName.setText("安稳贷申请");
+
     }
 
     private void CheckInternet() {
@@ -85,35 +85,40 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate() {
-        String html = getIntent().getStringExtra("html");
-        if (html != null) {
-            WebSettings webSettings = mWebView.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-            webSettings.setUseWideViewPort(true);
-            webSettings.setLoadWithOverviewMode(true);
-            webSettings.setBuiltInZoomControls(true);
-            webSettings.setGeolocationEnabled(true);
-            webSettings.setDomStorageEnabled(true);
-            webSettings.setDatabaseEnabled(true);
-            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-            webSettings.setAllowFileAccess(true);
-            webSettings.setAppCacheEnabled(true);
-            webSettings.setDisplayZoomControls(false);
-            if (Build.VERSION.SDK_INT >= 21) {
-                webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-            }
-            mWebView.loadUrl(html);
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return false;
+        //String html = getIntent().getStringExtra("html");
+        ivBack.setVisibility(View.VISIBLE);
+        Banner_HotBean.AdvertisingBean product = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("product");
+        if(product!=null){
+            titleName.setText(product.getAdvername());
+            if (product.getApp() != null) {
+                WebSettings webSettings = mWebView.getSettings();
+                webSettings.setJavaScriptEnabled(true);
+                webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+                webSettings.setUseWideViewPort(true);
+                webSettings.setLoadWithOverviewMode(true);
+                webSettings.setBuiltInZoomControls(true);
+                webSettings.setGeolocationEnabled(true);
+                webSettings.setDomStorageEnabled(true);
+                webSettings.setDatabaseEnabled(true);
+                webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+                webSettings.setAllowFileAccess(true);
+                webSettings.setAppCacheEnabled(true);
+                webSettings.setDisplayZoomControls(false);
+                if (Build.VERSION.SDK_INT >= 21) {
+                    webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
                 }
-            });
-            mWebView.setWebChromeClient(new MyWebChromeClient());
+                mWebView.loadUrl(product.getApp());
+                mWebView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+                        return false;
+                    }
+                });
+                mWebView.setWebChromeClient(new MyWebChromeClient());
 
 
+            }
         }
     }
     private class MyWebChromeClient extends WebChromeClient {

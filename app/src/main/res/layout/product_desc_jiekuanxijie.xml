@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:text="借款审核细节"
             android:layout_marginLeft="3dp"
             android:textSize="16sp"
             android:drawableLeft="@drawable/circle"
@@ -28,7 +27,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="10dp"
-            android:text="面向人群: 上班族、企业主&amp;个体户"
             />
         <TextView
             android:id="@+id/review"
@@ -37,7 +35,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="审核方式: 自动审核"
             />
         <TextView
             android:id="@+id/arrive"
@@ -46,7 +43,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="到账方式: 银行卡、信用卡、支付宝"
             />
         <TextView
             android:id="@+id/actual_account"
@@ -55,7 +51,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="实际到账金额: 扣除服务费和利息"
             />
         <TextView
             android:id="@+id/repayment"
@@ -64,7 +59,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="还款方式: 等额本息"
             />
         <TextView
             android:id="@+id/repayment_channels"
@@ -73,7 +67,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="还款渠道: 银行卡自动划款、ATM还款、支付宝还款"
             />
         <TextView
             android:id="@+id/interest_algorithm"
@@ -82,7 +75,6 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="利息算法: 月息利息额度:1%-1.7%"
             />
         <TextView
             android:id="@+id/prepayment"
@@ -91,9 +83,8 @@
             android:layout_marginLeft="13dp"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:text="提前还款: 可以"
             android:layout_marginBottom="10dp"
             />
 
     </LinearLayout>
-</FrameLayout>
+</merge>

@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/6/8.
  */
 
-public class UserBean {
+public class UserBean implements Serializable {
 
     /**
      * userphone : 15622222222

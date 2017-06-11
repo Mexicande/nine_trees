@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -59,7 +62,6 @@ dependencies {
     compile 'com.github.chenBingX:SuperTextView:v1.3'
     compile 'com.github.mancj:SlideUp-Android:2.2.5'
     compile 'com.github.czy1121:update:1.1.1'
-    compile 'com.github.Syehunter:PageStateLayout:0.1.2.2'
-
+    compile 'com.kaopiz:kprogresshud:1.0.5'
     testCompile 'junit:junit:4.12'
 }

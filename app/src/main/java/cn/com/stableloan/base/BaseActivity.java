@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import cn.com.stableloan.R;
@@ -32,6 +33,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         ImmersionBar.with(this).destroy();  //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
     }
+
     /**
      * 检测系统版本并使状态栏全透明
      */

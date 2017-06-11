@@ -36,20 +36,16 @@ public class PlatformInfoActivity extends AppCompatActivity {
 
         String url = "http://47.93.197.52:8080/anwendai/Home/Api/GetSlotdetail";
         String pid = getIntent().getStringExtra("pid");
-
-
         if (pid != null) {
             LogUtils.i("PlatformInfoActivity", pid);
             HashMap<String, String> params = new HashMap<>();
             params.put("pl_id", pid);
-
             JSONObject jsonObject = new JSONObject(params);
             OkGo.post(url).tag(this)
                     .upJson(jsonObject.toString())
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-
                             test.setText(s);
                             LogUtils.i("-----------", s + "---" + response.toString());
                              /*   PlarformInfo info = gson.fromJson(s, PlarformInfo.class);

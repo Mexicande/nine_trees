@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+
+import cn.com.stableloan.model.UserBean;
 /*
     对SharedPreference的使用做了建议的封装，对外公布出put，get，remove，clear等等方法；
 注意一点，里面所有的commit操作使用了SharedPreferencesCompat.apply进行了替代，目的是尽可能的使用apply代替commit
@@ -129,6 +131,8 @@ public class SPUtils {
                 Context.MODE_PRIVATE);
         return sp.getAll();
     }
+
+
 
     /**
      * 创建一个解决SharedPreferencesCompat.apply方法的一个兼容类

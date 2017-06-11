@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content" />
                 <TextView
                     android:layout_centerVertical="true"
-                    android:id="@+id/product_intro"
+                    android:id="@+id/tv_Pname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/product_name_color"

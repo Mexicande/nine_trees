@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
@@ -21,28 +22,29 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.Picture;
-import cn.com.stableloan.bean.Product;
 import cn.com.stableloan.bean.ProductListBean;
-import cn.com.stableloan.bean.TestProductList;
+import cn.com.stableloan.model.Banner_HotBean;
+import cn.com.stableloan.model.News_ClassBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.NoticeActivity;
 import cn.com.stableloan.ui.activity.ProductClassifyActivity;
 import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
 import cn.com.stableloan.view.SpacesItemDecoration;
@@ -52,20 +54,21 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends ImmersionFragment {
+public class HomeFragment extends ImmersionFragment implements View.OnClickListener {
 
 
     @Bind(R.id.recylerview)
     RecyclerView recylerview;
     @Bind(R.id.easylayout)
     EasyRefreshLayout easylayout;
+    @Bind(R.id.iv_notice)
+    ImageView ivNotice;
 
     private String P_id;
     private ListProductAdapter productAdapter;
     private ArrayList<ProductListBean.ProductBean> list;
 
-
-
+    int ACTION =1;
     public HomeFragment() {
 
     }
@@ -88,6 +91,7 @@ public class HomeFragment extends ImmersionFragment {
         return view;
     }
 
+
     /**
      * 下拉刷新
      */
@@ -96,126 +100,55 @@ public class HomeFragment extends ImmersionFragment {
         easylayout.addEasyEvent(new EasyRefreshLayout.EasyEvent() {
             @Override
             public void onLoadMore() {
-            }
 
+            }
             @Override
             public void onRefreshing() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<ProductListBean.ProductBean> list2 = new ArrayList<>();
-                        for (int i = 0; i < 10; i++) {
-                            ProductListBean.ProductBean bean = new ProductListBean.ProductBean();
-                            bean.setProduct_introduction("人皆寻梦 梦里不分西东");
-                            bean.setMin_algorithm("0.5%");
-                            list2.add(bean);
-                        }
-                        productAdapter.setNewData(list2);
-
-                        easylayout.refreshComplete();
+                        ACTION=2;
+                        getBannerDate(ACTION);
                     }
-                },1000);
+                }, 1000);
                 //horizontal 水平 滑动位置
-                re_View.smoothScrollToPosition(rc_adapter.getData().size()-1);
-            }
-        });
-
-        easylayout.setEnableLoadMore(false);
-
-
-        productAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-
-                recylerview.postDelayed(new Runnable() {
+                re_View.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (productAdapter.getData().size() >= 16) {
-                            productAdapter.loadMoreEnd();
-                        } else {
-                            ArrayList<ProductListBean.ProductBean> list1 = new ArrayList<>();
-                            for (int i = 100; i < 110; i++) {
-                                ProductListBean.ProductBean bean = new ProductListBean.ProductBean();
-                                bean.setMin_algorithm("0.5%");
-                                list1.add(bean);
-                            }
-                            productAdapter.addData(list1);
-                            productAdapter.loadMoreComplete();
-
+                        if(rc_adapter.getData().size()>2){
+                            re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);
                         }
                     }
-
-                }, 1000);
-
+                },100);
             }
-        }, recylerview);
+        });
+        easylayout.setEnableLoadMore(false);
+
 
         recylerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-               // ProductDesc.launch(getActivity());
-                startActivity(new Intent(getActivity(),ProductDesc.class).putExtra("pid",P_id));
+                // ProductDesc.launch(getActivity());
+                ToastUtils.showToast(getActivity(),newBean.getClassX().get(position).getId());
+                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", newBean.getProduct().get(position).getId()));
 
             }
         });
     }
 
+    /**
+     * 首页新品
+     */
     private void getDate() {
+        ivNotice.setOnClickListener(this);
 
 
-
-
-        String url="http://47.93.197.52:8080/anwendai/Home/ApiLogin/GetBanner";
-
-        OkGo.post(url)
-                .tag(getActivity())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("banner和热门推荐",s);
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
-
-
-        String url1="http://47.93.197.52:8080/anwendai/Home/ApiLogin/GetProducts";
-        OkGo.post(url1)
-                .tag(getActivity())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("分类专题和新品",s);
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
-
-
-
-        list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-
-            ProductListBean.ProductBean bean = new ProductListBean.ProductBean();
-            bean.setMin_algorithm("0.5%");
-            list.add(bean);
-        }
         View view = setHeaderView();
-        productAdapter = new ListProductAdapter(list);
+        productAdapter = new ListProductAdapter(null);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         productAdapter.addHeaderView(view, 0);
         SpacesItemDecoration decoration = new SpacesItemDecoration(5);
-
         recylerview.addItemDecoration(decoration);
-
         recylerview.setAdapter(productAdapter);
 
     }
@@ -223,85 +156,167 @@ public class HomeFragment extends ImmersionFragment {
 
     private BGABanner banner;
 
-    private RecyclerView re_View,classify_recyclView;
+
+    private RecyclerView re_View, classify_recyclView;
     private Recycler_Adapter rc_adapter;
     private Classify_Recycler_Adapter classify_recycler_adapter;
 
+    private ImageView iv_work, iv_student, iv_free, iv_enterprise;
 
+    private  News_ClassBean newBean;
+
+    private   Banner_HotBean hotBean;
 
     private View setHeaderView() {
-
         View view = getActivity().getLayoutInflater().inflate(R.layout.head_layout, null);
         banner = (BGABanner) view.findViewById(R.id.banner_fresco_demo_content);
-        banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
+        banner.setAdapter(new BGABanner.Adapter<ImageView,Banner_HotBean.AdvertisingBean>() {
             @Override
-            public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
-                startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("html", "http://www.jianshu.com/"));
-            }
-        });
-      /*  banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
-            @Override
-            public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-
+            public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
                 Glide.with(getActivity())
-                        .load(model)
+                        .load(model.getPictrue())
                         .dontAnimate()
                         .centerCrop()
                         .into(itemView);
             }
-        });*/
-         banner.setData(R.drawable.banner_p1, R.drawable.banner_p2, R.drawable.banner_p2);
-        // banner.setData(Arrays.asList("http://p1.wmpic.me/article/2017/05/23/1495505613_uvZxGGWh.jpg","https://imgsa.baidu.com/forum/w%3D580/sign=8ca3b055fddcd100cd9cf829428a47be/eec0723eb13533fa35ef8976add3fd1f41345b22.jpg"), null);
+        });
 
-        List<String>list=new ArrayList<>();
-
-
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-        list.add("http://oqr7ez7w2.bkt.clouddn.com/%E5%AE%89%E7%A8%B3%E8%B4%B7-%E9%A6%96%E9%A1%B5_11.png");
-
+        banner.setDelegate(new BGABanner.Delegate<ImageView, Banner_HotBean.AdvertisingBean>() {
+            @Override
+            public void onBannerItemClick(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
+                startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("product",hotBean.getAdvertising().get(position)));
+            }
+        });
+        getBannerDate(ACTION);
         //热门推荐
-        re_View= (RecyclerView) view.findViewById(R.id.linear_recyclerView);
-        rc_adapter=new Recycler_Adapter(list);
-        re_View.setLayoutManager(new ScrollSpeedLinearLayoutManger(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        re_View = (RecyclerView) view.findViewById(R.id.linear_recyclerView);
+        rc_adapter = new Recycler_Adapter(null);
+        re_View.setLayoutManager(new ScrollSpeedLinearLayoutManger(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         re_View.setAdapter(rc_adapter);
+
+
 
         re_View.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(getActivity(),ProductDesc.class).putExtra("pid",P_id));
+                ToastUtils.showToast(getActivity(),hotBean.getRecommends().get(position).getApp());
+                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid",hotBean.getRecommends().get(position).getApp()));
             }
         });
 
 
         // 分类
         classify_recyclView = (RecyclerView) view.findViewById(R.id.classify_recycler);
-        List<String> listUrl=new ArrayList<>();
-        listUrl.add("http://oqr7z36cx.bkt.clouddn.com/image/jpg/classify_01.png");
-        listUrl.add("http://oqr7z36cx.bkt.clouddn.com/classify_02.png");
-        listUrl.add("http://oqr7z36cx.bkt.clouddn.com/image/jpg/classify_03.png");
-        /*listUrl.add("http://oqr7z36cx.bkt.clouddn.com/fenlei_default.png");
-        listUrl.add("http://oqr7z36cx.bkt.clouddn.com/fenlei_default.png");
-        listUrl.add("http://oqr7z36cx.bkt.clouddn.com/fenlei_default.png");
-        listUrl.add("http://oqr7z36cx.bkt.clouddn.com/fenlei_default.png");*/
 
-        classify_recycler_adapter=new Classify_Recycler_Adapter(listUrl);
-        classify_recyclView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        classify_recycler_adapter = new Classify_Recycler_Adapter(null);
+        classify_recyclView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         classify_recyclView.setAdapter(classify_recycler_adapter);
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ProductClassifyActivity.launch(getActivity());
-
+                ToastUtils.showToast(getActivity(),newBean.getClassX().get(position).getId());
+                startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("pid",newBean.getClassX().get(position).getId()));
             }
         });
+
+        // 职业选择
+        iv_free = (ImageView) view.findViewById(R.id.iv_free);
+        iv_student = (ImageView) view.findViewById(R.id.iv_student);
+        iv_work = (ImageView) view.findViewById(R.id.iv_work);
+        iv_enterprise = (ImageView) view.findViewById(R.id.iv_enterprise);
+
+        iv_free.setOnClickListener(this);
+        iv_student.setOnClickListener(this);
+        iv_work.setOnClickListener(this);
+        iv_enterprise.setOnClickListener(this);
         return view;
+    }
+    /**
+     * Banner_Hot 数据填充
+     *
+     * 分类专题和新品
+     */
+
+
+    private void getBannerDate(final int Action) {
+
+        OkGo.post(Urls.puk_URL+Urls.HOME_FRAGMENT.BANNER_HOT)
+                .tag(getActivity())
+                .connTimeOut(5000)      // 设置当前请求的连接超时时间
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if(s!=null){
+                            try {
+                                JSONObject jsonObject=new JSONObject(s);
+                                boolean success = jsonObject.getBoolean("isSuccess");
+                                if(success){
+                                    Gson gson=new Gson();
+                                    hotBean = gson.fromJson(s, Banner_HotBean.class);
+                                    if(Action==2){
+                                        rc_adapter.setNewData(hotBean.getRecommends());
+                                        easylayout.refreshComplete();
+                                    }else {
+                                        banner.setData(hotBean.getAdvertising(),null);
+                                        LogUtils.i("banner-size",hotBean.getAdvertising().size());
+                                        rc_adapter.addData(hotBean.getRecommends());
+                                    }
+                                }else {
+                                    easylayout.refreshComplete();
+                                    String msg = jsonObject.getString("msg");
+                                    ToastUtils.showToast(getActivity(),msg);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            easylayout.refreshComplete();
+                            ToastUtils.showToast(getActivity(),"网络异常");
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        //easylayout.setRefreshing(false);
+                        easylayout.refreshComplete();
+                        ToastUtils.showToast(getActivity(),"网络异常");
+                        super.onError(call, response, e);
+                    }
+                });
+        //分类专题和新品
+        OkGo.post(Urls.puk_URL+Urls.HOME_FRAGMENT.PRODUCT_LIST)
+                .tag(getActivity())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if(s!=null){
+                            try {
+                                JSONObject jsonObject=new JSONObject(s);
+                                boolean success = jsonObject.getBoolean("isSuccess");
+                                if(success){
+                                    Gson gson=new Gson();
+                                    newBean = gson.fromJson(s, News_ClassBean.class);
+                                    classify_recycler_adapter.setNewData(newBean.getClassX());
+                                    LogUtils.i("classX-size",newBean.getClassX().size());
+                                    productAdapter.setNewData(newBean.getProduct());
+                                }else {
+                                    String msg = jsonObject.getString("msg");
+                                    ToastUtils.showToast(getActivity(),msg);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            ToastUtils.showToast(getActivity(),"网络异常");
+                        }
+                    }
+
+                });
+
+
+
     }
 
     @Override
@@ -311,4 +326,25 @@ public class HomeFragment extends ImmersionFragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_free:
+                MainActivity.navigationController.setSelect(1);
+                break;
+            case R.id.iv_student:
+                MainActivity.navigationController.setSelect(1);
+                break;
+            case R.id.iv_work:
+                MainActivity.navigationController.setSelect(1);
+                break;
+            case R.id.iv_enterprise:
+                MainActivity.navigationController.setSelect(1);
+                break;
+            case R.id.iv_notice:
+                NoticeActivity.launch(getActivity());
+        }
+
+
+    }
 }

@@ -15,9 +15,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.UserBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.UserFragment;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 
@@ -65,32 +66,32 @@ public class UpdataProfessionActivity extends BaseActivity {
         ButterKnife.bind(this);
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("身份修改");
-        TinyDB tinyDB=new TinyDB(this);
-        UserBean userBean= (UserBean) tinyDB.getObject("user", UserBean.class);
-        String identity = userBean.getIdentity();
-
-
-        if(identity!=null){
-            int i = Integer.parseInt(identity);
-            switch (i){
-                case 1:
-                    ivWork.setColorFilter(getResources().getColor(R.color.mask));
-                    tick.setVisibility(View.VISIBLE);
-                    break;
-                case 2:
-                    ivFree.setColorFilter(getResources().getColor(R.color.mask));
-                    tickFree.setVisibility(View.VISIBLE);
-                    break;
-                case 3:
-                    ivStudent.setColorFilter(getResources().getColor(R.color.mask));
-                    tickStudent.setVisibility(View.VISIBLE);
-                    break;
-                case 4:
-                    ivCompany.setColorFilter(getResources().getColor(R.color.mask));
-                    tickCompany.setVisibility(View.VISIBLE);
-                    break;
+        UserBean user = (UserBean) SPUtils.get(this, "user",UserBean.class);
+        if(user!=null){
+            String identity =  user.getIdentity();
+            if(identity!=null){
+                int i = Integer.parseInt(identity);
+                switch (i){
+                    case 1:
+                        ivWork.setColorFilter(getResources().getColor(R.color.mask));
+                        tick.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        ivFree.setColorFilter(getResources().getColor(R.color.mask));
+                        tickFree.setVisibility(View.VISIBLE);
+                        break;
+                    case 3:
+                        ivStudent.setColorFilter(getResources().getColor(R.color.mask));
+                        tickStudent.setVisibility(View.VISIBLE);
+                        break;
+                    case 4:
+                        ivCompany.setColorFilter(getResources().getColor(R.color.mask));
+                        tickCompany.setVisibility(View.VISIBLE);
+                        break;
+                }
             }
         }
+
 
     }
 
@@ -109,7 +110,6 @@ public class UpdataProfessionActivity extends BaseActivity {
                 ivFree.setColorFilter(getResources().getColor(R.color.mask));
                 tickFree.setVisibility(View.VISIBLE);
                 Flge=2;
-
                 break;
             case R.id.iv_student:
                 ivStudent.setColorFilter(getResources().getColor(R.color.mask));
@@ -128,7 +128,8 @@ public class UpdataProfessionActivity extends BaseActivity {
                 LogUtils.i("FLAG",Flge);
                 TinyDB tinyDB=new TinyDB(this);
                 UserBean userBean= (UserBean) tinyDB.getObject("user", UserBean.class);
-                userBean.setIdentity(""+Flge);
+                UserBean user = (UserBean) SPUtils.get(this, "user", UserBean.class);
+                user.setIdentity(""+Flge);
                 setResult(-1,new Intent().putExtra("HeadPhoto",Flge));
                 finish();
                 break;

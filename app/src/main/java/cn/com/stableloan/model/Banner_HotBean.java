@@ -44,7 +44,7 @@ public class Banner_HotBean implements Serializable {
         this.advertising = advertising;
     }
 
-    public static class RecommendsBean {
+    public static class RecommendsBean implements Serializable{
         /**
          * name : 爱啥啥
          * pictrue : http://or2eh71ll.bkt.clouddn.com/149680928231464.jpg?e=1496812904&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:5IdJ5oL7XXJUkWqPmCBgIWzYY9U=
@@ -90,7 +90,7 @@ public class Banner_HotBean implements Serializable {
         }
     }
 
-    public static class AdvertisingBean {
+    public static class AdvertisingBean implements Serializable{
         /**
          * advername : 66666
          * pictrue : http://or2eh71ll.bkt.clouddn.com/149680864422878.jpg?e=1496812244&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:X7r5BdO24Vih7j9-rhCfJQDJkVs=

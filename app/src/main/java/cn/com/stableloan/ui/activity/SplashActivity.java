@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             SplashActivity activity = mWeakReference.get();
             if (activity != null) {
-                LoginActivity.launch(activity);
+                MainActivity.launch(activity);
                 activity.finish();
             }
         }

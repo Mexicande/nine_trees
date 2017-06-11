@@ -1,6 +1,7 @@
 package cn.com.stableloan.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
 import com.mancj.slideup.SlideUp;
@@ -28,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.bean.ProductListBean;
+import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 
 /**
@@ -103,6 +106,13 @@ public class ProductFragment extends ImmersionFragment {
         classify_recycler_adapter = new Recycler_Classify_Adapter(list2);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(getActivity()));
         classifyRecycl.setAdapter(classify_recycler_adapter);
+        classifyRecycl.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(getActivity(),ProductDesc.class).putExtra("pid","1"));
+
+            }
+        });
 
     }
 
@@ -114,9 +124,8 @@ public class ProductFragment extends ImmersionFragment {
                 SwipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        classify_recycler_adapter.addData(list2);
+                        classify_recycler_adapter.setNewData(list2);
                         SwipeRefreshLayout.setRefreshing(false);
-
                     }
                 },1000);
             }

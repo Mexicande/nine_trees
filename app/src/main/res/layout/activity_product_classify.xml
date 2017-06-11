@@ -9,9 +9,14 @@
     tools:context="cn.com.stableloan.ui.activity.ProductClassifyActivity">
 
     <include layout="@layout/toolbar_layout"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/classify_recycl"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/SwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/classify_recycl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

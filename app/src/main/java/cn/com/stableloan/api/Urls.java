@@ -5,12 +5,23 @@ package cn.com.stableloan.api;
  */
 
 public interface Urls{
+
+    String STATUS_WordLogin                 =           "1";
+    String STATUS_MessageLogin              =           "3";
+
+
+
+
+
+
+
+
     String puk_URL="http://47.93.197.52:8080/anwendai/Home/ApiLogin/";
     interface Login{
         //验证码发送
         String SEND_MESSAGE="http://47.93.197.52:8080/anwendai/Home/ChuanglanSmsApi/sendSMS";
-
         String LOGIN="Login";
+
     }
 
     interface  HOME_FRAGMENT{
@@ -21,12 +32,14 @@ public interface Urls{
     interface register{
 
         String REGSTER  = "Registered";
+
+        String FORGETWORD="ForgetPassword";
     }
 
     interface product{
         //产品详情
-        String PRODUCT_DESC ="GetProductDetail";
-
+        String Productdetail="GetProductDetail";
+        String GetSlotdetail ="GetSlotdetail";
     }
 
     interface update{
@@ -35,7 +48,12 @@ public interface Urls{
     }
     interface user{
         String USERT_INFO="Personal";
-
+    }
+    interface  notice{
+        String Announcement="Announcement";
     }
 
+    interface  Screening{
+        String Screening="Screening";
+    }
 }

@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -31,8 +33,8 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.CodeMessage;
-import cn.com.stableloan.bean.UserBean;
 import cn.com.stableloan.model.UpdateInfoBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.EncryptUtils;
@@ -94,6 +96,7 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
     private String code;
 
     private boolean Flag=false;
+    private final int Flag_User=3000;
 
     private CaptchaTimeCount captchaTimeCount;
 
@@ -111,7 +114,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
         ButterKnife.bind(this);
         initView();
         Validate.reg(this);
-
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
 
     }
@@ -140,30 +142,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
         });
        /* nts.setTitles("短信登陆","密码登陆");
         nts.setTabIndex(0, true);*/
-
-        String url="http://www.shoujiweidai.com/update/versions.json";
-
-        UpdateManager.create(this).setUrl(url).setNotifyId(998).setParser(new IUpdateParser() {
-            @Override
-            public UpdateInfo parse(String source) throws Exception {
-                LogUtils.i("source",source);
-                UpdateInfo info = new UpdateInfo();
-                Gson gson=new Gson();
-                UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
-                info.hasUpdate = true;
-                info.updateContent =infoBean.getUpdateContent();
-                info.versionCode = infoBean.getVersionCode();
-                info.versionName = infoBean.getVersionName();
-                info.url = infoBean.getUrl();
-                info.md5 = infoBean.getMd5();
-                info.size = infoBean.getSize();
-                info.isForce = false;
-                info.isIgnorable = false;
-                info.isAutoInstall=true;
-                info.isSilent = false;
-                return info;
-            }
-        }).setManual(true).check();
 
     }
 
@@ -278,7 +256,7 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                 phone=etPhone.getText().toString();
                 if(etPhone.getText().toString().isEmpty()){
                     ToastUtils.showToast(this,"请填写手机号码");
-                }else if(RegexUtils.isMobileExact(etPhone.getText().toString())){
+                }else if(!RegexUtils.isMobileExact(etPhone.getText().toString())){
                     ToastUtils.showToast(this,"手机号格式");
                 }else {
                     getCodeMessage();
@@ -286,7 +264,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                 break;
             case R.id.login_button:
                 Validate.check(LoginActivity.this, LoginActivity.this);
-
                 break;
             case R.id.tv_forget:
                 ForgetWordActivity.launch(this);
@@ -307,29 +284,27 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
 
             // 验证码登陆
         if(Flag){
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userphone",etPhone.getText().toString());
+            params.put("status","3");
+            JSONObject jsonObject = new JSONObject(params);
             String tel = etPhone.getText().toString();
             String cd = etLock.getText().toString();
-            if(!tel.isEmpty()&&phone.equals(tel)){
-                if(message.getCheck()!=null){
-                    if(!cd.isEmpty()&&cd.equals(message.getCheck())){
-                        TinyDB tinyDB=new TinyDB(this);
-                        UserBean userBean=new UserBean();
-                        userBean.setNickname(phone);
-                        tinyDB.putObject("user",userBean);
-                        MainActivity.launch(this);
-                        finish();
+            if(phone.equals(tel)){
+                if(MessageCode!=null){
+                    if(!cd.isEmpty()&&cd.equals(MessageCode)){
+                        Login(jsonObject.toString());
                     }else {
-                        ToastUtils.showToast(this,"验证码错误");
+                        ToastUtils.showToast(this,"手机号或验证码错误");
                     }
                 }else {
-                    ToastUtils.showToast(this,"验证码不正确");
+                    ToastUtils.showToast(this,"手机号或验证码错误");
                 }
             }else {
-                ToastUtils.showToast(this,"手机号错误");
+                ToastUtils.showToast(this,"手机号或验证码错误");
             }
         }else {
             //账号密码登陆
-
             //隐藏密码
             etLock.setTransformationMethod(PasswordTransformationMethod
                     .getInstance());
@@ -339,41 +314,90 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userphone",etPhone.getText().toString());
                 params.put("password",md5ToString);
-                params.put("Status","0");
+                params.put("status","1");
                 JSONObject jsonObject = new JSONObject(params);
-                OkGo.post(Urls.puk_URL+Urls.Login.LOGIN)
-                        .tag(this)
-                        .upJson(jsonObject.toString())
-                        .execute( new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                LogUtils.i("注册",s);
-                                if(s!=null){
-                                    try {
-                                        JSONObject object=new JSONObject(s);
-                                        if("true".equals(object.getString("isSuccess"))){
-                                            SPUtils.put(LoginActivity.this,"token",object.getString("token"));
-                                            MainActivity.launch(LoginActivity.this);
-                                            finish();
-                                        }else {
-                                            String string = object.getString("msg");
-                                            ToastUtils.showToast(LoginActivity.this,string);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }else {
-                                    ToastUtils.showToast(LoginActivity.this,"服务器异常,请稍后再试");
-
-                                }
-                            }
-                        });
+                Login(jsonObject.toString());
             }
 
         }
 
     }
+    private KProgressHUD hud;
 
+    private void Login(String json){
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait.....")
+                .setCancellable(true)
+                .show();
+        OkGo.post(Urls.puk_URL+Urls.Login.LOGIN)
+                .tag(this)
+                .upJson(json)
+                .execute( new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtils.i("注册",s);
+                        if(s!=null){
+                            try {
+                                JSONObject object=new JSONObject(s);
+                                boolean status = object.getBoolean("isSuccess");
+                                if(status){
+                                    SPUtils.put(LoginActivity.this,"token",object.getString("token"));
+                                    SPUtils.put(LoginActivity.this,"login",true);
+                                    getUserInfo();
+                                }else {
+                                    String string = object.getString("msg");
+                                    ToastUtils.showToast(LoginActivity.this,string);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            ToastUtils.showToast(LoginActivity.this,"服务器异常,请稍后再试");
+
+                        }
+                        hud.dismiss();
+
+                    }
+                });
+    }
+    private void getUserInfo() {
+        String token = (String) SPUtils.get(this, "token", "1");
+        if(!token.isEmpty()){
+            HashMap<String, String> params = new HashMap<>();
+            params.put("token",token);
+            JSONObject jsonObject = new JSONObject(params);
+            OkGo.post(Urls.puk_URL+Urls.user.USERT_INFO)
+                    .tag(this)
+                    .upJson(jsonObject.toString())
+                    .execute( new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtils.i("用户信息",s);
+                            try {
+                                JSONObject object=new JSONObject(s);
+                                boolean status = object.getBoolean("isSuccess");
+                                if(status){
+                                    Gson gson=new Gson();
+                                    UserBean bean = gson.fromJson(s, UserBean.class);
+                                    SPUtils.put(LoginActivity.this,"user",bean);
+                                    String from = getIntent().getStringExtra("from");
+                                    if(from!=null&&from.equals("user")){
+                                        setResult(Flag_User, new Intent().putExtra("user",bean));
+                                        finish();
+                                    }else {
+                                        finish();
+                                    }
+                                    LogUtils.i("UserBean",bean.toString());
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        }
+
+    }
     /**
      * 获取验证码
      *
@@ -381,44 +405,59 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
     private void getCodeMessage() {
         captchaTimeCount.start();
 
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userPhone",etPhone.getText().toString());
+        params.put("status","1");
+        JSONObject jsonObject = new JSONObject(params);
         OkGo.post(Urls.Login.SEND_MESSAGE)
                 .tag(this)
-                .params("userPhone",etPhone.getText().toString())
+                .upJson(jsonObject.toString())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtils.i("login-code",s);
-                        Gson gson=new Gson();
-                        message = gson.fromJson(s, CodeMessage.class);
-                        LogUtils.i(message.toString());
-                        if(message.getStatus()==1){
-                            ToastUtils.showToast(LoginActivity.this,message.getMsg());
-                        }else {
-                            ToastUtils.showToast(LoginActivity.this,message.getMsg());
+                        try {
+                            JSONObject jsonObject=new JSONObject(s);
+                            String status = jsonObject.getString("status");
+                            if (status.equals("1")) {
+                                MessageCode=jsonObject.getString("check");
+                                ToastUtils.showToast(LoginActivity.this,jsonObject.getString("msg"));
+                            } else {
+                                ToastUtils.showToast(LoginActivity.this,jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
                 });
 
 
     }
-    private long mLastBackTime = 0;
-    @Override
-    public void onBackPressed() {
-        // finish while click back key 2 times during 1s.
-        if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
-            finish();
-        } else {
-            mLastBackTime = System.currentTimeMillis();
-            ToastUtils.showToast(this,"再按一次退出");
-        }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        String from = getIntent().getStringExtra("from");
+        if(from!=null&&from.equals("user")){
+            MainActivity.launch(this);
+            finish();
+        }else {
+            finish();
+        }
+    /*    UserBean user = (UserBean) SPUtils.get(this, "user", UserBean.class);
+            if(user!=null){
+                finish();
+            }else {
+                MainActivity.launch(this);
+                finish();
+            }*/
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
     public void onValidateSuccess() {
         setLogin();
-
     }
+
 
     @Override
     public void onValidateError(String msg, EditText editText) {

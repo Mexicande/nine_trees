@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -134,7 +135,7 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                 finish();
                 break;
             case R.id.bt_save:
-                    Validate.check(RegisterActivity.this, RegisterActivity.this);
+                Validate.check(RegisterActivity.this, RegisterActivity.this);
                 break;
             case R.id.bt_getCode:
                 getCodeMessage();
@@ -146,8 +147,13 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
     /**
      * 注册
      */
-    private void fromRegister() {
+    private KProgressHUD hud;
 
+    private void fromRegister() {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setCancellable(true)
+                .show();
         String confirmPassword = etConfirmPassword.getText().toString();
         String tel = etMessage.getText().toString();
         String code = etCodeMessage.getText().toString();
@@ -157,7 +163,7 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                         params.put("userphone",phone);
                         params.put("password",md5ToString);
                         JSONObject jsonObject = new JSONObject(params);
-                        OkGo.post(Urls.register.REGSTER)
+                        OkGo.post(Urls.puk_URL+Urls.register.REGSTER)
                                 .tag(this)
                                 .upJson(jsonObject.toString())
                                 .execute( new StringCallback() {
@@ -166,10 +172,14 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                                         LogUtils.i("注册",s);
                                         try {
                                             JSONObject object=new JSONObject(s);
-                                            if("true".equals(object.getString("isSuccess"))){
+                                            boolean status = object.getBoolean("isSuccess");
+
+                                            if(status){
+                                                hud.dismiss();
                                                 finish();
                                             }else {
                                                 String string = object.getString("msg");
+                                                hud.dismiss();
                                                 ToastUtils.showToast(RegisterActivity.this,string);
                                             }
                                         } catch (JSONException e) {
@@ -181,6 +191,7 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                     }else {
                         ToastUtils.showToast(this,"手机号或验证码不正确");
                     }
+        hud.dismiss();
 
     }
 
@@ -190,20 +201,23 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
      */
     private void getCodeMessage() {
         phone = etMessage.getText().toString();
-
         if(RegexUtils.isMobileExact(phone)){
             captchaTimeCount.start();
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userPhone",phone);
+            params.put("status","0");
+            JSONObject jsonObject = new JSONObject(params);
             OkGo.post(Urls.Login.SEND_MESSAGE)
                     .tag(this)
-                    .params("userPhone", etMessage.getText().toString())
+                    .upJson(jsonObject.toString())
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("login-code", s);
+                            LogUtils.i("login-code",s);
                             try {
                                 JSONObject jsonObject=new JSONObject(s);
-                                String status = jsonObject.getString("status");
-                                if (status.equals("1")) {
+                                boolean status = jsonObject.getBoolean("isSuccess");
+                                if (status) {
                                     MessageCode=jsonObject.getString("check");
                                     ToastUtils.showToast(RegisterActivity.this,jsonObject.getString("msg"));
                                 } else {
@@ -214,7 +228,6 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                             }
                         }
                     });
-
         }else {
             ToastUtils.showToast(this,"请输入正确的手机号");
         }

@@ -34,11 +34,11 @@
         tools:ignore="RtlHardcoded" />
 
     <ImageView
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="9dp"
         android:layout_below="@id/view"
         android:id="@+id/arrowIcon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/text"
         android:scaleType="fitCenter"
@@ -54,7 +54,7 @@
         android:layout_height="30dp"
         android:layout_below="@id/view"
         android:layout_gravity="center"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/text"
         android:padding="3dp"
         android:visibility="gone"
