@@ -20,8 +20,14 @@ android {
     dataBinding {
         enabled = true
     }
+
 }
 
+repositories {
+    maven {
+        url 'https://dl.bintray.com/wangyuwei/maven'
+    }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -63,5 +69,7 @@ dependencies {
     compile 'com.github.mancj:SlideUp-Android:2.2.5'
     compile 'com.github.czy1121:update:1.1.1'
     compile 'com.kaopiz:kprogresshud:1.0.5'
+    compile 'me.wangyuwei:SlackLoadingView:1.0.1'
+
     testCompile 'junit:junit:4.12'
 }

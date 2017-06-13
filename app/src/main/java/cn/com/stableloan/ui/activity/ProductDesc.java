@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.coorchice.library.SuperTextView;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -19,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +32,7 @@ import cn.com.stableloan.BR;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -79,9 +85,28 @@ public class ProductDesc extends BaseActivity {
     TextView interestAlgorithm;
     @Bind(R.id.prepayment)
     TextView prepayment;
+    @Bind(R.id.hh)
+    TextView hh;
+    @Bind(R.id.label1)
+    SuperTextView label1;
+    @Bind(R.id.label2)
+    SuperTextView label2;
+    @Bind(R.id.label3)
+    SuperTextView label3;
+    @Bind(R.id.label4)
+    SuperTextView label4;
+    @Bind(R.id.label5)
+    SuperTextView label5;
+    @Bind(R.id.bel)
+    LinearLayout bel;
+    @Bind(R.id.apply)
+    Button apply;
+    @Bind(R.id.shengluehao)
+    TextView shengluehao;
     private String pid;
     private Product_DescBean descBean;
-    private   ViewDataBinding dataBinding;
+    private ViewDataBinding dataBinding;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
     }
@@ -101,7 +126,6 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void getProductDate(String id) {
-
         HashMap<String, String> params = new HashMap<>();
         params.put("id", id);
         final JSONObject jsonObject = new JSONObject(params);
@@ -114,12 +138,12 @@ public class ProductDesc extends BaseActivity {
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                                boolean isSuccess = object.getBoolean("isSuccess");
-                                if (isSuccess) {
+                                String success = object.getString("isSuccess");
+                                if (success.equals("1")) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
-                                    dataBinding.setVariable(BR.product,descBean);
-                                    if(descBean!=null){
+                                    dataBinding.setVariable(BR.product, descBean);
+                                    if (descBean != null) {
                                         dateInset(descBean);
                                     }
                                 } else {
@@ -132,10 +156,108 @@ public class ProductDesc extends BaseActivity {
                         }
                     }
                 });
-
     }
 
     private void dateInset(Product_DescBean descBean) {
+
+        List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
+        int size = lables.size();
+        switch (size) {
+            case 0:
+                break;
+            case 1:
+                label1.setVisibility(View.VISIBLE);
+                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
+                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setText(lables.get(0).getName());
+                break;
+            case 2:
+                label1.setVisibility(View.VISIBLE);
+                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
+                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setText(lables.get(0).getName());
+
+                label2.setVisibility(View.VISIBLE);
+                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
+                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setText(lables.get(1).getName());
+
+                break;
+            case 3:
+                label1.setVisibility(View.VISIBLE);
+                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
+                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setText(lables.get(0).getName());
+
+                label2.setVisibility(View.VISIBLE);
+                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
+                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setText(lables.get(1).getName());
+
+                label3.setVisibility(View.VISIBLE);
+                label3.setTextColor(Color.parseColor(lables.get(2).getFont()));
+                label3.setSolid(Color.parseColor(lables.get(2).getBackground()));
+                label3.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
+                label3.setText(lables.get(2).getName());
+                break;
+            case 4:
+                label1.setVisibility(View.VISIBLE);
+                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
+                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setText(lables.get(0).getName());
+
+                label2.setVisibility(View.VISIBLE);
+                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
+                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setText(lables.get(1).getName());
+
+                label3.setVisibility(View.VISIBLE);
+                label3.setTextColor(Color.parseColor(lables.get(2).getFont()));
+                label3.setSolid(Color.parseColor(lables.get(2).getBackground()));
+                label3.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
+                label3.setText(lables.get(2).getName());
+
+                label4.setVisibility(View.VISIBLE);
+                label4.setTextColor(Color.parseColor(lables.get(3).getFont()));
+                label4.setSolid(Color.parseColor(lables.get(3).getBackground()));
+                label4.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
+                label4.setText(lables.get(3).getName());
+            default:
+                label1.setVisibility(View.VISIBLE);
+                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
+                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
+                label1.setText(lables.get(0).getName());
+
+                label2.setVisibility(View.VISIBLE);
+                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
+                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
+                label2.setText(lables.get(1).getName());
+
+                label3.setVisibility(View.VISIBLE);
+                label3.setTextColor(Color.parseColor(lables.get(2).getFont()));
+                label3.setSolid(Color.parseColor(lables.get(2).getBackground()));
+                label3.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
+                label3.setText(lables.get(2).getName());
+
+                label4.setVisibility(View.VISIBLE);
+                label4.setTextColor(Color.parseColor(lables.get(3).getFont()));
+                label4.setSolid(Color.parseColor(lables.get(3).getBackground()));
+                label4.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
+                label4.setText(lables.get(3).getName());
+                shengluehao.setVisibility(View.VISIBLE);
+                break;
+        }
+
+
         Product_DescBean.ProductBean product = descBean.getProduct();
         Glide.with(this).load(product.getProduct_logo()).crossFade().into(productLogo);
         String product_crowd = product.getCrowd();
@@ -146,34 +268,45 @@ public class ProductDesc extends BaseActivity {
         String min = product.getMin_algorithm();
         String max = product.getMax_algorithm();
         String product_prepayment = product.getPrepayment();
-        if(product_crowd!=null){
-            this.crowd.setText("面向人群:"+product_crowd);
-        }else if(product_review!=null){
-            review.setText("审核人群:"+product_review);
-        }else if(product_actual_account!=null){
-            actualAccount.setText("实际到账金额:"+product_actual_account);
-        }else if(product_repayment!=null){
-            repayment.setText("还款方式:"+product_repayment);
-        }else if(product_repayment_channels!=null){
-            repaymentChannels.setText("还款渠道:"+product_repayment_channels);
-        }else  if(min!=null&&max!=null){
-            minMax.setText("利息算法:月息利息"+min+"-"+max);
-        }else if(product_prepayment!=null){
-            String or=null;
-            switch (Integer.parseInt(product_prepayment)){
-                case 0:
-                    or="可以";
-                    break;
-                case 1:
-                    or="不可以";
-                    break;
-                case 2:
-                    or="其他";
-                    break;
-            }
-            prepayment.setText("以前还款:"+or);
+        String minimum_amount = product.getMinimum_amount();
+        String maximum_amount = product.getMaximum_amount();
+        if (product_crowd != null) {
+            crowd.setVisibility(View.VISIBLE);
+            crowd.setText("面向人群:" + product_crowd);
         }
+        if (product_review != null) {
+            review.setVisibility(View.VISIBLE);
 
+            review.setText("审核方式:" + product_review);
+        }
+        if (product_actual_account != null) {
+            actualAccount.setVisibility(View.VISIBLE);
+
+            actualAccount.setText("实际到账金额:" + product_actual_account);
+        }
+        if (product_repayment != null) {
+            repayment.setVisibility(View.VISIBLE);
+
+            repayment.setText("还款方式:" + product_repayment);
+        }
+        if (product_repayment_channels != null) {
+            repaymentChannels.setVisibility(View.VISIBLE);
+
+            repaymentChannels.setText("还款渠道:" + product_repayment_channels);
+
+        }
+        if (min != null && max != null) {
+            interestAlgorithm.setVisibility(View.VISIBLE);
+            interestAlgorithm.setText("利息算法:月息利息" + min + "%" + "-" + max + "%");
+        }
+        if (minimum_amount != null && maximum_amount != null) {
+            minMax.setVisibility(View.VISIBLE);
+            minMax.setText(minimum_amount + "-" + minimum_amount);
+        }
+        if (product_prepayment != null) {
+            prepayment.setVisibility(View.VISIBLE);
+            prepayment.setText("提前还款:" + product_prepayment);
+        }
     }
 
     private void initToolbar() {
@@ -198,7 +331,7 @@ public class ProductDesc extends BaseActivity {
                 if (!login) {
                     LoginActivity.launch(this);
                 } else {
-                    HtmlActivity.launch(this);
+                    startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
         }

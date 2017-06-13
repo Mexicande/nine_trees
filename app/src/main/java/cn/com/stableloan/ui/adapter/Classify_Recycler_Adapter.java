@@ -11,7 +11,6 @@ import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.bean.Picture;
-import cn.com.stableloan.bean.Product;
 import cn.com.stableloan.model.News_ClassBean;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 

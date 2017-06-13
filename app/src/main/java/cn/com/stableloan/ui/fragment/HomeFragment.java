@@ -35,6 +35,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.News_ClassBean;
+import cn.com.stableloan.model.NoticeBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.NoticeActivity;
@@ -44,6 +45,7 @@ import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
@@ -68,7 +70,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     private ListProductAdapter productAdapter;
     private ArrayList<ProductListBean.ProductBean> list;
 
-    int ACTION =1;
+    int ACTION = 1;
+
     public HomeFragment() {
 
     }
@@ -102,12 +105,13 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             public void onLoadMore() {
 
             }
+
             @Override
             public void onRefreshing() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ACTION=2;
+                        ACTION = 2;
                         getBannerDate(ACTION);
                     }
                 }, 1000);
@@ -115,11 +119,11 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 re_View.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(rc_adapter.getData().size()>2){
+                        if (rc_adapter.getData().size() > 2) {
                             re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);
                         }
                     }
-                },100);
+                }, 100);
             }
         });
         easylayout.setEnableLoadMore(false);
@@ -128,9 +132,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         recylerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                // ProductDesc.launch(getActivity());
-                ToastUtils.showToast(getActivity(),newBean.getClassX().get(position).getId());
-                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", newBean.getProduct().get(position).getId()));
+                ToastUtils.showToast(getActivity(), newBean.getClassX().get(position).getId());
+                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
             }
         });
@@ -140,8 +143,11 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
      * 首页新品
      */
     private void getDate() {
-        ivNotice.setOnClickListener(this);
 
+        getNotice();
+
+
+        ivNotice.setOnClickListener(this);
 
         View view = setHeaderView();
         productAdapter = new ListProductAdapter(null);
@@ -150,6 +156,39 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         SpacesItemDecoration decoration = new SpacesItemDecoration(5);
         recylerview.addItemDecoration(decoration);
         recylerview.setAdapter(productAdapter);
+
+    }
+   private NoticeBean noticeBean;
+    private void getNotice() {
+        OkGo.post(Urls.puk_URL + Urls.notice.Announcement)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtils.i("Notice", s);
+                        if (s != null) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                String success = object.getString("isSuccess");
+                                if(success.equals("1")){
+
+                                    ivNotice.setImageResource(R.mipmap.icon_notice);
+                                    Gson gson = new Gson();
+                                    noticeBean = gson.fromJson(s, NoticeBean.class);
+
+                                } else {
+                                    String msg = object.getString("msg");
+                                    ToastUtils.showToast(getActivity(), msg);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }
+                });
 
     }
 
@@ -163,14 +202,14 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     private ImageView iv_work, iv_student, iv_free, iv_enterprise;
 
-    private  News_ClassBean newBean;
+    private News_ClassBean newBean;
 
-    private   Banner_HotBean hotBean;
+    private Banner_HotBean hotBean;
 
     private View setHeaderView() {
         View view = getActivity().getLayoutInflater().inflate(R.layout.head_layout, null);
         banner = (BGABanner) view.findViewById(R.id.banner_fresco_demo_content);
-        banner.setAdapter(new BGABanner.Adapter<ImageView,Banner_HotBean.AdvertisingBean>() {
+        banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
                 Glide.with(getActivity())
@@ -184,7 +223,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         banner.setDelegate(new BGABanner.Delegate<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void onBannerItemClick(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
-                startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("product",hotBean.getAdvertising().get(position)));
+                startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("Advertising", hotBean.getAdvertising().get(position)));
             }
         });
         getBannerDate(ACTION);
@@ -195,12 +234,19 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         re_View.setAdapter(rc_adapter);
 
 
-
         re_View.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(getActivity(),hotBean.getRecommends().get(position).getApp());
-                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid",hotBean.getRecommends().get(position).getApp()));
+
+                LogUtils.i("hot----", hotBean.getRecommends().get(position).toString());
+                ToastUtils.showToast(getActivity(), hotBean.getRecommends().get(position).getApp());
+                String app = hotBean.getRecommends().get(position).getApp();
+                if (app.startsWith("http")) {
+                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("hotbean", hotBean.getRecommends().get(position)));
+                } else if (app.startsWith("product")) {
+                    String[] split = app.split("id");
+                    startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", split[1]));
+                }
             }
         });
 
@@ -215,8 +261,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(getActivity(),newBean.getClassX().get(position).getId());
-                startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("pid",newBean.getClassX().get(position).getId()));
+                ToastUtils.showToast(getActivity(), newBean.getClassX().get(position).getId());
+                startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
             }
         });
 
@@ -232,89 +278,91 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         iv_enterprise.setOnClickListener(this);
         return view;
     }
+
     /**
      * Banner_Hot 数据填充
-     *
+     * <p>
      * 分类专题和新品
      */
 
 
     private void getBannerDate(final int Action) {
 
-        OkGo.post(Urls.puk_URL+Urls.HOME_FRAGMENT.BANNER_HOT)
+        OkGo.post(Urls.puk_URL + Urls.HOME_FRAGMENT.BANNER_HOT)
                 .tag(getActivity())
                 .connTimeOut(5000)      // 设置当前请求的连接超时时间
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if(s!=null){
+                        if (s != null) {
                             try {
-                                JSONObject jsonObject=new JSONObject(s);
-                                boolean success = jsonObject.getBoolean("isSuccess");
-                                if(success){
-                                    Gson gson=new Gson();
+                                JSONObject jsonObject = new JSONObject(s);
+                                String success = jsonObject.getString("isSuccess");
+                                if (success.equals("1")) {
+                                    Gson gson = new Gson();
                                     hotBean = gson.fromJson(s, Banner_HotBean.class);
-                                    if(Action==2){
+                                    if (Action == 2) {
                                         rc_adapter.setNewData(hotBean.getRecommends());
                                         easylayout.refreshComplete();
-                                    }else {
-                                        banner.setData(hotBean.getAdvertising(),null);
-                                        LogUtils.i("banner-size",hotBean.getAdvertising().size());
+                                    } else {
+                                        banner.setData(hotBean.getAdvertising(), null);
+                                        LogUtils.i("banner-size", hotBean.getAdvertising().size());
                                         rc_adapter.addData(hotBean.getRecommends());
                                     }
-                                }else {
+                                } else {
                                     easylayout.refreshComplete();
                                     String msg = jsonObject.getString("msg");
-                                    ToastUtils.showToast(getActivity(),msg);
+                                    ToastUtils.showToast(getActivity(), msg);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                        }else {
+                        } else {
                             easylayout.refreshComplete();
-                            ToastUtils.showToast(getActivity(),"网络异常");
+                            ToastUtils.showToast(getActivity(), "网络异常");
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         //easylayout.setRefreshing(false);
                         easylayout.refreshComplete();
-                        ToastUtils.showToast(getActivity(),"网络异常");
+                        ToastUtils.showToast(getActivity(), "网络异常");
                         super.onError(call, response, e);
                     }
                 });
         //分类专题和新品
-        OkGo.post(Urls.puk_URL+Urls.HOME_FRAGMENT.PRODUCT_LIST)
+        OkGo.post(Urls.puk_URL + Urls.HOME_FRAGMENT.PRODUCT_LIST)
                 .tag(getActivity())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if(s!=null){
+                        if (s != null) {
                             try {
-                                JSONObject jsonObject=new JSONObject(s);
-                                boolean success = jsonObject.getBoolean("isSuccess");
-                                if(success){
-                                    Gson gson=new Gson();
+                                JSONObject jsonObject = new JSONObject(s);
+                                String success = jsonObject.getString("isSuccess");
+                                if (success.equals("1")) {
+                                    Gson gson = new Gson();
                                     newBean = gson.fromJson(s, News_ClassBean.class);
                                     classify_recycler_adapter.setNewData(newBean.getClassX());
-                                    LogUtils.i("classX-size",newBean.getClassX().size());
+                                    LogUtils.i("classX-size", newBean.getClassX().size());
                                     productAdapter.setNewData(newBean.getProduct());
-                                }else {
+
+                                } else {
                                     String msg = jsonObject.getString("msg");
-                                    ToastUtils.showToast(getActivity(),msg);
+                                    ToastUtils.showToast(getActivity(), msg);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                        }else {
-                            ToastUtils.showToast(getActivity(),"网络异常");
+                        } else {
+                            ToastUtils.showToast(getActivity(), "网络异常");
                         }
                     }
 
                 });
-
 
 
     }
@@ -330,19 +378,25 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_free:
+                SPUtils.put(getActivity(), "plat", 3);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_student:
+                SPUtils.put(getActivity(), "plat", 2);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_work:
+                SPUtils.put(getActivity(), "plat", 1);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_enterprise:
+                SPUtils.put(getActivity(), "plat", 4);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_notice:
-                NoticeActivity.launch(getActivity());
+                startActivity(new Intent(getActivity(),NoticeActivity.class).putExtra("notice",noticeBean));
+                ivNotice.setImageResource(R.mipmap.icon_unnotice);
+                break;
         }
 
 

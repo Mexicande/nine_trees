@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="product"
@@ -23,7 +23,7 @@
             android:layout_marginTop="7dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@mipmap/logo"/>
+            />
         <TextView
             android:id="@+id/tv_pname"
             android:textSize="18sp"
@@ -35,20 +35,131 @@
             android:text="@{product.product.pname}"
             />
         <TextView
+            android:id="@+id/hh"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_pname"
+            android:text="-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_toRightOf="@id/hh"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:id="@+id/platformname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="@{product.product.product_details}"
+            />
+        <TextView
             android:id="@+id/product_introduction"
             android:textSize="13sp"
             android:textColor="@color/white"
             android:text="@{product.product.product_introduction}"
             android:layout_alignLeft="@id/tv_pname"
             android:layout_width="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pname"/>
     </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/bel"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/label1"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="10sp"
+                app:corner="10dp"
+                android:visibility="gone"
+                app:stroke_width="1dp"
+                />
+            <com.coorchice.library.SuperTextView
+                android:visibility="gone"
+                android:id="@+id/label2"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                app:corner="10dp"
+                app:stroke_width="1dp"
+                />
+            <com.coorchice.library.SuperTextView
+                android:visibility="gone"
+
+                android:id="@+id/label3"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                app:corner="10dp"
+                app:stroke_width="1dp"
+                />
+            <com.coorchice.library.SuperTextView
+                android:visibility="gone"
+                android:id="@+id/label4"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                app:corner="10dp"
+                app:stroke_width="1dp"
+                />
+            <com.coorchice.library.SuperTextView
+                android:visibility="gone"
+                android:id="@+id/label5"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                app:corner="10dp"
+                app:stroke_width="1dp"
+                />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/shengluehao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:text="..."/>
+        </LinearLayout>
     <View
         android:id="@+id/view"
         android:background="@color/white"
         android:layout_marginTop="5dp"
-        android:layout_below="@id/layout3"
+        android:layout_below="@id/bel"
         android:layout_width="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_height="2dp"/>
@@ -81,7 +192,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#f9fefa"
-                android:text="100-50万"
                 android:layout_centerHorizontal="true"
                 />
 

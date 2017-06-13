@@ -61,14 +61,14 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
     EditText upPassword;
 
     @Index(2)
-    @NotNull(msg = "两次密码验证->密码一不为能空！")
+    @NotNull(msg = "密码一不为能空！")
     @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
     @Password1()
     @Bind(R.id.et_password)
     EditText etPassword;
 
     @Index(3)
-    @NotNull(msg = "两次密码验证->密码二不为能空！")
+    @NotNull(msg = "密码二不为能空！")
     @Password2(msg = "两次密码不一致！！！")
     @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
     @Bind(R.id.et_Confirm_Password)
@@ -124,9 +124,7 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
 
         final String newWord = etPassword.getText().toString();
 
-
         if(!oldWord.equals(newWord)){
-
             if(token!=null){
                 String old = EncryptUtils.encryptMD5ToString(oldWord);
                 String news = EncryptUtils.encryptMD5ToString(newWord);
@@ -146,8 +144,8 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                                 LogUtils.i("密码修改",s);
                                 try {
                                     JSONObject object=new JSONObject(s);
-                                    boolean isSuccess = object.getBoolean("isSuccess");
-                                    if(isSuccess){
+                                    String success = object.getString("isSuccess");
+                                    if(success.equals("1")){
                                         ToastUtils.showToast(UpdatePassWordActivity.this,"修改成功");
                                         finish();
                                     }else {
@@ -157,6 +155,12 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                            }
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
+                                ToastUtils.showToast(UpdatePassWordActivity.this,"网络异常，请检测网络");
+
                             }
                         });
             }else {

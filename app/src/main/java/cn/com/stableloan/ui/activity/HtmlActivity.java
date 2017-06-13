@@ -23,6 +23,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Banner_HotBean;
+import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -61,16 +63,36 @@ public class HtmlActivity extends BaseActivity {
         CheckInternet();
     }
 
-    private void initView() {
 
-
-    }
 
     private void CheckInternet() {
 
         boolean available = NetworkUtils.isAvailable(this);
         if (available) {
-            getDate();
+            Product_DescBean desc= (Product_DescBean) getIntent().getSerializableExtra("product");
+            if(desc!=null){
+                titleName.setText(desc.getProduct().getProduct_details());
+                ivBack.setVisibility(View.VISIBLE);
+                String url = desc.getProduct().getRaiders_connection();
+                getDate(url);
+            }
+            Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
+            if(extra!=null){
+                titleName.setText(extra.getAdvername());
+                ivBack.setVisibility(View.VISIBLE);
+                getDate(extra.getApp());
+            }
+            Banner_HotBean.RecommendsBean hotbean = (Banner_HotBean.RecommendsBean) getIntent().getSerializableExtra("hotbean");
+            if(hotbean!=null){
+                titleName.setText(hotbean.getName());
+                ivBack.setVisibility(View.VISIBLE);
+                getDate(hotbean.getApp());
+            }
+          /*  if(product!=null){
+                titleName.setText(product.getAdvername());
+                ivBack.setVisibility(View.VISIBLE);
+                getDate(product.getApp());
+            }*/
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("网络异常，请检查网络")
@@ -84,13 +106,9 @@ public class HtmlActivity extends BaseActivity {
         }
     }
 
-    private void getDate() {
+    private void getDate(String url) {
         //String html = getIntent().getStringExtra("html");
-        ivBack.setVisibility(View.VISIBLE);
-        Banner_HotBean.AdvertisingBean product = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("product");
-        if(product!=null){
-            titleName.setText(product.getAdvername());
-            if (product.getApp() != null) {
+            if (url != null) {
                 WebSettings webSettings = mWebView.getSettings();
                 webSettings.setJavaScriptEnabled(true);
                 webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -107,7 +125,7 @@ public class HtmlActivity extends BaseActivity {
                 if (Build.VERSION.SDK_INT >= 21) {
                     webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
                 }
-                mWebView.loadUrl(product.getApp());
+                mWebView.loadUrl(url);
                 mWebView.setWebViewClient(new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -118,7 +136,6 @@ public class HtmlActivity extends BaseActivity {
                 mWebView.setWebChromeClient(new MyWebChromeClient());
 
 
-            }
         }
     }
     private class MyWebChromeClient extends WebChromeClient {

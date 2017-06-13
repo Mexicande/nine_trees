@@ -3,7 +3,6 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -67,8 +65,6 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
     EditText etPassword;
 
 
-
-
     @Bind(R.id.title_name)
     TextView titleName;
     @Bind(R.id.iv_back)
@@ -77,6 +73,8 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
     Toolbar toolbar;
     @Bind(R.id.bt_getCode)
     Button btGetCode;
+    @Bind(R.id.et_Confirm_Password)
+    EditText etConfirmPassword;
 
     private CodeMessage message;
 
@@ -103,7 +101,7 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
     }
 
     private void initToolbar() {
-
+        etConfirmPassword.setVisibility(View.GONE);
         titleName.setText("忘记密码");
         ivBack.setVisibility(View.VISIBLE);
 
@@ -123,19 +121,19 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                 break;
         }
     }
+
     /**
      * 验证码获取
-     *
      */
     private void getCodeMessage() {
         phone = etMessage.getText().toString();
 
-        if(RegexUtils.isMobileExact(phone)){
+        if (RegexUtils.isMobileExact(phone)) {
             captchaTimeCount.start();
 
             HashMap<String, String> params = new HashMap<>();
-            params.put("userPhone",phone);
-            params.put("status","1");
+            params.put("userPhone", phone);
+            params.put("status", "1");
 
             JSONObject jsonObject = new JSONObject(params);
             OkGo.post(Urls.Login.SEND_MESSAGE)
@@ -144,31 +142,29 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("login-code",s);
+                            LogUtils.i("login-code", s);
                             try {
-                                JSONObject jsonObject=new JSONObject(s);
+                                JSONObject jsonObject = new JSONObject(s);
                                 String status = jsonObject.getString("status");
                                 if (status.equals("1")) {
-                                    MessageCode=jsonObject.getString("check");
-                                    ToastUtils.showToast(ForgetWordActivity.this,jsonObject.getString("msg"));
+                                    MessageCode = jsonObject.getString("check");
+                                    ToastUtils.showToast(ForgetWordActivity.this, jsonObject.getString("msg"));
                                 } else {
-                                    ToastUtils.showToast(ForgetWordActivity.this,jsonObject.getString("msg"));
+                                    ToastUtils.showToast(ForgetWordActivity.this, jsonObject.getString("msg"));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
-        }else {
-            ToastUtils.showToast(this,"请输入正确的手机号");
+        } else {
+            ToastUtils.showToast(this, "请输入正确的手机号");
         }
 
     }
 
     /**
-     *
      * 修改密码请求
-     *
      */
 
     private KProgressHUD hud;
@@ -182,56 +178,58 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
         String confirmPassword = etPassword.getText().toString();
         String tel = etMessage.getText().toString();
         String code = etCodeMessage.getText().toString();
-        if (tel.equals(phone)&&MessageCode!=null&&code.equals(MessageCode)) {
-                        String md5ToString = EncryptUtils.encryptMD5ToString(confirmPassword);
-                        HashMap<String, String> params = new HashMap<>();
-                        params.put("userphone",phone);
-                        params.put("password",md5ToString);
-                        JSONObject jsonObject = new JSONObject(params);
-                        OkGo.post(Urls.puk_URL+Urls.register.FORGETWORD)
-                                .tag(this)
-                                .upJson(jsonObject.toString())
-                                .execute( new StringCallback() {
-                                    @Override
-                                    public void onSuccess(String s, Call call, Response response) {
-                                        LogUtils.i("忘记密码",s);
-                                        try {
-                                            JSONObject object=new JSONObject(s);
-                                            if("true".equals(object.getString("isSuccess"))){
-                                                hud.dismiss();
-                                                String string = object.getString("msg");
+        if (tel.equals(phone) && MessageCode != null && code.equals(MessageCode)) {
+            String md5ToString = EncryptUtils.encryptMD5ToString(confirmPassword);
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userphone", phone);
+            params.put("password", md5ToString);
+            JSONObject jsonObject = new JSONObject(params);
+            OkGo.post(Urls.puk_URL + Urls.register.FORGETWORD)
+                    .tag(this)
+                    .upJson(jsonObject.toString())
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtils.i("忘记密码", s);
+                            try {
+                                JSONObject object = new JSONObject(s);
 
-                                                ToastUtils.showToast(ForgetWordActivity.this,string);
-                                                finish();
-                                            }else {
-                                                String string = object.getString("msg");
-                                                hud.dismiss();
+                                String success = object.getString("isSuccess");
+                                if(success.equals("1")){
+                                    hud.dismiss();
+                                    String string = object.getString("msg");
 
-                                                ToastUtils.showToast(ForgetWordActivity.this,string);
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+                                    ToastUtils.showToast(ForgetWordActivity.this, string);
+                                    finish();
+                                } else {
+                                    String string = object.getString("msg");
+                                    hud.dismiss();
 
-                    }else {
-                        ToastUtils.showToast(this,"手机号或验证码不正确");
-                    }
+                                    ToastUtils.showToast(ForgetWordActivity.this, string);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+        } else {
+            ToastUtils.showToast(this, "手机号或验证码不正确");
+        }
         hud.dismiss();
 
     }
 
     @Override
     public void onValidateSuccess() {
-            setPassWord();
+        setPassWord();
     }
 
     @Override
     public void onValidateError(String s, EditText editText) {
         if (editText != null)
             editText.setFocusable(true);
-        ToastUtils.showToast(this,s);
+        ToastUtils.showToast(this, s);
     }
 
     @Override

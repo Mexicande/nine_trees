@@ -12,19 +12,37 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.BR;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProductListBean;
+import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.Class_NewBean;
+import cn.com.stableloan.model.News_ClassBean;
+import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
+import cn.com.stableloan.utils.ToastUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class ProductClassifyActivity extends BaseActivity {
 
@@ -43,7 +61,9 @@ public class ProductClassifyActivity extends BaseActivity {
     private Recycler_Classify_Adapter classify_recycler_adapter;
 
     private   List<ProductListBean.ProductBean> list2;
-
+    private News_ClassBean.ClassBean class_product;
+    private  ImageView imageView;
+    private Class_ListProductBean class_List;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductClassifyActivity.class));
     }
@@ -57,10 +77,47 @@ public class ProductClassifyActivity extends BaseActivity {
                 .navigationBarColor(R.color.mask)
                 .barAlpha(0.2f)
                 .init();*/
-        titleName.setText("2000元以下");
-        ivBack.setVisibility(View.VISIBLE);
+        class_product = (News_ClassBean.ClassBean) getIntent().getSerializableExtra("class_product");
+
         initView();
+        getDate();
         setListener();
+    }
+
+    private void getDate() {
+        String id = class_product.getId();
+        titleName.setText(class_product.getName());
+        ivBack.setVisibility(View.VISIBLE);
+        if(class_product!=null&&id!=null) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("id", id);
+            final JSONObject jsonObject = new JSONObject(params);
+            OkGo.post(Urls.puk_URL + Urls.product.ClassProduct)
+                    .tag(this)
+                    .upJson(jsonObject.toString())
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            if (s != null) {
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    String success = object.getString("isSuccess");
+                                    if(success.equals("1")){
+                                        Gson gson = new Gson();
+                                        class_List = gson.fromJson(s, Class_ListProductBean.class);
+                                        Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).crossFade().into(imageView);
+                                        classify_recycler_adapter.setNewData(class_List.getProduct());
+                                    } else {
+                                        ToastUtils.showToast(ProductClassifyActivity.this, "网络异常,请检查网络连接");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+                    });
+        }
     }
 
     private void setListener() {
@@ -71,19 +128,18 @@ public class ProductClassifyActivity extends BaseActivity {
                 SwipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        classify_recycler_adapter.setNewData(list2);
+                        getDate();
                         SwipeRefreshLayout.setRefreshing(false);
                     }
                 },1000);
             }
 
         });
-
         classifyRecycl.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 // ProductDesc.launch(getActivity());
-                startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", 27));
+                startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", class_List.getProduct().get(position).getId()));
 
             }
         });
@@ -91,22 +147,13 @@ public class ProductClassifyActivity extends BaseActivity {
 
     private void initView() {
 
-        ImageView imageView = new ImageView(this);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        imageView = new ImageView(this);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(lp);
-        list2 = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            ProductListBean.ProductBean bean = new ProductListBean.ProductBean();
-            bean.setProduct_introduction("人皆寻梦 梦里不分西东");
-            bean.setMin_algorithm("0.5%");
-            list2.add(bean);
-        }
-        classify_recycler_adapter = new Recycler_Classify_Adapter(list2);
+        classify_recycler_adapter = new Recycler_Classify_Adapter(null);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(this));
-        imageView.setImageResource(R.mipmap.classfit_header);
         classify_recycler_adapter.addHeaderView(imageView, 0);
         classifyRecycl.setAdapter(classify_recycler_adapter);
-
     }
 
     @OnClick(R.id.iv_back)

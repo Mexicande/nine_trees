@@ -67,6 +67,20 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:hint="设置密码(6-20位数字、英文、下划线组合)"/>
+    <EditText
+        android:layout_marginTop="20dp"
+        android:id="@+id/et_Confirm_Password"
+        android:inputType="textPassword"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="15sp"
+        android:maxLength="20"
+        android:paddingLeft="10dp"
+        android:background="@drawable/reg_edtext"
+        android:textColorHint="@color/gay"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="确认密码"/>
 
     <Button
         android:id="@+id/bt_save"

@@ -25,6 +25,7 @@
             android:id="@+id/iv_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_notice"/>
+            android:src="@mipmap/icon_unnotice"/>
     </LinearLayout>
+
 </RelativeLayout>

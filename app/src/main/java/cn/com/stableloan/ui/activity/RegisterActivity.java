@@ -68,7 +68,6 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
     Button btSave;
 
 
-
     @Index(1)
     @NotNull(msg = "手机号不能为空！")
     @RE(re = RE.phone, msg = "手机号格式不正确")
@@ -172,9 +171,8 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                                         LogUtils.i("注册",s);
                                         try {
                                             JSONObject object=new JSONObject(s);
-                                            boolean status = object.getBoolean("isSuccess");
-
-                                            if(status){
+                                            String success = object.getString("isSuccess");
+                                            if(success.equals("1")){
                                                 hud.dismiss();
                                                 finish();
                                             }else {
@@ -216,8 +214,8 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                             LogUtils.i("login-code",s);
                             try {
                                 JSONObject jsonObject=new JSONObject(s);
-                                boolean status = jsonObject.getBoolean("isSuccess");
-                                if (status) {
+                                String success = jsonObject.getString("isSuccess");
+                                if(success.equals("1")){
                                     MessageCode=jsonObject.getString("check");
                                     ToastUtils.showToast(RegisterActivity.this,jsonObject.getString("msg"));
                                 } else {

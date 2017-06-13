@@ -99,7 +99,8 @@ public class UserFragment extends ImmersionFragment {
     }
 
     private void getUserInfo() {
-        UserBean user = (UserBean) SPUtils.get(getActivity(), "user", UserBean.class);
+        TinyDB tinyDB=new TinyDB(getActivity());
+        UserBean user= (UserBean) tinyDB.getObject("user", UserBean.class);
         if (user != null) {
             tvNick.setText(user.getNickname());
             tvUserPhone.setText(user.getUserphone());
@@ -118,8 +119,8 @@ public class UserFragment extends ImmersionFragment {
                                 LogUtils.i("用户信息", s);
                                 try {
                                     JSONObject object = new JSONObject(s);
-                                    boolean isSuccess = object.getBoolean("isSuccess");
-                                    if (isSuccess) {
+                                    String success = object.getString("isSuccess");
+                                    if(success.equals("1")){
                                         Gson gson = new Gson();
                                         UserBean bean = gson.fromJson(s, UserBean.class);
                                         tvNick.setText(bean.getNickname());
@@ -161,8 +162,6 @@ public class UserFragment extends ImmersionFragment {
                 break;
             case R.id.bt_exit: //退出登录
                 exit();
-            case R.id.banben:
-                ToastUtils.showToast(getActivity(),"已经是最新版本了");
                 break;
         }
     }
@@ -176,6 +175,8 @@ public class UserFragment extends ImmersionFragment {
             public void onYesClick() {
                 selfDialog.dismiss();
                 SPUtils.clear(getActivity());
+                TinyDB tinyDB=new TinyDB(getActivity());
+                tinyDB.clear();
                 startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
             }
         });

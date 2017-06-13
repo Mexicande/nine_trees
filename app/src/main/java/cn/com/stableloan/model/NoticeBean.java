@@ -1,12 +1,13 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by apple on 2017/6/9.
  */
 
-public class NoticeBean {
+public class NoticeBean implements Serializable {
     /**
      * Announcements : [{"name":"1","image":"http://or2eh71ll.bkt.clouddn.com/149674417594360.jpg?e=1496747775&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:cKq9dvN0K6NbakSxEd9c8jHqZps=","content":"1","last_time":"2017-06-06 18:14:58"},{"name":"312321","image":"http://or2eh71ll.bkt.clouddn.com/149682631559978.jpg?e=1496829916&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:zIjq3NhvB0JR2rzNxAhPH_IGAco=","content":"发大水发生的发生发打发第三方的撒","last_time":"2017-06-07 17:05:15"}]
      * isSuccess : true
@@ -31,7 +32,7 @@ public class NoticeBean {
         this.Announcements = Announcements;
     }
 
-    public static class AnnouncementsBean {
+    public static class AnnouncementsBean implements Serializable{
         /**
          * name : 1
          * image : http://or2eh71ll.bkt.clouddn.com/149674417594360.jpg?e=1496747775&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:cKq9dvN0K6NbakSxEd9c8jHqZps=

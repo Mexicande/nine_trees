@@ -56,7 +56,7 @@ public class NoticeActivity extends BaseActivity {
         setContentView(R.layout.activity_notice);
         ButterKnife.bind(this);
         initToolbar();
-        getDate();
+
         setListener();
     }
 
@@ -69,7 +69,6 @@ public class NoticeActivity extends BaseActivity {
                     @Override
                     public void run() {
                         getDate();
-
                     }
                 },1000);
             }
@@ -82,9 +81,16 @@ public class NoticeActivity extends BaseActivity {
 
         titleName.setText("公告通知");
         ivBack.setVisibility(View.VISIBLE);
+
+        NoticeBean bean= (NoticeBean) getIntent().getSerializableExtra("notice");
         noticeAdapter = new NoticeAdapter(null);
         noticeRecycler.setLayoutManager(new LinearLayoutManager(this));
         noticeRecycler.setAdapter(noticeAdapter);
+        if(bean!=null){
+            noticeAdapter.addData(bean.getAnnouncements());
+        }else {
+            getDate();
+        }
     }
 
 
@@ -99,8 +105,8 @@ public class NoticeActivity extends BaseActivity {
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                                boolean isSuccess = object.getBoolean("isSuccess");
-                                if (isSuccess) {
+                                String success = object.getString("isSuccess");
+                                if(success.equals("1")){
                                     Gson gson = new Gson();
                                     NoticeBean noticeBean = gson.fromJson(s, NoticeBean.class);
                                     noticeAdapter.setNewData(noticeBean.getAnnouncements());

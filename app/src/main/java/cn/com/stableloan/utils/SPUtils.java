@@ -76,6 +76,7 @@ public class SPUtils {
         } else if (defaultObject instanceof Long) {
             return sp.getLong(key, (Long) defaultObject);
         }else {
+
         }
 
         return null;

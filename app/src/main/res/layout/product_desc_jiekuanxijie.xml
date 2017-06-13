@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -17,10 +17,12 @@
         <TextView
             android:layout_marginLeft="3dp"
             android:textSize="16sp"
+            android:text="借款审核细节"
             android:drawableLeft="@drawable/circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:visibility="gone"
             android:id="@+id/crowd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,6 +31,8 @@
             android:layout_marginTop="10dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +41,8 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/arrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,6 +51,8 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/actual_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,6 +61,8 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/repayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,6 +71,8 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/repayment_channels"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +81,8 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/interest_algorithm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +91,8 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:visibility="gone"
+
             android:id="@+id/prepayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,4 +103,4 @@
             />
 
     </LinearLayout>
-</merge>
+</RelativeLayout>

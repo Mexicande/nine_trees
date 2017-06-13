@@ -1,12 +1,13 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by apple on 2017/6/11.
  */
 
-public class Product_DescBean {
+public class Product_DescBean implements Serializable {
 
     /**
      * product : {"pname":"学子速贷","product_introduction":"大学生专属，通过率高，高效快速放款","id":"32","product_logo":"http://or2eh71ll.bkt.clouddn.com/149701337726906.png?e=1497016999&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:sHqFDfi7Y9mPdqAbO4pyvTu7EKg=","min_algorithm":"0.5","interest_algorithm":"1","average_time":"12小时","pl_id":"1","minimum_amount":"3000","maximum_amount":"30000","crowd":"2","review":"0","actual_account":"0","repayment":"1","repayment_channels":"1","max_algorithm":"1.2","prepayment":"1","product_details":"","raiders_connection":"","fastest_time":"2小时","labels":[],"header":0,"amount":27000}
@@ -42,7 +43,7 @@ public class Product_DescBean {
         this.isSuccess = isSuccess;
     }
 
-    public static class ProductBean {
+    public static class ProductBean implements Serializable{
         /**
          * pname : 学子速贷
          * product_introduction : 大学生专属，通过率高，高效快速放款
@@ -91,7 +92,7 @@ public class Product_DescBean {
         private String fastest_time;
         private int header;
         private int amount;
-        private List<?> labels;
+        private List<Class_ListProductBean.ProductBean.LabelsBean> labels;
 
         public String getPname() {
             return pname;
@@ -269,11 +270,11 @@ public class Product_DescBean {
             this.amount = amount;
         }
 
-        public List<?> getLabels() {
+        public List<Class_ListProductBean.ProductBean.LabelsBean> getLabels() {
             return labels;
         }
 
-        public void setLabels(List<?> labels) {
+        public void setLabels(List<Class_ListProductBean.ProductBean.LabelsBean> labels) {
             this.labels = labels;
         }
     }

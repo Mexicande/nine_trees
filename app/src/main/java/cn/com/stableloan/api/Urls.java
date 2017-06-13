@@ -11,11 +11,6 @@ public interface Urls{
 
 
 
-
-
-
-
-
     String puk_URL="http://47.93.197.52:8080/anwendai/Home/ApiLogin/";
     interface Login{
         //验证码发送
@@ -40,12 +35,15 @@ public interface Urls{
         //产品详情
         String Productdetail="GetProductDetail";
         String GetSlotdetail ="GetSlotdetail";
+        String ClassProduct="ClassificationList";
+        String ProductList="ProductList";
+        String ProDuctScreening="Screening";
+
     }
 
     interface update{
         String UPDATE_NICK="Modify";
         String UPDATE_Word="Modify";
-
         String UPDATE_PROFRSSION="Modify";
     }
     interface user{

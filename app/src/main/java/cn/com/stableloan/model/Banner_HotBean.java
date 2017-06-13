@@ -134,5 +134,25 @@ public class Banner_HotBean implements Serializable {
         public void setH5(String h5) {
             this.h5 = h5;
         }
+
+        @Override
+        public String toString() {
+            return "AdvertisingBean{" +
+                    "advername='" + advername + '\'' +
+                    ", pictrue='" + pictrue + '\'' +
+                    ", app='" + app + '\'' +
+                    ", h5='" + h5 + '\'' +
+                    '}';
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "Banner_HotBean{" +
+                "isSuccess=" + isSuccess +
+                ", recommends=" + recommends +
+                ", advertising=" + advertising +
+                '}';
     }
 }

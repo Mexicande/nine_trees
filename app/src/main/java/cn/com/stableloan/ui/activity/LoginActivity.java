@@ -340,8 +340,8 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                         if(s!=null){
                             try {
                                 JSONObject object=new JSONObject(s);
-                                boolean status = object.getBoolean("isSuccess");
-                                if(status){
+                                String success = object.getString("isSuccess");
+                                if(success.equals("1")){
                                     SPUtils.put(LoginActivity.this,"token",object.getString("token"));
                                     SPUtils.put(LoginActivity.this,"login",true);
                                     getUserInfo();
@@ -376,8 +376,8 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                             LogUtils.i("用户信息",s);
                             try {
                                 JSONObject object=new JSONObject(s);
-                                boolean status = object.getBoolean("isSuccess");
-                                if(status){
+                                String success = object.getString("isSuccess");
+                                if(success.equals("1")){
                                     Gson gson=new Gson();
                                     UserBean bean = gson.fromJson(s, UserBean.class);
                                     TinyDB tinyDB=new TinyDB(LoginActivity.this);
@@ -385,6 +385,7 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                                     String from = getIntent().getStringExtra("from");
                                     if(from!=null&&from.equals("user")){
                                         setResult(Flag_User, new Intent().putExtra("user",bean));
+
                                         finish();
                                     }else {
                                         finish();
@@ -439,7 +440,8 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         String from = getIntent().getStringExtra("from");
         if(from!=null&&from.equals("user")){
-            MainActivity.launch(this);
+            //MainActivity.launch(this);
+            startActivity(new Intent(this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         }else {
             finish();

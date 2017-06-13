@@ -149,8 +149,8 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                             LogUtils.i("昵称修改",s);
                             try {
                                 JSONObject object=new JSONObject(s);
-                                boolean isSuccess = object.getBoolean("isSuccess");
-                                if(isSuccess){
+                                String success = object.getString("isSuccess");
+                                if(success.equals("1")){
                                     ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
                                     finish();
                                 }else {
@@ -160,6 +160,12 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        }
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            ToastUtils.showToast(UpdateNickActivity.this,"网络异常，请检测网络");
+
                         }
                     });
         }else {

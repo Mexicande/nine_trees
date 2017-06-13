@@ -11,7 +11,9 @@ import android.support.v4.app.FragmentManager;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,11 +58,32 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        CheckVsion();
         initView();
         VisionTest();
     }
 
+    private void CheckVsion() {
+        String time1 = (String) SPUtils.get(this, "time", "1");
+        SimpleDateFormat  formatter  =  new SimpleDateFormat("yyyy-MM-dd");
+        String time = formatter.format(new Date());
+        if(time1==null){
+            SPUtils.put(this,"time",time);
+            VisionTest();
+        }else {
+            if(!time1.equals(time)){
+                VisionTest();
+                SPUtils.put(this,"time",time);
+
+            }
+        }
+    }
+
     private void VisionTest() {
+        SimpleDateFormat   formatter   =   new SimpleDateFormat("yyyy-MM-dd");
+        String time = formatter.format(new Date());
+        LogUtils.i("time",time);
+        SPUtils.put(this,"time",time);
 
         String url="http://www.shoujiweidai.com/update/versions.json";
 
@@ -113,19 +136,18 @@ public class MainActivity extends BaseActivity {
         navigationController.addTabItemSelectedListener(listener);
 
 
-     /*   pagerAdapter=new MyViewPagerAdapter(getSupportFragmentManager(),list);
+     /* pagerAdapter=new MyViewPagerAdapter(getSupportFragmentManager(),list);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(1);
 
         navigationController.setupWithViewPager(viewPager);
-*/
+     */
     }
 
     OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
         @Override
         public void onSelected(int index, int old) {
             switchMenu(getFragmentName(index + 1));
-
         }
 
         @Override
