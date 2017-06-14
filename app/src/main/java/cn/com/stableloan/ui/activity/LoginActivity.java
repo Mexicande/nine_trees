@@ -344,7 +344,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("注册", s);
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
@@ -382,7 +381,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("用户信息", s);
                             try {
                                 JSONObject object = new JSONObject(s);
                                 String success = object.getString("isSuccess");
@@ -399,7 +397,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                                     } else {
                                         finish();
                                     }
-                                    LogUtils.i("UserBean", bean.toString());
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -426,7 +423,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("login-code", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String status = jsonObject.getString("status");

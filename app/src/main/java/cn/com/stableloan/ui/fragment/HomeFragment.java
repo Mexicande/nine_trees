@@ -133,7 +133,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         recylerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(getActivity(), newBean.getClassX().get(position).getId());
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
             }
@@ -164,7 +163,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("Notice", s);
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
@@ -232,8 +230,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         re_View.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                ToastUtils.showToast(getActivity(), hotBean.getRecommends().get(position).getApp());
                 String app = hotBean.getRecommends().get(position).getApp();
                 if (app.startsWith("http")) {
                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("hotbean", hotBean.getRecommends().get(position)));
@@ -255,7 +251,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(getActivity(), newBean.getClassX().get(position).getId());
                 startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
             }
         });

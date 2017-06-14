@@ -101,7 +101,6 @@ public class NoticeActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("Notice", s);
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);

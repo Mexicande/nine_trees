@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -82,7 +83,6 @@ public class UpdataProfessionActivity extends BaseActivity {
         if(user!=null){
             String identity =  user.getIdentity();
             if(identity!=null){
-                ToastUtils.showToast(this,identity+"");
                 int i = Integer.parseInt(identity);
                 switch (i){
                     case 1:
@@ -140,7 +140,6 @@ public class UpdataProfessionActivity extends BaseActivity {
             case R.id.bt_Save:
 
                 updateIdentity(Flge+"");
-                LogUtils.i("FLAG",Flge);
                /* UserBean user = (UserBean) SPUtils.get(this, "user",UserBean.class);
                 user.setIdentity(""+Flge);
                 setResult(-1,new Intent().putExtra("HeadPhoto",Flge));
@@ -149,9 +148,13 @@ public class UpdataProfessionActivity extends BaseActivity {
         }
 
     }
-
+    private  KProgressHUD hud;
     private void updateIdentity(final String identity ) {
-
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("加载中.....")
+                .setCancellable(true)
+                .show();
         String token = (String) SPUtils.get(this, "token", "1");
         if(token!=null){
             HashMap<String, String> params = new HashMap<>();
@@ -165,7 +168,6 @@ public class UpdataProfessionActivity extends BaseActivity {
                     .execute( new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("昵称修改",s);
                             try {
                                 JSONObject object=new JSONObject(s);
                                 String success = object.getString("isSuccess");
@@ -179,10 +181,12 @@ public class UpdataProfessionActivity extends BaseActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            hud.dismiss();
                         }
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
+                            hud.dismiss();
                             ToastUtils.showToast(UpdataProfessionActivity.this,"网络异常，请检测网络");
 
                         }

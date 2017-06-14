@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:id="@+id/toolbar"
@@ -13,27 +14,25 @@
         android:textColor="#ffffff"
         android:textSize="20sp"
         />
-    <RelativeLayout
+
+    <com.coorchice.library.SuperTextView
+        android:layout_gravity="right"
         android:id="@+id/layout_select"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_centerVertical="true"
-            android:id="@+id/tv_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/select"
-            />
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/tv_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="筛选"
-            android:textSize="18sp"
-            android:textColor="@color/white"/>
-    </RelativeLayout>
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:paddingLeft="23dp"
+        android:text="筛选"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:corner="40dp"
+        app:isShowState="true"
+        app:state_drawable="@mipmap/select"
+        app:state_drawable_height="18dp"
+        app:state_drawable_mode="left"
+        app:state_drawable_padding_left="10dp"
+        app:state_drawable_width="18dp"
+        />
 </android.support.v7.widget.Toolbar>

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -114,16 +115,21 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                 break;
         }
     }
-
+    private  KProgressHUD hud;
     private void updatewWord() {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("加载中.....")
+                .setCancellable(true)
+                .show();
         String token = (String) SPUtils.get(this, "token", "1");
-
 
         final String oldWord = upPassword.getText().toString();
 
         final String newWord = etPassword.getText().toString();
 
         if(!oldWord.equals(newWord)){
+
             if(token!=null){
                 String old = EncryptUtils.encryptMD5ToString(oldWord);
                 String news = EncryptUtils.encryptMD5ToString(newWord);
@@ -146,9 +152,15 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                                     String success = object.getString("isSuccess");
                                     if(success.equals("1")){
                                         ToastUtils.showToast(UpdatePassWordActivity.this,"修改成功");
-                                        LoginActivity.launch(UpdatePassWordActivity.this);
+
+                                        startActivity(new Intent(UpdatePassWordActivity.this, LoginActivity.class).putExtra("from", "user"));
+                                        hud.dismiss();
+
+                                       // LoginActivity.launch(UpdatePassWordActivity.this);
                                         finish();
                                     }else {
+                                        hud.dismiss();
+
                                         String string = object.getString("msg");
                                         ToastUtils.showToast(UpdatePassWordActivity.this,string);
                                     }
@@ -159,6 +171,7 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
+                                hud.dismiss();
                                 ToastUtils.showToast(UpdatePassWordActivity.this,"网络异常，请检测网络");
 
                             }

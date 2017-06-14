@@ -32,7 +32,7 @@ public class Classify_Recycler_Adapter extends BaseQuickAdapter<News_ClassBean.C
     protected void convert(BaseViewHolder helper, News_ClassBean.ClassBean item) {
 
        // helper.setImageResource(R.id.head,R.mipmap.classify_04);
-        Glide.with(mContext).load(item.getHome_image()).crossFade().diskCacheStrategy(DiskCacheStrategy.NONE).into((ImageView) helper.getView(R.id.head));
+        Glide.with(mContext).load(item.getHome_image()).crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.head));
        // Glide.with(mContext).load(R.mipmap.new_product).crossFade().centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.biaoqian));
     }
 }

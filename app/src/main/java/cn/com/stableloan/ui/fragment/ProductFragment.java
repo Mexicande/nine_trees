@@ -13,14 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.coorchice.library.SuperTextView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
@@ -49,7 +48,6 @@ import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.ShapeLoadingDialog;
 import cn.com.stableloan.view.SmoothCheckBox;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -61,8 +59,6 @@ public class ProductFragment extends ImmersionFragment {
 
     @Bind(R.id.SwipeRefreshLayout)
     SwipeRefreshLayout SwipeRefreshLayout;
-    @Bind(R.id.tv_save)
-    ImageView tvSave;
     @Bind(R.id.checkbox1)
     SmoothCheckBox checkbox1;
     @Bind(R.id.checkbox2)
@@ -71,8 +67,8 @@ public class ProductFragment extends ImmersionFragment {
     SmoothCheckBox checkbox3;
     @Bind(R.id.checkbox4)
     SmoothCheckBox checkbox4;
-    @Bind(R.id.button)
-    Button button;
+    @Bind(R.id.layout_select)
+    SuperTextView layoutSelect;
     private SlideUp slideUp;
 
     @Bind(R.id.title_name)
@@ -81,8 +77,6 @@ public class ProductFragment extends ImmersionFragment {
     Toolbar toolbar;
     @Bind(R.id.classify_recycl)
     RecyclerView classifyRecycl;
-    @Bind(R.id.layout_select)
-    RelativeLayout layoutSelect;
     @Bind(R.id.slideView)
     LinearLayout slideView;
     private Recycler_Classify_Adapter classify_recycler_adapter;
@@ -97,6 +91,7 @@ public class ProductFragment extends ImmersionFragment {
     public ProductFragment() {
         // Required empty public constructor
     }
+
     private KProgressHUD hud;
 
 
@@ -123,9 +118,8 @@ public class ProductFragment extends ImmersionFragment {
         return view;
     }
 
-
     private void getDate(final int var, final int action) {
-        if(var==1){
+        if (var == 1) {
             hud = KProgressHUD.create(getActivity())
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("加载中.....")
@@ -158,7 +152,7 @@ public class ProductFragment extends ImmersionFragment {
                                             classify_recycler_adapter.loadMoreComplete();
                                             break;
                                     }
-                                    if(var==1){
+                                    if (var == 1) {
                                         hud.dismiss();
                                     }
                                 } else {
@@ -170,7 +164,7 @@ public class ProductFragment extends ImmersionFragment {
                             }
 
                         }
-                        if(var==1){
+                        if (var == 1) {
                             hud.dismiss();
                         }
 
@@ -354,14 +348,14 @@ public class ProductFragment extends ImmersionFragment {
     }
 
 
-    @OnClick({R.id.layout_select, R.id.button,R.id.layoutGo,R.id.reset})
+    @OnClick({R.id.layout_select, R.id.button, R.id.layoutGo, R.id.reset})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_select:
                 boolean visible = slideUp.isVisible();
-                if(visible){
+                if (visible) {
                     slideUp.hide();
-                }else {
+                } else {
                     slideUp.show();
                 }
 
@@ -403,7 +397,6 @@ public class ProductFragment extends ImmersionFragment {
         if (iarr.length != 0) {
             selectGetProduct(iarr, "2");
         }
-        LogUtils.i("var-----", Arrays.toString(iarr));
     }
 
     private void selectGetProduct(int[] arr, String stat) {
@@ -461,4 +454,6 @@ public class ProductFragment extends ImmersionFragment {
         }
 
     }
+
+
 }

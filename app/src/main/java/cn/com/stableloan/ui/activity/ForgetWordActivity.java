@@ -142,7 +142,6 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("login-code", s);
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String status = jsonObject.getString("status");
@@ -190,7 +189,6 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("忘记密码", s);
                             try {
                                 JSONObject object = new JSONObject(s);
 

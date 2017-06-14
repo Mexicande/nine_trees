@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -131,10 +132,17 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
      *
      * 昵称修改
      */
+    private  KProgressHUD hud;
     private void sendUpdateNick() {
+
         String token = (String) SPUtils.get(this, "token", "1");
         final String nick = etNick.getText().toString();
         if(token!=null){
+            hud = KProgressHUD.create(this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel("加载中.....")
+                    .setCancellable(true)
+                    .show();
             HashMap<String, String> params = new HashMap<>();
             params.put("nickname",nick);
             params.put("token",token);
@@ -146,17 +154,18 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                     .execute( new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("昵称修改",s);
                             if(s!=null){
                                 try {
                                     JSONObject object=new JSONObject(s);
                                     String success = object.getString("isSuccess");
                                     if(success.equals("1")){
-
+                                        hud.dismiss();
                                         ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
                                         setResult(2000,new Intent().putExtra("nick",nick));
                                         finish();
                                     }else {
+                                        hud.dismiss();
+
                                         String string = object.getString("msg");
                                         ToastUtils.showToast(UpdateNickActivity.this,string);
                                     }
@@ -164,6 +173,7 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                                     e.printStackTrace();
                                 }
                             }else {
+                                hud.dismiss();
 
                             }
 
@@ -171,6 +181,8 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
+                            hud.dismiss();
+
                             ToastUtils.showToast(UpdateNickActivity.this,"网络异常，请检测网络");
 
                         }

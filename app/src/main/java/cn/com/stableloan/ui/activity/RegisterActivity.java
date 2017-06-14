@@ -168,7 +168,6 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                                 .execute( new StringCallback() {
                                     @Override
                                     public void onSuccess(String s, Call call, Response response) {
-                                        LogUtils.i("注册",s);
                                         try {
                                             JSONObject object=new JSONObject(s);
                                             String success = object.getString("isSuccess");
@@ -211,7 +210,6 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("login-code",s);
                             try {
                                 JSONObject jsonObject=new JSONObject(s);
                                 String success = jsonObject.getString("isSuccess");
