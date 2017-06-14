@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -22,7 +24,7 @@ import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.com.stableloan.BR;
+import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Product_Detail;
@@ -44,20 +46,24 @@ public class PlatformInfoActivity extends AppCompatActivity {
     }
 
     private ViewDataBinding dataBinding;
+    private KProgressHUD hud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_platform_info);
-
         ButterKnife.bind(this);
-
         String pid = getIntent().getStringExtra("pid");
         if (pid != null) {
 
             LogUtils.i("PlatformInfoActivity", pid);
             HashMap<String, String> params = new HashMap<>();
             params.put("pl_id", pid);
+            hud = KProgressHUD.create(this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel("Please wait.....")
+                    .setCancellable(true)
+                    .show();
             final JSONObject jsonObject = new JSONObject(params);
             OkGo.post(Urls.puk_URL + Urls.product.GetSlotdetail).tag(this)
                     .upJson(jsonObject.toString())
@@ -68,10 +74,10 @@ public class PlatformInfoActivity extends AppCompatActivity {
                                 try {
                                     JSONObject jsonObject1 = new JSONObject(s);
                                     String success = jsonObject1.getString("isSuccess");
-                                    if(success.equals("1")){
+                                    if (success.equals("1")) {
                                         Gson gson = new Gson();
                                         Product_Detail product_detail = gson.fromJson(s, Product_Detail.class);
-                                        dataBinding.setVariable(BR.product, product_detail);
+                                        dataBinding.setVariable(BR.product,product_detail);
                                         titleName.setText(product_detail.getPlatform().getPl_name());
                                         ivBack.setVisibility(View.VISIBLE);
                                         Glide.with(PlatformInfoActivity.this).load(product_detail.getPlatform().getLogo()).into(productLogo);
@@ -86,10 +92,22 @@ public class PlatformInfoActivity extends AppCompatActivity {
                             LogUtils.i("-----------", s + "---" + response.toString());
                              /*   PlarformInfo info = gson.fromJson(s, PlarformInfo.class);
                                 LogUtils.i("-----------",info.toString());*/
+                            hud.dismiss();
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            hud.dismiss();
 
                         }
                     });
+
         }
     }
 
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        finish();
+    }
 }

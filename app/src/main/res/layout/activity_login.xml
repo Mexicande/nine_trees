@@ -24,12 +24,12 @@
         android:src="@mipmap/login_bottom"/>
     <RelativeLayout
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:layout_above="@id/buttonview"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginLeft="35dp"
         android:layout_height="wrap_content"
         android:background="@drawable/login_backgroun">
         <android.support.design.widget.TabLayout
@@ -39,7 +39,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             app:tabIndicatorHeight="3dp"
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabIndicatorColor="@color/colorPrimary"
@@ -72,8 +72,8 @@
             android:layout_marginLeft="6dp"
             android:id="@+id/iv_phone"
             android:layout_centerVertical="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@mipmap/ic_phone"/>
         <View
             android:layout_marginTop="10dp"
@@ -111,8 +111,8 @@
             android:layout_marginLeft="6dp"
             android:id="@+id/iv_lock"
             android:layout_centerVertical="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@mipmap/ic_lock"/>
         <View
             android:layout_marginTop="10dp"
@@ -158,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="忘记密码"/>
+            android:text="忘记密码 ? "/>
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"

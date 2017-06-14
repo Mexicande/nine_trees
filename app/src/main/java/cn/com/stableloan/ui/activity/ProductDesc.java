@@ -11,11 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
 import com.coorchice.library.SuperTextView;
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -28,7 +31,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.com.stableloan.BR;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
@@ -59,12 +61,8 @@ public class ProductDesc extends BaseActivity {
     TextView productIntroduction;
     @Bind(R.id.tv_limt)
     TextView tvLimt;
-    @Bind(R.id.min_max)
-    TextView minMax;
     @Bind(R.id.tv_rate)
     TextView tvRate;
-    @Bind(R.id.min_algorithm)
-    TextView minAlgorithm;
     @Bind(R.id.tv_time)
     TextView tvTime;
     @Bind(R.id.average_time)
@@ -85,8 +83,6 @@ public class ProductDesc extends BaseActivity {
     TextView interestAlgorithm;
     @Bind(R.id.prepayment)
     TextView prepayment;
-    @Bind(R.id.hh)
-    TextView hh;
     @Bind(R.id.label1)
     SuperTextView label1;
     @Bind(R.id.label2)
@@ -103,9 +99,22 @@ public class ProductDesc extends BaseActivity {
     Button apply;
     @Bind(R.id.shengluehao)
     TextView shengluehao;
+    @Bind(R.id.min_max)
+    TextView minMax;
+    @Bind(R.id.space)
+    Space space;
+    @Bind(R.id.ic_strategy)
+    TextView icStrategy;
+    @Bind(R.id.platform_desc)
+    TextView platformDesc;
+    @Bind(R.id.min_algorithm)
+    TextView minAlgorithm;
     private String pid;
     private Product_DescBean descBean;
     private ViewDataBinding dataBinding;
+
+
+    private KProgressHUD hud;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
@@ -126,6 +135,11 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void getProductDate(String id) {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait.....")
+                .setCancellable(true)
+                .show();
         HashMap<String, String> params = new HashMap<>();
         params.put("id", id);
         final JSONObject jsonObject = new JSONObject(params);
@@ -142,7 +156,7 @@ public class ProductDesc extends BaseActivity {
                                 if (success.equals("1")) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
-                                    dataBinding.setVariable(BR.product, descBean);
+                                    dataBinding.setVariable(BR.product ,descBean);
                                     if (descBean != null) {
                                         dateInset(descBean);
                                     }
@@ -154,10 +168,21 @@ public class ProductDesc extends BaseActivity {
                             }
 
                         }
+                        hud.dismiss();
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        hud.dismiss();
+
                     }
                 });
     }
 
+    private  String substringmin="";
+    private  String substringmax="";
     private void dateInset(Product_DescBean descBean) {
 
         List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
@@ -260,6 +285,8 @@ public class ProductDesc extends BaseActivity {
 
         Product_DescBean.ProductBean product = descBean.getProduct();
         Glide.with(this).load(product.getProduct_logo()).crossFade().into(productLogo);
+        String minAl = product.getMin_algorithm();
+        minAlgorithm.setText(minAl+"%");
         String product_crowd = product.getCrowd();
         String product_review = product.getReview();
         String product_actual_account = product.getActual_account();
@@ -270,42 +297,54 @@ public class ProductDesc extends BaseActivity {
         String product_prepayment = product.getPrepayment();
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
+
+        if(minimum_amount.length()>4){
+           substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
+            substringmin=substringmin+"万";
+        }else {
+            substringmin=minimum_amount;
+        }
+        if(maximum_amount.length()>4){
+            substringmax = maximum_amount.substring(0, maximum_amount.length() - 4);
+            substringmax=substringmax+"万";
+        }else {
+            substringmax=maximum_amount;
+        }
+        minMax.setText(substringmin+"~"+substringmax);
+
         if (product_crowd != null) {
             crowd.setVisibility(View.VISIBLE);
-            crowd.setText("面向人群:" + product_crowd);
+            crowd.setText(" 面向人群:" + product_crowd);
         }
         if (product_review != null) {
             review.setVisibility(View.VISIBLE);
 
-            review.setText("审核方式:" + product_review);
+            review.setText(" 审核方式:" + product_review);
         }
         if (product_actual_account != null) {
             actualAccount.setVisibility(View.VISIBLE);
 
-            actualAccount.setText("实际到账金额:" + product_actual_account);
+            actualAccount.setText(" 实际到账金额:" + product_actual_account);
         }
         if (product_repayment != null) {
             repayment.setVisibility(View.VISIBLE);
 
-            repayment.setText("还款方式:" + product_repayment);
+            repayment.setText(" 还款方式:" + product_repayment);
         }
         if (product_repayment_channels != null) {
             repaymentChannels.setVisibility(View.VISIBLE);
 
-            repaymentChannels.setText("还款渠道:" + product_repayment_channels);
+            repaymentChannels.setText(" 还款渠道:" + product_repayment_channels);
 
         }
         if (min != null && max != null) {
             interestAlgorithm.setVisibility(View.VISIBLE);
-            interestAlgorithm.setText("利息算法:月息利息" + min + "%" + "-" + max + "%");
+            interestAlgorithm.setText(" 利息算法:月息利息" + min + "%" + "-" + max + "%");
         }
-        if (minimum_amount != null && maximum_amount != null) {
-            minMax.setVisibility(View.VISIBLE);
-            minMax.setText(minimum_amount + "-" + minimum_amount);
-        }
+
         if (product_prepayment != null) {
             prepayment.setVisibility(View.VISIBLE);
-            prepayment.setText("提前还款:" + product_prepayment);
+            prepayment.setText(" 提前还款:" + product_prepayment);
         }
     }
 

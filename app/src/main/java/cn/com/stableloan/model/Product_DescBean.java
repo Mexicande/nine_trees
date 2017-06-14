@@ -69,7 +69,6 @@ public class Product_DescBean implements Serializable {
          * header : 0
          * amount : 27000
          */
-
         private String pname;
         private String product_introduction;
         private String id;
@@ -90,8 +89,8 @@ public class Product_DescBean implements Serializable {
         private String product_details;
         private String raiders_connection;
         private String fastest_time;
-        private int header;
-        private int amount;
+        private String header;
+        private String amount;
         private List<Class_ListProductBean.ProductBean.LabelsBean> labels;
 
         public String getPname() {
@@ -254,26 +253,25 @@ public class Product_DescBean implements Serializable {
             this.fastest_time = fastest_time;
         }
 
-        public int getHeader() {
+        public String getHeader() {
             return header;
         }
 
-        public void setHeader(int header) {
+        public void setHeader(String header) {
             this.header = header;
         }
 
-        public int getAmount() {
+        public String getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(String amount) {
             this.amount = amount;
         }
 
         public List<Class_ListProductBean.ProductBean.LabelsBean> getLabels() {
             return labels;
         }
-
         public void setLabels(List<Class_ListProductBean.ProductBean.LabelsBean> labels) {
             this.labels = labels;
         }

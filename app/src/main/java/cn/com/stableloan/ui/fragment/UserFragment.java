@@ -2,6 +2,7 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -64,6 +66,8 @@ public class UserFragment extends ImmersionFragment {
     RelativeLayout layoutProfession;
     @Bind(R.id.bt_exit)
     Button btExit;
+    @Bind(R.id.version)
+    TextView version;
 
     private SelfDialog selfDialog;
 
@@ -89,6 +93,7 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
+        getVerSion();
         Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
         if (!login) {
             startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
@@ -98,9 +103,15 @@ public class UserFragment extends ImmersionFragment {
         return view;
     }
 
+    private void getVerSion() {
+        String code = AppUtils.getAppVersionName();
+        LogUtils.i("version",code);
+
+    }
+
     private void getUserInfo() {
-        TinyDB tinyDB=new TinyDB(getActivity());
-        UserBean user= (UserBean) tinyDB.getObject("user", UserBean.class);
+        TinyDB tinyDB = new TinyDB(getActivity());
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         if (user != null) {
             tvNick.setText(user.getNickname());
             tvUserPhone.setText(user.getUserphone());
@@ -120,7 +131,7 @@ public class UserFragment extends ImmersionFragment {
                                 try {
                                     JSONObject object = new JSONObject(s);
                                     String success = object.getString("isSuccess");
-                                    if(success.equals("1")){
+                                    if (success.equals("1")) {
                                         Gson gson = new Gson();
                                         UserBean bean = gson.fromJson(s, UserBean.class);
                                         tvNick.setText(bean.getNickname());
@@ -175,7 +186,7 @@ public class UserFragment extends ImmersionFragment {
             public void onYesClick() {
                 selfDialog.dismiss();
                 SPUtils.clear(getActivity());
-                TinyDB tinyDB=new TinyDB(getActivity());
+                TinyDB tinyDB = new TinyDB(getActivity());
                 tinyDB.clear();
                 startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
             }
@@ -249,6 +260,7 @@ public class UserFragment extends ImmersionFragment {
                 .bitmapTransform(new CropCircleTransformation(getActivity())).into(UserLogo);
 
     }
+
 
 
 }

@@ -46,4 +46,5 @@
         android:hint="确认密码"
         android:gravity="center"
         android:background="@drawable/white_background"/>
+
 </LinearLayout>

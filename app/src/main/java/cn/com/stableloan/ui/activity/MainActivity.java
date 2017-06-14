@@ -60,30 +60,36 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         CheckVsion();
         initView();
-        VisionTest();
     }
 
     private void CheckVsion() {
-        String time1 = (String) SPUtils.get(this, "time", "1");
+        boolean contains = SPUtils.contains(this, "time");
+
+        // String time1 = (String) SPUtils.get(this, "time", "1");
+
         SimpleDateFormat  formatter  =  new SimpleDateFormat("yyyy-MM-dd");
         String time = formatter.format(new Date());
-        if(time1==null){
+
+        if(!contains){
             SPUtils.put(this,"time",time);
             VisionTest();
+
         }else {
-            if(!time1.equals(time)){
+            String time2 = (String) SPUtils.get(this, "time", "1");
+            if(time2!=null&&!time2.equals(time)){
                 VisionTest();
                 SPUtils.put(this,"time",time);
 
             }
         }
+
     }
 
     private void VisionTest() {
-        SimpleDateFormat   formatter   =   new SimpleDateFormat("yyyy-MM-dd");
+     /*   SimpleDateFormat   formatter   =   new SimpleDateFormat("yyyy-MM-dd");
         String time = formatter.format(new Date());
         LogUtils.i("time",time);
-        SPUtils.put(this,"time",time);
+        SPUtils.put(this,"time",time);*/
 
         String url="http://www.shoujiweidai.com/update/versions.json";
 

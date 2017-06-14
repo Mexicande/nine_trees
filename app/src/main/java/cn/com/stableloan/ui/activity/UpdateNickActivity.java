@@ -147,19 +147,26 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
                             LogUtils.i("昵称修改",s);
-                            try {
-                                JSONObject object=new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if(success.equals("1")){
-                                    ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
-                                    finish();
-                                }else {
-                                    String string = object.getString("msg");
-                                    ToastUtils.showToast(UpdateNickActivity.this,string);
+                            if(s!=null){
+                                try {
+                                    JSONObject object=new JSONObject(s);
+                                    String success = object.getString("isSuccess");
+                                    if(success.equals("1")){
+
+                                        ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
+                                        setResult(2000,new Intent().putExtra("nick",nick));
+                                        finish();
+                                    }else {
+                                        String string = object.getString("msg");
+                                        ToastUtils.showToast(UpdateNickActivity.this,string);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            }else {
+
                             }
+
                         }
                         @Override
                         public void onError(Call call, Response response, Exception e) {

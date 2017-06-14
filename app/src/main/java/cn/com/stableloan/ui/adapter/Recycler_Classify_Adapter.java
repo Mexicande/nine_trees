@@ -158,7 +158,7 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
         }
         helper.setText(R.id.product_list_name,item.getPname())
                 .setText(R.id.rate,item.getFastest_time())
-                .setText(R.id.tv_Limit,item.getMin_algorithm());
+                .setText(R.id.tv_Limit,item.getMin_algorithm()+"%");
         helper.setText(R.id.product_introduction,item.getProduct_introduction());
         Glide.with(mContext).load(item.getProduct_logo()).crossFade().into((ImageView) helper.getView(R.id.ic_product_logo));
 

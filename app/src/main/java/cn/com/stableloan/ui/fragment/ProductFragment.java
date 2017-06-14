@@ -24,6 +24,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
@@ -48,8 +49,8 @@ import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.ShapeLoadingDialog;
 import cn.com.stableloan.view.SmoothCheckBox;
-import me.wangyuwei.slackloadingview.SlackLoadingView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -72,10 +73,6 @@ public class ProductFragment extends ImmersionFragment {
     SmoothCheckBox checkbox4;
     @Bind(R.id.button)
     Button button;
-    @Bind(R.id.loading_view)
-    SlackLoadingView loadingView;
-    @Bind(R.id.layoutGo)
-    LinearLayout layoutGo;
     private SlideUp slideUp;
 
     @Bind(R.id.title_name)
@@ -100,6 +97,8 @@ public class ProductFragment extends ImmersionFragment {
     public ProductFragment() {
         // Required empty public constructor
     }
+    private KProgressHUD hud;
+
 
     @Override
     protected void immersionInit() {
@@ -116,16 +115,23 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
-        loadingView.setVisibility(View.VISIBLE);
-        loadingView.start();
+
         initViewTitle();
         initRecyclView();
         setListener();
+
         return view;
     }
 
 
-    private void getDate(int var, final int action) {
+    private void getDate(final int var, final int action) {
+        if(var==1){
+            hud = KProgressHUD.create(getActivity())
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel("加载中.....")
+                    .setCancellable(true)
+                    .show();
+        }
 
         HashMap<String, Integer> params = new HashMap<>();
         params.put("var", var);
@@ -136,7 +142,6 @@ public class ProductFragment extends ImmersionFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        loadingView.setVisibility(View.GONE);
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
@@ -153,8 +158,11 @@ public class ProductFragment extends ImmersionFragment {
                                             classify_recycler_adapter.loadMoreComplete();
                                             break;
                                     }
-
+                                    if(var==1){
+                                        hud.dismiss();
+                                    }
                                 } else {
+
                                     classify_recycler_adapter.loadMoreEnd();
                                 }
                             } catch (JSONException e) {
@@ -162,12 +170,17 @@ public class ProductFragment extends ImmersionFragment {
                             }
 
                         }
+                        if(var==1){
+                            hud.dismiss();
+                        }
+
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        loadingView.setVisibility(View.GONE);
+                        hud.dismiss();
+
                     }
                 });
     }
@@ -341,34 +354,33 @@ public class ProductFragment extends ImmersionFragment {
     }
 
 
-    @OnClick({R.id.layout_select, R.id.button,R.id.layoutGo})
+    @OnClick({R.id.layout_select, R.id.button,R.id.layoutGo,R.id.reset})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_select:
-                slideUp.addSlideListener(new SlideUp.Listener.Visibility() {
-                    @Override
-                    public void onVisibilityChanged(int visibility) {
-                        if(visibility==View.GONE){
-                            slideUp.show();
-                        }else {
-                            slideUp.hide();
-                        }
-                    }
-                });
+                boolean visible = slideUp.isVisible();
+                if(visible){
+                    slideUp.hide();
+                }else {
+                    slideUp.show();
+                }
+
                 break;
             case R.id.button:
                 list.clear();
-                selectProduct();
                 slideUp.hide();
-               /* slideUp.addSlideListener(new SlideUp.Listener.Visibility() {
-                    @Override
-                    public void onVisibilityChanged(int visibility) {
-
-                    }
-                });*/
+                selectProduct();
+                break;
             case R.id.layoutGo:
                 slideUp.hide();
-
+                break;
+            case R.id.reset:
+                checkbox1.setChecked(false);
+                checkbox2.setChecked(false);
+                checkbox3.setChecked(false);
+                checkbox4.setChecked(false);
+                getDate(1, ACTION_DOWN);
+                slideUp.hide();
                 break;
         }
     }
@@ -395,6 +407,11 @@ public class ProductFragment extends ImmersionFragment {
     }
 
     private void selectGetProduct(int[] arr, String stat) {
+        hud = KProgressHUD.create(getActivity())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait.....")
+                .setCancellable(true)
+                .show();
         SelectProduct selectProduct = new SelectProduct(arr, stat);
         Gson gson = new Gson();
         String json = gson.toJson(selectProduct);
@@ -404,7 +421,6 @@ public class ProductFragment extends ImmersionFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        loadingView.setVisibility(View.GONE);
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
@@ -423,12 +439,14 @@ public class ProductFragment extends ImmersionFragment {
                             }
 
                         }
+                        hud.dismiss();
+
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        loadingView.setVisibility(View.GONE);
+                        hud.dismiss();
 
                     }
                 });

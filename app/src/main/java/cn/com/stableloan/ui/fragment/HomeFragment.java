@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -143,12 +144,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
      * 首页新品
      */
     private void getDate() {
-
         getNotice();
-
-
         ivNotice.setOnClickListener(this);
-
         View view = setHeaderView();
         productAdapter = new ListProductAdapter(null);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -158,7 +155,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         recylerview.setAdapter(productAdapter);
 
     }
-   private NoticeBean noticeBean;
+
+    private NoticeBean noticeBean;
+
     private void getNotice() {
         OkGo.post(Urls.puk_URL + Urls.notice.Announcement)
                 .tag(this)
@@ -170,17 +169,13 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                             try {
                                 JSONObject object = new JSONObject(s);
                                 String success = object.getString("isSuccess");
-                                if(success.equals("1")){
-
-                                    ivNotice.setImageResource(R.mipmap.icon_notice);
+                                if (success.equals("1")) {
                                     Gson gson = new Gson();
                                     noticeBean = gson.fromJson(s, NoticeBean.class);
-
                                 } else {
                                     String msg = object.getString("msg");
                                     ToastUtils.showToast(getActivity(), msg);
                                 }
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -238,7 +233,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                LogUtils.i("hot----", hotBean.getRecommends().get(position).toString());
                 ToastUtils.showToast(getActivity(), hotBean.getRecommends().get(position).getApp());
                 String app = hotBean.getRecommends().get(position).getApp();
                 if (app.startsWith("http")) {
@@ -323,7 +317,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                             ToastUtils.showToast(getActivity(), "网络异常");
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         //easylayout.setRefreshing(false);
@@ -345,7 +338,15 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                 if (success.equals("1")) {
                                     Gson gson = new Gson();
                                     newBean = gson.fromJson(s, News_ClassBean.class);
-                                    classify_recycler_adapter.setNewData(newBean.getClassX());
+                                    List<News_ClassBean.ClassBean> list = newBean.getClassX();
+
+                                    if(list.size()%2==1){
+                                        News_ClassBean.ClassBean bean=new News_ClassBean.ClassBean();
+                                        bean.setHome_image("http://orizavg5s.bkt.clouddn.com/classify_04.png");
+                                        list.add(bean);
+                                    }
+
+                                    classify_recycler_adapter.setNewData(list);
                                     LogUtils.i("classX-size", newBean.getClassX().size());
                                     productAdapter.setNewData(newBean.getProduct());
 
@@ -394,7 +395,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_notice:
-                startActivity(new Intent(getActivity(),NoticeActivity.class).putExtra("notice",noticeBean));
+                startActivity(new Intent(getActivity(), NoticeActivity.class).putExtra("notice", noticeBean));
                 ivNotice.setImageResource(R.mipmap.icon_unnotice);
                 break;
         }

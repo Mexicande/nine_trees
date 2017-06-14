@@ -93,6 +93,12 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
         ivBack.setVisibility(View.VISIBLE);
         tvSave.setVisibility(View.VISIBLE);
         tvSave.setText("保存");
+        upPassword.setTransformationMethod(PasswordTransformationMethod
+                .getInstance());
+        etPassword.setTransformationMethod(PasswordTransformationMethod
+                .getInstance());
+        etConfirmPassword.setTransformationMethod(PasswordTransformationMethod
+                .getInstance());
 
     }
 
@@ -105,7 +111,6 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                 break;
             case R.id.tv_save:
                 Validate.check(UpdatePassWordActivity.this, UpdatePassWordActivity.this);
-
                 break;
         }
     }
@@ -113,12 +118,6 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
     private void updatewWord() {
         String token = (String) SPUtils.get(this, "token", "1");
 
-        upPassword.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
-        etPassword.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
-        etConfirmPassword.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
 
         final String oldWord = upPassword.getText().toString();
 
@@ -147,6 +146,7 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                                     String success = object.getString("isSuccess");
                                     if(success.equals("1")){
                                         ToastUtils.showToast(UpdatePassWordActivity.this,"修改成功");
+                                        LoginActivity.launch(UpdatePassWordActivity.this);
                                         finish();
                                     }else {
                                         String string = object.getString("msg");

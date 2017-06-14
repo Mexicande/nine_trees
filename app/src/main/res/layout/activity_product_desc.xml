@@ -46,12 +46,13 @@
             android:background="@color/white"
             android:layout_toLeftOf="@id/space"
             android:drawableTop="@drawable/platform_desc"
-            android:textSize="17sp"
+            android:textSize="15sp"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="#999999"
             android:text="攻略"
             android:layout_alignParentBottom="true"
              />
+
         <TextView
             android:id="@+id/platform_desc"
             android:layout_marginRight="2dp"
@@ -62,19 +63,19 @@
             android:background="@color/white"
             android:textColor="#999999"
             style="?android:attr/borderlessButtonStyle"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/ic_strategy"
             android:text="平台详情"
             />
         <Button
             android:id="@+id/apply"
+            android:layout_marginLeft="1dp"
             android:layout_toRightOf="@id/space"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/desc_top"
             android:textSize="20sp"
-            style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/white"
             android:text="立即申请"
             android:layout_alignParentBottom="true" />
