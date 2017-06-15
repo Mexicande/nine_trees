@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable
-            name="product"
-            type="cn.com.stableloan.model.Product_DescBean"/>
-    </data>
     <RelativeLayout
         android:background="@drawable/desc_top"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     <RelativeLayout
         android:id="@+id/layout3"
         android:layout_width="match_parent"
@@ -32,14 +26,12 @@
             android:layout_toRightOf="@id/product_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{product.product.header}"
             />
 
         <TextView
             android:id="@+id/product_introduction"
             android:textSize="13sp"
             android:textColor="@color/white"
-            android:text="@{product.product.product_introduction}"
             android:layout_alignLeft="@id/tv_pname"
             android:layout_width="wrap_content"
             android:ellipsize="end"
@@ -47,7 +39,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pname"/>
     </RelativeLayout>
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/flow"
+            android:layout_below="@id/layout3"
+            android:layout_marginLeft="55dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+       <!-- <LinearLayout
             android:id="@+id/bel"
             android:layout_marginLeft="55dp"
             android:layout_marginTop="5dp"
@@ -136,12 +135,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
                 android:text="..."/>
-        </LinearLayout>
+        </LinearLayout>-->
     <View
+        android:layout_marginTop="3dp"
         android:id="@+id/view"
         android:background="@color/white"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/bel"
+        android:layout_below="@id/flow"
         android:layout_width="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_height="2dp"/>
@@ -165,7 +164,7 @@
                 android:textColor="#f9fefa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="额度范围"/>
+                android:text="额度范围(元)"/>
             <TextView
                 android:id="@+id/min_max"
                 android:textSize="15sp"
@@ -228,7 +227,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#f9fefa"
-                android:text="@{product.product.average_time}"
                 android:layout_centerHorizontal="true"
                 />
         </RelativeLayout>

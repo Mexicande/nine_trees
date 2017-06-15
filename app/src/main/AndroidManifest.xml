@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name="cn.com.stableloan.ui.activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MainActivity"

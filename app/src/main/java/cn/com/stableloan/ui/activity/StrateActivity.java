@@ -10,8 +10,9 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
+import cn.com.stableloan.base.BaseActivity;
 
-public class StrateActivity extends AppCompatActivity {
+public class StrateActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;

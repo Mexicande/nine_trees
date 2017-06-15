@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,7 +39,8 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
         SuperTextView view1 = (SuperTextView) helper.getView(R.id.label2);
         SuperTextView view2 = (SuperTextView) helper.getView(R.id.label3);
         SuperTextView view3 = (SuperTextView) helper.getView(R.id.label4);
-        View view4 = helper.getView(R.id.shengluehao);
+        TextView view5 = (TextView) helper.getView(R.id.shengluehao);
+
         if(item.getLabels()!=null){
             int size = item.getLabels().size();
             List<Class_ListProductBean.ProductBean.LabelsBean> lables = item.getLabels();
@@ -135,7 +137,7 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
                     view3.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setText(lables.get(3).getName());
 
-                    view4.setVisibility(View.VISIBLE);
+                    view5.setVisibility(View.VISIBLE);
                     break;
             }
         }

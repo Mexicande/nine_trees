@@ -422,7 +422,7 @@ public class ProductFragment extends ImmersionFragment {
                                     Gson gson = new Gson();
                                     Class_ListProductBean productBean = gson.fromJson(s, Class_ListProductBean.class);
                                     classify_recycler_adapter.setNewData(productBean.getProduct());
-                                    classify_recycler_adapter.loadMoreEnd(false);
+                                    classifyRecycl.smoothScrollToPosition(0);
 
                                 } else {
                                     ToastUtils.showToast(getActivity(), "没有符合的产品");

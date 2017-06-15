@@ -2,21 +2,19 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
-import com.coorchice.library.SuperTextView;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -36,6 +34,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
+import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -53,22 +52,7 @@ public class ProductDesc extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.tv_save)
     TextView tvSave;
-    @Bind(R.id.product_logo)
-    ImageView productLogo;
-    @Bind(R.id.tv_pname)
-    TextView tvPname;
-    @Bind(R.id.product_introduction)
-    TextView productIntroduction;
-    @Bind(R.id.tv_limt)
-    TextView tvLimt;
-    @Bind(R.id.tv_rate)
-    TextView tvRate;
-    @Bind(R.id.tv_time)
-    TextView tvTime;
-    @Bind(R.id.average_time)
-    TextView averageTime;
-    @Bind(R.id.crowd)
-    TextView crowd;
+
     @Bind(R.id.review)
     TextView review;
     @Bind(R.id.arrive)
@@ -83,24 +67,7 @@ public class ProductDesc extends BaseActivity {
     TextView interestAlgorithm;
     @Bind(R.id.prepayment)
     TextView prepayment;
-    @Bind(R.id.label1)
-    SuperTextView label1;
-    @Bind(R.id.label2)
-    SuperTextView label2;
-    @Bind(R.id.label3)
-    SuperTextView label3;
-    @Bind(R.id.label4)
-    SuperTextView label4;
-    @Bind(R.id.label5)
-    SuperTextView label5;
-    @Bind(R.id.bel)
-    LinearLayout bel;
-    @Bind(R.id.apply)
-    Button apply;
-    @Bind(R.id.shengluehao)
-    TextView shengluehao;
-    @Bind(R.id.min_max)
-    TextView minMax;
+
     @Bind(R.id.space)
     Space space;
     @Bind(R.id.ic_strategy)
@@ -109,9 +76,43 @@ public class ProductDesc extends BaseActivity {
     TextView platformDesc;
     @Bind(R.id.min_algorithm)
     TextView minAlgorithm;
+
+    @Bind(R.id.flow)
+    RecyclerView flowRecyclerView;
+    @Bind(R.id.tv_rate)
+    TextView tvRate;
+    @Bind(R.id.product_details)
+    TextView productDetails;
+    @Bind(R.id.product_logo)
+    ImageView productLogo;
+    @Bind(R.id.tv_pname)
+    TextView tvPname;
+    @Bind(R.id.product_introduction)
+    TextView productIntroduction;
+    @Bind(R.id.layout3)
+    RelativeLayout layout3;
+    @Bind(R.id.view)
+    View view;
+    @Bind(R.id.tv_limt)
+    TextView tvLimt;
+    @Bind(R.id.min_max)
+    TextView minMax;
+    @Bind(R.id.layout4)
+    RelativeLayout layout4;
+    @Bind(R.id.tv_time)
+    TextView tvTime;
+    @Bind(R.id.average_time)
+    TextView averageTime;
+    @Bind(R.id.crowd)
+    TextView crowd;
+    @Bind(R.id.linla)
+    LinearLayout linla;
+    @Bind(R.id.apply)
+    Button apply;
+    @Bind(R.id.layoutgo)
+    RelativeLayout layoutgo;
     private String pid;
     private Product_DescBean descBean;
-    private ViewDataBinding dataBinding;
 
 
     private KProgressHUD hud;
@@ -123,7 +124,8 @@ public class ProductDesc extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_product_desc);
+        setContentView(R.layout.activity_desc);
+
         ButterKnife.bind(this);
         initToolbar();
         pid = getIntent().getStringExtra("pid");
@@ -133,6 +135,7 @@ public class ProductDesc extends BaseActivity {
         }
 
     }
+
 
     private void getProductDate(String id) {
         hud = KProgressHUD.create(this)
@@ -156,7 +159,6 @@ public class ProductDesc extends BaseActivity {
                                 if (success.equals("1")) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
-                                    dataBinding.setVariable(BR.product ,descBean);
                                     if (descBean != null) {
                                         dateInset(descBean);
                                     }
@@ -181,112 +183,40 @@ public class ProductDesc extends BaseActivity {
                 });
     }
 
-    private  String substringmin="";
-    private  String substringmax="";
+    private String substringmin = "";
+    private String substringmax = "";
+
+    private SuperTextAdapter superTextAdapter;
+
     private void dateInset(Product_DescBean descBean) {
+        /*DescRecyler.setLayoutManager(new LinearLayoutManager(this));
+
+        Classify_Recycler_Adapter classify_recycler_adapte=new Classify_Recycler_Adapter(null);
+
+        DescRecyler.setAdapter(classify_recycler_adapte);
+
+        View view = getLayoutInflater().inflate(R.layout.scroview, null);
+        DescRecyler.addView(view);
+
+        flowRecyclerView = (RecyclerView) view.findViewById(R.id.flow);
+        */
+
 
         List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
-        int size = lables.size();
-        switch (size) {
-            case 0:
-                break;
-            case 1:
-                label1.setVisibility(View.VISIBLE);
-                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
-                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setText(lables.get(0).getName());
-                break;
-            case 2:
-                label1.setVisibility(View.VISIBLE);
-                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
-                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setText(lables.get(0).getName());
-
-                label2.setVisibility(View.VISIBLE);
-                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
-                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setText(lables.get(1).getName());
-
-                break;
-            case 3:
-                label1.setVisibility(View.VISIBLE);
-                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
-                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setText(lables.get(0).getName());
-
-                label2.setVisibility(View.VISIBLE);
-                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
-                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setText(lables.get(1).getName());
-
-                label3.setVisibility(View.VISIBLE);
-                label3.setTextColor(Color.parseColor(lables.get(2).getFont()));
-                label3.setSolid(Color.parseColor(lables.get(2).getBackground()));
-                label3.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
-                label3.setText(lables.get(2).getName());
-                break;
-            case 4:
-                label1.setVisibility(View.VISIBLE);
-                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
-                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setText(lables.get(0).getName());
-
-                label2.setVisibility(View.VISIBLE);
-                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
-                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setText(lables.get(1).getName());
-
-                label3.setVisibility(View.VISIBLE);
-                label3.setTextColor(Color.parseColor(lables.get(2).getFont()));
-                label3.setSolid(Color.parseColor(lables.get(2).getBackground()));
-                label3.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
-                label3.setText(lables.get(2).getName());
-
-                label4.setVisibility(View.VISIBLE);
-                label4.setTextColor(Color.parseColor(lables.get(3).getFont()));
-                label4.setSolid(Color.parseColor(lables.get(3).getBackground()));
-                label4.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
-                label4.setText(lables.get(3).getName());
-            default:
-                label1.setVisibility(View.VISIBLE);
-                label1.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setSolid(Color.parseColor(lables.get(0).getBackground()));
-                label1.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
-                label1.setText(lables.get(0).getName());
-
-                label2.setVisibility(View.VISIBLE);
-                label2.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setSolid(Color.parseColor(lables.get(1).getBackground()));
-                label2.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
-                label2.setText(lables.get(1).getName());
-
-                label3.setVisibility(View.VISIBLE);
-                label3.setTextColor(Color.parseColor(lables.get(2).getFont()));
-                label3.setSolid(Color.parseColor(lables.get(2).getBackground()));
-                label3.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
-                label3.setText(lables.get(2).getName());
-
-                label4.setVisibility(View.VISIBLE);
-                label4.setTextColor(Color.parseColor(lables.get(3).getFont()));
-                label4.setSolid(Color.parseColor(lables.get(3).getBackground()));
-                label4.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
-                label4.setText(lables.get(3).getName());
-                shengluehao.setVisibility(View.VISIBLE);
-                break;
-        }
-
+        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
+        superTextAdapter = new SuperTextAdapter(null);
+        flowRecyclerView.setAdapter(superTextAdapter);
+        superTextAdapter.addData(lables);
 
         Product_DescBean.ProductBean product = descBean.getProduct();
         Glide.with(this).load(product.getProduct_logo()).crossFade().into(productLogo);
+
+        averageTime.setText(product.getAverage_time());
+
+        tvPname.setText(product.getPname());
+        productIntroduction.setText(product.getProduct_introduction());
         String minAl = product.getMin_algorithm();
-        minAlgorithm.setText(minAl+"%");
+        minAlgorithm.setText(minAl + "%");
         String product_crowd = product.getCrowd();
         String product_review = product.getReview();
         String product_actual_account = product.getActual_account();
@@ -297,20 +227,21 @@ public class ProductDesc extends BaseActivity {
         String product_prepayment = product.getPrepayment();
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
+        tvRate.setText("参考" + product.getInterest_algorithm());
 
-        if(minimum_amount.length()>4){
-           substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
-            substringmin=substringmin+"万";
-        }else {
-            substringmin=minimum_amount;
+        if (minimum_amount.length() > 4) {
+            substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
+            substringmin = substringmin + "万";
+        } else {
+            substringmin = minimum_amount ;
         }
-        if(maximum_amount.length()>4){
+        if (maximum_amount.length() > 4) {
             substringmax = maximum_amount.substring(0, maximum_amount.length() - 4);
-            substringmax=substringmax+"万";
-        }else {
-            substringmax=maximum_amount;
+            substringmax = substringmax + "万";
+        } else {
+            substringmax = maximum_amount;
         }
-        minMax.setText(substringmin+"~"+substringmax);
+        minMax.setText(substringmin + "~" + substringmax);
 
         if (product_crowd != null) {
             crowd.setVisibility(View.VISIBLE);
@@ -324,7 +255,7 @@ public class ProductDesc extends BaseActivity {
         if (product_actual_account != null) {
             actualAccount.setVisibility(View.VISIBLE);
 
-            actualAccount.setText(" 实际到账金额:" + product_actual_account);
+            actualAccount.setText(" 实际到账:" + product_actual_account);
         }
         if (product_repayment != null) {
             repayment.setVisibility(View.VISIBLE);
@@ -339,12 +270,17 @@ public class ProductDesc extends BaseActivity {
         }
         if (min != null && max != null) {
             interestAlgorithm.setVisibility(View.VISIBLE);
-            interestAlgorithm.setText(" 利息算法:月息利息" + min + "%" + "-" + max + "%");
+            interestAlgorithm.setText(" 利息算法:" + product.getInterest_algorithm());
         }
 
         if (product_prepayment != null) {
             prepayment.setVisibility(View.VISIBLE);
             prepayment.setText(" 提前还款:" + product_prepayment);
+        }
+        if (product.getProduct_details() != null) {
+            String details = product.getProduct_details();
+            String aaa = details.replace("aaa", "\n");
+            productDetails.setText(aaa);
         }
     }
 
@@ -363,7 +299,7 @@ public class ProductDesc extends BaseActivity {
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", descBean.getProduct().getPl_id()));
                 break;
             case R.id.ic_strategy:
-                startActivity(new Intent(this, StrateActivity.class).putExtra("pid", pid));
+                startActivity(new Intent(this, HtmlActivity.class).putExtra("Strate", descBean));
                 break;
             case R.id.apply:
                 Boolean login = (Boolean) SPUtils.get(this, "login", false);

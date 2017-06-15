@@ -106,7 +106,7 @@ public class UserFragment extends ImmersionFragment {
     private void getVerSion() {
         String code = AppUtils.getAppVersionName();
         LogUtils.i("version",code);
-        version.setText(code);
+        version.setText("v"+code);
     }
 
     private void getUserInfo() {

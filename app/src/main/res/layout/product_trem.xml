@@ -15,6 +15,7 @@
     card_view:cardUseCompatPadding="true">
     <LinearLayout
         android:orientation="vertical"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
@@ -119,11 +120,13 @@
                         app:stroke_width="1dp"
                         />
                     <TextView
+                        android:layout_gravity="bottom"
                         android:visibility="gone"
+                        android:layout_marginLeft="3dp"
                         android:id="@+id/shengluehao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
+                        android:textSize="16sp"
                         android:text="..."/>
                 </LinearLayout>
 
@@ -192,9 +195,10 @@
         <TextView
             android:id="@+id/product_introduction"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:textSize="13sp"
             android:textColor="@color/product_limit"
             android:lines="1"

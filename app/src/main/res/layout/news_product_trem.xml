@@ -125,11 +125,13 @@
                         app:stroke_width="1dp"
                         />
                     <TextView
+                        android:layout_gravity="bottom"
                         android:visibility="gone"
+                        android:layout_marginLeft="3dp"
                         android:id="@+id/shengluehao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
+                        android:textSize="16sp"
                         android:text="..."/>
                 </LinearLayout>
             <TextView

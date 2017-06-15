@@ -53,7 +53,9 @@ public interface Urls{
         String Announcement="Announcement";
     }
 
-    interface  Screening{
-        String Screening="Screening";
+    interface  LOTTERY{
+        String GetLottery="GetLottery";
+
+
     }
 }

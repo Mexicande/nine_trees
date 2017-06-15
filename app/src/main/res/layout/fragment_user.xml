@@ -135,9 +135,9 @@
         android:text="退出登录"
         android:textColor="#999999"
         android:textSize="20sp"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        style="?android:attr/borderlessButtonStyle"
         />
     <TextView
         android:id="@+id/version"

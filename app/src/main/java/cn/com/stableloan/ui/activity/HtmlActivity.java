@@ -45,7 +45,6 @@ public class HtmlActivity extends BaseActivity {
     private WebView mWebView;
 
 
-
     public static void launch(Context context) {
         context.startActivity(new Intent(context, HtmlActivity.class));
     }
@@ -71,10 +70,10 @@ public class HtmlActivity extends BaseActivity {
         if (available) {
             Product_DescBean desc= (Product_DescBean) getIntent().getSerializableExtra("product");
             if(desc!=null){
-                titleName.setText(desc.getProduct().getProduct_details());
+                titleName.setText(desc.getPlatformdetail().getPl_name());
                 ivBack.setVisibility(View.VISIBLE);
-                String url = desc.getProduct().getRaiders_connection();
-                getDate(url);
+               /* String url = desc.getProduct().getRaiders_connection();
+                getDate(url);*/
             }
             Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
             if(extra!=null){
@@ -88,6 +87,14 @@ public class HtmlActivity extends BaseActivity {
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(hotbean.getApp());
             }
+            Product_DescBean desc1= (Product_DescBean) getIntent().getSerializableExtra("Strate");
+            if(desc1!=null){
+                titleName.setText(desc1.getPlatformdetail().getPl_name()+"攻略");
+                ivBack.setVisibility(View.VISIBLE);
+                String url = desc1.getProduct().getRaiders_connection();
+                getDate(url);
+            }
+
           /*  if(product!=null){
                 titleName.setText(product.getAdvername());
                 ivBack.setVisibility(View.VISIBLE);

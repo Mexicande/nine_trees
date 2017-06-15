@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -31,6 +32,8 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
 import ezy.boost.update.IUpdateParser;
+import ezy.boost.update.OnFailureListener;
+import ezy.boost.update.UpdateError;
 import ezy.boost.update.UpdateInfo;
 import ezy.boost.update.UpdateManager;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
@@ -50,6 +53,8 @@ public class MainActivity extends BaseActivity {
 
     private Fragment mCurrentFragment;
 
+    private static  final  int LOTTERY_CODE=500;
+    private static  final  int LOTTERY_SNED=5000;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -58,11 +63,11 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        CheckVsion();
+        VisionTest();
         initView();
     }
 
-    private void CheckVsion() {
+  /*  private void CheckVsion() {
         boolean contains = SPUtils.contains(this, "time");
 
         // String time1 = (String) SPUtils.get(this, "time", "1");
@@ -73,7 +78,6 @@ public class MainActivity extends BaseActivity {
         if(!contains){
             SPUtils.put(this,"time",time);
             VisionTest();
-
         }else {
             String time2 = (String) SPUtils.get(this, "time", "1");
             if(time2!=null&&!time2.equals(time)){
@@ -83,8 +87,8 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-    }
-
+    }*/
+    private boolean Update=false;
     private void VisionTest() {
      /*   SimpleDateFormat   formatter   =   new SimpleDateFormat("yyyy-MM-dd");
         String time = formatter.format(new Date());
@@ -93,14 +97,18 @@ public class MainActivity extends BaseActivity {
 
         String url="http://www.shoujiweidai.com/update/versions.json";
 
-        UpdateManager.create(this).setUrl(url).setNotifyId(998).setParser(new IUpdateParser() {
+        UpdateManager.create(this).setUrl(url).setParser(new IUpdateParser() {
             @Override
             public UpdateInfo parse(String source) throws Exception {
                 LogUtils.i("source",source);
                 UpdateInfo info = new UpdateInfo();
                 Gson gson=new Gson();
                 UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
-                info.hasUpdate = true;
+               /* int code = AppUtils.getAppVersionCode();
+                if(infoBean.getVersionCode()>code){
+                    Update=true;
+                }*/
+                info.hasUpdate = false;
                 info.updateContent =infoBean.getUpdateContent();
                 info.versionCode = infoBean.getVersionCode();
                 info.versionName = infoBean.getVersionName();
@@ -113,7 +121,12 @@ public class MainActivity extends BaseActivity {
                 info.isSilent = false;
                 return info;
             }
-        }).setManual(true).check();
+        }).setManual(true).setWifiOnly(false).setOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(UpdateError error) {
+                LogUtils.i("update",error.getMessage());
+            }
+        }).check();
     }
 
     private void initView() {
@@ -195,6 +208,8 @@ public class MainActivity extends BaseActivity {
         }
         mCurrentFragment = fragment;
     }
+
+
 
     //创建一个Item
     private BaseTabItem newItem(int drawable, int checkedDrawable, String text){

@@ -5,7 +5,7 @@
     <color name="colorStatus">#40fea422</color>
     <color name="colorAccent">#FF4081</color>
     <color name="base_white">#f2f3f5</color>
-
+    <color name="desc_text_color">#686868</color>
    <!-- 产品list-->
     <color name="white">#ffffff</color>
     <color name="money_color">#ff4b16</color>

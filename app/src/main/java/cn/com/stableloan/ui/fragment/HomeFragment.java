@@ -251,7 +251,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
+                if(newBean.getClassX().get(position).getName()!=null){
+                    startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
+                }
             }
         });
 

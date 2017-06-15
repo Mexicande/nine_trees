@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -26,6 +27,8 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -39,7 +42,6 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.EncryptUtils;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -58,7 +60,7 @@ import okhttp3.Response;
  * 登录注册页
  */
 
-public class LoginActivity extends BaseActivity implements IValidateResult {
+public class LoginActivity extends AppCompatActivity implements IValidateResult {
     /* @Bind(R.id.nts)
      NavigationTabStrip nts;*/
 
@@ -70,7 +72,6 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
     @RE(re = RE.phone, msg = "手机号格式不正确")
     @Bind(R.id.et_phone)
     EditText etPhone;
-
 
     @Index(2)
     @NotNull(msg = "不能为空！")
@@ -96,6 +97,7 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
 
     private boolean Flag = false;
     private final int Flag_User = 3000;
+    private final int LOTTERY_CODE = 500;
 
     private CaptchaTimeCount captchaTimeCount;
 
@@ -106,17 +108,15 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
         context.startActivity(new Intent(context, LoginActivity.class));
     }
 
-    private CodeMessage message;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Validate.reg(this);
         ButterKnife.bind(this);
         initView();
         etLock.setTransformationMethod(PasswordTransformationMethod
                 .getInstance());
-        Validate.reg(this);
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
 
     }
@@ -366,6 +366,15 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                         hud.dismiss();
 
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        hud.dismiss();
+
+                        ToastUtils.showToast(LoginActivity.this, "服务器异常,请稍后再试");
+
+                    }
                 });
     }
 
@@ -390,10 +399,15 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
                                     TinyDB tinyDB = new TinyDB(LoginActivity.this);
                                     tinyDB.putObject("user", bean);
                                     String from = getIntent().getStringExtra("from");
-                                    if (from != null && from.equals("user")) {
-                                        setResult(Flag_User, new Intent().putExtra("user", bean));
+                                    if (from != null) {
+                                        if(from.equals("user")){
+                                            setResult(Flag_User, new Intent().putExtra("user", bean));
+                                            finish();
+                                        }else if(from.equals("123")){
+                                            setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
+                                            finish();
+                                        }
 
-                                        finish();
                                     } else {
                                         finish();
                                     }
@@ -448,7 +462,7 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
             //返回事件
 
         String from = getIntent().getStringExtra("from");
-        if (from != null && from.equals("user")) {
+        if (from != null ) {
             //MainActivity.launch(this);
             startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
@@ -464,6 +478,12 @@ public class LoginActivity extends BaseActivity implements IValidateResult {
             }*/
     }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Validate.unreg(this);
     }
 
     @Override

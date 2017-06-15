@@ -27,12 +27,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Product_Detail;
 import cn.com.stableloan.utils.LogUtils;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class PlatformInfoActivity extends AppCompatActivity {
+public class PlatformInfoActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;

@@ -55,6 +55,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:textColor="@color/desc_text_color"
+
                     android:textSize="13sp"
                     android:layout_toRightOf="@id/product_introduction"
                     android:layout_below="@id/tv_pname"
@@ -70,6 +72,8 @@
                     android:text="月均放款量 :"/>
                 <TextView
                     android:textSize="13sp"
+                    android:textColor="@color/desc_text_color"
+
                     android:layout_marginTop="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,11 +103,14 @@
             />
         <TextView
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@id/view1"
             android:id="@+id/summary"
+            android:textColor="@color/desc_text_color"
+            android:textSize="@dimen/product_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{product.platform.summary}"
+            android:text="@{product.platform.introduction}"
             />
     </LinearLayout>
 </layout>

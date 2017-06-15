@@ -9,6 +9,9 @@ import java.util.List;
 
 public class Product_DescBean implements Serializable {
 
+
+
+
     /**
      * product : {"pname":"学子速贷","product_introduction":"大学生专属，通过率高，高效快速放款","id":"32","product_logo":"http://or2eh71ll.bkt.clouddn.com/149701337726906.png?e=1497016999&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:sHqFDfi7Y9mPdqAbO4pyvTu7EKg=","min_algorithm":"0.5","interest_algorithm":"1","average_time":"12小时","pl_id":"1","minimum_amount":"3000","maximum_amount":"30000","crowd":"2","review":"0","actual_account":"0","repayment":"1","repayment_channels":"1","max_algorithm":"1.2","prepayment":"1","product_details":"","raiders_connection":"","fastest_time":"2小时","labels":[],"header":0,"amount":27000}
      * platformdetail : null
@@ -16,7 +19,7 @@ public class Product_DescBean implements Serializable {
      */
 
     private ProductBean product;
-    private Object platformdetail;
+    private platformdetail platformdetail;
     private boolean isSuccess;
 
     public ProductBean getProduct() {
@@ -27,11 +30,11 @@ public class Product_DescBean implements Serializable {
         this.product = product;
     }
 
-    public Object getPlatformdetail() {
+    public platformdetail getPlatformdetail() {
         return platformdetail;
     }
 
-    public void setPlatformdetail(Object platformdetail) {
+    public void setPlatformdetail(platformdetail platformdetail) {
         this.platformdetail = platformdetail;
     }
 
@@ -276,5 +279,35 @@ public class Product_DescBean implements Serializable {
             this.labels = labels;
         }
     }
+    public static class platformdetail implements Serializable{
+        private String pl_name;
+        private String introduction;
+
+        public String getPl_name() {
+            return pl_name;
+        }
+
+        public void setPl_name(String pl_name) {
+            this.pl_name = pl_name;
+        }
+
+        public String getIntroduction() {
+            return introduction;
+        }
+
+        public void setIntroduction(String introduction) {
+            this.introduction = introduction;
+        }
+
+        @Override
+        public String toString() {
+            return "platformdetail{" +
+                    "pl_name='" + pl_name + '\'' +
+                    ", introduction='" + introduction + '\'' +
+                    '}';
+        }
+    }
+
+
 }
 

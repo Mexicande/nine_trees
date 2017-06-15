@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/base_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"/>
+    <LinearLayout
+        android:id="@+id/linla"
+        android:layout_marginTop="50dp"
+        android:layout_above="@+id/layoutgo"
+        android:background="@color/base_white"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include layout="@layout/product_layout_top"
+                    />
+                <include layout="@layout/product_desc_jiekuanxijie"
+                    />
+                <include layout="@layout/product_desc_condition"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/layoutgo"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Space
+            android:id="@+id/space"
+            android:layout_centerHorizontal="true"
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            />
+        <TextView
+            android:paddingTop="5dp"
+            android:id="@+id/ic_strategy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_toLeftOf="@id/space"
+            android:drawableTop="@drawable/platform_desc"
+            android:textSize="12sp"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="#999999"
+            android:text="攻略"
+            android:layout_alignParentBottom="true"
+            />
+        <TextView
+            android:id="@+id/platform_desc"
+            android:layout_marginRight="2dp"
+            android:paddingTop="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/ic_strategy"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:textColor="#999999"
+            style="?android:attr/borderlessButtonStyle"
+            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_strategy"
+            android:text="平台详情"
+            />
+        <Button
+            android:id="@+id/apply"
+            android:layout_marginLeft="1dp"
+            android:layout_toRightOf="@id/space"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/desc_top"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:text="立即申请"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</RelativeLayout>

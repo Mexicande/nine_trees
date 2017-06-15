@@ -3,6 +3,7 @@ package cn.com.stableloan.ui.adapter;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -48,8 +49,8 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
         SuperTextView view1 = (SuperTextView) helper.getView(R.id.label2);
         SuperTextView view2 = (SuperTextView) helper.getView(R.id.label3);
         SuperTextView view3 = (SuperTextView) helper.getView(R.id.label4);
+        TextView view4 = (TextView) helper.getView(R.id.shengluehao);
 
-        View view4 = helper.getView(R.id.shengluehao);
         if(item.getLabels()!=null&&item.getLabels().size()>0){
             int size = item.getLabels().size();
             List<Class_ListProductBean.ProductBean.LabelsBean> lables = item.getLabels();
