@@ -15,6 +15,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -38,6 +39,7 @@ import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -189,17 +191,6 @@ public class ProductDesc extends BaseActivity {
     private SuperTextAdapter superTextAdapter;
 
     private void dateInset(Product_DescBean descBean) {
-        /*DescRecyler.setLayoutManager(new LinearLayoutManager(this));
-
-        Classify_Recycler_Adapter classify_recycler_adapte=new Classify_Recycler_Adapter(null);
-
-        DescRecyler.setAdapter(classify_recycler_adapte);
-
-        View view = getLayoutInflater().inflate(R.layout.scroview, null);
-        DescRecyler.addView(view);
-
-        flowRecyclerView = (RecyclerView) view.findViewById(R.id.flow);
-        */
 
 
         List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
@@ -209,7 +200,8 @@ public class ProductDesc extends BaseActivity {
         superTextAdapter.addData(lables);
 
         Product_DescBean.ProductBean product = descBean.getProduct();
-        Glide.with(this).load(product.getProduct_logo()).crossFade().into(productLogo);
+        Glide.with(this).load(product.getProduct_logo()).crossFade().bitmapTransform(new CropCircleTransformation(this))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(productLogo);
 
         averageTime.setText(product.getAverage_time());
 
@@ -241,41 +233,50 @@ public class ProductDesc extends BaseActivity {
         } else {
             substringmax = maximum_amount;
         }
+        if(product.getArrive()!=null){
+            arrive.setVisibility(View.VISIBLE);
+
+            arrive.setText("到账方式: "+product.getArrive());
+        }
+
+
         minMax.setText(substringmin + "~" + substringmax);
 
         if (product_crowd != null) {
             crowd.setVisibility(View.VISIBLE);
-            crowd.setText(" 面向人群:" + product_crowd);
+            crowd.setText("面向人群: " + product_crowd);
         }
         if (product_review != null) {
             review.setVisibility(View.VISIBLE);
 
-            review.setText(" 审核方式:" + product_review);
+            review.setText("审核方式: " + product_review);
         }
+
+
         if (product_actual_account != null) {
             actualAccount.setVisibility(View.VISIBLE);
 
-            actualAccount.setText(" 实际到账:" + product_actual_account);
+            actualAccount.setText("实际到账: " + product_actual_account);
         }
         if (product_repayment != null) {
             repayment.setVisibility(View.VISIBLE);
 
-            repayment.setText(" 还款方式:" + product_repayment);
+            repayment.setText("还款方式: " + product_repayment);
         }
         if (product_repayment_channels != null) {
             repaymentChannels.setVisibility(View.VISIBLE);
 
-            repaymentChannels.setText(" 还款渠道:" + product_repayment_channels);
+            repaymentChannels.setText("还款渠道: " + product_repayment_channels);
 
         }
         if (min != null && max != null) {
             interestAlgorithm.setVisibility(View.VISIBLE);
-            interestAlgorithm.setText(" 利息算法:" + product.getInterest_algorithm());
+            interestAlgorithm.setText("利息算法: " + product.getInterest_algorithm());
         }
 
         if (product_prepayment != null) {
             prepayment.setVisibility(View.VISIBLE);
-            prepayment.setText(" 提前还款:" + product_prepayment);
+            prepayment.setText("提前还款: " + product_prepayment);
         }
         if (product.getProduct_details() != null) {
             String details = product.getProduct_details();

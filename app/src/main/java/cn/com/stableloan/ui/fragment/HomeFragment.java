@@ -143,7 +143,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
      * 首页新品
      */
     private void getDate() {
-        getNotice();
         ivNotice.setOnClickListener(this);
         View view = setHeaderView();
         productAdapter = new ListProductAdapter(null);
@@ -157,33 +156,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     private NoticeBean noticeBean;
 
-    private void getNotice() {
-        OkGo.post(Urls.puk_URL + Urls.notice.Announcement)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
-                                    Gson gson = new Gson();
-                                    noticeBean = gson.fromJson(s, NoticeBean.class);
-                                } else {
-                                    String msg = object.getString("msg");
-                                    ToastUtils.showToast(getActivity(), msg);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
 
-                        }
-
-                    }
-                });
-
-    }
 
 
     private BGABanner banner;
@@ -294,6 +267,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                     hotBean = gson.fromJson(s, Banner_HotBean.class);
                                     if (Action == 2) {
                                         rc_adapter.setNewData(hotBean.getRecommends());
+                                        banner.setData(hotBean.getAdvertising(), null);
                                         easylayout.refreshComplete();
                                     } else {
                                         banner.setData(hotBean.getAdvertising(), null);
@@ -392,7 +366,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_notice:
-                startActivity(new Intent(getActivity(), NoticeActivity.class).putExtra("notice", noticeBean));
+                NoticeActivity.launch(getActivity());
                 ivNotice.setImageResource(R.mipmap.icon_unnotice);
                 break;
         }

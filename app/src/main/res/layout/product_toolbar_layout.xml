@@ -15,7 +15,30 @@
         android:textSize="20sp"
         />
 
+
     <com.coorchice.library.SuperTextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/cardBank"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="15dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingLeft="13dp"
+        android:text="信用卡"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:corner="40dp"
+        app:isShowState="true"
+        app:state_drawable="@mipmap/ic_bank"
+        app:state_drawable_height="18dp"
+        app:state_drawable_mode="left"
+        app:state_drawable_padding_left="5dp"
+        app:state_drawable_width="18dp"
+        />
+
+    <com.coorchice.library.SuperTextView
+        android:layout_marginTop="20dp"
         android:layout_gravity="right"
         android:id="@+id/layout_select"
         android:layout_width="80dp"
@@ -36,4 +59,5 @@
         app:state_drawable_padding_left="10dp"
         app:state_drawable_width="18dp"
         />
+
 </android.support.v7.widget.Toolbar>

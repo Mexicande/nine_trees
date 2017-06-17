@@ -11,24 +11,22 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <include layout="@layout/toolbar_layout"/>
         <RelativeLayout
             android:id="@+id/layout3"
             android:background="@color/white"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/product_logo"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@mipmap/logo"/>
             <RelativeLayout
                 android:id="@+id/layout"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/product_logo"
                 android:layout_centerVertical="true"
@@ -39,13 +37,14 @@
                     android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="@{product.platform.pl_name}"
                     />
                 <TextView
                     android:layout_marginTop="3dp"
                     android:id="@+id/product_introduction"
                     android:textSize="13sp"
-                    android:text="成立时间 :"
+                    android:text="成立时间 : "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_pname"/>
@@ -56,8 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:textColor="@color/desc_text_color"
-
-                    android:textSize="13sp"
+                    android:textSize="14sp"
                     android:layout_toRightOf="@id/product_introduction"
                     android:layout_below="@id/tv_pname"
                     android:text="@{product.platform.online_time}"
@@ -68,8 +66,8 @@
                     android:layout_below="@id/product_introduction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
-                    android:text="月均放款量 :"/>
+                    android:textSize="14sp"
+                    android:text="月均放款量 : "/>
                 <TextView
                     android:textSize="13sp"
                     android:textColor="@color/desc_text_color"
@@ -96,7 +94,8 @@
             android:id="@+id/view1"
             android:layout_marginLeft="15dp"
             android:text="平台介绍:"
-            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textSize="18sp"
             android:layout_below="@id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,10 +106,9 @@
             android:layout_below="@id/view1"
             android:id="@+id/summary"
             android:textColor="@color/desc_text_color"
-            android:textSize="@dimen/product_desc"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{product.platform.introduction}"
             />
     </LinearLayout>
 </layout>

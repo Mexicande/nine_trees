@@ -172,16 +172,18 @@ public class UpdataProfessionActivity extends BaseActivity {
                                 JSONObject object=new JSONObject(s);
                                 String success = object.getString("isSuccess");
                                 if(success.equals("1")){
+                                    hud.dismiss();
                                     setResult(1000,new Intent().putExtra("HeadPhoto",identity));
                                     finish();
                                 }else {
+                                    hud.dismiss();
+
                                     String string = object.getString("msg");
                                     ToastUtils.showToast(UpdataProfessionActivity.this,string);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            hud.dismiss();
                         }
                         @Override
                         public void onError(Call call, Response response, Exception e) {
@@ -192,8 +194,8 @@ public class UpdataProfessionActivity extends BaseActivity {
                         }
                     });
         }else {
+            hud.dismiss();
             ToastUtils.showToast(UpdataProfessionActivity.this,"系统异常,请稍后再试");
-
         }
 
     }

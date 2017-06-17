@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,6 +35,7 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UpdateNickActivity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
@@ -93,13 +95,7 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-        getVerSion();
-        Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
-        if (!login) {
-            startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
-        } else {
-            getUserInfo();
-        }
+        getUserInfo();
         return view;
     }
 
@@ -109,7 +105,11 @@ public class UserFragment extends ImmersionFragment {
         version.setText("v"+code);
     }
 
+
+
     private void getUserInfo() {
+        getVerSion();
+
         TinyDB tinyDB = new TinyDB(getActivity());
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         if (user != null) {
@@ -200,10 +200,7 @@ public class UserFragment extends ImmersionFragment {
         selfDialog.show();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
+
 
     @Override
     protected void immersionInit() {
@@ -238,13 +235,7 @@ public class UserFragment extends ImmersionFragment {
                         tvNick.setText(nick);
                     }
                 }
-            case FLAG_LOGIN:
-                if (SEND_LOGIN == resultCode) {
-                    UserBean user = (UserBean) data.getSerializableExtra("user");
-                    tvNick.setText(user.getNickname());
-                    tvUserPhone.setText(user.getUserphone());
-                }
-
+                break;
         }
 
     }

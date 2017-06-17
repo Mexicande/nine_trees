@@ -33,9 +33,7 @@
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/product_list_name"
-                    android:textColor="@color/product_name_color"
-                    android:textSize="14sp"
-                    android:src="@mipmap/new_label"
+                    android:src="@mipmap/ic_new_babel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView

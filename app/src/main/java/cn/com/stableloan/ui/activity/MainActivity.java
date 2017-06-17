@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.UpdateInfoBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.adapter.NoTouchViewPager;
 import cn.com.stableloan.ui.fragment.HomeFragment;
@@ -53,8 +54,13 @@ public class MainActivity extends BaseActivity {
 
     private Fragment mCurrentFragment;
 
-    private static  final  int LOTTERY_CODE=500;
-    private static  final  int LOTTERY_SNED=5000;
+
+
+    private static final int FLAG_LOGIN = 3;
+    private static final int SEND_LOGIN = 3000;
+
+    private static final int LOTTERY_CODE = 500;
+    private static final int LOTTERY_SNED = 5000;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -90,10 +96,6 @@ public class MainActivity extends BaseActivity {
     }*/
     private boolean Update=false;
     private void VisionTest() {
-     /*   SimpleDateFormat   formatter   =   new SimpleDateFormat("yyyy-MM-dd");
-        String time = formatter.format(new Date());
-        LogUtils.i("time",time);
-        SPUtils.put(this,"time",time);*/
 
         String url="http://www.shoujiweidai.com/update/versions.json";
 
@@ -104,16 +106,21 @@ public class MainActivity extends BaseActivity {
                 UpdateInfo info = new UpdateInfo();
                 Gson gson=new Gson();
                 UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
-               /* int code = AppUtils.getAppVersionCode();
+                int code = AppUtils.getAppVersionCode();
+                String versionName = AppUtils.getAppVersionName();
+                LogUtils.i("visoncode--",code+"---versionName=="+versionName);
+
+                LogUtils.i("info---"+infoBean.getVersionCode());
                 if(infoBean.getVersionCode()>code){
-                    Update=true;
-                }*/
-                info.hasUpdate = false;
+                    info.hasUpdate = true;
+                }else {
+                    info.hasUpdate = false;
+                }
                 info.updateContent =infoBean.getUpdateContent();
                 info.versionCode = infoBean.getVersionCode();
                 info.versionName = infoBean.getVersionName();
                 info.url = infoBean.getUrl();
-                info.md5 = infoBean.getMd5();
+                info.md5 =infoBean.getMd5();
                 info.size = infoBean.getSize();
                 info.isForce = false;
                 info.isIgnorable = false;
@@ -121,7 +128,7 @@ public class MainActivity extends BaseActivity {
                 info.isSilent = false;
                 return info;
             }
-        }).setManual(true).setWifiOnly(false).setOnFailureListener(new OnFailureListener() {
+        }).setManual(true).setManual(true).setWifiOnly(false).setOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(UpdateError error) {
                 LogUtils.i("update",error.getMessage());
@@ -146,27 +153,31 @@ public class MainActivity extends BaseActivity {
                 .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"彩票"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
                 .build();
-/*        ArrayList<Fragment> list=new ArrayList<>();
-        list.add(new HomeFragment());
-        list.add(new ProductFragment());
-        list.add(new LotteryFragment());
-        list.add(new UserFragment());*/
+
 
         navigationController.addTabItemSelectedListener(listener);
 
-
-     /* pagerAdapter=new MyViewPagerAdapter(getSupportFragmentManager(),list);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(1);
-
-        navigationController.setupWithViewPager(viewPager);
-     */
     }
 
     OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
         @Override
         public void onSelected(int index, int old) {
-            switchMenu(getFragmentName(index + 1));
+            if(index==3){
+                Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
+                if (!login) {
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
+                }
+            }else if(index==2){
+                Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
+                if (!login) {
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "123"), LOTTERY_SNED);
+                }
+            }else {
+                switchMenu(getFragmentName(index + 1));
+            }
+
+
+
         }
 
         @Override
@@ -209,7 +220,32 @@ public class MainActivity extends BaseActivity {
         mCurrentFragment = fragment;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case FLAG_LOGIN:
+                if (SEND_LOGIN == resultCode) {
+                    UserBean user = (UserBean) data.getSerializableExtra("user");
+                    if(user!=null&&user.getNickname()!=null){
+                    }else {
+                        navigationController.setSelect(0);
+                    }
+                }
+                break;
+            case LOTTERY_SNED:
+                if (LOTTERY_CODE == resultCode) {
+                    String loffery = data.getStringExtra("Loffery");
+                    if (!loffery.equals("1")) {
+                    }else {
+                       navigationController.setSelect(0);
+                    }
 
+                }
+                break;
+        }
+
+    }
 
     //创建一个Item
     private BaseTabItem newItem(int drawable, int checkedDrawable, String text){

@@ -56,7 +56,6 @@ public class NoticeActivity extends BaseActivity {
         setContentView(R.layout.activity_notice);
         ButterKnife.bind(this);
         initToolbar();
-
         setListener();
     }
 
@@ -82,15 +81,10 @@ public class NoticeActivity extends BaseActivity {
         titleName.setText("公告通知");
         ivBack.setVisibility(View.VISIBLE);
 
-        NoticeBean bean= (NoticeBean) getIntent().getSerializableExtra("notice");
         noticeAdapter = new NoticeAdapter(null);
         noticeRecycler.setLayoutManager(new LinearLayoutManager(this));
         noticeRecycler.setAdapter(noticeAdapter);
-        if(bean!=null){
-            noticeAdapter.addData(bean.getAnnouncements());
-        }else {
-            getDate();
-        }
+        getDate();
     }
 
 

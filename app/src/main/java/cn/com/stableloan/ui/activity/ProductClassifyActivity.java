@@ -22,8 +22,6 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,11 +33,11 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Class_ListProductBean;
-import cn.com.stableloan.model.Class_NewBean;
 import cn.com.stableloan.model.News_ClassBean;
-import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
+import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -57,12 +55,15 @@ public class ProductClassifyActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.SwipeRefreshLayout)
     SwipeRefreshLayout SwipeRefreshLayout;
+    @Bind(R.id.stateLayout)
+    StateLayout stateLayout;
     private Recycler_Classify_Adapter classify_recycler_adapter;
 
-    private   List<ProductListBean.ProductBean> list2;
+    private List<ProductListBean.ProductBean> list2;
     private News_ClassBean.ClassBean class_product;
-    private  ImageView imageView;
+    private ImageView imageView;
     private Class_ListProductBean class_List;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductClassifyActivity.class));
     }
@@ -76,6 +77,8 @@ public class ProductClassifyActivity extends BaseActivity {
                 .navigationBarColor(R.color.mask)
                 .barAlpha(0.2f)
                 .init();*/
+        stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
+
         class_product = (News_ClassBean.ClassBean) getIntent().getSerializableExtra("class_product");
 
         initView();
@@ -87,7 +90,8 @@ public class ProductClassifyActivity extends BaseActivity {
         String id = class_product.getId();
         titleName.setText(class_product.getName());
         ivBack.setVisibility(View.VISIBLE);
-        if(class_product!=null&&id!=null) {
+        stateLayout.showProgressView();
+        if (class_product != null && id != null) {
             HashMap<String, String> params = new HashMap<>();
             params.put("id", id);
             final JSONObject jsonObject = new JSONObject(params);
@@ -101,19 +105,28 @@ public class ProductClassifyActivity extends BaseActivity {
                                 try {
                                     JSONObject object = new JSONObject(s);
                                     String success = object.getString("isSuccess");
-                                    if(success.equals("1")){
+                                    if (success.equals("1")) {
                                         Gson gson = new Gson();
+                                        stateLayout.showContentView();
                                         class_List = gson.fromJson(s, Class_ListProductBean.class);
                                         Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).crossFade().into(imageView);
                                         classify_recycler_adapter.setNewData(class_List.getProduct());
                                     } else {
-                                        ToastUtils.showToast(ProductClassifyActivity.this, "网络异常,请检查网络连接");
+                                        stateLayout.showEmptyView();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
                             }
+                            stateLayout.showErrorView();
+                        }
+
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            stateLayout.showErrorView();
                         }
                     });
         }
@@ -130,7 +143,7 @@ public class ProductClassifyActivity extends BaseActivity {
                         getDate();
                         SwipeRefreshLayout.setRefreshing(false);
                     }
-                },1000);
+                }, 1000);
             }
 
         });

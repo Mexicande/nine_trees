@@ -162,7 +162,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                 etLock.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 btGetCode.setVisibility(View.GONE);
                 tvForget.setVisibility(View.VISIBLE);
-                etPhone.getText().clear();
                 etLock.getText().clear();
                 etPhone.setHint("手机号");
                 etLock.setHint("密码");
@@ -174,12 +173,9 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                 Flag = true;
                 etPhone.setHint("请输入手机号码");
                 etLock.setHint("验证码");
-                etPhone.getText().clear();
                 etLock.getText().clear();
                 etPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
-
                 etLock.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-
                 etLock.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                 etPhone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
                 btGetCode.setVisibility(View.VISIBLE);
@@ -407,7 +403,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                             setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
                                             finish();
                                         }
-
                                     } else {
                                         finish();
                                     }
@@ -460,12 +455,16 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //返回事件
-
         String from = getIntent().getStringExtra("from");
         if (from != null ) {
-            //MainActivity.launch(this);
-            startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            finish();
+            if(from.equals("user")){
+                UserBean userBean=new UserBean();
+                setResult(3000,new Intent().putExtra("user",userBean));
+                finish();
+            }else {
+                setResult(500,new Intent().putExtra("Loffery","1"));
+                finish();
+            }
         } else {
             finish();
         }

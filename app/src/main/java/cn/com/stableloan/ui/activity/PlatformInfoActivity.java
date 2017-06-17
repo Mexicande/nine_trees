@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -41,6 +41,8 @@ public class PlatformInfoActivity extends BaseActivity {
     ImageView ivBack;
     @Bind(R.id.product_logo)
     ImageView productLogo;
+    @Bind(R.id.summary)
+    TextView summary;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, PlatformInfoActivity.class));
@@ -54,6 +56,8 @@ public class PlatformInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_platform_info);
         ButterKnife.bind(this);
+        titleName.setText("平台详情");
+        ivBack.setVisibility(View.VISIBLE);
         String pid = getIntent().getStringExtra("pid");
         if (pid != null) {
 
@@ -78,10 +82,16 @@ public class PlatformInfoActivity extends BaseActivity {
                                     if (success.equals("1")) {
                                         Gson gson = new Gson();
                                         Product_Detail product_detail = gson.fromJson(s, Product_Detail.class);
-                                        dataBinding.setVariable(BR.product,product_detail);
-                                        titleName.setText(product_detail.getPlatform().getPl_name());
-                                        ivBack.setVisibility(View.VISIBLE);
-                                        Glide.with(PlatformInfoActivity.this).load(product_detail.getPlatform().getLogo()).into(productLogo);
+                                        dataBinding.setVariable(BR.product, product_detail);
+
+                                        if (product_detail.getPlatform().getIntroduction() != null) {
+                                            String details = product_detail.getPlatform().getIntroduction();
+                                            String aaa = details.replace("aaa", "\n");
+                                            summary.setText(aaa);
+                                        }
+
+                                        Glide.with(PlatformInfoActivity.this).load(product_detail.getPlatform().getLogo()).crossFade()
+                                                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(productLogo);
                                     }
 
                                 } catch (JSONException e) {

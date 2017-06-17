@@ -7,7 +7,7 @@
     <include layout="@layout/product_toolbar_layout"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
@@ -18,5 +18,11 @@
     </android.support.v4.widget.SwipeRefreshLayout>
     <include layout="@layout/content_slide_down_view"
         />
+    <cn.com.stableloan.view.statuslayout.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    </cn.com.stableloan.view.statuslayout.StateLayout>
 </RelativeLayout>

@@ -61,6 +61,16 @@ public class Class_ListProductBean implements Serializable{
         private String product_logo;
         private String average_time;
         private String min_algorithm;
+        private String link;
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
         private List<LabelsBean> labels;
 
         public String getFastest_time() {

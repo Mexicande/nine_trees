@@ -7,4 +7,6 @@
 
     <dimen name="drawable_size">76dp</dimen>
     <dimen name="info_margin_top">-56dp</dimen>
+
+    <dimen name="desc_left">17dp</dimen>
     </resources>

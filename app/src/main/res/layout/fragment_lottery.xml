@@ -1,12 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.fragment.LotteryFragment">
 
-    <include layout="@layout/toolbar_layout"/>
+    <include layout="@layout/toolbar_layout"
+        />
     <FrameLayout
+        android:layout_marginTop="50dp"
         android:id="@+id/web_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,4 +21,10 @@
             android:indeterminateOnly="false"
             android:visibility="visible"/>
     </FrameLayout>
-</LinearLayout>
+    <cn.com.stableloan.view.statuslayout.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </cn.com.stableloan.view.statuslayout.StateLayout>
+
+</RelativeLayout>

@@ -147,7 +147,7 @@
                             android:textColor="@color/product_limit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="月利率低至 : "
+                            android:text="月利率低至"
                             />
                         <TextView
                             android:layout_toRightOf="@id/month"
@@ -170,7 +170,7 @@
                             android:layout_marginLeft="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="放款速度 : "
+                            android:text="放款速度:"
                             android:textColor="@color/product_limit"
                             />
                         <TextView

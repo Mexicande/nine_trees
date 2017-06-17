@@ -10,11 +10,11 @@ public interface Urls{
     String STATUS_MessageLogin              =           "3";
 
 
-
-    String puk_URL="http://47.93.197.52:8080/anwendai/Home/ApiLogin/";
+    String CardBack="http://www.shoujiweidai.com/Card/index.html";
+    String puk_URL="http://123.56.29.65:8090/anwendai/Home/ApiLogin/";
     interface Login{
         //验证码发送
-        String SEND_MESSAGE="http://47.93.197.52:8080/anwendai/Home/ChuanglanSmsApi/sendSMS";
+        String SEND_MESSAGE="http://123.56.29.65:8090/anwendai/Home/ChuanglanSmsApi/sendSMS";
         String LOGIN="Login";
 
     }

@@ -33,16 +33,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).transparentBar().init();
 
-        UpdateInfoBean updateInfo=new UpdateInfoBean();
-        Gson gson=new Gson();
-        String json = gson.toJson(updateInfo);
 
 
-
-        LogUtils.i("updateInfo",json);
-
-        mHandler.sendEmptyMessageDelayed(3, 1000);
-
+        setWelcome( );
 
     }
     private static class SwitchHandler extends Handler {

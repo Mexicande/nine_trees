@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.utils.SharedPreferencesUtil;
 
 /**
  * 引导页
@@ -55,8 +56,8 @@ public class GuideActivity extends AppCompatActivity {
         bannerGuideBackground.setEnterSkipViewIdAndDelegate(R.id.btn_guide_enter, R.id.tv_guide_skip, new BGABanner.GuideDelegate() {
             @Override
             public void onClickEnterOrSkip() {
-                LoginActivity.launch(GuideActivity.this);
-              //SharedPreferencesUtil1.putBoolean(GuideActivity.this, SharedPreferencesUtil1.FIRST_OPEN, false);
+                MainActivity.launch(GuideActivity.this);
+                SharedPreferencesUtil.putBoolean(GuideActivity.this, SharedPreferencesUtil.FIRST_OPEN, false);
                 finish();
             }
         });

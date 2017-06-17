@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -33,13 +32,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
-import cn.com.stableloan.view.ShapeLoadingDialog;
+import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
+import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -57,11 +54,13 @@ public class LotteryFragment extends ImmersionFragment {
     ProgressBar webProgressBar;
     @Bind(R.id.web_container)
     FrameLayout webContainer;
+    @Bind(R.id.stateLayout)
+    StateLayout stateLayout;
 
     private WebView mWebView;
 
-    private static  final  int LOTTERY_CODE=500;
-    private static  final  int LOTTERY_SNED=5000;
+    private static final int LOTTERY_CODE = 500;
+    private static final int LOTTERY_SNED = 5000;
 
 
     public LotteryFragment() {
@@ -83,11 +82,19 @@ public class LotteryFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lottery, container, false);
         ButterKnife.bind(this, view);
+        stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
+
         titleName.setText("彩票");
         mWebView = new WebView(getActivity());
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mWebView.setLayoutParams(lp);
         webContainer.addView(mWebView, 0);
+        stateLayout.setErrorAction(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckInternet();
+            }
+        });
         getUrl();
         return view;
 
@@ -95,21 +102,17 @@ public class LotteryFragment extends ImmersionFragment {
 
     private void getUrl() {
         Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
-        if(login){
+        if (login) {
             CheckInternet();
-        }else {
-            startActivityForResult(new Intent(getActivity(),LoginActivity.class).putExtra("from","123"),LOTTERY_SNED);
+        } else {
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "123"), LOTTERY_SNED);
         }
     }
 
     private KProgressHUD hud;
+
     private void CheckInternet() {
-        hud = KProgressHUD.create(getActivity())
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
-                .setCancellable(true)
-                .show();
-        String token = (String) SPUtils.get(getActivity(), "token","1");
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         final JSONObject jsonObject = new JSONObject(params);
@@ -119,12 +122,11 @@ public class LotteryFragment extends ImmersionFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        hud.dismiss();
-
+                        stateLayout.showContentView();
                         try {
-                            JSONObject object=new JSONObject(s);
+                            JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
-                            if(isSuccess.equals("1")){
+                            if (isSuccess.equals("1")) {
                                 getDate(object.getString("data"));
 
 
@@ -139,8 +141,7 @@ public class LotteryFragment extends ImmersionFragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        hud.dismiss();
-
+                        stateLayout.showErrorView();
                     }
                 });
 
@@ -186,8 +187,11 @@ public class LotteryFragment extends ImmersionFragment {
             case LOTTERY_SNED:
                 if (LOTTERY_CODE == resultCode) {
                     String loffery = data.getStringExtra("Loffery");
-                    if(loffery!=null){
+                    if (!loffery.equals("1")) {
                         CheckInternet();
+                    }else {
+                        MainActivity.navigationController.setSelect(0);
+
                     }
 
                 }
@@ -209,6 +213,7 @@ public class LotteryFragment extends ImmersionFragment {
             }
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

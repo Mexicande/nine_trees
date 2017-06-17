@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">安稳贷</string>
+    <string name="app_name">安稳钱包</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="header_reset">正在加载</string>
@@ -19,7 +19,7 @@
 
 
     <string name="loading">正在加载...</string>
-    <string name="error">出错了</string>
+    <string name="error">出错了（┬＿┬）</string>
     <string name="retry">轻触屏幕重试</string>
-    <string name="empty">啥也没有</string>
+    <string name="empty">没有符合的产品 </string>
 </resources>

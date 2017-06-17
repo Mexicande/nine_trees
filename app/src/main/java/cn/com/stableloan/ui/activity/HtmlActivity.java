@@ -26,6 +26,7 @@ import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.utils.NetworkUtils;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class HtmlActivity extends BaseActivity {
@@ -72,8 +73,8 @@ public class HtmlActivity extends BaseActivity {
             if(desc!=null){
                 titleName.setText(desc.getPlatformdetail().getPl_name());
                 ivBack.setVisibility(View.VISIBLE);
-               /* String url = desc.getProduct().getRaiders_connection();
-                getDate(url);*/
+                String link = desc.getProduct().getLink();
+                getDate(link);
             }
             Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
             if(extra!=null){
@@ -91,15 +92,23 @@ public class HtmlActivity extends BaseActivity {
             if(desc1!=null){
                 titleName.setText(desc1.getPlatformdetail().getPl_name()+"攻略");
                 ivBack.setVisibility(View.VISIBLE);
+
                 String url = desc1.getProduct().getRaiders_connection();
                 getDate(url);
             }
-
+            String bank = getIntent().getStringExtra("bank");
+            if(bank!=null){
+                titleName.setText("信用卡分类");
+                ivBack.setVisibility(View.VISIBLE);
+                getDate(bank);
+            }
           /*  if(product!=null){
                 titleName.setText(product.getAdvername());
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(product.getApp());
             }*/
+
+
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("网络异常，请检查网络")

@@ -60,6 +60,7 @@ public class Product_DescBean implements Serializable {
          * maximum_amount : 30000
          * crowd : 2
          * review : 0
+         *
          * actual_account : 0
          * repayment : 1
          * repayment_channels : 1
@@ -94,6 +95,25 @@ public class Product_DescBean implements Serializable {
         private String fastest_time;
         private String header;
         private String amount;
+        private String link;
+        private String arrive;
+
+        public String getArrive() {
+            return arrive;
+        }
+
+        public void setArrive(String arrive) {
+            this.arrive = arrive;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
         private List<Class_ListProductBean.ProductBean.LabelsBean> labels;
 
         public String getPname() {

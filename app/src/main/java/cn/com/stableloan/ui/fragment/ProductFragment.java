@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,12 +41,15 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.SelectProduct;
+import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SmoothCheckBox;
+import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
+import cn.com.stableloan.view.statuslayout.StateLayout;
+import cn.com.stableloan.view.statuslayout.ViewAnimProvider;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -92,8 +93,10 @@ public class ProductFragment extends ImmersionFragment {
         // Required empty public constructor
     }
 
-    private KProgressHUD hud;
+    private StateLayout stateLayout;
 
+    private View errorView;
+    private View notDataView;
 
     @Override
     protected void immersionInit() {
@@ -110,7 +113,8 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
-
+        stateLayout= (StateLayout) view.findViewById(R.id.stateLayout);
+        stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
         initViewTitle();
         initRecyclView();
         setListener();
@@ -120,13 +124,8 @@ public class ProductFragment extends ImmersionFragment {
 
     private void getDate(final int var, final int action) {
         if (var == 1) {
-            hud = KProgressHUD.create(getActivity())
-                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                    .setLabel("加载中.....")
-                    .setCancellable(true)
-                    .show();
-        }
-
+            stateLayout.showProgressView();
+         }
         HashMap<String, Integer> params = new HashMap<>();
         params.put("var", var);
         final JSONObject jsonObject = new JSONObject(params);
@@ -153,19 +152,17 @@ public class ProductFragment extends ImmersionFragment {
                                             break;
                                     }
                                     if (var == 1) {
-                                        hud.dismiss();
+                                        stateLayout.setVisibility(View.GONE);
                                     }
                                 } else {
-
                                     classify_recycler_adapter.loadMoreEnd();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                         if (var == 1) {
-                            hud.dismiss();
+                            stateLayout.setVisibility(View.GONE);
                         }
 
                     }
@@ -173,8 +170,9 @@ public class ProductFragment extends ImmersionFragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        hud.dismiss();
-
+                        stateLayout.showErrorView();
+                       /* classify_recycler_adapter .setNewData(null);
+                        classify_recycler_adapter.setEmptyView(notDataView);*/
                     }
                 });
     }
@@ -260,7 +258,6 @@ public class ProductFragment extends ImmersionFragment {
                 .withListeners(new SlideUp.Listener.Slide() {
                     @Override
                     public void onSlide(float percent) {
-
                     }
                 })
                 .withStartGravity(Gravity.TOP)
@@ -289,6 +286,8 @@ public class ProductFragment extends ImmersionFragment {
         } else {
             getDate(1, ACTION_DOWN);
         }*/
+        notDataView = getActivity().getLayoutInflater().inflate(R.layout.view_empty, (ViewGroup) classifyRecycl.getParent(), false);
+        errorView = getActivity().getLayoutInflater().inflate(R.layout.view_error, (ViewGroup) classifyRecycl.getParent(), false);
 
     }
 
@@ -338,6 +337,14 @@ public class ProductFragment extends ImmersionFragment {
             }
         }, classifyRecycl);
 
+        stateLayout.setErrorAction(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDate(1, ACTION_DOWN);
+
+            }
+        });
+
     }
 
 
@@ -348,7 +355,7 @@ public class ProductFragment extends ImmersionFragment {
     }
 
 
-    @OnClick({R.id.layout_select, R.id.button, R.id.layoutGo, R.id.reset})
+    @OnClick({R.id.layout_select, R.id.button, R.id.layoutGo, R.id.reset,R.id.cardBank})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_select:
@@ -360,6 +367,9 @@ public class ProductFragment extends ImmersionFragment {
                 }
 
                 break;
+            case R.id.cardBank:
+                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("bank",Urls.CardBack));
+                break;
             case R.id.button:
                 list.clear();
                 slideUp.hide();
@@ -368,6 +378,7 @@ public class ProductFragment extends ImmersionFragment {
             case R.id.layoutGo:
                 slideUp.hide();
                 break;
+
             case R.id.reset:
                 checkbox1.setChecked(false);
                 checkbox2.setChecked(false);
@@ -400,11 +411,7 @@ public class ProductFragment extends ImmersionFragment {
     }
 
     private void selectGetProduct(int[] arr, String stat) {
-        hud = KProgressHUD.create(getActivity())
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
-                .setCancellable(true)
-                .show();
+        stateLayout.showProgressView();
         SelectProduct selectProduct = new SelectProduct(arr, stat);
         Gson gson = new Gson();
         String json = gson.toJson(selectProduct);
@@ -423,8 +430,10 @@ public class ProductFragment extends ImmersionFragment {
                                     Class_ListProductBean productBean = gson.fromJson(s, Class_ListProductBean.class);
                                     classify_recycler_adapter.setNewData(productBean.getProduct());
                                     classifyRecycl.smoothScrollToPosition(0);
-
+                                    stateLayout.showContentView();
                                 } else {
+                                    classify_recycler_adapter .setNewData(null);
+                                    stateLayout.showEmptyView();
                                     ToastUtils.showToast(getActivity(), "没有符合的产品");
                                 }
                             } catch (JSONException e) {
@@ -432,14 +441,14 @@ public class ProductFragment extends ImmersionFragment {
                             }
 
                         }
-                        hud.dismiss();
 
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        hud.dismiss();
+                        ToastUtils.showToast(getActivity(),"网络异常");
+                        stateLayout.showErrorView();
 
                     }
                 });
