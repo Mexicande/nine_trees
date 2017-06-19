@@ -27,7 +27,6 @@
             />
         <RelativeLayout
             android:layout_toLeftOf="@id/view1"
-            android:id="@+id/layout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView

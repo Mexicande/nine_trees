@@ -139,6 +139,8 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
             case R.id.bt_getCode:
                 getCodeMessage();
                 break;
+            default:
+                break;
         }
     }
 

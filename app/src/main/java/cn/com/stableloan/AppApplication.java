@@ -6,6 +6,7 @@ import android.content.Context;
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.logging.Level;
 
@@ -28,6 +29,9 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         Utils.init(this);
+
+        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
+
         sInstance=AppApplication.getsInstance();
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()

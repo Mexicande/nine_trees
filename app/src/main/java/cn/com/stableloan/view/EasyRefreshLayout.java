@@ -127,10 +127,12 @@ public class EasyRefreshLayout extends ViewGroup {
             removeView(refreshHeaderView);
 
         /*设置默认的布局参数*/
-        LayoutParams layoutParams = headerView.getLayoutParams();
-        if (layoutParams == null) {
-            layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-            headerView.setLayoutParams(layoutParams);
+        if(headerView!=null){
+            LayoutParams layoutParams = headerView.getLayoutParams();
+            if (layoutParams == null) {
+                layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                headerView.setLayoutParams(layoutParams);
+            }
         }
 
         /*设置为新的headerView*/
@@ -325,6 +327,7 @@ public class EasyRefreshLayout extends ViewGroup {
                     }
                 }
                 break;
+
             }
 
             case MotionEvent.ACTION_CANCEL:
@@ -357,6 +360,8 @@ public class EasyRefreshLayout extends ViewGroup {
                 lastMotionX = ev.getX(ev.findPointerIndex(activePointerId));
                 break;
             }
+            default:
+                break;
         }
         return super.dispatchTouchEvent(ev);
 
@@ -930,6 +935,8 @@ public class EasyRefreshLayout extends ViewGroup {
                 int[] lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
                 staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
                 lastVisibleItemPosition = findMax(lastPositions);
+                break;
+            default:
                 break;
         }
         return lastVisibleItemPosition;

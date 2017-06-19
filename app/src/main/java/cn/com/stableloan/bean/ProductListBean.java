@@ -223,37 +223,8 @@ public class ProductListBean implements Serializable{
             this.average_time = average_time;
         }
 
-        @Override
-        public String toString() {
-            return "ProductBean{" +
-                    "pname='" + pname + '\'' +
-                    ", product_introduction='" + product_introduction + '\'' +
-                    ", min_algorithm='" + min_algorithm + '\'' +
-                    ", interest_algorithm='" + interest_algorithm + '\'' +
-                    ", average_time='" + average_time + '\'' +
-                    ", platformname='" + platformname + '\'' +
-                    ", Introduction='" + Introduction + '\'' +
-                    ", logo='" + logo + '\'' +
-                    ", minimum_amount='" + minimum_amount + '\'' +
-                    ", maximum_amount='" + maximum_amount + '\'' +
-                    ", crowd='" + crowd + '\'' +
-                    ", review='" + review + '\'' +
-                    ", arrive='" + arrive + '\'' +
-                    ", actual_account='" + actual_account + '\'' +
-                    ", repayment='" + repayment + '\'' +
-                    ", repayment_channels='" + repayment_channels + '\'' +
-                    ", max_algorithm='" + max_algorithm + '\'' +
-                    ", prepayment='" + prepayment + '\'' +
-                    '}';
-        }
+
     }
 
-    @Override
-    public String toString() {
-        return "ProductListBean{" +
-                "isSuccess='" + isSuccess + '\'' +
-                ", advertising=" + advertising +
-                ", product=" + product +
-                '}';
-    }
+
 }

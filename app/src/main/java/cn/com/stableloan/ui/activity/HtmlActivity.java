@@ -55,15 +55,12 @@ public class HtmlActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
-
         mWebView = new WebView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mWebView.setLayoutParams(lp);
         mContainer.addView(mWebView, 0);
         CheckInternet();
     }
-
-
 
     private void CheckInternet() {
 

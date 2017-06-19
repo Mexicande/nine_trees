@@ -113,6 +113,8 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
             case R.id.tv_save:
                 Validate.check(UpdatePassWordActivity.this, UpdatePassWordActivity.this);
                 break;
+            default:
+                break;
         }
     }
     private  KProgressHUD hud;

@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     tools:context="cn.com.stableloan.ui.activity.LoginActivity">
     <ImageView
-        android:id="@+id/iv_logo"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:layout_width="90dp"

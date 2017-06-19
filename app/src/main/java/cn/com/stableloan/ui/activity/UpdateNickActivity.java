@@ -107,6 +107,8 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                     ToastUtils.showToast(this,"昵称不符合");
                 }*/
                 break;
+            default:
+                break;
         }
     }
 

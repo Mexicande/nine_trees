@@ -34,6 +34,7 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
@@ -112,6 +113,7 @@ public class LotteryFragment extends ImmersionFragment {
     private KProgressHUD hud;
 
     private void CheckInternet() {
+        stateLayout.showProgressView();
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
@@ -127,8 +129,18 @@ public class LotteryFragment extends ImmersionFragment {
                             JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
                             if (isSuccess.equals("1")) {
-                                getDate(object.getString("data"));
+                                String qian = object.getString("qian");
+                                String date = object.getString("data");
+                                String hou = object.getString("hou");
 
+                                LogUtils.i("qian",qian);
+                                LogUtils.i("date",date);
+                                LogUtils.i("hou",hou);
+
+                                getDate(qian+date+hou);
+
+
+                            }else {
 
                             }
                         } catch (JSONException e) {

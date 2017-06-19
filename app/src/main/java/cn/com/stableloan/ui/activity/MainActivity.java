@@ -46,8 +46,7 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.tab)
     PageBottomTabLayout tab;
-
-
+    // public  最好使用private /set get来获取
     public static NavigationController navigationController;
 
     private FragmentManager mFragmentManager;
@@ -153,7 +152,11 @@ public class MainActivity extends BaseActivity {
                 .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"彩票"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
                 .build();
-
+/*        ArrayList<Fragment> list=new ArrayList<>();
+        list.add(new HomeFragment());
+        list.add(new ProductFragment());
+        list.add(new LotteryFragment());
+        list.add(new UserFragment());*/
 
         navigationController.addTabItemSelectedListener(listener);
 
@@ -162,26 +165,30 @@ public class MainActivity extends BaseActivity {
     OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
         @Override
         public void onSelected(int index, int old) {
+
             if(index==3){
                 Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
                 if (!login) {
                     startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
+                }else {
+                    switchMenu(getFragmentName(4));
                 }
             }else if(index==2){
                 Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
                 if (!login) {
                     startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "123"), LOTTERY_SNED);
+                }else {
+                    switchMenu(getFragmentName(3));
                 }
             }else {
                 switchMenu(getFragmentName(index + 1));
             }
 
-
-
         }
 
         @Override
         public void onRepeat(int index) {
+
 
         }
     };
@@ -228,6 +235,8 @@ public class MainActivity extends BaseActivity {
                 if (SEND_LOGIN == resultCode) {
                     UserBean user = (UserBean) data.getSerializableExtra("user");
                     if(user!=null&&user.getNickname()!=null){
+                        switchMenu(getFragmentName(4));
+
                     }else {
                         navigationController.setSelect(0);
                     }
@@ -237,12 +246,14 @@ public class MainActivity extends BaseActivity {
                 if (LOTTERY_CODE == resultCode) {
                     String loffery = data.getStringExtra("Loffery");
                     if (!loffery.equals("1")) {
+                        switchMenu(getFragmentName(3));
                     }else {
                        navigationController.setSelect(0);
                     }
 
                 }
                 break;
+
         }
 
     }

@@ -23,7 +23,7 @@ import cn.com.stableloan.R;
  * Created by apple on 2017/6/14.
  */
 
-public class PasswordToggleEditText  extends EditText implements
+public class PasswordToggleEditText  extends android.support.v7.widget.AppCompatEditText implements
         View.OnFocusChangeListener, TextWatcher {
     private Drawable mToggleDrawable;
 

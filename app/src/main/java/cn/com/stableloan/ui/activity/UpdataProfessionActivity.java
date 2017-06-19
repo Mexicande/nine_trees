@@ -101,6 +101,8 @@ public class UpdataProfessionActivity extends BaseActivity {
                         ivCompany.setColorFilter(getResources().getColor(R.color.mask));
                         tickCompany.setVisibility(View.VISIBLE);
                         break;
+                    default:
+                        break;
                 }
             }
         }
@@ -144,6 +146,8 @@ public class UpdataProfessionActivity extends BaseActivity {
                 user.setIdentity(""+Flge);
                 setResult(-1,new Intent().putExtra("HeadPhoto",Flge));
                 finish();*/
+                break;
+            default:
                 break;
         }
 

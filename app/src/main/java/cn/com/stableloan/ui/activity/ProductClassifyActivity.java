@@ -87,48 +87,50 @@ public class ProductClassifyActivity extends BaseActivity {
     }
 
     private void getDate() {
-        String id = class_product.getId();
-        titleName.setText(class_product.getName());
-        ivBack.setVisibility(View.VISIBLE);
-        stateLayout.showProgressView();
-        if (class_product != null && id != null) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("id", id);
-            final JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.puk_URL + Urls.product.ClassProduct)
-                    .tag(this)
-                    .upJson(jsonObject.toString())
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            if (s != null) {
-                                try {
-                                    JSONObject object = new JSONObject(s);
-                                    String success = object.getString("isSuccess");
-                                    if (success.equals("1")) {
-                                        Gson gson = new Gson();
-                                        stateLayout.showContentView();
-                                        class_List = gson.fromJson(s, Class_ListProductBean.class);
-                                        Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).crossFade().into(imageView);
-                                        classify_recycler_adapter.setNewData(class_List.getProduct());
-                                    } else {
-                                        stateLayout.showEmptyView();
+        if(class_product!=null){
+            String id = class_product.getId();
+            titleName.setText(class_product.getName());
+            ivBack.setVisibility(View.VISIBLE);
+            stateLayout.showProgressView();
+            if (class_product != null && id != null) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("id", id);
+                final JSONObject jsonObject = new JSONObject(params);
+                OkGo.post(Urls.puk_URL + Urls.product.ClassProduct)
+                        .tag(this)
+                        .upJson(jsonObject.toString())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                if (s != null) {
+                                    try {
+                                        JSONObject object = new JSONObject(s);
+                                        String success = object.getString("isSuccess");
+                                        if (success.equals("1")) {
+                                            Gson gson = new Gson();
+                                            stateLayout.showContentView();
+                                            class_List = gson.fromJson(s, Class_ListProductBean.class);
+                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).crossFade().into(imageView);
+                                            classify_recycler_adapter.setNewData(class_List.getProduct());
+                                        } else {
+                                            stateLayout.showEmptyView();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+
                                 }
-
+                                stateLayout.showErrorView();
                             }
-                            stateLayout.showErrorView();
-                        }
 
 
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                            stateLayout.showErrorView();
-                        }
-                    });
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
+                                stateLayout.showErrorView();
+                            }
+                        });
+            }
         }
     }
 

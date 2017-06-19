@@ -80,7 +80,7 @@ public class UserFragment extends ImmersionFragment {
     private static final int FLAG_NICK = 2;
     private static final int SEND_NICK = 2000;
     private static final int FLAG_LOGIN = 3;
-    private static final int SEND_LOGIN = 3000;
+    private static final int SEND_LOGIN = 4000;
 
     private static final int Moon = 1;
 
@@ -174,6 +174,8 @@ public class UserFragment extends ImmersionFragment {
             case R.id.bt_exit: //退出登录
                 exit();
                 break;
+            default:
+                break;
         }
     }
 
@@ -188,7 +190,7 @@ public class UserFragment extends ImmersionFragment {
                 SPUtils.clear(getActivity());
                 TinyDB tinyDB = new TinyDB(getActivity());
                 tinyDB.clear();
-                startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
+                startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user1"), FLAG_LOGIN);
             }
         });
         selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
@@ -235,6 +237,17 @@ public class UserFragment extends ImmersionFragment {
                         tvNick.setText(nick);
                     }
                 }
+                break;
+            case FLAG_LOGIN:
+                if(SEND_LOGIN==resultCode){
+                    UserBean user = (UserBean) data.getSerializableExtra("user");
+                    if(user!=null&&user.getNickname()!=null){
+                        getUserInfo();
+                    }else {
+                        MainActivity.navigationController.setSelect(0);
+                    }
+                }
+
                 break;
         }
 

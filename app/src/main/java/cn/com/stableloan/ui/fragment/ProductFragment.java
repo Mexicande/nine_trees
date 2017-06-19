@@ -26,6 +26,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -235,6 +236,8 @@ public class ProductFragment extends ImmersionFragment {
                     case 4:
                         s = new int[]{3};
                         break;
+                    default:
+                        break;
                 }
                 selectGetProduct(s, "1");
                 SPUtils.remove(getActivity(), "plat");
@@ -386,6 +389,8 @@ public class ProductFragment extends ImmersionFragment {
                 checkbox4.setChecked(false);
                 getDate(1, ACTION_DOWN);
                 slideUp.hide();
+                break;
+            default:
                 break;
         }
     }

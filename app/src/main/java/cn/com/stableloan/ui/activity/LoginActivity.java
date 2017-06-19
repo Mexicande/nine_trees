@@ -10,6 +10,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,8 +28,6 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -36,8 +35,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.CodeMessage;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
@@ -112,11 +109,10 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Validate.reg(this);
         ButterKnife.bind(this);
+        Validate.reg(this);
         initView();
-        etLock.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
+
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
 
     }
@@ -180,6 +176,8 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                 etPhone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
                 btGetCode.setVisibility(View.VISIBLE);
                 tvForget.setVisibility(View.GONE);
+                break;
+            default:
                 break;
 
         }
@@ -277,6 +275,8 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                 UpdateUtil.clean(this);
                 RegisterActivity.launch(this);
                 break;
+            default:
+                break;
         }
     }
 
@@ -309,7 +309,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
         } else {
             //账号密码登陆
             //隐藏密码
-
             String pass = etLock.getText().toString();
             if (!pass.isEmpty()) {
                 String md5ToString = EncryptUtils.encryptMD5ToString(pass);
@@ -396,14 +395,19 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                     tinyDB.putObject("user", bean);
                                     String from = getIntent().getStringExtra("from");
                                     if (from != null) {
+                                        Log.i("from------","from");
                                         if(from.equals("user")){
                                             setResult(Flag_User, new Intent().putExtra("user", bean));
                                             finish();
                                         }else if(from.equals("123")){
                                             setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
                                             finish();
+                                        }else if(from.equals("user1")){
+                                            setResult(4000, new Intent().putExtra("user", bean));
+                                            finish();
                                         }
                                     } else {
+                                        Log.i("from------","null");
                                         finish();
                                     }
                                 }
@@ -452,21 +456,22 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //返回事件
         String from = getIntent().getStringExtra("from");
         if (from != null ) {
             if(from.equals("user")){
                 UserBean userBean=new UserBean();
-                setResult(3000,new Intent().putExtra("user",userBean));
+                setResult(Flag_User,new Intent().putExtra("user",userBean));
                 finish();
-            }else {
-                setResult(500,new Intent().putExtra("Loffery","1"));
+            }else if(from.equals("123")){
+                setResult(LOTTERY_CODE,new Intent().putExtra("Loffery","1"));
+                finish();
+            }else if(from.equals("user1")){
+                UserBean userBean=new UserBean();
+                setResult(4000,new Intent().putExtra("user",userBean));
                 finish();
             }
-        } else {
-            finish();
         }
     /*    UserBean user = (UserBean) SPUtils.get(this, "user", UserBean.class);
             if(user!=null){

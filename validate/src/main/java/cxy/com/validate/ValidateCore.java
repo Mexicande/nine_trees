@@ -48,6 +48,7 @@ public class ValidateCore {
 
 
     public static boolean notNull(Object view, boolean isEt, String msg, IValidateResult validateResult) {
+
         if (TextUtils.isEmpty(((TextView) view).getText().toString())) {
             setEditText(view, isEt, msg, validateResult);
             return true;

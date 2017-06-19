@@ -119,6 +119,8 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
             case R.id.bt_getCode:
                 getCodeMessage();
                 break;
+            default:
+                break;
         }
     }
 

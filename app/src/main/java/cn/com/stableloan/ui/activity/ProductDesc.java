@@ -310,6 +310,8 @@ public class ProductDesc extends BaseActivity {
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
+            default:
+                break;
         }
     }
 

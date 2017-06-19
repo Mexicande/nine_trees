@@ -69,9 +69,7 @@
         <item name="banner_tipTextColor">@android:color/white</item>
         <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
     </style>
-    <style name="TextViewCustomFont">
-        <item name="fontPath">fonts/fangzheng.ttf</item>
-    </style>
+
     <style name="MyDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:background">@android:color/transparent</item>
