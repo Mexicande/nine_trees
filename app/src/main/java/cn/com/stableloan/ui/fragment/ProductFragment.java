@@ -162,9 +162,6 @@ public class ProductFragment extends ImmersionFragment {
                                 e.printStackTrace();
                             }
                         }
-                        if (var == 1) {
-                            stateLayout.setVisibility(View.GONE);
-                        }
 
                     }
 
@@ -172,8 +169,6 @@ public class ProductFragment extends ImmersionFragment {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         stateLayout.showErrorView();
-                       /* classify_recycler_adapter .setNewData(null);
-                        classify_recycler_adapter.setEmptyView(notDataView);*/
                     }
                 });
     }
@@ -416,6 +411,7 @@ public class ProductFragment extends ImmersionFragment {
     }
 
     private void selectGetProduct(int[] arr, String stat) {
+        stateLayout.setVisibility(View.VISIBLE);
         stateLayout.showProgressView();
         SelectProduct selectProduct = new SelectProduct(arr, stat);
         Gson gson = new Gson();
@@ -439,6 +435,7 @@ public class ProductFragment extends ImmersionFragment {
                                 } else {
                                     classify_recycler_adapter .setNewData(null);
                                     stateLayout.showEmptyView();
+
                                     ToastUtils.showToast(getActivity(), "没有符合的产品");
                                 }
                             } catch (JSONException e) {

@@ -120,7 +120,6 @@ public class ProductClassifyActivity extends BaseActivity {
                                     }
 
                                 }
-                                stateLayout.showErrorView();
                             }
 
 
