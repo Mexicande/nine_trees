@@ -69,7 +69,7 @@
         <meta-data
             android:value="91be901ec8194403abb12e59fcc7baf2" android:name = "ZHUGE_APPKEY"/>
         <meta-data
-            android:value="安稳钱包" android:name = "ZHUGE_CHANNEL"/>
+            android:value="其他" android:name = "ZHUGE_CHANNEL"/>
     </application>
 
 </manifest>
