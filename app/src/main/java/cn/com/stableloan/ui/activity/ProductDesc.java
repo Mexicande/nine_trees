@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,9 +36,11 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
@@ -127,8 +130,9 @@ public class ProductDesc extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desc);
-
         ButterKnife.bind(this);
+        ZhugeSDK.getInstance().init(getApplicationContext());
+
         initToolbar();
         pid = getIntent().getStringExtra("pid");
         if (pid != null) {
@@ -137,7 +141,6 @@ public class ProductDesc extends BaseActivity {
         }
 
     }
-
 
     private void getProductDate(String id) {
         hud = KProgressHUD.create(this)
@@ -307,12 +310,37 @@ public class ProductDesc extends BaseActivity {
                 if (!login) {
                     LoginActivity.launch(this);
                 } else {
+                    sendIO();
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private void sendIO() {
+        TinyDB tinyDB = new TinyDB(this);
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("产品名称", descBean.getProduct().getPname());
+            if(user!=null){
+                if(user.getUserphone()!=null){
+                    eventObject.put("用户ID", user.getUserphone());
+                }
+            }
+            ZhugeSDK.getInstance().track(getApplicationContext(), "安稳钱包",
+                    eventObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ZhugeSDK.getInstance().flush(getApplicationContext());
+
     }
 
 }

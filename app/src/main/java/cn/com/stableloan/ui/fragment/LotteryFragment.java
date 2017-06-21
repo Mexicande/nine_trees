@@ -2,10 +2,12 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
@@ -84,7 +87,6 @@ public class LotteryFragment extends ImmersionFragment {
         View view = inflater.inflate(R.layout.fragment_lottery, container, false);
         ButterKnife.bind(this, view);
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
-
         titleName.setText("彩票");
         mWebView = new WebView(getActivity());
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
@@ -96,25 +98,19 @@ public class LotteryFragment extends ImmersionFragment {
                 CheckInternet();
             }
         });
-        getUrl();
+        CheckInternet() ;
         return view;
 
     }
 
-    private void getUrl() {
-        Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
-        if (login) {
-            CheckInternet();
-        } else {
-            startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "123"), LOTTERY_SNED);
-        }
-    }
+
 
     private KProgressHUD hud;
 
     private void CheckInternet() {
         stateLayout.showProgressView();
         String token = (String) SPUtils.get(getActivity(), "token", "1");
+
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         final JSONObject jsonObject = new JSONObject(params);
@@ -132,15 +128,10 @@ public class LotteryFragment extends ImmersionFragment {
                                 String qian = object.getString("qian");
                                 String date = object.getString("data");
                                 String hou = object.getString("hou");
-
-                                LogUtils.i("qian",qian);
-                                LogUtils.i("date",date);
-                                LogUtils.i("hou",hou);
-
                                 getDate(qian+date+hou);
 
-
                             }else {
+                                stateLayout.showErrorView();
 
                             }
                         } catch (JSONException e) {
@@ -175,23 +166,95 @@ public class LotteryFragment extends ImmersionFragment {
             webSettings.setAllowFileAccess(true);
             webSettings.setAppCacheEnabled(true);
             webSettings.setDisplayZoomControls(false);
+
+
             if (Build.VERSION.SDK_INT >= 21) {
                 webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }
             mWebView.loadUrl(url);
+
             mWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
+                    LogUtils.i("webView",url);
+                    if (parseScheme(url)) {
+
+                    } else {
+                        view.loadUrl(url);
+                    }
+
+                    return true;
+                }
+            });
+
+            mWebView.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
+
+                        mWebView.goBack();
+
+                        return true;
+
+                    }
                     return false;
                 }
             });
-            mWebView.setWebChromeClient(new MyWebChromeClient());
+            mWebView.setWebChromeClient(new WebChromeClient(){
+                @Override
+                public void onProgressChanged(WebView view, int newProgress) {
+                    if (newProgress == 100) {
+                        webProgressBar.setVisibility(View.GONE);
+                    } else {
+                        if (webProgressBar.getVisibility() != View.VISIBLE)
+                            webProgressBar.setVisibility(View.VISIBLE);
+                        webProgressBar.setProgress(newProgress);
+                    }
+                }
+            });
+
 
 
         }
     }
 
+
+    public boolean parseScheme(String url) {
+        if (url.contains("platformapi/startapp")) {
+            try {
+                Uri uri = Uri.parse(url);
+                Intent intent;
+                intent = Intent.parseUri(url,
+                        Intent.URI_INTENT_SCHEME);
+                intent.addCategory("android.intent.category.BROWSABLE");
+                intent.setComponent(null);
+                startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showToast(getActivity(),"请安装最新版支付宝");
+            }
+            return true;
+        } else if(url.contains("qqapi")){
+            try {
+                Uri uri = Uri.parse(url);
+                Intent intent;
+                intent = Intent.parseUri(url,
+                        Intent.URI_INTENT_SCHEME);
+                intent.addCategory("android.intent.category.BROWSABLE");
+                intent.setComponent(null);
+                startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showToast(getActivity(),"请安装最新版腾讯QQ");
+            }
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //qwallet100703379
+
+
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -203,26 +266,17 @@ public class LotteryFragment extends ImmersionFragment {
                         CheckInternet();
                     }else {
                         MainActivity.navigationController.setSelect(0);
-
                     }
-
                 }
                 break;
         }
-    }
+    }*/
 
     private class MyWebChromeClient extends WebChromeClient {
-
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if (newProgress == 100) {
-                webProgressBar.setVisibility(View.GONE);
-            } else {
-                if (webProgressBar.getVisibility() != View.VISIBLE)
-                    webProgressBar.setVisibility(View.VISIBLE);
-                webProgressBar.setProgress(newProgress);
-            }
+
         }
     }
 

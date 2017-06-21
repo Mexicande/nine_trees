@@ -154,15 +154,12 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
                                     String success = object.getString("isSuccess");
                                     if(success.equals("1")){
                                         ToastUtils.showToast(UpdatePassWordActivity.this,"修改成功");
-
                                         startActivity(new Intent(UpdatePassWordActivity.this, LoginActivity.class).putExtra("from", "user"));
                                         hud.dismiss();
-
                                        // LoginActivity.launch(UpdatePassWordActivity.this);
                                         finish();
                                     }else {
                                         hud.dismiss();
-
                                         String string = object.getString("msg");
                                         ToastUtils.showToast(UpdatePassWordActivity.this,string);
                                     }

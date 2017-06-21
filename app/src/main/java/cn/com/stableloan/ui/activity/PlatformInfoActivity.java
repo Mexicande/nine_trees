@@ -43,6 +43,8 @@ public class PlatformInfoActivity extends BaseActivity {
     ImageView productLogo;
     @Bind(R.id.summary)
     TextView summary;
+    @Bind(R.id.online_time)
+    TextView onlineTime;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, PlatformInfoActivity.class));
@@ -83,13 +85,12 @@ public class PlatformInfoActivity extends BaseActivity {
                                         Gson gson = new Gson();
                                         Product_Detail product_detail = gson.fromJson(s, Product_Detail.class);
                                         dataBinding.setVariable(BR.product, product_detail);
-
                                         if (product_detail.getPlatform().getIntroduction() != null) {
                                             String details = product_detail.getPlatform().getIntroduction();
                                             String aaa = details.replace("aaa", "\n");
                                             summary.setText(aaa);
-                                        }
 
+                                        }
                                         Glide.with(PlatformInfoActivity.this).load(product_detail.getPlatform().getLogo()).crossFade()
                                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(productLogo);
                                     }

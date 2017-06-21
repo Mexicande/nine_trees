@@ -57,7 +57,6 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
     @Bind(R.id.bt_commit)
     Button btCommit;
 
-
     @Index(1)
     @NotNull(msg = "昵称不为能空！")
     @RE(re = RE.number_letter_nick, msg = "昵称格式不正确")

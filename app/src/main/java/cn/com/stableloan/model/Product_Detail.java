@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/6/12.
  */
 
-public class Product_Detail {
+public class Product_Detail implements Serializable{
 
     /**
      * isSuccess : true
@@ -30,7 +32,7 @@ public class Product_Detail {
         this.platform = platform;
     }
 
-    public static class PlatformBean {
+    public static class PlatformBean implements Serializable{
         /**
          * pl_name : 现金贷
          * introduction : 额外无无

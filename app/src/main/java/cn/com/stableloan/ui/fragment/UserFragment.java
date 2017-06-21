@@ -208,6 +208,8 @@ public class UserFragment extends ImmersionFragment {
     protected void immersionInit() {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
+                .statusBarAlpha(0.3f)
+
                 .navigationBarColor(R.color.colorStatus)
                 .init();
     }

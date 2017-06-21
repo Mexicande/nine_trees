@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.com.stableloan.view.statuslayout.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,4 +25,4 @@
         android:layout_height="match_parent">
 
     </cn.com.stableloan.view.statuslayout.StateLayout>
-</RelativeLayout>
+</cn.com.stableloan.view.statuslayout.StateLayout>

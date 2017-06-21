@@ -5,8 +5,8 @@
     <string name="header_reset">正在加载</string>
     <string name="header_pull">正在加载</string>
     <string name="header_pull_over">释放立即刷新</string>
-    <string name="header_refreshing">加载中...</string>
-    <string name="header_completed">加载中...</string>
+    <string name="header_refreshing">加载中…</string>
+    <string name="header_completed">加载中…</string>
 
 
     <string name="captcha_btn_resend">重发验证码</string>
@@ -15,7 +15,7 @@
     <!-- TODO: Remove or change this placeholder text -->
 
 
-    <string name="loading">正在加载...</string>
+    <string name="loading">正在加载…</string>
     <string name="error">出错了（┬＿┬）</string>
     <string name="retry">轻触屏幕重试</string>
     <string name="empty">没有符合的产品 </string>

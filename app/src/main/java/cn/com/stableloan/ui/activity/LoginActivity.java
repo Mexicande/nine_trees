@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        ZhugeSDK.getInstance().init(getApplicationContext());
+
         Validate.reg(this);
         initView();
 
@@ -346,6 +349,7 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                 if (success.equals("1")) {
                                     SPUtils.put(LoginActivity.this, "token", object.getString("token"));
                                     SPUtils.put(LoginActivity.this, "login", true);
+
                                     getUserInfo();
                                 } else {
                                     String string = object.getString("msg");
@@ -438,7 +442,7 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            String status = jsonObject.getString("status");
+                            String status = jsonObject.getString("isSuccess");
                             if (status.equals("1")) {
                                 MessageCode = jsonObject.getString("check");
                                 ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
@@ -488,6 +492,8 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
     protected void onDestroy() {
         super.onDestroy();
         Validate.unreg(this);
+        ZhugeSDK.getInstance().flush(getApplicationContext());
+
     }
 
     @Override

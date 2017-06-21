@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import com.blankj.utilcode.util.AppUtils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,6 +69,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        ZhugeSDK.getInstance().init(getApplicationContext());
+
         VisionTest();
         initView();
     }
@@ -93,7 +96,6 @@ public class MainActivity extends BaseActivity {
         }
 
     }*/
-    private boolean Update=false;
     private void VisionTest() {
 
         String url="http://www.shoujiweidai.com/update/versions.json";
@@ -185,7 +187,6 @@ public class MainActivity extends BaseActivity {
             }
 
         }
-
         @Override
         public void onRepeat(int index) {
 
@@ -226,7 +227,6 @@ public class MainActivity extends BaseActivity {
         }
         mCurrentFragment = fragment;
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -276,6 +276,13 @@ public class MainActivity extends BaseActivity {
             mLastBackTime = System.currentTimeMillis();
             ToastUtils.showToast(this,"再按一次退出");
         }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ZhugeSDK.getInstance().flush(getApplicationContext());
 
     }
 }

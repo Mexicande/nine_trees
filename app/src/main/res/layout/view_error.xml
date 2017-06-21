@@ -12,7 +12,8 @@
         android:id="@+id/errorImageView"
         android:layout_width="@dimen/drawable_size"
         android:layout_height="@dimen/drawable_size"
-        tools:src="@mipmap/ic_state_layout_error" />
+        android:src="@mipmap/ic_state_layout_error"
+        />
     <TextView
         android:id="@+id/errorTextView"
         android:layout_width="wrap_content"

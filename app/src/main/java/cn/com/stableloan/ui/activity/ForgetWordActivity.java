@@ -132,7 +132,6 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
 
         if (RegexUtils.isMobileExact(phone)) {
             captchaTimeCount.start();
-
             HashMap<String, String> params = new HashMap<>();
             params.put("userPhone", phone);
             params.put("status", "1");
@@ -146,12 +145,14 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                         public void onSuccess(String s, Call call, Response response) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
-                                String status = jsonObject.getString("status");
+                                String status = jsonObject.getString("isSuccess");
                                 if (status.equals("1")) {
                                     MessageCode = jsonObject.getString("check");
-                                    ToastUtils.showToast(ForgetWordActivity.this, jsonObject.getString("msg"));
+                                    String msg = jsonObject.getString("msg");
+                                    ToastUtils.showToast(ForgetWordActivity.this, msg);
                                 } else {
-                                    ToastUtils.showToast(ForgetWordActivity.this, jsonObject.getString("msg"));
+                                    String msg = jsonObject.getString("msg");
+                                    ToastUtils.showToast(ForgetWordActivity.this, msg);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -193,18 +194,15 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                         public void onSuccess(String s, Call call, Response response) {
                             try {
                                 JSONObject object = new JSONObject(s);
-
                                 String success = object.getString("isSuccess");
                                 if(success.equals("1")){
                                     hud.dismiss();
                                     String string = object.getString("msg");
-
                                     ToastUtils.showToast(ForgetWordActivity.this, string);
                                     finish();
                                 } else {
                                     String string = object.getString("msg");
                                     hud.dismiss();
-
                                     ToastUtils.showToast(ForgetWordActivity.this, string);
                                 }
                             } catch (JSONException e) {

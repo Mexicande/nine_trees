@@ -30,7 +30,7 @@ public class AppApplication extends Application {
     public void onCreate() {
         Utils.init(this);
 
-        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
+        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
 
         sInstance=AppApplication.getsInstance();
         super.onCreate();

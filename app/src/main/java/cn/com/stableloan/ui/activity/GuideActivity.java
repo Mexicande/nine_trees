@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,6 +49,8 @@ public class GuideActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_guide);
         ButterKnife.bind(this);
+        ZhugeSDK.getInstance().init(getApplicationContext());
+
         setListener();
         processLogic();
     }
@@ -65,6 +68,13 @@ public class GuideActivity extends AppCompatActivity {
     private void processLogic() {
         // 设置数据源
         bannerGuideBackground.setData(R.mipmap.lod_01, R.mipmap.lod_02, R.mipmap.lod_03);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ZhugeSDK.getInstance().flush(getApplicationContext());
 
     }
 }

@@ -22,11 +22,9 @@ import com.coorchice.library.SuperTextView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +48,6 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SmoothCheckBox;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
-import cn.com.stableloan.view.statuslayout.ViewAnimProvider;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -103,6 +100,8 @@ public class ProductFragment extends ImmersionFragment {
     protected void immersionInit() {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
+                .statusBarAlpha(0.3f)
+
                 .navigationBarColor(R.color.colorPrimary)
                 .init();
     }
@@ -145,15 +144,17 @@ public class ProductFragment extends ImmersionFragment {
                                     Class_ListProductBean json = gson.fromJson(s, Class_ListProductBean.class);
                                     switch (action) {
                                         case ACTION_DOWN:
+                                            stateLayout.showContentView();
                                             classify_recycler_adapter.setNewData(json.getProduct());
                                             break;
                                         default:
+                                            stateLayout.showContentView();
                                             classify_recycler_adapter.addData(json.getProduct());
                                             classify_recycler_adapter.loadMoreComplete();
                                             break;
                                     }
                                     if (var == 1) {
-                                        stateLayout.setVisibility(View.GONE);
+
                                     }
                                 } else {
                                     classify_recycler_adapter.loadMoreEnd();
@@ -162,7 +163,6 @@ public class ProductFragment extends ImmersionFragment {
                                 e.printStackTrace();
                             }
                         }
-
                     }
 
                     @Override
@@ -172,8 +172,6 @@ public class ProductFragment extends ImmersionFragment {
                     }
                 });
     }
-
-
     private boolean isGetData = false;
 
     @Override
@@ -411,7 +409,6 @@ public class ProductFragment extends ImmersionFragment {
     }
 
     private void selectGetProduct(int[] arr, String stat) {
-        stateLayout.setVisibility(View.VISIBLE);
         stateLayout.showProgressView();
         SelectProduct selectProduct = new SelectProduct(arr, stat);
         Gson gson = new Gson();
@@ -434,8 +431,7 @@ public class ProductFragment extends ImmersionFragment {
                                     stateLayout.showContentView();
                                 } else {
                                     classify_recycler_adapter .setNewData(null);
-                                    stateLayout.showEmptyView();
-
+                                    classify_recycler_adapter.setEmptyView(notDataView);
                                     ToastUtils.showToast(getActivity(), "没有符合的产品");
                                 }
                             } catch (JSONException e) {

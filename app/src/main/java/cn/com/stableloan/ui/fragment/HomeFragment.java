@@ -82,6 +82,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
                 .navigationBarColor(R.color.colorPrimary)
+                .statusBarAlpha(0.3f)
                 .init();
     }
 
@@ -271,8 +272,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                         easylayout.refreshComplete();
                                     } else {
                                         banner.setData(hotBean.getAdvertising(), null);
-                                        LogUtils.i("banner-size", hotBean.getAdvertising().size());
-                                        rc_adapter.addData(hotBean.getRecommends());
+                                        if(hotBean.getRecommends()!=null){
+                                            rc_adapter.addData(hotBean.getRecommends());
+                                        }
                                     }
                                 } else {
                                     easylayout.refreshComplete();

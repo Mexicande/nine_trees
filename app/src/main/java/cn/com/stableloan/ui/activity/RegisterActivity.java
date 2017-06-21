@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -114,6 +115,8 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        ZhugeSDK.getInstance().init(getApplicationContext());
+
         Validate.reg(this);
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
 
@@ -248,6 +251,13 @@ public class RegisterActivity extends BaseActivity implements IValidateResult {
     @Override
     public Animation onValidateErrorAnno() {
         return ValidateAnimation.horizontalTranslate();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ZhugeSDK.getInstance().flush(getApplicationContext());
 
     }
 }
