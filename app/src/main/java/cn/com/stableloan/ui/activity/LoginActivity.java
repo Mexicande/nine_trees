@@ -481,7 +481,7 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
             if(user!=null){
                 finish();
             }else {
-                MainActivity.launch(this);
+                Main1Activity.launch(this);
                 finish();
             }*/
     }

@@ -6,11 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:name=".AppApplication"
@@ -31,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cn.com.stableloan.ui.activity.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MainActivity"
@@ -65,11 +64,39 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.NoticeActivity" />
         <activity android:name=".ui.activity.StrateActivity" />
-        <activity android:name=".ui.activity.ForgetWordActivity"/>
+        <activity android:name=".ui.activity.ForgetWordActivity" />
+
         <meta-data
-            android:value="91be901ec8194403abb12e59fcc7baf2" android:name = "ZHUGE_APPKEY"/>
+            android:name="ZHUGE_APPKEY"
+            android:value="91be901ec8194403abb12e59fcc7baf2" />
         <meta-data
-            android:value="其他" android:name = "ZHUGE_CHANNEL"/>
+            android:name="ZHUGE_CHANNEL"
+            android:value="小米" />
+
+        <activity android:name=".ui.activity.SettingActivity"></activity>
+
+
+        <activity android:name=".utils.AddDiaryActivity" />
+        <activity android:name=".other.AddBillActivity" />
+        <activity android:name=".other.AddCardActivity" />
+        <activity android:name=".other.AddNoteActivity" />
+        <activity android:name=".other.AllBillActivity" />
+        <activity android:name=".other.AllCardActivity" />
+        <activity android:name=".other.AllCardItemActivity" />
+        <activity android:name=".other.AllCompanyItemActivity" />
+        <activity android:name=".other.AllDiaryActivity" />
+        <activity android:name=".other.AllNotesActivity" />
+        <activity android:name=".other.AllPlaceItemActivity" />
+        <activity android:name=".other.BaseSettingActivity" />
+        <activity android:name=".other.CloudActivity" />
+        <activity android:name=".other.Login1Activity" />
+        <activity android:name=".other.Main1Activity" />
+        <activity android:name=".other.OneDayAllActivity" />
+        <activity android:name=".other.PassToActivity" />
+        <activity android:name=".other.RegistActivity" />
+        <activity android:name=".other.SettingActivity" />
+        <activity android:name=".other.UserBaseInfoActivity" />
+
     </application>
 
 </manifest>

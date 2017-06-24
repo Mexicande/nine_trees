@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_white"
+    android:orientation="vertical"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
+    tools:context="cn.com.stableloan.ui.Setting.SafeFragment">
+    <include layout="@layout/goback_toolbar"/>
+    <com.allen.library.SuperTextView
+        android:id="@+id/safe"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/ic_safe"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="25dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="25dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="账号安全" />
+
+    <com.allen.library.SuperTextView
+        android:id="@+id/change_password"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/ic_pass"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="25dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="25dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="账号密码" />
+    <com.allen.library.SuperTextView
+        android:id="@+id/pattern"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/ic_pattern"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="25dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="25dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="解锁手势" />
+
+</LinearLayout>

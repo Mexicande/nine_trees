@@ -125,6 +125,7 @@ public class LotteryFragment extends ImmersionFragment {
                             JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
                             if (isSuccess.equals("1")) {
+                                stateLayout.setVisibility(View.GONE);
                                 String qian = object.getString("qian");
                                 String date = object.getString("data");
                                 String hou = object.getString("hou");
@@ -265,7 +266,7 @@ public class LotteryFragment extends ImmersionFragment {
                     if (!loffery.equals("1")) {
                         CheckInternet();
                     }else {
-                        MainActivity.navigationController.setSelect(0);
+                        Main1Activity.navigationController.setSelect(0);
                     }
                 }
                 break;

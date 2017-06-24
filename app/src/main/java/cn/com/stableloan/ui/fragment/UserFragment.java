@@ -2,19 +2,16 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.AppUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -99,17 +96,8 @@ public class UserFragment extends ImmersionFragment {
         return view;
     }
 
-    private void getVerSion() {
-        String code = AppUtils.getAppVersionName();
-        LogUtils.i("version",code);
-        version.setText("v"+code);
-    }
-
-
 
     private void getUserInfo() {
-        getVerSion();
-
         TinyDB tinyDB = new TinyDB(getActivity());
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         if (user != null) {
@@ -159,26 +147,6 @@ public class UserFragment extends ImmersionFragment {
     }
 
 
-    @OnClick({R.id.layout_word, R.id.layout_nick, R.id.layout_profession, R.id.bt_exit})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.layout_word://密码
-                UpdatePassWordActivity.launch(getActivity());
-                break;
-            case R.id.layout_nick://昵称
-                startActivityForResult(new Intent(getActivity(), UpdateNickActivity.class), FLAG_NICK);
-                break;
-            case R.id.layout_profession://职业
-                startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class), FLAG_Profession);
-                break;
-            case R.id.bt_exit: //退出登录
-                exit();
-                break;
-            default:
-                break;
-        }
-    }
-
     private void exit() {
         selfDialog = new SelfDialog(getActivity());
         selfDialog.setTitle("提示");
@@ -201,7 +169,6 @@ public class UserFragment extends ImmersionFragment {
         });
         selfDialog.show();
     }
-
 
 
     @Override
@@ -241,11 +208,11 @@ public class UserFragment extends ImmersionFragment {
                 }
                 break;
             case FLAG_LOGIN:
-                if(SEND_LOGIN==resultCode){
+                if (SEND_LOGIN == resultCode) {
                     UserBean user = (UserBean) data.getSerializableExtra("user");
-                    if(user!=null&&user.getNickname()!=null){
+                    if (user != null && user.getNickname() != null) {
                         getUserInfo();
-                    }else {
+                    } else {
                         MainActivity.navigationController.setSelect(0);
                     }
                 }
@@ -268,5 +235,35 @@ public class UserFragment extends ImmersionFragment {
     }
 
 
+   /* @OnClick({R.id.layout_my, R.id.layout_setting})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.layout_my:
 
+                break;
+            case R.id.layout_setting:
+
+                break;
+        }
+    }*/
+
+    @OnClick({R.id.layout_word, R.id.layout_nick, R.id.layout_profession, R.id.bt_exit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.layout_word://密码
+                UpdatePassWordActivity.launch(getActivity());
+                break;
+            case R.id.layout_nick://昵称
+                startActivityForResult(new Intent(getActivity(), UpdateNickActivity.class), FLAG_NICK);
+                break;
+            case R.id.layout_profession://职业
+                startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class), FLAG_Profession);
+                break;
+            case R.id.bt_exit: //退出登录
+                exit();
+                break;
+            default:
+                break;
+        }
+    }
 }

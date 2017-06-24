@@ -40,6 +40,8 @@ public class HtmlActivity extends BaseActivity {
 
     @Bind(R.id.web_progress_bar)
     ProgressBar mProgressBar;
+
+
     @Bind(R.id.web_container)
     FrameLayout mContainer;
 

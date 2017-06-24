@@ -19,10 +19,21 @@
 
     <color name="background">#f2f3f5</color>
 
-    <color name="window_background">#FFF5F5F5</color>
     <color name="gray_light">#dcdcdc</color>
 
 
     <color name="kprogresshud_default_color">#b1000000</color>
     <color name="kprogresshud_grey_color">#449E9E9E</color>
+
+
+
+
+    <color name="grey_f6f6f6">#f6f6f6</color>
+    <color name="grey_a5a5a5">#A5A5A5</color>
+    <color name="grey_dde1e7">#DDE1E7</color>
+    <color name="red_f4333c">#F4333C</color>
+
+    <color name="window_background">#FFF5F5F5</color>
+
+
 </resources>

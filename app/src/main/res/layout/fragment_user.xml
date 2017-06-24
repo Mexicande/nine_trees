@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#f2f3f5"
     tools:context="cn.com.stableloan.ui.fragment.UserFragment">
@@ -37,7 +38,6 @@
             android:layout_height="wrap_content"
             />
     </RelativeLayout>
-
     <RelativeLayout
         android:id="@+id/layout_word"
         android:background="@color/white"
@@ -139,6 +139,38 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         />
+ <!--   <com.allen.library.SuperTextView
+        android:id="@+id/layout_my"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/ic_my"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="25dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="25dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="我的资料" />
+    <com.allen.library.SuperTextView
+        android:id="@+id/layout_setting"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/ic_setting"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="25dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="25dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="我的资料" />-->
     <TextView
         android:id="@+id/version"
         android:layout_marginTop="50dp"

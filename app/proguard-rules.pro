@@ -32,6 +32,45 @@
 -dontwarn okio.**
 -keep class okio.**{*;}
 
+
+
+
+-keep class de.greenrobot.dao.** { *; }
+-keep class com.squareup.picasso.** { *; }
+-keep class com.nostra13.universalimageloader.** { *; }
+-keep class com.android.volley.** { *; }
+
+-keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+
+#-keep class com.android.volley.** {*;}
+#-keep class com.android.volley.toolbox.** {*;}
+#-keep class com.android.volley.Response$* { *; }
+#-keep class com.android.volley.Request$* { *; }
+#-keep class com.android.volley.RequestQueue$* { *; }
+#-keep class com.android.volley.toolbox.HurlStack$* { *; }
+#-keep class com.android.volley.toolbox.ImageLoader$* { *; }
+
+
+-dontwarn com.jeremyfeinstein.slidingmenu.lib.**
+-keep class com.jeremyfeinstein.slidingmenu.lib.**{*;}
+
+-dontwarn com.squareup.okhttp.**
+
+
+-keepattributes SourceFile,LineNumberTable
+-keep class com.parse.*{ *; }
+-dontwarn com.parse.**
+#-dontwarn com.squareup.picasso.**
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+#-dontwarn com.nostra13.universalimageloader.**
+
+#-keep class com.nostra13.universalimageloader.** { *; }
+
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 #指定压缩级别
@@ -93,8 +132,8 @@
 -keepnames class * { @butterknife.InjectView *;}
 -keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
+-keep public class * extends android.app.Application
 
--keep public class **.*Model*.** {*;}
 -keep public class **.*Model*.** {*;}
 #保持所有拥有本地方法的类名及本地方法名
 -keepclasseswithmembernames class * {

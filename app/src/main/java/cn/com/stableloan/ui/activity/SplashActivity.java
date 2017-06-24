@@ -9,15 +9,22 @@ import android.view.KeyEvent;
 
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.lang.ref.WeakReference;
 
 import cn.com.stableloan.model.UpdateInfoBean;
+import cn.com.stableloan.other.Main1Activity;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
+import cn.com.stableloan.utils.ToastUtils;
 import ezy.boost.update.IUpdateParser;
 import ezy.boost.update.UpdateInfo;
 import ezy.boost.update.UpdateManager;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -26,18 +33,39 @@ import ezy.boost.update.UpdateManager;
  */
 public class SplashActivity extends AppCompatActivity {
     private SwitchHandler mHandler = new SwitchHandler(this);
-
+    private String HTML="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).transparentBar().init();
 
-
-
-        setWelcome( );
-
+        boolean flag = SPUtils.contains(this, "url");
+        if(flag){
+            mHandler.sendEmptyMessageDelayed(1, 1000);
+        }else {
+            GoHtml();
+        }
     }
+    private void GoHtml() {
+        HTML= "http://www.shoujiweidai.com/android/app96.html";
+        OkGo.get(HTML)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        SPUtils.put(SplashActivity.this,"url",HTML);
+                        setWelcome( );
+                    }
+                             @Override
+                             public void onError(Call call, Response response, Exception e) {
+                                 super.onError(call, response, e);
+                                 mHandler.sendEmptyMessageDelayed(2, 1000);
+                             }
+                         }
+                );
+    }
+
     private static class SwitchHandler extends Handler {
         private WeakReference<SplashActivity> mWeakReference;
 
@@ -48,8 +76,16 @@ public class SplashActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             SplashActivity activity = mWeakReference.get();
             if (activity != null) {
-                MainActivity.launch(activity);
-                activity.finish();
+                switch (msg.what){
+                    case 1:
+                        MainActivity.launch(activity);
+                        activity.finish();
+                        break;
+                    case 2:
+                        Main1Activity.launch(activity);
+                        activity.finish();
+                        break;
+                }
             }
         }
     }
