@@ -27,7 +27,7 @@
                 android:background="@color/card_auto"
                 android:weightSum="1"
                 android:layout_height="match_parent">
-                <com.example.apple.xianjinxia.utils.AutofitTextView
+                <cn.com.stableloan.utils.AutofitTextView
                     android:id="@+id/inNum"
                     android:gravity="right|center_vertical"
                     android:text="24"
@@ -68,7 +68,7 @@
                     android:layout_width="0dp"
                     android:paddingRight="8dp"
                     android:layout_height="wrap_content">
-                    <com.example.apple.xianjinxia.utils.AutofitTextView
+                    <cn.com.stableloan.utils.AutofitTextView
                         android:id="@+id/fromOrTo"
                         android:text="来源/出处"
                         android:maxLines="3"

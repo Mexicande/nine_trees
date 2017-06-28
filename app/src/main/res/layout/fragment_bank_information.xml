@@ -1,0 +1,268 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:whatever="http://schemas.android.com/apk/res-auto"
+    android:background="@color/base_white"
+    tools:context="cn.com.stableloan.ui.fragment.BankInformationFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_BankCard1"
+                    android:inputType="number"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:textSize="15sp"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_BankCard1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="借记卡卡号 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_BankPersonName1"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:textSize="13dp"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_BankPersonName1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="持卡人姓名 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_SelectBank1"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:textSize="@dimen/textsize"
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_SelectBank1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="所属银行 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_BankPhone1"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:textSize="@dimen/textsize"
+
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_BankPhone1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="绑定的手机 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+
+
+
+
+
+            <RelativeLayout
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_BankCard2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:inputType="number"
+                    android:textSize="@dimen/textsize"
+
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_BankCard2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="借记卡卡号 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_BankPersonName2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:textSize="@dimen/textsize"
+
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_BankPersonName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="持卡人姓名 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_ValidityTime"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:textSize="@dimen/textsize"
+
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_ValidityTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="有效期 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_SelectBank2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:textSize="@dimen/textsize"
+
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_SelectBank2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="所属银行 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_BankPhone2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:inputType="number"
+                    android:textSize="@dimen/textsize"
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_BankPhone2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="绑定的手机 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+
+            <Button
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:text="保 存"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="50dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/button_information"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -47,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
             GoHtml();
         }
     }
+
     private void GoHtml() {
         HTML= "http://www.shoujiweidai.com/android/app96.html";
         OkGo.get(HTML)

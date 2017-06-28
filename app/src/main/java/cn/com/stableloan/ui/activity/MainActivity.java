@@ -146,8 +146,6 @@ public class MainActivity extends BaseActivity {
         mCurrentFragment = new HomeFragment();
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commit();
-
-
         navigationController = tab.custom()
                 .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down,"首页"))
                 .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"产品"))

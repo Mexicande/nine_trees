@@ -7,7 +7,7 @@
     <color name="base_white">#f2f3f5</color>
     <color name="desc_text_color">#686868</color>
    <!-- 产品list-->
-    <color name="white">#ffffff</color>
+    <color name="white">#FFFFFF</color>
     <color name="product_name_color">#2d2d2d</color>
     <color name="product_desc_color">#a4aaba</color>
     <color name="product_limit">#999999</color>
@@ -21,7 +21,7 @@
 
     <color name="gray_light">#dcdcdc</color>
 
-
+    <color name="frame_color">#CCCCCC</color>
     <color name="kprogresshud_default_color">#b1000000</color>
     <color name="kprogresshud_grey_color">#449E9E9E</color>
 

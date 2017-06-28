@@ -41,4 +41,7 @@
     <dimen name="_16sp">16sp</dimen>
     <dimen name="_14sp">14sp</dimen>
 
+    <dimen name="textsize">15sp</dimen>
+    <dimen name="layout_height">34dp</dimen>
+
     </resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spingarr">
+        <item>未婚</item>
+        <item>已婚</item>
+    </string-array>
+    <string-array name="income">
+        <item>3000以下</item>
+        <item>3001-5000</item>
+        <item>5001-8000</item>
+        <item>8001以上</item>
+    </string-array>
+
+    <string-array name="between">
+        <item>朋友同事</item>
+        <item>非直系亲属</item>
+        <item>直系亲属</item>
+    </string-array>
+
+    <string-array name="years">
+        <item>不满6个月</item>
+        <item>6个月-1年</item>
+        <item>1-3年</item>
+        <item>3年以上</item>
+    </string-array>
+</resources>

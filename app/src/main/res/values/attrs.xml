@@ -3,7 +3,7 @@
 
 
 
-    <attr name="fontPath" format="string"/>
+
     <!--图片上传进度-->
     <declare-styleable name="ImageProgress">
         <attr name="text_size" format="dimension" />

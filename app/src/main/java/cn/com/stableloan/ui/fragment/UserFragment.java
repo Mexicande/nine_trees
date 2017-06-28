@@ -81,8 +81,8 @@ public class UserFragment extends ImmersionFragment {
 
     private static final int Moon = 1;
 
-
     public UserFragment() {
+
     }
 
 

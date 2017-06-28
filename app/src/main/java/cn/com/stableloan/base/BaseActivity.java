@@ -1,5 +1,6 @@
 package cn.com.stableloan.base;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import cn.com.stableloan.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by apple on 2017/5/20.
@@ -28,6 +30,8 @@ public class BaseActivity extends AppCompatActivity {
                 .fitsSystemWindows(true)
                 .init();
     }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

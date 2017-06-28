@@ -4,23 +4,22 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.other.dao.AllInfo;
 import cn.com.stableloan.other.dao.DaoMaster;
 import cn.com.stableloan.other.dao.DaoSession;
 import cn.com.stableloan.other.dao.User;
-import cn.com.stableloan.utils.TinyDB;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by apple on 2017/5/20.
@@ -42,13 +41,9 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         Utils.init(this);
-
-
         super.onCreate();
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
-                .build()
-        );
+        initTypeface();
+
         OkGo.init(this);
         try {
             OkGo.getInstance()
@@ -59,9 +54,22 @@ public class AppApplication extends Application {
         }
         instance = this;
 
-        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
+        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
 
+    }
+
+
+    private void initTypeface(){
+        try {
+            Field field = Typeface.class.getDeclaredField("SERIF");
+            field.setAccessible(true);
+            field.set(null, Typeface.createFromAsset(getAssets(), "fonts/msyh.ttf"));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public static AppApplication getApp(){

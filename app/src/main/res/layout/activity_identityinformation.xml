@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:ctv="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/base_white"
+    tools:context="cn.com.stableloan.ui.activity.IdentityinformationActivity">
+    <include layout="@layout/goback_toolbar"/>
+    <View
+        android:layout_marginTop="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#A0A0A0"
+        />
+    <com.allen.library.CommonTextView
+        android:id="@+id/safe"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        ctv:cLeftIconResForDrawableLeft="@drawable/ic_top_safe"
+        ctv:cLeftTextSize="14sp"
+        ctv:cSetMaxEms="100"
+        ctv:cUseRipple="true"
+        ctv:cLeftIconDrawablePadding="7dp"
+        ctv:cLeftTextColor="#8D9CD4"
+        ctv:cDividerLineHeight="1dp"
+        ctv:cDividerLineColor="@color/gay"
+        ctv:cLeftTextString="我们会严格保护您的隐私安全,请您放心交给我们" />
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:layout_gravity="center_horizontal" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#A0A0A0"
+        />
+    <FrameLayout
+        android:id="@+id/app_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
