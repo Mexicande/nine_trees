@@ -2,7 +2,9 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,15 +33,22 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.CreateGestureActivity;
+import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UpdateNickActivity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
+import cn.com.stableloan.ui.activity.UserInformationActivity;
+import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
+import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
@@ -57,16 +66,11 @@ public class UserFragment extends ImmersionFragment {
     TextView tvNick;
     @Bind(R.id.tv_UserPhone)
     TextView tvUserPhone;
-    @Bind(R.id.layout_word)
-    RelativeLayout layoutWord;
-    @Bind(R.id.layout_nick)
-    RelativeLayout layoutNick;
-    @Bind(R.id.layout_profession)
-    RelativeLayout layoutProfession;
-    @Bind(R.id.bt_exit)
-    Button btExit;
-    @Bind(R.id.version)
-    TextView version;
+
+    private ACache aCache;
+    private Bitmap splashBitmap;
+    private int screenWidth, screenHeight;
+    private Handler handler = new Handler(){};
 
     private SelfDialog selfDialog;
 
@@ -92,6 +96,7 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
+        aCache = ACache.get(getActivity());
         getUserInfo();
         return view;
     }
@@ -176,94 +181,32 @@ public class UserFragment extends ImmersionFragment {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
                 .statusBarAlpha(0.3f)
-
                 .navigationBarColor(R.color.colorStatus)
                 .init();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FLAG_Profession:
-                if (SEND_Profession_ == resultCode) {
-                    String Identity = data.getStringExtra("HeadPhoto");
-                    TinyDB tinyDB = new TinyDB(getActivity());
-                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                    user.setIdentity(Identity);
-                    tinyDB.putObject("user", user);
-                    LogUtils.i("修改后的", user);
-                }
-                break;
-            //昵称设置
-            case FLAG_NICK:
-                if (SEND_NICK == resultCode) {
-                    String nick = data.getExtras().getString("nick");
-                    if (nick != null) {
-                        TinyDB tinyDB = new TinyDB(getActivity());
-                        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                        user.setNickname(nick);
-                        tinyDB.putObject("user", user);
-                        tvNick.setText(nick);
-                    }
-                }
-                break;
-            case FLAG_LOGIN:
-                if (SEND_LOGIN == resultCode) {
-                    UserBean user = (UserBean) data.getSerializableExtra("user");
-                    if (user != null && user.getNickname() != null) {
-                        getUserInfo();
-                    } else {
-                        MainActivity.navigationController.setSelect(0);
-                    }
-                }
-
-                break;
-        }
-
-    }
-
-    /**
-     * 头像职业选择
-     *
-     * @param imageView
-     */
-    private void setUserHead(int imageView) {
-        Glide.with(getActivity()).load(imageView)
-                .centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .bitmapTransform(new CropCircleTransformation(getActivity())).into(UserLogo);
-
-    }
 
 
-   /* @OnClick({R.id.layout_my, R.id.layout_setting})
+
+    @OnClick({R.id.layout_my, R.id.layout_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
-
+                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                if(gesturePassword == null || "".equals(gesturePassword)) {
+                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
+                    startActivity(intent);
+                }
+                //UserInformationActivity.launch(getActivity());
                 break;
             case R.id.layout_setting:
-
-                break;
-        }
-    }*/
-
-    @OnClick({R.id.layout_word, R.id.layout_nick, R.id.layout_profession, R.id.bt_exit})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.layout_word://密码
-                UpdatePassWordActivity.launch(getActivity());
-                break;
-            case R.id.layout_nick://昵称
-                startActivityForResult(new Intent(getActivity(), UpdateNickActivity.class), FLAG_NICK);
-                break;
-            case R.id.layout_profession://职业
-                startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class), FLAG_Profession);
-                break;
-            case R.id.bt_exit: //退出登录
-                exit();
-                break;
-            default:
+                Setting1Activity.launch(getActivity());
                 break;
         }
     }
+
+
 }

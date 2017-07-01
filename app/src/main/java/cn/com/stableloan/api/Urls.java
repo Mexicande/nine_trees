@@ -11,19 +11,20 @@ public interface Urls{
 
 
     String CardBack="http://www.shoujiweidai.com/Card/index.html";
-    String puk_URL="http://123.56.29.65:8090/anwendai/Home/ApiLogin/";
+    String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
+
+    String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
     interface Login{
         //验证码发送
-        String SEND_MESSAGE="http://123.56.29.65:8090/anwendai/Home/ChuanglanSmsApi/sendSMS";
+        String SEND_MESSAGE="http://test.api.shoujijiekuan.com/Home/ChuanglanSmsApi/sendSMS";
         String LOGIN="Login";
-
+        String USER_INFOMATION="Mine/Locking";
+        String GET_SIGNATURE="signature";
     }
-
     interface  HOME_FRAGMENT{
         String BANNER_HOT="GetBanner";
         String PRODUCT_LIST="GetProducts";
     }
-
     interface register{
 
         String REGSTER  = "Registered";
@@ -48,6 +49,7 @@ public interface Urls{
     }
     interface user{
         String USERT_INFO="Personal";
+
     }
     interface  notice{
         String Announcement="Announcement";

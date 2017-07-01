@@ -8,25 +8,10 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.Setting1Activity">
     <include layout="@layout/goback_toolbar"/>
-    <com.allen.library.SuperTextView
-        android:id="@+id/layout_word"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_userpassword"
-        stv:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
-        stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
-        stv:sRightIconWidth="17dp"
-        stv:sLeftTextSize="16dp"
-        stv:sLeftTextString="账号安全" />
+
     <com.allen.library.SuperTextView
         android:id="@+id/layout_nick"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         stv:sLeftIconRes="@mipmap/ic_nick"
@@ -58,6 +43,22 @@
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="修改身份" />
     <com.allen.library.SuperTextView
+        android:id="@+id/layout_Safe"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/ic_userpassword"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="25dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="25dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="账号安全" />
+    <com.allen.library.SuperTextView
         android:id="@+id/exit"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
@@ -73,6 +74,7 @@
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="退出" />
+
     <TextView
         android:id="@+id/version"
         android:layout_marginTop="200dp"

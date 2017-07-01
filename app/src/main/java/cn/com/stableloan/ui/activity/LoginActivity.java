@@ -349,7 +349,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                 if (success.equals("1")) {
                                     SPUtils.put(LoginActivity.this, "token", object.getString("token"));
                                     SPUtils.put(LoginActivity.this, "login", true);
-
                                     getUserInfo();
                                 } else {
                                     String string = object.getString("msg");
@@ -360,7 +359,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                             }
                         } else {
                             ToastUtils.showToast(LoginActivity.this, "服务器异常,请稍后再试");
-
                         }
                         hud.dismiss();
 
@@ -370,7 +368,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         hud.dismiss();
-
                         ToastUtils.showToast(LoginActivity.this, "服务器异常,请稍后再试");
 
                     }

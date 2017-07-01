@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.coorchice.library.SuperTextView;
@@ -162,7 +163,13 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
                 .setText(R.id.rate,item.getFastest_time())
                 .setText(R.id.tv_Limit,item.getMin_algorithm()+"%");
         helper.setText(R.id.product_introduction,item.getProduct_introduction());
-        Glide.with(mContext).load(item.getProduct_logo()).crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.ic_product_logo));
+
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+
+        Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.ic_product_logo));
 
        /* if(mData.indexOf(item)){
             helper.getView(R.id.top).setVisibility(View.GONE);

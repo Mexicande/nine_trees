@@ -4,13 +4,30 @@
     android:layout_height="match_parent"
     android:background="@color/grey_f6f6f6"
     android:orientation="vertical">
+    <include layout="@layout/goback_toolbar"/>
+    <TextView
+        android:layout_marginTop="@dimen/_50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/text_setting"
+        android:layout_gravity="center_horizontal"
+        android:text="您正在读取个人隐私"/>
+    <TextView
+        android:layout_marginTop="@dimen/_5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/text_setting"
+        android:layout_gravity="center_horizontal"
+        android:text="请输入密码证明您本人操作"/>
 
     <TextView
         android:id="@+id/messageTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_150dp"
+        android:layout_marginTop="@dimen/_30dp"
         android:textSize="@dimen/_16sp" />
 
     <LinearLayout
@@ -20,7 +37,7 @@
         android:layout_marginTop="@dimen/_10dp"
         android:orientation="vertical">
 
-        <com.example.apple.xianjinxia.lock.widget.LockPatternView
+        <com.star.lock.widget.LockPatternView
             android:id="@+id/lockPatternView"
             android:layout_width="@dimen/_270dp"
             android:layout_height="@dimen/_270dp"
@@ -29,7 +46,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40dp"
-            android:layout_marginTop="@dimen/_10dp">
+            android:layout_marginTop="@dimen/_20dp">
 
             <Button
                 android:id="@+id/forgetGestureBtn"

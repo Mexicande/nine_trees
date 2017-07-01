@@ -19,6 +19,9 @@
     <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".AppApplication"
@@ -28,8 +31,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
-            android:name=".ui.activity.IdentityinformationActivity"
+            android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -88,7 +102,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote" />
 
         <activity android:name=".ui.activity.Setting1Activity" />
         <activity android:name=".utils.AddDiaryActivity" />
@@ -113,9 +127,13 @@
         <activity android:name=".other.UserBaseInfoActivity" />
         <activity android:name=".ui.activity.SafeActivity" />
         <activity android:name=".ui.activity.UserInformationActivity" />
-        <!-- <activity android:name=".ui.activity.IdentityinformationActivity"></activity> -->
-        <!-- <activity android:name=".ui.activity.ImageActivity"></activity> -->
-        <activity android:name=".ui.activity.IdentityUploadActivity"></activity>
+        <activity android:name=".ui.activity.IdentityinformationActivity" />
+        <activity android:name=".ui.activity.ImageActivity" />
+        <activity android:name=".ui.activity.IdentityUploadActivity" />
+        <activity android:name=".ui.activity.SafeSettingActivity" />
+        <activity android:name=".ui.activity.CreateGestureActivity"/>
+        <activity android:name=".ui.activity.GestureLoginActivity"/>
+        <activity android:name=".ui.activity.Verify_PasswordActivity"></activity>
     </application>
 
 </manifest>

@@ -63,7 +63,7 @@
     <string name="splash_activity">SplashActivity</string>
 
     <!-- Gesture login activity -->
-    <string name="gesture_forget_gesture">忘记手势密码</string>
+    <string name="gesture_forget_gesture">忘记手势,密码解锁</string>
     <string name="gesture_default">请输入手势密码</string>
     <string name="gesture_error">手势密码输入错误</string>
     <string name="gesture_correct">输入正确</string>
@@ -77,4 +77,9 @@
     <string name="create_gesture_confirm_correct">设置成功</string>
     <string name="create_gesture_reset">重新设置</string>
 
+    <string name="error_passwordnotvalid">密码错误</string>
+
+
+    <string name="storage1">为了保证您的信息安全,我们默认不会长期存储您的个人信息。过期后我们将安全删除您的全部图片信息。</string>
+    <string name="storage2">有效期会根据您的托管时间设置,从您最后一次修改图片信息的当日起计算,过期自动删除。</string>
 </resources>

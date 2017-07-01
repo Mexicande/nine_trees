@@ -22,7 +22,7 @@
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
-        stv:sLeftTextString="账号安全" />
+        stv:sLeftTextString="安全设置" />
 
     <com.allen.library.SuperTextView
         android:id="@+id/change_password"

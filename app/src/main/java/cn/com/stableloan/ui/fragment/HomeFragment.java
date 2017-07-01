@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
@@ -51,6 +53,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
 import cn.com.stableloan.view.SpacesItemDecoration;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -179,10 +182,16 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
+
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        ;
+
                 Glide.with(getActivity())
                         .load(model.getPictrue())
-                        .dontAnimate()
-                        .centerCrop()
+                        .apply(options)
                         .into(itemView);
             }
         });

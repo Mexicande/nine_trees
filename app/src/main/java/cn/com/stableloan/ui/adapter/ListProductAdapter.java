@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.coorchice.library.SuperTextView;
@@ -32,8 +33,14 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
     @Override
     protected void convert(BaseViewHolder helper, Class_ListProductBean.ProductBean item) {
 
-            Glide.with(mContext).load(item.getProduct_logo()).crossFade().centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .bitmapTransform(new CropCircleTransformation(mContext)).into((ImageView) helper.getView(R.id.ic_product_logo));
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                ;
+
+
+        Glide.with(mContext).load(item.getProduct_logo())
+                    .apply(options).into((ImageView) helper.getView(R.id.ic_product_logo));
 
         SuperTextView view = (SuperTextView) helper.getView(R.id.label1);
         SuperTextView view1 = (SuperTextView) helper.getView(R.id.label2);

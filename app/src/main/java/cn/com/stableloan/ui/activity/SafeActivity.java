@@ -1,5 +1,7 @@
 package cn.com.stableloan.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +18,9 @@ public class SafeActivity extends BaseActivity {
     @Bind(R.id.title_name)
     TextView titleName;
 
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, SafeActivity.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +36,13 @@ public class SafeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.safe:
-
+                    
                 break;
             case R.id.change_password:
-
+                UpdatePassWordActivity.launch(this);
                 break;
             case R.id.pattern:
+
                 break;
         }
     }

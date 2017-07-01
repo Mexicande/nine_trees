@@ -8,10 +8,10 @@
     tools:context="cn.com.stableloan.ui.activity.UserInformationActivity">
     <include layout="@layout/toolbar_layout"/>
     <com.allen.library.SuperTextView
-        android:id="@+id/safe"
+        android:id="@+id/User_information"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         stv:sLeftIconRes="@mipmap/ic_identity_date"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
@@ -29,13 +29,12 @@
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
         stv:sRightTextString="已完成"
-        stv:sLeftTopTextString="账号安全" />
+        stv:sLeftTopTextString="身份信息" />
     <com.allen.library.SuperTextView
-        android:id="@+id/change_password"
+        android:id="@+id/User_Authorization"
         android:layout_width="match_parent"
         stv:sBottomLineMargin="0dp"
-
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         stv:sLeftIconRes="@mipmap/ic_authorization_date"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
@@ -54,11 +53,11 @@
         stv:sLeftBottomTextString="可能用到的第三方信息"
         />
     <com.allen.library.SuperTextView
-        android:id="@+id/pattern"
+        android:id="@+id/User_Pic"
         stv:sCenterSpaceHeight="5dp"
         stv:sBottomLineMargin="0dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         stv:sLeftIconRes="@mipmap/ic_image_date"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"

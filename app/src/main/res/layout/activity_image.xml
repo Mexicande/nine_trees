@@ -7,12 +7,12 @@
     android:orientation="vertical"
     android:background="@color/base_white"
     tools:context="cn.com.stableloan.ui.activity.ImageActivity">
-    <include layout="@layout/toolbar_layout"/>
+    <include layout="@layout/goback_toolbar"/>
     <com.allen.library.SuperTextView
         android:id="@+id/identity"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         stv:sLeftIconRes="@mipmap/ic_identity_image"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
@@ -35,7 +35,7 @@
         android:id="@+id/bank"
         android:layout_marginTop="2dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         stv:sLeftIconRes="@mipmap/ic_cashbank"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
@@ -58,7 +58,7 @@
         android:id="@+id/CreditBank"
         android:layout_marginTop="2dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         stv:sLeftIconRes="@mipmap/ic_creditbank"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
@@ -81,7 +81,7 @@
         android:id="@+id/camp"
         android:layout_marginTop="2dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         stv:sLeftIconRes="@mipmap/ic_campbusiness"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
@@ -104,7 +104,7 @@
         android:id="@+id/userCard"
         android:layout_marginTop="2dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         stv:sLeftIconRes="@mipmap/ic_usercard"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
@@ -123,9 +123,4 @@
         stv:sRightTextColor="@color/gay"
         stv:sRightTextString="已完成"
         stv:sLeftTopTextString="名片或工牌" />
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
 </LinearLayout>

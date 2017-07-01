@@ -91,8 +91,7 @@ public class PlatformInfoActivity extends BaseActivity {
                                             summary.setText(aaa);
 
                                         }
-                                        Glide.with(PlatformInfoActivity.this).load(product_detail.getPlatform().getLogo()).crossFade()
-                                                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(productLogo);
+                                        Glide.with(PlatformInfoActivity.this).load(product_detail.getPlatform().getLogo()).into(productLogo);
                                     }
 
                                 } catch (JSONException e) {

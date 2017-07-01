@@ -35,5 +35,9 @@
 
     <color name="window_background">#FFF5F5F5</color>
 
+    <color name="pic_textColor">#A0A1A2</color>
+        
+    
+    <color name="text_setting">#666666</color>
 
 </resources>

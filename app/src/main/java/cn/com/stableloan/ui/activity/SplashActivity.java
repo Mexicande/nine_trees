@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void GoHtml() {
-        HTML= "http://www.shoujiweidai.com/android/app96.html";
+        HTML= "http://www.shoujiweidai.com/android/app97.html";
         OkGo.get(HTML)
                 .tag(this)
                 .execute(new StringCallback() {

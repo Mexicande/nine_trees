@@ -110,7 +110,7 @@ public class ProductClassifyActivity extends BaseActivity {
                                             Gson gson = new Gson();
                                             stateLayout.showContentView();
                                             class_List = gson.fromJson(s, Class_ListProductBean.class);
-                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).crossFade().into(imageView);
+                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).into(imageView);
                                             classify_recycler_adapter.setNewData(class_List.getProduct());
                                         } else {
                                             stateLayout.showEmptyView();

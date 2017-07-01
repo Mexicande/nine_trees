@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -203,8 +204,14 @@ public class ProductDesc extends BaseActivity {
         superTextAdapter.addData(lables);
 
         Product_DescBean.ProductBean product = descBean.getProduct();
-        Glide.with(this).load(product.getProduct_logo()).crossFade().bitmapTransform(new CropCircleTransformation(this))
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(productLogo);
+
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                ;
+
+        Glide.with(this).load(product.getProduct_logo()).apply(options)
+              .into(productLogo);
 
         averageTime.setText(product.getAverage_time());
 

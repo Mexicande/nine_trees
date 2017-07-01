@@ -38,108 +38,8 @@
             android:layout_height="wrap_content"
             />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/layout_word"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <ImageView
-            android:id="@+id/iv_pa"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@mipmap/ic_userpassword"/>
-        <TextView
-            android:textSize="16sp"
-            android:textColor="#999999"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@id/iv_pa"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="修改密码"/>
-        <ImageView
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/iv_left"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_marginTop="2dp"
-        android:id="@+id/layout_nick"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <ImageView
-            android:id="@+id/iv_ni"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@mipmap/ic_nick"/>
-        <TextView
-            android:textSize="16sp"
-            android:textColor="#999999"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@id/iv_ni"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="修改昵称"/>
-        <ImageView
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/iv_left"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_marginTop="2dp"
-        android:id="@+id/layout_profession"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <ImageView
-            android:id="@+id/iv_profession"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@mipmap/ic_profession"/>
-        <TextView
-            android:textSize="16sp"
-            android:textColor="#999999"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@id/iv_profession"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="修改身份"/>
-        <ImageView
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/iv_left"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-    </RelativeLayout>
 
-    <Button
-        android:id="@+id/bt_exit"
-        android:layout_marginTop="50dp"
-        android:background="@color/white"
-        android:text="退出登录"
-        android:textColor="#999999"
-        android:textSize="20sp"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        />
- <!--   <com.allen.library.SuperTextView
+    <com.allen.library.SuperTextView
         android:id="@+id/layout_my"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
@@ -157,7 +57,7 @@
         stv:sLeftTextString="我的资料" />
     <com.allen.library.SuperTextView
         android:id="@+id/layout_setting"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         stv:sLeftIconRes="@mipmap/ic_setting"
@@ -170,11 +70,5 @@
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
-        stv:sLeftTextString="我的资料" />-->
-    <TextView
-        android:id="@+id/version"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        stv:sLeftTextString="设置" />
 </LinearLayout>

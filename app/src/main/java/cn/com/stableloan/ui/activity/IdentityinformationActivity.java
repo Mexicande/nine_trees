@@ -1,12 +1,11 @@
 package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
@@ -28,16 +26,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.ui.fragment.BankInformationFragment;
-import cn.com.stableloan.ui.fragment.HomeFragment;
-import cn.com.stableloan.ui.fragment.LotteryFragment;
-import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;
-import cn.com.stableloan.ui.fragment.UserFragment;
 import cn.com.stableloan.ui.fragment.UserInformationFragment;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class IdentityinformationActivity extends BaseActivity {
 
@@ -54,10 +48,15 @@ public class IdentityinformationActivity extends BaseActivity {
     private Fragment mCurrentFragment;
     private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
 
+
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, IdentityinformationActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_identityinformation);
         ButterKnife.bind(this);
         initToolbar();
@@ -122,7 +121,6 @@ public class IdentityinformationActivity extends BaseActivity {
     }
 
 
-
     private String getFragmentName(int menuId) {
         switch (menuId) {
             case 1:
@@ -156,4 +154,8 @@ public class IdentityinformationActivity extends BaseActivity {
     }
 
 
+    @OnClick(R.id.layout_go)
+    public void onViewClicked() {
+        finish();
+    }
 }
