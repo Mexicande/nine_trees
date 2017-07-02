@@ -23,6 +23,7 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
@@ -75,9 +76,10 @@ public class Verify_PasswordActivity extends BaseActivity {
                     .setLabel("Please wait.....")
                     .setCancellable(true)
                     .show();
+            String md5ToString = EncryptUtils.encryptMD5ToString(password);
             Map<String,String> parms=new HashMap<>();
             parms.put("token",token);
-            parms.put("password",password);
+            parms.put("password",md5ToString);
                 JSONObject jsonObject = new JSONObject(parms);
                 OkGo.<String>post(Urls.NEW_URL+Urls.Login.USER_INFOMATION)
                         .tag(this)
@@ -91,9 +93,22 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             JSONObject json = new JSONObject(s);
                                             String isSuccess = json.getString("isSuccess");
                                             if("1".equals(isSuccess)){
-                                                String signature = json.getString("signature");
-                                                SPUtils.put(Verify_PasswordActivity.this,"signature",signature);
-                                                UserInformationActivity.launch(Verify_PasswordActivity.this);
+                                                String from = getIntent().getStringExtra("from");
+                                                if(from!=null){
+                                                    if("unLock".equals(from)){
+                                                        CreateGestureActivity.launch(Verify_PasswordActivity.this);
+                                                        finish();
+                                                    }else if ("userinformation".equals(from)){
+                                                        String signature = json.getString("signature");
+                                                        SPUtils.put(Verify_PasswordActivity.this,"signature",signature);
+                                                        UserInformationActivity.launch(Verify_PasswordActivity.this);
+                                                        finish();
+                                                    }else if("safe".equals(from)){
+                                                        SafeSettingActivity.launch(Verify_PasswordActivity.this);
+                                                        finish();
+                                                    }
+                                                }
+
                                             }else {
                                                 String msg = json.getString("msg");
                                                 ToastUtils.showToast(Verify_PasswordActivity.this,msg);

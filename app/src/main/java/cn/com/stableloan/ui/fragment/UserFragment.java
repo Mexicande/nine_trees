@@ -22,6 +22,8 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.CreateGestureActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
@@ -50,6 +53,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
+import de.greenrobot.event.ThreadMode;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -96,6 +100,7 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         aCache = ACache.get(getActivity());
         getUserInfo();
         return view;
@@ -185,7 +190,11 @@ public class UserFragment extends ImmersionFragment {
                 .init();
     }
 
-
+    @Subscribe
+    public void onMessageEvent(MessageEvent event){
+        tvNick.setText(event.userNick);
+        ToastUtils.showToast(getActivity(),"收到消息了--"+event.userNick);
+    }
 
 
     @OnClick({R.id.layout_my, R.id.layout_setting})
@@ -194,7 +203,7 @@ public class UserFragment extends ImmersionFragment {
             case R.id.layout_my:
                 String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
                 if(gesturePassword == null || "".equals(gesturePassword)) {
-                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class);
+                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
@@ -209,4 +218,10 @@ public class UserFragment extends ImmersionFragment {
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
 }

@@ -36,13 +36,15 @@ public class SafeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.safe:
-                    
+                Intent intent=new Intent(this,Verify_PasswordActivity.class).putExtra("from","safe");
+                startActivity(intent);
                 break;
             case R.id.change_password:
                 UpdatePassWordActivity.launch(this);
                 break;
             case R.id.pattern:
-
+                Intent intent1=new Intent(this,Verify_PasswordActivity.class).putExtra("from","unLock");
+                startActivity(intent1);
                 break;
         }
     }

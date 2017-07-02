@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
+import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.reflect.Field;
@@ -37,6 +38,12 @@ public class AppApplication extends Application {
 
     public static SharedPreferences sp;
 
+    public static UploadManager uploadManager;
+
+    public static UploadManager getUploadManager(){
+        return uploadManager;
+    }
+
 
     @Override
     public void onCreate() {
@@ -52,6 +59,7 @@ public class AppApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        uploadManager=new UploadManager();
         instance = this;
 
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
@@ -75,6 +83,9 @@ public class AppApplication extends Application {
     public static AppApplication getApp(){
         return instance;
     }
+
+
+
 
     public DaoMaster getDaoMaster(Context context){
         if (daoMaster == null){

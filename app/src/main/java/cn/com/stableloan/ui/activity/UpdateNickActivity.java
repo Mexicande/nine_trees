@@ -16,6 +16,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -162,11 +164,11 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                                     if(success.equals("1")){
                                         hud.dismiss();
                                         ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
-                                        setResult(2000,new Intent().putExtra("nick",nick));
+                                        EventBus.getDefault().post(new MessageEvent(nick));
+
                                         finish();
                                     }else {
                                         hud.dismiss();
-
                                         String string = object.getString("msg");
                                         ToastUtils.showToast(UpdateNickActivity.this,string);
                                     }

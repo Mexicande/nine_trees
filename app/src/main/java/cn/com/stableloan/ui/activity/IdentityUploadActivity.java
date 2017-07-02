@@ -3,6 +3,7 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +17,13 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.DebugUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +31,14 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.constant.QiNiu_Token;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class IdentityUploadActivity extends BaseActivity {
 
@@ -39,6 +52,7 @@ public class IdentityUploadActivity extends BaseActivity {
     @Bind(R.id.fiv)
     ImageView fiv;
 
+    private String token;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, IdentityUploadActivity.class));
@@ -50,6 +64,20 @@ public class IdentityUploadActivity extends BaseActivity {
         ButterKnife.bind(this);
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("身份证照片");
+        getToken();
+
+    }
+
+    private void getToken() {
+        OkGo.<String>post(Urls.NEW_URL+Urls.Pictrue.GET_QINIUTOKEN)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                                token=s;
+                    }
+                });
+
     }
 
     @OnClick({R.id.bt_takePhoto, R.id.bt_Picture,R.id.iv_back})
@@ -155,21 +183,36 @@ public class IdentityUploadActivity extends BaseActivity {
                     // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
                     // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
                     // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+                    String path = selectList.get(selectList.size() - 1).getPath();
+                    AppApplication.getUploadManager().put(path, null, token, new UpCompletionHandler() {
+                        @Override
+                        public void complete(String key, ResponseInfo info, JSONObject response) {
+                            if(info.isOK())
+                            {
+                                Log.i("qiniu", "Upload Success");
+                            }
+                            else{
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                            }
+                            Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + response);
+                        }
+                    },null);
+
                     RequestOptions options = new RequestOptions()
                             .centerInside()
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             ;
 
-                    Glide.with(this).load(selectList.get(selectList.size()-1).getPath()).apply(options).into(fiv);
+                    Glide.with(this).load(path).apply(options).into(fiv);
+
 
                     LogUtils.i("onActivityResult",selectList.size());
-
 
                     fiv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             PictureSelector.create(IdentityUploadActivity.this).externalPicturePreview(selectList.size()-1,selectList);
-
                         }
                     });
                     break;

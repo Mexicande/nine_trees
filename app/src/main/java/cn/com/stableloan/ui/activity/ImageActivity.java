@@ -30,6 +30,7 @@ public class ImageActivity extends BaseActivity {
     }
 
     private void initToolbar() {
+
         titleName.setText("图片信息");
     }
 
@@ -40,7 +41,6 @@ public class ImageActivity extends BaseActivity {
                 startActivity(new Intent(this, IdentityUploadActivity.class));
                 break;
             case R.id.bank:
-
                 break;
             case R.id.CreditBank:
                 break;

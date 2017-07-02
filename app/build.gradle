@@ -115,5 +115,10 @@ dependencies {
     compile 'com.yanzhenjie:permission:1.0.8'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
+
+
+    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
     testCompile 'junit:junit:4.12'
 }

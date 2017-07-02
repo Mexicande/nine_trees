@@ -19,8 +19,9 @@ public interface Urls{
         String SEND_MESSAGE="http://test.api.shoujijiekuan.com/Home/ChuanglanSmsApi/sendSMS";
         String LOGIN="Login";
         String USER_INFOMATION="Mine/Locking";
-        String GET_SIGNATURE="signature";
+        String GET_SIGNATURE="Mine/signature";
     }
+
     interface  HOME_FRAGMENT{
         String BANNER_HOT="GetBanner";
         String PRODUCT_LIST="GetProducts";
@@ -49,6 +50,7 @@ public interface Urls{
     }
     interface user{
         String USERT_INFO="Personal";
+        String USER_STATUS="Status/GetStatus";
 
     }
     interface  notice{
@@ -57,7 +59,9 @@ public interface Urls{
 
     interface  LOTTERY{
         String GetLottery="GetLottery";
+    }
 
-
+    interface Pictrue{
+        String GET_QINIUTOKEN="Pictrue/pictrue";
     }
 }
