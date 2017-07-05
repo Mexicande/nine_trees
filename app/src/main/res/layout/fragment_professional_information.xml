@@ -19,7 +19,6 @@
                 android:text="学历信息认证"
                 android:layout_marginLeft="@dimen/_20dp"
                 android:textSize="17sp"/>
-
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="match_parent"
@@ -31,6 +30,8 @@
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
                     android:textSize="@dimen/textsize"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:paddingLeft="5dp"
@@ -57,7 +58,8 @@
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
                     android:paddingLeft="5dp"
-
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
@@ -87,7 +89,8 @@
                     android:paddingLeft="5dp"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
-
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:textSize="@dimen/textsize"
                     android:background="@drawable/editext_normal"
                     />
@@ -121,6 +124,8 @@
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -146,6 +151,8 @@
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -170,6 +177,7 @@
                     android:textSize="@dimen/textsize"
                     android:paddingLeft="5dp"
                     android:textColor="@color/gay"
+
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
                     />
@@ -196,6 +204,8 @@
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"/>
             <!--    <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_email"
@@ -231,8 +241,9 @@
                     android:layout_alignParentRight="true"
                     android:textSize="@dimen/textsize"
                     android:paddingLeft="5dp"
-                    android:textColor="@color/gay"
                     android:layout_height="@dimen/layout_height"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -258,6 +269,8 @@
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -324,6 +337,8 @@
                         android:gravity="center_vertical"
                         android:tint="@color/gay" />
                     <TextView
+                        android:textColor="@color/gay"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="有"/>
@@ -337,6 +352,8 @@
                         android:gravity="center_vertical"
                         android:tint="@color/gay" />
                     <TextView
+                        android:textColor="@color/gay"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="没有"/>
@@ -408,6 +425,8 @@
                         android:gravity="center_vertical"
                         android:tint="@color/gay" />
                     <TextView
+                        android:textColor="@color/gay"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="有"/>
@@ -423,6 +442,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/gay"
                         android:text="没有"/>
                 </LinearLayout>
                 <TextView
@@ -444,7 +464,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="50dp"
                 style="?android:attr/borderlessButtonStyle"
-
                 android:textSize="20sp"
                 android:textColor="@color/white"
                 android:background="@drawable/button_information"/>

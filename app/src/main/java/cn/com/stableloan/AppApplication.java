@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.support.multidex.MultiDexApplication;
 
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
@@ -26,7 +27,7 @@ import cn.com.stableloan.other.dao.User;
  * Created by apple on 2017/5/20.
  */
 
-public class AppApplication extends Application {
+public class AppApplication extends MultiDexApplication {
     //dao
     private DaoMaster daoMaster;
     private DaoSession daoSession;
@@ -47,6 +48,7 @@ public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
+
         Utils.init(this);
         super.onCreate();
         initTypeface();
@@ -55,7 +57,6 @@ public class AppApplication extends Application {
         try {
             OkGo.getInstance()
                     .debug("OkGo", Level.INFO, true)
-                    .setRetryCount(0)
                     .setCacheMode(CacheMode.NO_CACHE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,6 +68,7 @@ public class AppApplication extends Application {
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
 
     }
+
 
 
     private void initTypeface(){

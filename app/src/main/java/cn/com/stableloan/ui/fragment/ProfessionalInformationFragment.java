@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 
 import com.andreabaccega.widget.FormEditText;
@@ -89,6 +90,7 @@ public class ProfessionalInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.fragment_professional_information, container, false);
         ButterKnife.bind(this, view);
         initBetter();
@@ -117,36 +119,34 @@ public class ProfessionalInformationFragment extends Fragment {
                                     Gson gson = new Gson();
                                     WorkBean workBean = gson.fromJson(s, WorkBean.class);
                                     workBean1.setOccupation(workBean.getOccupation());
-                                    WorkBean.OccupationBean occupation = workBean.getOccupation();
 
+                                    WorkBean.OccupationBean occupation = workBean.getOccupation();
                                     WorkBean.OccupationBean.StudentBean student = occupation.getStudent();
                                     etSchool.setText(student.getSchool());
                                     etSchoolAddress.setText(student.getAddress());
                                     etTeacher.setText(student.getTeacherphone());
-
                                     WorkBean.OccupationBean.CompanyBean company = occupation.getCompany();
                                     et_company.setText(company.getCompany());
                                     et_location.setText(company.getLocation());
-
+                                    et_etEmail.setText(company.getEmail());
                                     String years = company.getYears();
+
                                     if(!years.isEmpty()){
                                         int year = Integer.parseInt(company.getYears());
+                                        ToastUtils.showToast(getActivity(),"---"+year);
                                         etYears.setText(list2[year]);
                                     }
 
-
                                     String cincome = company.getCincome();
-                                        etCincome.setText(cincome);
+                                    etCincome.setText(cincome);
                                     etFixedline.setText(company.getFixedline());
                                     WorkBean.OccupationBean.BusinessBean business = occupation.getBusiness();
 
                                     String operations = business.getOperations();
                                     if(!operations.isEmpty()){
-                                        int tions = Integer.parseInt(company.getYears());
+                                        int tions = Integer.parseInt(business.getOperations());
                                         etOperations.setText(list2[tions]);
                                     }
-
-
 
                                     String license = business.getLicense();
                                     if ("0".equals(license)) {
@@ -157,12 +157,10 @@ public class ProfessionalInformationFragment extends Fragment {
                                         checkbox2.setChecked(true);
                                     }
                                     String bome = business.getBincome();
-
                                     if(!bome.isEmpty()){
                                         int s1 = Integer.parseInt(bome);
                                         bincome.setText(lists[s1]);
                                     }
-
 
                                     WorkBean.OccupationBean.FreelancerBean freelancer = occupation.getFreelancer();
                                     String source = freelancer.getSource();
@@ -323,10 +321,10 @@ public class ProfessionalInformationFragment extends Fragment {
 
         WorkBean.OccupationBean.FreelancerBean freelancerBean = new WorkBean.OccupationBean.FreelancerBean();
         freelancerBean.setSource("");
-        if (checkbox1.isChecked()) {
+        if (checkbox3.isChecked()) {
             freelancerBean.setSource("0");
         }
-        if (checkbox2.isChecked()) {
+        if (checkbox4.isChecked()) {
             freelancerBean.setSource("1");
         }
         occupationBean.setStudent(studentBean);

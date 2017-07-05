@@ -19,6 +19,9 @@
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankCard1"
                     android:inputType="number"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
+                    android:paddingLeft="@dimen/_5dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
@@ -58,6 +61,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     whatever:testType="alpha"
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
@@ -85,6 +91,9 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:textSize="@dimen/textsize"
@@ -110,6 +119,8 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:paddingLeft="@dimen/_5dp"
@@ -144,7 +155,9 @@
                     whatever:testType="alpha"
                     android:inputType="number"
                     android:textSize="@dimen/textsize"
-
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
@@ -171,7 +184,9 @@
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:textSize="@dimen/textsize"
-
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -197,7 +212,9 @@
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:textSize="@dimen/textsize"
-
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -223,7 +240,9 @@
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:textSize="@dimen/textsize"
-
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -250,6 +269,8 @@
                     android:layout_height="@dimen/layout_height"
                     android:paddingLeft="@dimen/_5dp"
                     android:inputType="number"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
                     android:textSize="@dimen/textsize"
                     android:background="@drawable/editext_normal"
                     />

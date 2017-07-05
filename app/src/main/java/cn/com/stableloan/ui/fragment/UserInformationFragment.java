@@ -17,6 +17,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -115,6 +116,8 @@ public class UserInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         ButterKnife.bind(this, view);
         ToastUtils.showToast(getActivity(),"-------");
@@ -224,6 +227,7 @@ public class UserInformationFragment extends Fragment {
                                     etAddress.setText(identity.getIdaddress());
 
                                     String marriage = identity.getMarriage();
+
                                     if(marriage.equals("0")){
                                         etMarriage.setText("未婚");
                                     }else if(marriage.equals("1")){
@@ -327,18 +331,55 @@ public class UserInformationFragment extends Fragment {
         identity1.setIdcard(etIDCard.getText().toString());
         identity1.setIdaddress(etAddress.getText().toString());
         identity1.setUserphone(userPhone.getText().toString());
-        identity1.setMarriage("0");
-        identity1.setSex("男");
 
+
+        String s1 = etSex.getText().toString();
+        if(s1.equals("女")){
+            identity1.setSex("0");
+        }else if(s1.equals("男")){
+            identity1.setSex("1");
+        }else {
+            identity1.setSex("");
+        }
+
+
+        String marr = etMarriage.getText().toString();
+        identity1.setMarriage("");
+        for (int i = 0; i < list1.length; i++) {
+            if (list1[i].equals(marr)) {
+                String s = String.valueOf(i);
+                identity1.setMarriage(s);
+            }
+        }
         Identity.IdentityBean.ContactBean identity2=new Identity.IdentityBean.ContactBean();
         identity2.setUserphone(etContact.getText().toString());
-        identity2.setContact("第一");
-        identity2.setRelation("1212121");
-        Identity.IdentityBean.ContactBean identity3=new Identity.IdentityBean.ContactBean();
-        identity3.setUserphone("2222");
-        identity3.setContact("第二");
-        identity3.setRelation("1212121");
+        identity2.setContact(etContactName.getText().toString());
 
+        identity2.setRelation("");
+
+        String bet = etBetween1.getText().toString();
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(bet)) {
+                String s = String.valueOf(i);
+                identity2.setRelation(s);
+            }
+        }
+
+
+        Identity.IdentityBean.ContactBean identity3=new Identity.IdentityBean.ContactBean();
+        identity3.setUserphone(etContact1.getText().toString());
+        identity3.setContact(etContactName2.getText().toString());
+
+
+
+        identity3.setRelation("");
+        String bet1 = etBetween1.getText().toString();
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(bet1)) {
+                String s = String.valueOf(i);
+                identity3.setRelation(s);
+            }
+        }
 
         ArrayList<Identity.IdentityBean.ContactBean>list=new ArrayList<>();
         list.add(identity2);
