@@ -75,6 +75,9 @@ dependencies {
 
 
 
+
+
+
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
     compile 'com.android.support:palette-v7:23.1.1'
     compile 'com.nikhilpanju.recyclerviewenhanced:recyclerviewenhanced:1.1.0'
@@ -115,10 +118,9 @@ dependencies {
     compile 'com.yanzhenjie:permission:1.0.8'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
-
-
     compile 'com.qiniu:qiniu-android-sdk:7.3.+'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
 
     testCompile 'junit:junit:4.12'
 }

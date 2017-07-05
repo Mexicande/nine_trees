@@ -11,6 +11,8 @@ import com.allen.library.SuperTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +25,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.InformationEvent;
+import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -52,20 +56,21 @@ public class UserInformationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         getStatus();
         initToolbar();
     }
-
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("我的资料");
-
     }
 
     private void getStatus() {
         Map<String,String> parms=new HashMap<>();
         String token = (String) SPUtils.get(this, "token", "1");
+        String signature = (String) SPUtils.get(this, "signature", "1");
         parms.put("token",token);
+        parms.put("signature",signature);
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_URL+Urls.user.USER_STATUS)
                 .tag(this)
@@ -79,20 +84,25 @@ public class UserInformationActivity extends BaseActivity {
                                     JSONObject json = new JSONObject(s);
                                     String isSuccess = json.getString("isSuccess");
                                     if("1".equals(isSuccess)){
-                                        String step1 = json.getString("step1");
-                                        String step2 = json.getString("step2");
-                                        String step3 = json.getString("step3");
-                                        if("1".equals(step1)){
-                                            UserInformation.setRightString("已完成");
+                                        String status = json.getString("status");
+                                        if("1".equals(status)){
+                                            String step1 = json.getString("step1");
+                                            String step2 = json.getString("step2");
+                                            String step3 = json.getString("step3");
+                                            if("1".equals(step1)){
+                                                UserInformation.setRightString("已完成");
+                                            }
+                                            if("1".equals(step2)){
+                                                UserAuthorization.setRightString("已完成");
+                                            }
+                                            if("1".equals(step3)){
+                                                UserPic.setRightString("已完成");
+                                            }
+
+                                        }else {
+                                            Intent intent = new Intent(UserInformationActivity.this, Verify_PasswordActivity.class).putExtra("from","informationStatus");
+                                            startActivity(intent);
                                         }
-                                        if("1".equals(step2)){
-                                            UserAuthorization.setRightString("已完成");
-                                        }
-                                        if("1".equals(step3)){
-                                            UserPic.setRightString("已完成");
-                                        }
-                                        String signature = json.getString("signature");
-                                        SPUtils.put(UserInformationActivity.this,"signature",signature);
                                     }else {
 
                                     }
@@ -121,14 +131,31 @@ public class UserInformationActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.User_information:
+
                 IdentityinformationActivity.launch(this);
+
                 break;
             case R.id.User_Authorization:
+
                 break;
             case R.id.User_Pic:
                 ImageActivity.launch(this);
                 break;
         }
     }
+    @Subscribe
+    public void onMessageEvent(InformationEvent event){
+        String message = event.message;
 
+        if("informationStatus".equals(message)){
+                  getStatus();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
 }

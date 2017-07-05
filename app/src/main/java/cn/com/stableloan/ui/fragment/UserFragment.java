@@ -157,7 +157,7 @@ public class UserFragment extends ImmersionFragment {
     }
 
 
-    private void exit() {
+   /* private void exit() {
         selfDialog = new SelfDialog(getActivity());
         selfDialog.setTitle("提示");
         selfDialog.setMessage("确定退出登陆?");
@@ -178,7 +178,7 @@ public class UserFragment extends ImmersionFragment {
             }
         });
         selfDialog.show();
-    }
+    }*/
 
 
     @Override
@@ -193,7 +193,11 @@ public class UserFragment extends ImmersionFragment {
     @Subscribe
     public void onMessageEvent(MessageEvent event){
         tvNick.setText(event.userNick);
-        ToastUtils.showToast(getActivity(),"收到消息了--"+event.userNick);
+
+        if(event.phone!=null){
+
+            tvUserPhone.setText(event.phone);
+        }
     }
 
 
@@ -201,20 +205,70 @@ public class UserFragment extends ImmersionFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
-                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
-                if(gesturePassword == null || "".equals(gesturePassword)) {
-                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
-                    startActivity(intent);
-                }
-                //UserInformationActivity.launch(getActivity());
+
+                TextUser();
+
                 break;
             case R.id.layout_setting:
                 Setting1Activity.launch(getActivity());
                 break;
         }
+    }
+
+    private void TextUser() {
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        String signature = (String) SPUtils.get(getActivity(), "signature", "1");
+            HashMap<String, String> params = new HashMap<>();
+            params.put("token", token);
+            params.put("signature", signature);
+            JSONObject jsonObject = new JSONObject(params);
+            OkGo.<String>post(Urls.NEW_URL+Urls.Login.Immunity)
+                    .tag(this)
+                    .upJson(jsonObject)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject object=new JSONObject(s);
+                                String isSuccess = object.getString("isSuccess");
+                                if("1".equals(isSuccess)){
+                                    String status = object.getString("status");
+                                            if("1".equals(status)){
+                                                UserInformationActivity.launch(getActivity());
+                                            }else {
+                                                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                                                if(gesturePassword == null || "".equals(gesturePassword)) {
+                                                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
+                                                    startActivity(intent);
+                                                } else {
+                                                    Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            }
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ToastUtils.showToast(getActivity(),"网络异常，请稍后再试");
+                                }
+                            });
+                        }
+                    });
+
+
+
     }
 
 

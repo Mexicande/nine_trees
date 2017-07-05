@@ -27,6 +27,7 @@
                 android:text="个人信息解锁方式:"
                 android:textSize="15sp"/>
             <TextView
+                android:id="@+id/lock"
                 android:layout_marginRight="@dimen/_10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
@@ -69,6 +70,7 @@
                 android:text="材料托管时间:"
                 android:textSize="15sp"/>
             <TextView
+                android:id="@+id/month"
                 android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_10dp"
@@ -84,7 +86,6 @@
             android:layout_width="120dp"
             android:layout_centerVertical="true"
             android:textSize="@dimen/textsize"
-
             android:paddingLeft="5dp"
             android:layout_alignParentRight="true"
             android:textColor="#FFBF28"
@@ -106,6 +107,7 @@
             android:text="有效期至:"
             android:textSize="15sp"/>
         <TextView
+            android:id="@+id/time"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/_10dp"
             android:layout_toRightOf="@id/view2"

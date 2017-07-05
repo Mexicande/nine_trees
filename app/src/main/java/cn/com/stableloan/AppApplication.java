@@ -55,6 +55,7 @@ public class AppApplication extends Application {
         try {
             OkGo.getInstance()
                     .debug("OkGo", Level.INFO, true)
+                    .setRetryCount(0)
                     .setCacheMode(CacheMode.NO_CACHE);
         } catch (Exception e) {
             e.printStackTrace();

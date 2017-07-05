@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
@@ -110,7 +112,12 @@ public class ProductClassifyActivity extends BaseActivity {
                                             Gson gson = new Gson();
                                             stateLayout.showContentView();
                                             class_List = gson.fromJson(s, Class_ListProductBean.class);
-                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).into(imageView);
+                                            RequestOptions options = new RequestOptions()
+                                                    .centerInside()
+                                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                                    ;
+                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).apply(options).into(imageView);
+
                                             classify_recycler_adapter.setNewData(class_List.getProduct());
                                         } else {
                                             stateLayout.showEmptyView();
@@ -161,7 +168,7 @@ public class ProductClassifyActivity extends BaseActivity {
     private void initView() {
 
         imageView = new ImageView(this);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 320);
         imageView.setLayoutParams(lp);
         classify_recycler_adapter = new Recycler_Classify_Adapter(null);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(this));

@@ -19,7 +19,31 @@ public interface Urls{
         String SEND_MESSAGE="http://test.api.shoujijiekuan.com/Home/ChuanglanSmsApi/sendSMS";
         String LOGIN="Login";
         String USER_INFOMATION="Mine/Locking";
-        String GET_SIGNATURE="Mine/signature";
+        String GET_SIGNATURE="Mine/GetSignature";
+        String Immunity="Mine/Immunity";
+
+
+
+    }
+
+    interface  Identity{
+        String GetIdentity="Identity/GetIdentity";
+        String Getbank="Identity/Getbank ";
+        String GetOccupation="Identity/GetOccupation";
+
+        String AddIdentity="Identity/AddIdentity";
+
+        String Addbank="Identity/Addbank";
+        String AddOccupation="Identity/AddOccupation";
+    }
+    interface STATUS{
+        String GetStatus="Status/GetStatus";
+
+        String GetPictrueStatus="Status/GetPictrueStatus";
+        String Getsetting="SaveSetting/Getsetting";
+        String Save_Setting="SaveSetting/setting";
+
+
     }
 
     interface  HOME_FRAGMENT{
@@ -62,6 +86,10 @@ public interface Urls{
     }
 
     interface Pictrue{
-        String GET_QINIUTOKEN="Pictrue/pictrue";
+        String GET_QINIUTOKEN="Mine/GetToken";
+
+        String UpLoadImage="Pictrue/AddIdcard";
+
+        String Get_Pictrue="Pictrue/GetPictrue";
     }
 }

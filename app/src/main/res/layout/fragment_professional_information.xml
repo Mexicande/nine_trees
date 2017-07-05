@@ -97,7 +97,7 @@
                     android:layout_toLeftOf="@id/et_Teacher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="学校地址 : "
+                    android:text="班主任电话 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
             <TextView
@@ -223,7 +223,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <cn.com.stableloan.view.BetterSpinner
+                <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_Cincome"
                     android:layout_width="220dp"
                     android:layout_centerVertical="true"
@@ -280,16 +280,16 @@
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
+                <cn.com.stableloan.view.BetterSpinner
                     android:id="@+id/et_operations"
+                    android:layout_width="220dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/gay"
+                    android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -305,44 +305,51 @@
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-              <LinearLayout
-                  android:id="@+id/layout4"
-                  android:layout_centerVertical="true"
-                  android:layout_marginRight="@dimen/_30dp"
-                  android:layout_alignParentRight="true"
-                  android:layout_width="220dp"
-                  android:layout_height="35dp"
-                  android:orientation="horizontal"
-                  >
-                  <cn.com.stableloan.view.SmoothCheckBox
-                      android:id="@+id/checkbox1"
-                      android:layout_marginLeft="@dimen/_10dp"
-                      android:layout_width="20dp"
-                      android:layout_height="20dp"
-                      android:enabled="true"
-                      android:layout_centerVertical="true"
-                      android:gravity="center_vertical"
-                      android:tint="@color/gay" />
-                  <cn.com.stableloan.view.SmoothCheckBox
-                      android:id="@+id/checkbox2"
-                      android:layout_marginLeft="@dimen/_100dp"
-                      android:layout_width="20dp"
-                      android:layout_height="20dp"
-                      android:enabled="true"
-                      android:layout_centerVertical="true"
-                      android:gravity="center_vertical"
-                      android:tint="@color/gay" />
-              </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout4"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="220dp"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    >
+                    <cn.com.stableloan.view.SmoothCheckBox
+                        android:id="@+id/checkbox1"
+                        android:layout_marginLeft="@dimen/_20dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:enabled="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:tint="@color/gay" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="有"/>
+                    <cn.com.stableloan.view.SmoothCheckBox
+                        android:id="@+id/checkbox2"
+                        android:layout_marginLeft="80dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:enabled="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:tint="@color/gay" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="没有"/>
+                </LinearLayout>
                 <TextView
                     android:layout_marginRight="@dimen/_10dp"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/layout4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="经营年限 : "
+                    android:text="经营执照 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:layout_marginTop="10dp"
@@ -376,6 +383,8 @@
                 android:text="自由职业者信息"
                 android:layout_marginLeft="@dimen/_20dp"
                 android:textSize="17sp"/>
+
+
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="match_parent"
@@ -391,22 +400,30 @@
                     >
                     <cn.com.stableloan.view.SmoothCheckBox
                         android:id="@+id/checkbox3"
-                        android:layout_marginLeft="@dimen/_10dp"
+                        android:layout_marginLeft="@dimen/_20dp"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:enabled="true"
                         android:layout_centerVertical="true"
                         android:gravity="center_vertical"
                         android:tint="@color/gay" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="有"/>
                     <cn.com.stableloan.view.SmoothCheckBox
                         android:id="@+id/checkbox4"
-                        android:layout_marginLeft="@dimen/_100dp"
+                        android:layout_marginLeft="80dp"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:enabled="true"
                         android:layout_centerVertical="true"
                         android:gravity="center_vertical"
                         android:tint="@color/gay" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="没有"/>
                 </LinearLayout>
                 <TextView
                     android:layout_marginRight="@dimen/_10dp"
@@ -418,6 +435,7 @@
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
             <Button
+                android:id="@+id/Save"
                 android:layout_marginTop="40dp"
                 android:layout_gravity="center"
                 android:layout_width="180dp"

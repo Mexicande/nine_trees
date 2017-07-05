@@ -164,8 +164,7 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
                                     if(success.equals("1")){
                                         hud.dismiss();
                                         ToastUtils.showToast(UpdateNickActivity.this,"修改成功");
-                                        EventBus.getDefault().post(new MessageEvent(nick));
-
+                                        EventBus.getDefault().post(new MessageEvent(nick,null));
                                         finish();
                                     }else {
                                         hud.dismiss();

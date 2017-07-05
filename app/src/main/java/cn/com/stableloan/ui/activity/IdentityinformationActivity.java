@@ -11,6 +11,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
@@ -28,7 +30,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.ui.fragment.BankInformationFragment;
 import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;
 import cn.com.stableloan.ui.fragment.UserInformationFragment;
@@ -64,6 +68,8 @@ public class IdentityinformationActivity extends BaseActivity {
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
 
     }
+
+
 
     private void initMagicIndicator() {
         mCurrentFragment = new UserInformationFragment();
@@ -158,4 +164,6 @@ public class IdentityinformationActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
+
+
 }

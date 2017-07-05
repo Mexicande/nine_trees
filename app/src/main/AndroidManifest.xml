@@ -19,8 +19,6 @@
     <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -131,9 +129,14 @@
         <activity android:name=".ui.activity.ImageActivity" />
         <activity android:name=".ui.activity.IdentityUploadActivity" />
         <activity android:name=".ui.activity.SafeSettingActivity" />
-        <activity android:name=".ui.activity.CreateGestureActivity"/>
-        <activity android:name=".ui.activity.GestureLoginActivity"/>
-        <activity android:name=".ui.activity.Verify_PasswordActivity"></activity>
+        <activity android:name=".ui.activity.CreateGestureActivity" />
+        <activity android:name=".ui.activity.GestureLoginActivity" />
+        <activity android:name=".ui.activity.Verify_PasswordActivity" />
+        <activity android:name=".ui.activity.BankUploadActivity" />
+        <activity android:name=".ui.activity.CreditBankUploadActivity" />
+        <activity android:name=".ui.activity.BusinessUploadActivity" />
+        <activity android:name=".ui.activity.CardUploadActivity" />
+        <activity android:name=".ui.activity.WorkUploadActivity"></activity>
     </application>
 
 </manifest>

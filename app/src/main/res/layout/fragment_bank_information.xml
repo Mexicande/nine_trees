@@ -53,6 +53,18 @@
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
                     />
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_ValidityTime1"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:textSize="@dimen/textsize"
+
+                    android:background="@drawable/editext_normal"
+                    />
                 <TextView
                     android:layout_marginRight="@dimen/_10dp"
                     android:layout_centerVertical="true"
@@ -252,6 +264,7 @@
             </RelativeLayout>
 
             <Button
+                android:id="@+id/Save"
                 android:layout_marginTop="40dp"
                 android:layout_gravity="center"
                 android:layout_width="180dp"

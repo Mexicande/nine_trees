@@ -11,6 +11,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +24,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.InformationEvent;
+import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -67,7 +71,6 @@ public class Verify_PasswordActivity extends BaseActivity {
     }
     private  KProgressHUD hud;
     private void VerifyPassWord() {
-
         String password = etPassWord.getText().toString();
         String token = (String) SPUtils.get(this, "token", "1");
         if(!password.isEmpty()){
@@ -95,16 +98,44 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             if("1".equals(isSuccess)){
                                                 String from = getIntent().getStringExtra("from");
                                                 if(from!=null){
+                                                    String signature = json.getString("signature");
+                                                    SPUtils.put(Verify_PasswordActivity.this,"signature",signature);
                                                     if("unLock".equals(from)){
                                                         CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                         finish();
                                                     }else if ("userinformation".equals(from)){
-                                                        String signature = json.getString("signature");
-                                                        SPUtils.put(Verify_PasswordActivity.this,"signature",signature);
                                                         UserInformationActivity.launch(Verify_PasswordActivity.this);
                                                         finish();
                                                     }else if("safe".equals(from)){
                                                         SafeSettingActivity.launch(Verify_PasswordActivity.this);
+                                                        finish();
+                                                    }else if("UserInformation".equals(from)){
+                                                        EventBus.getDefault().post(new InformationEvent("ok"));
+                                                        finish();
+                                                    }else if("PicStatus".equals(from)){
+                                                        EventBus.getDefault().post(new PicStatusEvent("update"));
+                                                        finish();
+                                                    }else if("IdentityUpload".equals(from)){
+                                                        EventBus.getDefault().post(new PicStatusEvent("identity"));
+                                                        finish();
+                                                    }else if("BankUpload".equals(from)){
+                                                        EventBus.getDefault().post(new PicStatusEvent("bankPic"));
+                                                        finish();
+
+                                                    }else if("BusinessUpload".equals(from)){
+                                                        EventBus.getDefault().post(new PicStatusEvent("BusinessPic"));
+                                                        finish();
+                                                    }
+                                                    else if("CreditUpload".equals(from)){
+                                                        EventBus.getDefault().post(new PicStatusEvent("CreditPic"));
+                                                        finish();
+                                                    }
+                                                    else if("CardUpload".equals(from)){
+                                                        EventBus.getDefault().post(new PicStatusEvent("CardPic"));
+                                                        finish();
+                                                    }
+                                                    else if("informationStatus".equals(from)) {
+                                                        EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                                         finish();
                                                     }
                                                 }

@@ -5,18 +5,29 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.star.lock.util.LockPatternUtil;
 import com.star.lock.widget.LockPatternView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Sym on 2015/12/24.
@@ -101,6 +112,35 @@ public class GestureLoginActivity extends BaseActivity {
      * 手势登录成功（去首页）
      */
     private void loginGestureSuccess() {
+        String token = (String) SPUtils.get(this, "token", "1");
+
+        Map<String,String> parms=new HashMap<>();
+        parms.put("token",token);
+        JSONObject jsonObject=new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_URL+Urls.Login.GET_SIGNATURE)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject1=new JSONObject(s);
+                            String isSuccess = jsonObject1.getString("isSuccess");
+
+                            if("1".equals(isSuccess)){
+                                String signature = jsonObject1.getString("signature");
+
+                                SPUtils.put(GestureLoginActivity.this,"signature",signature);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+
         UserInformationActivity.launch(this);
         finish();
         //Toast.makeText(GestureLoginActivity.this, "success", Toast.LENGTH_SHORT).show();

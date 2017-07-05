@@ -6,8 +6,11 @@ package cn.com.stableloan.model;
 
 public class MessageEvent {
     public final String userNick;
+    public final String phone;
 
-    public MessageEvent(String message) {
+    public MessageEvent(String message,String phone) {
         this.userNick = message;
+        this.phone = phone;
     }
+
 }

@@ -22,11 +22,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
-                    android:paddingLeft="@dimen/_2dp"
-
+                    android:paddingLeft="@dimen/_5dp"
                     android:layout_width="220dp"
                     android:textSize="@dimen/textsize"
+
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
                     />
@@ -71,11 +70,14 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
+                    whatever:testType="regexp"
+                    whatever:customRegexp="^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9Xx])$"
+                    whatever:testErrorString="身份证格式不正确"
+
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_2dp"
+                    android:paddingLeft="@dimen/_5dp"
 
                     android:background="@drawable/editext_normal"
                     />
@@ -97,9 +99,12 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
+                    whatever:testType="regexp"
+                    whatever:customRegexp="[\u4e00-\u9fa5]"
+                    whatever:testErrorString="格式不正确"
+
                     android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_2dp"
+                    android:paddingLeft="@dimen/_5dp"
 
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
@@ -112,7 +117,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="性别 : "
-                    android:textSize="@dimen/textsize"/>
+                    android:textSize="@dimen/textsize"
+                    android:id="@+id/textView2" />
+
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="10dp"
@@ -123,10 +130,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
                     android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_2dp"
-
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:paddingLeft="@dimen/_5dp"
                     android:layout_width="220dp"
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
@@ -152,7 +159,7 @@
                     whatever:testType="alpha"
                     android:layout_width="220dp"
                     android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_2dp"
+                    android:paddingLeft="@dimen/_5dp"
 
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
@@ -178,13 +185,21 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_2dp"
+                    android:paddingLeft="@dimen/_5dp"
 
                     android:textColor="@color/gay"
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
                     />
-
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="婚姻状况 : "
+                    android:layout_toLeftOf="@id/et_Marriage"
+                    android:textSize="@dimen/textsize" />
                 <!-- <org.angmarch.views.NiceSpinner
                     android:id="@+id/et_Marriage"
                     android:layout_centerVertical="true"
@@ -194,14 +209,6 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/editext_normal"
                     />-->
-                <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/et_Marriage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="婚姻状况 : "
-                    android:textSize="@dimen/textsize"/>
 
             </RelativeLayout>
 
@@ -219,10 +226,13 @@
                         android:id="@+id/et_City"
                         android:layout_centerVertical="true"
                         android:layout_width="130dp"
-                        android:paddingLeft="@dimen/_2dp"
+                        android:paddingLeft="@dimen/_5dp"
                         android:layout_height="@dimen/layout_height"
                         android:textSize="@dimen/textsize"
                         android:background="@drawable/editext_normal"
+                        whatever:testType="regexp"
+                        whatever:customRegexp="[\u4e00-\u9fa5]"
+                        whatever:testErrorString="格式不正确"
                         />
                     <Button
                         android:id="@+id/getCity"
@@ -251,19 +261,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:id="@+id/layout1"
+                    android:id="@+id/layout4"
                     android:layout_width="220dp"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     android:layout_height="35dp">
                     <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/et_Contact1"
+                        android:id="@+id/et_Contact_name"
                         android:layout_centerVertical="true"
-                        whatever:testType="alpha"
-                        android:paddingLeft="@dimen/_2dp"
+                        android:paddingLeft="@dimen/_5dp"
                         android:layout_width="130dp"
                         android:textSize="@dimen/textsize"
                         android:layout_height="@dimen/layout_height"
+                        whatever:testType="regexp"
+                        whatever:customRegexp="[\u4e00-\u9fa5]"
+                        whatever:testErrorString="格式不正确"
                         android:background="@drawable/editext_normal"
                         />
                     <Button
@@ -281,10 +293,42 @@
                 <TextView
                     android:layout_marginRight="@dimen/_10dp"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/layout4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="联系人姓名 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/layout1"
+                    android:layout_width="220dp"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="35dp">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_Contact1"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5dp"
+                        android:layout_width="220dp"
+                        android:inputType="number"
+                        android:maxLength="11"
+                        android:textSize="@dimen/textsize"
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        />
+
+                </LinearLayout>
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/layout1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="紧急联系人 : "
+                    android:text="联系人电话 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
 
@@ -313,7 +357,49 @@
                     android:text="与您的关系 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
-
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/layout5"
+                    android:layout_width="220dp"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="35dp">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_Contact_name2"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5dp"
+                        android:layout_width="130dp"
+                        android:textSize="@dimen/textsize"
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        whatever:testType="regexp"
+                        whatever:customRegexp="[\u4e00-\u9fa5]"
+                        whatever:testErrorString="格式不正确"
+                        />
+                    <Button
+                        android:id="@+id/getContact2"
+                        android:layout_marginLeft="@dimen/_10dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:textColor="@color/gay"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:background="@drawable/buttin_radio"
+                        android:text="读取通讯录"
+                        />
+                </LinearLayout>
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/layout5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="联系人姓名 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -327,25 +413,16 @@
                     <com.andreabaccega.widget.FormEditText
                         android:id="@+id/et_Contact"
                         android:layout_centerVertical="true"
-                        whatever:testType="alpha"
-                        android:paddingLeft="@dimen/_2dp"
+                        android:paddingLeft="@dimen/_5dp"
+
                         android:textSize="@dimen/textsize"
-                        android:layout_width="130dp"
+                        android:layout_width="220dp"
+                        android:inputType="number"
+                        android:maxLength="11"
                         android:layout_height="@dimen/layout_height"
                         android:background="@drawable/editext_normal"
                         />
-                    <Button
-                        android:id="@+id/getContact"
-                        android:layout_marginLeft="@dimen/_10dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:textColor="@color/gay"
-                        style="?android:attr/borderlessButtonStyle"
 
-                        android:background="@drawable/buttin_radio"
-                        android:text="读取通讯录"
-                        />
                 </LinearLayout>
                 <TextView
                     android:layout_marginRight="@dimen/_10dp"
@@ -353,7 +430,7 @@
                     android:layout_toLeftOf="@id/layout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="紧急联系人 : "
+                    android:text="联系人电话 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
 
@@ -368,7 +445,7 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     android:textSize="@dimen/textsize"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="@dimen/_5dp"
 
                     android:textColor="@color/gay"
                     android:layout_height="@dimen/layout_height"
@@ -384,6 +461,7 @@
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
             <Button
+                android:id="@+id/save"
                 android:layout_marginBottom="50dp"
                 android:layout_marginTop="40dp"
                 android:layout_gravity="center"
@@ -393,8 +471,6 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/white"
-                style="?android:attr/borderlessButtonStyle"
-
                 android:background="@drawable/button_information"/>
 
 

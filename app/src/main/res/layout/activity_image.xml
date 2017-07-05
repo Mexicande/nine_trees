@@ -29,7 +29,7 @@
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
-        stv:sRightTextString="已完成"
+        stv:sRightTextString="待完成"
         stv:sLeftTopTextString="身份证" />
     <com.allen.library.SuperTextView
         android:id="@+id/bank"
@@ -52,7 +52,7 @@
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
-        stv:sRightTextString="已完成"
+        stv:sRightTextString="待完成"
         stv:sLeftTopTextString="银行卡" />
     <com.allen.library.SuperTextView
         android:id="@+id/CreditBank"
@@ -75,7 +75,7 @@
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
-        stv:sRightTextString="已完成"
+        stv:sRightTextString="待完成"
         stv:sLeftTopTextString="信用卡" />
     <com.allen.library.SuperTextView
         android:id="@+id/camp"
@@ -98,7 +98,7 @@
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
-        stv:sRightTextString="已完成"
+        stv:sRightTextString="待完成"
         stv:sLeftTopTextString="营业执照" />
     <com.allen.library.SuperTextView
         android:id="@+id/userCard"
@@ -121,6 +121,6 @@
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
-        stv:sRightTextString="已完成"
+        stv:sRightTextString="待完成"
         stv:sLeftTopTextString="名片或工牌" />
 </LinearLayout>

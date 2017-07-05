@@ -14,15 +14,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
+import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.SelfDialog;
 
 /**
  * 设置页面
  */
 
-public class Setting1Activity extends AppCompatActivity {
+public class Setting1Activity extends BaseActivity {
 
     @Bind(R.id.layout_nick)
     SuperTextView layoutNick;
@@ -38,6 +40,7 @@ public class Setting1Activity extends AppCompatActivity {
     LinearLayout layoutGo;
 
     private SelfDialog selfDialog;
+    private ACache aCache;
 
 
     public static void launch(Context context) {
@@ -49,6 +52,8 @@ public class Setting1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting1);
         ButterKnife.bind(this);
+        aCache = ACache.get(this);
+
         initToolbar();
 
     }
@@ -92,6 +97,7 @@ public class Setting1Activity extends AppCompatActivity {
                 SPUtils.clear(Setting1Activity.this);
                 TinyDB tinyDB = new TinyDB(Setting1Activity.this);
                 tinyDB.clear();
+                aCache.clear();
                 startActivity(new Intent(Setting1Activity.this, LoginActivity.class).putExtra("from", "user1"));
                 finish();
             }
