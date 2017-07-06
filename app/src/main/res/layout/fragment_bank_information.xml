@@ -80,6 +80,33 @@
                     android:text="持卡人姓名 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_ValidityTime2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_alignParentRight="true"
+                    whatever:testType="alpha"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/layout_height"
+                    android:textSize="@dimen/textsize"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:tint="@color/gay"
+                    android:textColor="@color/gay"
+                    android:background="@drawable/editext_normal"
+                    />
+                <TextView
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/et_ValidityTime2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="有效期 : "
+                    android:textSize="@dimen/textsize"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_marginTop="10dp"

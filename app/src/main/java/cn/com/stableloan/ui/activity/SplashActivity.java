@@ -41,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
         ImmersionBar.with(this).transparentBar().init();
 
         boolean flag = SPUtils.contains(this, "url");
+
         if(flag){
             mHandler.sendEmptyMessageDelayed(1, 1000);
         }else {

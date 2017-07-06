@@ -13,6 +13,8 @@ import com.star.lock.util.LockPatternUtil;
 import com.star.lock.widget.LockPatternIndicator;
 import com.star.lock.widget.LockPatternView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.MsgEvent;
+import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
+import cn.com.stableloan.view.SelfDialog;
 
 /**
  * create gesture activity
@@ -156,6 +162,7 @@ public class CreateGestureActivity extends BaseActivity {
      * 成功设置了手势密码(跳到首页)
      */
     private void setLockPatternSuccess() {
+        EventBus.getDefault().post(new MsgEvent("1"));
         finish();
         //Toast.makeText(this, "create gesture success", Toast.LENGTH_SHORT).show();
     }
@@ -168,11 +175,26 @@ public class CreateGestureActivity extends BaseActivity {
 
         aCache.put(Constant.GESTURE_PASSWORD, bytes);
     }
-
+    private  SelfDialog selfDialog;
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
-        finish();
-    }
+        selfDialog = new SelfDialog(this);
+        selfDialog.setTitle("返回");
+        selfDialog.setMessage("是否要放弃设置指纹解锁手势?");
+        selfDialog.setYesOnclickListener("是", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                selfDialog.dismiss();
+                finish();
+            }
+        });
+        selfDialog.setNoOnclickListener("否", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                selfDialog.dismiss();
+            }
+        });
+        selfDialog.show();    }
 
     private enum Status {
         //默认的状态，刚开始的时候（初始化状态）

@@ -22,8 +22,6 @@ public interface Urls{
         String GET_SIGNATURE="Mine/GetSignature";
         String Immunity="Mine/Immunity";
 
-
-
     }
 
     interface  Identity{

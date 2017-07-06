@@ -30,6 +30,7 @@
                         android:paddingLeft="@dimen/_5dp"
                         android:layout_width="220dp"
                         android:textSize="@dimen/textsize"
+                        android:maxLength="10"
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
                         android:layout_height="@dimen/layout_height"
@@ -86,6 +87,7 @@
                         android:layout_width="220dp"
                         android:layout_height="@dimen/layout_height"
                         android:textSize="@dimen/textsize"
+                        android:maxLength="18"
                         android:paddingLeft="@dimen/_5dp"
 
                         android:background="@drawable/editext_normal"
@@ -136,7 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.andreabaccega.widget.FormEditText
-                        android:id="@+id/et_Age"
+                        android:id="@+id/et_Age1"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
@@ -148,12 +150,13 @@
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
                         android:layout_height="@dimen/layout_height"
+
                         android:background="@drawable/editext_normal"
                         />
                     <TextView
                         android:layout_marginRight="@dimen/_10dp"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/et_Age"
+                        android:layout_toLeftOf="@id/et_Age1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="年龄 : "
@@ -210,18 +213,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
                         android:text="婚姻状况 : "
                         android:layout_toLeftOf="@id/et_Marriage"
                         android:textSize="@dimen/textsize" />
-                    <!-- <org.angmarch.views.NiceSpinner
-                        android:id="@+id/et_Marriage"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/_30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="220dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/editext_normal"
-                        />-->
+
 
                 </RelativeLayout>
 
@@ -292,6 +288,7 @@
                             whatever:customRegexp="[\u4e00-\u9fa5]"
                             whatever:testErrorString="格式不正确"
                             android:tint="@color/gay"
+                            android:maxLength="10"
                             android:textColor="@color/gay"
                             android:background="@drawable/editext_normal"
                             />
@@ -396,6 +393,7 @@
                             android:background="@drawable/editext_normal"
                             whatever:testType="regexp"
                             android:tint="@color/gay"
+                            android:maxLength="10"
                             android:textColor="@color/gay"
                             whatever:customRegexp="[\u4e00-\u9fa5]"
                             whatever:testErrorString="格式不正确"

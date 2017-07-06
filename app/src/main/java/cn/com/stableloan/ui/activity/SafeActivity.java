@@ -7,16 +7,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.SaveBean;
+import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
+import cn.com.stableloan.utils.constant.Constant;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class SafeActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
+    private ACache aCache;
+    private  SaveBean saveBean;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeActivity.class));
@@ -26,6 +46,8 @@ public class SafeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_safe);
         ButterKnife.bind(this);
+        aCache = ACache.get(this);
+
         titleName.setText("账号安全");
     }
 
@@ -36,8 +58,15 @@ public class SafeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.safe:
-                Intent intent=new Intent(this,Verify_PasswordActivity.class).putExtra("from","safe");
-                startActivity(intent);
+                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                if(gesturePassword == null || "".equals(gesturePassword)) {
+                    Intent intent=new Intent(this,Verify_PasswordActivity.class).putExtra("from","safe");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, GestureLoginActivity.class).putExtra("from","SettingSafe");
+                    startActivity(intent);
+                }
+                //getDate();
                 break;
             case R.id.change_password:
                 UpdatePassWordActivity.launch(this);
@@ -47,5 +76,60 @@ public class SafeActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
         }
+    }
+    private void getDate() {
+
+        String token = (String) SPUtils.get(this, "token", "1");
+
+        Map<String, String> parms = new HashMap<>();
+        parms.put("token", token);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Getsetting)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String isSuccess = object.getString("isSuccess");
+                            if ("1".equals(isSuccess)) {
+                                Gson gson = new Gson();
+                                saveBean = gson.fromJson(s, SaveBean.class);
+                                String way1 = saveBean.getWay();
+
+                                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+
+                                if(way1!=null){
+                                    if("0".equals(way1)){
+
+                                        Intent intent=new Intent(SafeActivity.this,Verify_PasswordActivity.class).putExtra("from","safe");
+                                        startActivity(intent);
+
+                                    }else {
+                                        if(gesturePassword == null ){
+                                            Intent intent = new Intent(SafeActivity.this, GestureLoginActivity.class).putExtra("from","SettingSafe");
+                                            startActivity(intent);
+                                        }else {
+
+                                            Intent intent=new Intent(SafeActivity.this,Verify_PasswordActivity.class).putExtra("from","safe");
+                                            startActivity(intent);
+                                        }
+
+                                    }
+                                }
+
+                            }else {
+                                String msg = object.getString("msg");
+                                ToastUtils.showToast(SafeActivity.this,msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                });
+
+
     }
 }

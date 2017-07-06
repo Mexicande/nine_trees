@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andreabaccega.widget.FormEditText;
@@ -91,14 +93,34 @@ public class UserInformationFragment extends Fragment {
     FormEditText etIDCard;
     @Bind(R.id.et_Sex)
     FormEditText etSex;
-    @Bind(R.id.et_Age)
-    FormEditText etAge;
     @Bind(R.id.et_Address)
     FormEditText etAddress;
     @Bind(R.id.et_Contact_name)
     FormEditText etContactName;
     @Bind(R.id.et_Contact_name2)
     FormEditText etContactName2;
+    @Bind(R.id.et_Age1)
+    FormEditText etAge;
+    @Bind(R.id.textView3)
+    TextView textView3;
+    @Bind(R.id.getCity)
+    Button getCity;
+    @Bind(R.id.layout)
+    LinearLayout layout;
+    @Bind(R.id.getContact1)
+    Button getContact1;
+    @Bind(R.id.layout4)
+    LinearLayout layout4;
+    @Bind(R.id.layout1)
+    LinearLayout layout1;
+    @Bind(R.id.getContact2)
+    Button getContact2;
+    @Bind(R.id.layout5)
+    LinearLayout layout5;
+    @Bind(R.id.layout3)
+    LinearLayout layout3;
+    @Bind(R.id.save)
+    Button save;
 
     private String[] list1;
 
@@ -117,10 +139,9 @@ public class UserInformationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         ButterKnife.bind(this, view);
-        ToastUtils.showToast(getActivity(),"-------");
+        ToastUtils.showToast(getActivity(), "-------");
         EventBus.getDefault().register(this);
         getDate();
         mLocationClient = new LocationClient(getActivity().getApplicationContext());
@@ -149,54 +170,56 @@ public class UserInformationFragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
                 String idCard = etIDCard.getText().toString();
-              if(idCard.length()==18){
-                  boolean idCard18 = RegexUtils.isIDCard18(idCard);
-                  if(idCard18){
-                      char c = idCard.charAt(16);
-                      int i = Integer.parseInt(String.valueOf(c));
-                      if(i%2==0){
-                          etSex.setText("女");
-                      }else {
-                          etSex.setText("男");
-                      }
-                  }
-                  int age = IdNOToAge(idCard);
-                  etAge.setText(age);
-              }
+                if (idCard.length() == 18) {
+                    boolean idCard18 = RegexUtils.isIDCard18(idCard);
+                    if (idCard18) {
+                        char c = idCard.charAt(16);
+                        int i = Integer.parseInt(String.valueOf(c));
+                        if (i % 2 == 0) {
+                            etSex.setText("女");
+                        } else {
+                            etSex.setText("男");
+                        }
+                    }
+                    int age = IdNOToAge(idCard);
+                    etAge.setText(String.valueOf(age));
+                }
             }
         });
     }
 
-    public static int IdNOToAge(String IdNO){
+    public static int IdNOToAge(String IdNO) {
         int leh = IdNO.length();
-        String dates="";
+        String dates = "";
         if (leh == 18) {
-            int se = Integer.valueOf(IdNO.substring(leh - 1)) % 2;
             dates = IdNO.substring(6, 10);
             SimpleDateFormat df = new SimpleDateFormat("yyyy");
-            String year=df.format(new Date());
-            int u=Integer.parseInt(year)-Integer.parseInt(dates);
+            String year = df.format(new Date());
+            int u = Integer.parseInt(year) - Integer.parseInt(dates);
             return u;
-        }else{
+        } else {
             dates = IdNO.substring(6, 8);
+
             return Integer.parseInt(dates);
         }
 
     }
 
     @Subscribe
-    public void onMessageEvent(InformationEvent event){
+    public void onMessageEvent(InformationEvent event) {
         String message = event.message;
-        if("informationStatus".equals(message)){
+        if ("informationStatus".equals(message)) {
             getDate();
         }
     }
+
     private void getDate() {
         Map<String, String> parms = new HashMap<>();
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         parms.put("token", token);
         parms.put("signature", signature);
+
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_URL + Urls.Identity.GetIdentity)
                 .tag(getActivity())
@@ -218,9 +241,9 @@ public class UserInformationFragment extends Fragment {
                                     etIDCard.setText(identity.getIdcard());
 
                                     String sex = identity.getSex();
-                                    if("0".equals(sex)){
+                                    if ("0".equals(sex)) {
                                         etSex.setText("女");
-                                    }else if("1".equals(sex)){
+                                    } else if ("1".equals(sex)) {
                                         etSex.setText("男");
                                     }
                                     etAge.setText(identity.getAge());
@@ -228,13 +251,55 @@ public class UserInformationFragment extends Fragment {
 
                                     String marriage = identity.getMarriage();
 
-                                    if(marriage.equals("0")){
+                                    if (marriage.equals("0")) {
                                         etMarriage.setText("未婚");
-                                    }else if(marriage.equals("1")){
+                                    } else if (marriage.equals("1")) {
                                         etMarriage.setText("已婚");
-
                                     }
                                     etCity.setText(identity.getCity());
+                                    Identity.IdentityBean.ContactBean bean = identity.getContact().get(0);
+                                    etContact.setText(bean.getUserphone());
+
+                                    etContactName.setText(bean.getContact());
+
+
+                                    String bet = bean.getRelation();
+                                    int i2 = Integer.parseInt(bet);
+                                    etBetween1.setText(list[i2]);
+
+
+                                    /*for (int i = 0; i < list.length; i++) {
+                                        if (list[i].equals(bet)) {
+                                            String s1 = String.valueOf(i);
+                                            etBetween1.setText(s1);
+                                        }
+                                    }*/
+
+
+
+
+
+                                    Identity.IdentityBean.ContactBean bean1 = identity.getContact().get(1);
+
+                                    etContact1.setText(bean1.getUserphone());
+                                    etContactName2.setText(bean1.getContact());
+
+
+
+
+                                    String bet2 = bean1.getRelation();
+                                    int i1 = Integer.parseInt(bet2);
+
+                                    etBetween2.setText(list[i1]);
+
+
+                                  /*  for (int i = 0; i < list.length; i++) {
+                                        if (list[i].equals(bet2)) {
+                                            String s2 = String.valueOf(i);
+                                            etBetween2.setText(s2);
+                                        }
+                                    }*/
+
 
                                 } else {
                                     Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
@@ -255,11 +320,11 @@ public class UserInformationFragment extends Fragment {
 
     private void initSpinner() {
 
-       list1 = getResources().getStringArray(R.array.spingarr);
+        list1 = getResources().getStringArray(R.array.spingarr);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, list1);
         etMarriage.setAdapter(adapter1);
-       list = getResources().getStringArray(R.array.between);
+        list = getResources().getStringArray(R.array.between);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, list);
         etBetween1.setAdapter(adapter2);
@@ -273,7 +338,7 @@ public class UserInformationFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.getCity, R.id.getContact1, R.id.getContact2,R.id.save})
+    @OnClick({R.id.getCity, R.id.getContact1, R.id.getContact2, R.id.save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.getCity:
@@ -294,11 +359,11 @@ public class UserInformationFragment extends Fragment {
 
     private void saveDate() {
 
-        FormEditText[] allFields	= { etAge, etIDCard, etSex, etAddress, etCity ,etContact,etContact1};
+      /*  FormEditText[] allFields = {etAge, etIDCard, etSex, etAddress, etCity, etContact, etContact1};
 
 
         boolean allValid = true;
-        for (FormEditText field: allFields) {
+        for (FormEditText field : allFields) {
             allValid = field.testValidity() && allValid;
         }
 
@@ -307,21 +372,19 @@ public class UserInformationFragment extends Fragment {
 
         } else {
 
-        }
+        }*/
 
 
-
-
-        Identity identity=new Identity();
+        Identity identity = new Identity();
 
         Identity.IdentityBean identity1 = new Identity.IdentityBean();
 
-        if(!etContact.getText().toString().isEmpty()&&!etMarriage.getText().toString().isEmpty()&&!etContactName.getText().toString().isEmpty()
-                &&!etCity.getText().toString().isEmpty()&&!etAddress.getText().toString().isEmpty()&&!etAge.getText().toString().isEmpty()
-                &&!etContact1.getText().toString().isEmpty()&&!etContactName2.getText().toString().isEmpty()&&!etIDCard.getText().toString().isEmpty()
-                &&!etSex.getText().toString().isEmpty()&&!etBetween1.getText().toString().isEmpty()&&!etBetween2.getText().toString().isEmpty()){
+        if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
+                && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
+                && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
+                && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()) {
             identity1.setIstatus("1");
-        }else {
+        } else {
             identity1.setIstatus("0");
         }
 
@@ -334,11 +397,11 @@ public class UserInformationFragment extends Fragment {
 
 
         String s1 = etSex.getText().toString();
-        if(s1.equals("女")){
+        if (s1.equals("女")) {
             identity1.setSex("0");
-        }else if(s1.equals("男")){
+        } else if (s1.equals("男")) {
             identity1.setSex("1");
-        }else {
+        } else {
             identity1.setSex("");
         }
 
@@ -351,7 +414,7 @@ public class UserInformationFragment extends Fragment {
                 identity1.setMarriage(s);
             }
         }
-        Identity.IdentityBean.ContactBean identity2=new Identity.IdentityBean.ContactBean();
+        Identity.IdentityBean.ContactBean identity2 = new Identity.IdentityBean.ContactBean();
         identity2.setUserphone(etContact.getText().toString());
         identity2.setContact(etContactName.getText().toString());
 
@@ -366,10 +429,9 @@ public class UserInformationFragment extends Fragment {
         }
 
 
-        Identity.IdentityBean.ContactBean identity3=new Identity.IdentityBean.ContactBean();
+        Identity.IdentityBean.ContactBean identity3 = new Identity.IdentityBean.ContactBean();
         identity3.setUserphone(etContact1.getText().toString());
         identity3.setContact(etContactName2.getText().toString());
-
 
 
         identity3.setRelation("");
@@ -381,19 +443,22 @@ public class UserInformationFragment extends Fragment {
             }
         }
 
-        ArrayList<Identity.IdentityBean.ContactBean>list=new ArrayList<>();
+        ArrayList<Identity.IdentityBean.ContactBean> list = new ArrayList<>();
         list.add(identity2);
         list.add(identity3);
 
         identity1.setContact(list);
+
         identity.setIdentity(identity1);
+
         TinyDB tinyDB = new TinyDB(getActivity());
+
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         // identity.getIdentity().setMarriage(etMarriage.getText().toString());
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         identity.setToken(token);
         identity.setUserphone(user.getUserphone());
-        Gson gson=new Gson();
+        Gson gson = new Gson();
         String json = gson.toJson(identity);
        /* TinyDB tinyDB = new TinyDB(getActivity());
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
@@ -401,28 +466,28 @@ public class UserInformationFragment extends Fragment {
         parms.put("token", token);
         parms.put("userphone", user.getUserphone());
         JSONObject jsonObject = new JSONObject(parms);*/
-            OkGo.<String>post(Urls.NEW_URL+Urls.Identity.AddIdentity)
-                    .tag(this)
-                    .upJson(json)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject object=new JSONObject(s);
-                                String isSuccess = object.getString("isSuccess");
-                                if("1".equals(isSuccess)){
-                                    String msg = object.getString("msg");
-                                    ToastUtils.showToast(getActivity(),msg);
-                                }else {
-                                    String msg = object.getString("msg");
-                                    ToastUtils.showToast(getActivity(),msg);
+        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddIdentity)
+                .tag(this)
+                .upJson(json)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String isSuccess = object.getString("isSuccess");
+                            if ("1".equals(isSuccess)) {
+                                String msg = object.getString("msg");
+                                ToastUtils.showToast(getActivity(), msg);
+                            } else {
+                                String msg = object.getString("msg");
+                                ToastUtils.showToast(getActivity(), msg);
 
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
+                    }
+                });
     }
 
     private void getLocationPermission() {
@@ -508,7 +573,6 @@ public class UserInformationFragment extends Fragment {
     }
 
 
-
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
@@ -550,9 +614,13 @@ public class UserInformationFragment extends Fragment {
                         //处理返回的data,获取选择的联系人信息
                         Uri uri = data.getData();
                         String[] contacts = getPhoneContacts(uri);
-                        etContact.setText(contacts[1]);
-                        etContactName.setText(contacts[0]);
-                        LogUtils.i("contacts", contacts[0] + "----" + contacts[1]);
+                        if (contacts!=null&&contacts.length>1) {
+                            etContact1.setText(contacts[1]);
+                        }
+                        if(contacts!=null){
+                            etContactName.setText(contacts[0]);
+                        }
+
                     }
                 }
                 break;
@@ -563,12 +631,13 @@ public class UserInformationFragment extends Fragment {
                     } else {
                         //处理返回的data,获取选择的联系人信息
                         Uri uri = data.getData();
-                        String[] contacts = getPhoneContacts(uri);
-                        if (contacts[1] != null) {
-                            etContact1.setText(contacts[1]);
-                        }
-                        etContactName2.setText(contacts[0]);
-                        LogUtils.i("contacts", contacts[0] + "----" + contacts[1]);
+                            String[] contacts = getPhoneContacts(uri);
+                            if (contacts!=null&&contacts.length>1) {
+                                etContact.setText(contacts[1]);
+                            }
+                            if(contacts!=null){
+                                etContactName2.setText(contacts[0]);
+                            }
                     }
                 }
                 break;

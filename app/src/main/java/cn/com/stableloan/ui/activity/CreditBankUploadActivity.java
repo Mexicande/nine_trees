@@ -369,11 +369,9 @@ public class CreditBankUploadActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            EventBus.getDefault().post(new PicStatusEvent("update"));
-            return true;
-        }
+        EventBus.getDefault().post(new PicStatusEvent("update"));
         return super.onKeyDown(keyCode, event);
+
     }
 
     @Override

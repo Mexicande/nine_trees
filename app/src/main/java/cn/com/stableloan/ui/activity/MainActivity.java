@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.WindowManager;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.google.gson.Gson;
@@ -70,7 +71,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
-
         VisionTest();
         initView();
     }
@@ -138,10 +138,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initView() {
-        ImmersionBar.with(this)
-                .navigationBarColor(R.color.mask)
-                .barAlpha(0.2f)
-                .init();
+
 
         mCurrentFragment = new HomeFragment();
         mFragmentManager = getSupportFragmentManager();

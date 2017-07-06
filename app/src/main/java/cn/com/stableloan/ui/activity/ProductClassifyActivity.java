@@ -113,9 +113,10 @@ public class ProductClassifyActivity extends BaseActivity {
                                             stateLayout.showContentView();
                                             class_List = gson.fromJson(s, Class_ListProductBean.class);
                                             RequestOptions options = new RequestOptions()
-                                                    .centerInside()
-                                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                                    ;
+                                                    .placeholder(com.yalantis.ucrop.R.color.ucrop_color_grey)
+                                                    .centerCrop()
+                                                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
                                             Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).apply(options).into(imageView);
 
                                             classify_recycler_adapter.setNewData(class_List.getProduct());
@@ -168,7 +169,7 @@ public class ProductClassifyActivity extends BaseActivity {
     private void initView() {
 
         imageView = new ImageView(this);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 320);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(lp);
         classify_recycler_adapter = new Recycler_Classify_Adapter(null);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(this));

@@ -28,7 +28,6 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Bank;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.BankUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -57,12 +56,12 @@ public class BankInformationFragment extends Fragment {
     FormEditText etBankPersonName2;
     @Bind(R.id.et_ValidityTime)
     FormEditText etValidityTime;
-    @Bind(R.id.et_ValidityTime1)
-    FormEditText etValidityTime1;
     @Bind(R.id.et_SelectBank2)
     FormEditText etSelectBank2;
     @Bind(R.id.et_BankPhone2)
     FormEditText etBankPhone2;
+    @Bind(R.id.et_ValidityTime2)
+    FormEditText etValidityTime2;
 
     public BankInformationFragment() {
         // Required empty public constructor
@@ -101,21 +100,21 @@ public class BankInformationFragment extends Fragment {
                             JSONObject json = new JSONObject(s);
                             String isSuccess = json.getString("isSuccess");
                             if ("1".equals(isSuccess)) {
-                                    Gson gson = new Gson();
-                                    Bank bank = gson.fromJson(s, Bank.class);
+                                Gson gson = new Gson();
+                                Bank bank = gson.fromJson(s, Bank.class);
 
-                                    etBankCard1.setText(bank.getBank().getDebit().getDnumber());
-                                    etBankPersonName1.setText(bank.getBank().getDebit().getDname());
-                                    etBankPhone1.setText(bank.getBank().getDebit().getDphone());
-                                    etSelectBank1.setText(bank.getBank().getDebit().getDbank());
-                                    etValidityTime1.setText(bank.getBank().getCredit().getCperiod());
+                                etBankCard1.setText(bank.getBank().getDebit().getDnumber());
+                                etBankPersonName1.setText(bank.getBank().getDebit().getDname());
+                                etBankPhone1.setText(bank.getBank().getDebit().getDphone());
+                                etSelectBank1.setText(bank.getBank().getDebit().getDbank());
+                                etValidityTime.setText(bank.getBank().getDebit().getDperiod());
 
 
-                                    etBankCard2.setText(bank.getBank().getCredit().getCnumber());
-                                    etBankPersonName2.setText(bank.getBank().getCredit().getCname());
-                                    etBankPhone2.setText(bank.getBank().getCredit().getCphone());
-                                    etSelectBank2.setText(bank.getBank().getCredit().getCbank());
-                                    etValidityTime.setText(bank.getBank().getCredit().getCperiod());
+                                etBankCard2.setText(bank.getBank().getCredit().getCnumber());
+                                etBankPersonName2.setText(bank.getBank().getCredit().getCname());
+                                etBankPhone2.setText(bank.getBank().getCredit().getCphone());
+                                etSelectBank2.setText(bank.getBank().getCredit().getCbank());
+                                etValidityTime2.setText(bank.getBank().getCredit().getCperiod());
                                  /*   Gson gson = new Gson();
                                     Identity.IdentityBean identity = gson.fromJson(string, Identity.IdentityBean.class);
 
@@ -127,9 +126,9 @@ public class BankInformationFragment extends Fragment {
                                     // etMarriage.setText(bean.getMarriage());
                                     etCity.setText(identity.getCity());*/
 
-                                } else {
-                                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                    startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                startActivity(intent);
 
                             }
 
@@ -204,51 +203,49 @@ public class BankInformationFragment extends Fragment {
     }
 
     private void Save() {
-        TinyDB tinyDB = new TinyDB(getActivity());
-        // identity.getIdentity().setMarriage(etMarriage.getText().toString());
         String token = (String) SPUtils.get(getActivity(), "token", "1");
 
-        Bank bank=new Bank();
+        Bank bank = new Bank();
         bank.setToken(token);
-        Bank.BankBean bean=new Bank.BankBean();
+        Bank.BankBean bean = new Bank.BankBean();
         bean.setBstatus("0");
-        Bank.BankBean.CreditBean creditBean=new Bank.BankBean.CreditBean();
+        Bank.BankBean.CreditBean creditBean = new Bank.BankBean.CreditBean();
         creditBean.setCbank(etSelectBank1.getText().toString());
         creditBean.setCname(etBankPersonName1.getText().toString());
         creditBean.setCnumber(etBankCard1.getText().toString());
         creditBean.setCperiod(etValidityTime.getText().toString());
         creditBean.setCphone(etBankPhone1.getText().toString());
 
-        Bank.BankBean.DebitBean debitBean=new Bank.BankBean.DebitBean();
+        Bank.BankBean.DebitBean debitBean = new Bank.BankBean.DebitBean();
         debitBean.setDbank(etSelectBank2.getText().toString());
         debitBean.setDname(etBankPersonName2.getText().toString());
         debitBean.setDnumber(etBankCard2.getText().toString());
-        debitBean.setDperiod(etValidityTime.getText().toString());
+        debitBean.setDperiod(etValidityTime2.getText().toString());
         debitBean.setDphone(etBankPhone2.getText().toString());
 
         bean.setCredit(creditBean);
         bean.setDebit(debitBean);
 
         bank.setBank(bean);
-        Gson gson=new Gson();
+        Gson gson = new Gson();
         String json = gson.toJson(bank);
 
 
-        OkGo.<String>post(Urls.NEW_URL+Urls.Identity.Addbank)
+        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.Addbank)
                 .tag(this)
                 .upJson(json)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         try {
-                            JSONObject object=new JSONObject(s);
+                            JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
-                            if("1".equals(isSuccess)){
+                            if ("1".equals(isSuccess)) {
                                 String msg = object.getString("msg");
-                                ToastUtils.showToast(getActivity(),msg);
-                            }else {
+                                ToastUtils.showToast(getActivity(), msg);
+                            } else {
                                 String msg = object.getString("msg");
-                                ToastUtils.showToast(getActivity(),msg);
+                                ToastUtils.showToast(getActivity(), msg);
 
                             }
                         } catch (JSONException e) {

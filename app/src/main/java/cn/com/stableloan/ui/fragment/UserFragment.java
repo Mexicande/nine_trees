@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,11 +37,13 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.CreateGestureActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.SafeSettingActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UpdateNickActivity;
@@ -215,7 +219,15 @@ public class UserFragment extends ImmersionFragment {
         }
     }
 
+
+    private  KProgressHUD hud;
     private void TextUser() {
+
+        hud = KProgressHUD.create(getActivity())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setCancellable(true)
+                .show();
+
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
             HashMap<String, String> params = new HashMap<>();
@@ -228,6 +240,7 @@ public class UserFragment extends ImmersionFragment {
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            hud.dismiss();
                             try {
                                 JSONObject object=new JSONObject(s);
                                 String isSuccess = object.getString("isSuccess");
@@ -261,6 +274,7 @@ public class UserFragment extends ImmersionFragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    hud.dismiss();
                                     ToastUtils.showToast(getActivity(),"网络异常，请稍后再试");
                                 }
                             });
@@ -270,6 +284,61 @@ public class UserFragment extends ImmersionFragment {
 
 
     }
+
+    private  SaveBean saveBean;
+
+    private void getDate() {
+
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
+
+        Map<String, String> parms = new HashMap<>();
+        parms.put("token", token);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Getsetting)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String isSuccess = object.getString("isSuccess");
+                            if ("1".equals(isSuccess)) {
+                                Gson gson = new Gson();
+                                saveBean = gson.fromJson(s, SaveBean.class);
+                                String way1 = saveBean.getWay();
+                                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                                if(way1!=null){
+                                    if("0".equals(way1)){
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
+                                        startActivity(intent);
+
+                                    }else {
+                                        if(gesturePassword == null|| "".equals(gesturePassword) ){
+                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
+                                            startActivity(intent);
+                                        }
+
+                                    }
+                                }
+
+                            }else {
+                                String msg = object.getString("msg");
+                                ToastUtils.showToast(getActivity(),msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                });
+
+
+    }
+
 
 
     @Override

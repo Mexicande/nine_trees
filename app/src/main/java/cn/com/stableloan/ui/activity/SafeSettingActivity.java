@@ -14,9 +14,12 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +32,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.MsgEvent;
+import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.SaveBean;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.BetterSpinner;
@@ -63,6 +70,11 @@ public class SafeSettingActivity extends BaseActivity {
     @Bind(R.id.text1)
     TextView text1;
 
+    private String[] list;
+    private String[] list1;
+
+
+    private   ArrayAdapter<String> adapter;
     private  SaveBean saveBean;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeSettingActivity.class));
@@ -73,25 +85,41 @@ public class SafeSettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_safe_setting);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+
         initToolbar();
         getDate();
         setLisenter();
     }
 
+    @Subscribe
+    public void onMessageEvent(MsgEvent event){
+            if(event!=null){
+                etWay.setText(list[1]);
+            }
+    }
+
+
     private void setLisenter() {
+
         etTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 month.setText(etTimes.getText());
+                settingTime();
+
             }
         });
+
+
+
         etWay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lock.setText(etWay.getText());
+/*
                 if("0".equals(saveBean.getPeriod())){
                     long time=System.currentTimeMillis();
-
                     long limit_time=86400000;
                     long size=0;
                     switch (position){
@@ -107,11 +135,11 @@ public class SafeSettingActivity extends BaseActivity {
                         case 4:
                             lock.setText("永久");
                             break;
-
                     }
 
 
                 }
+*/
 
             }
         });
@@ -133,16 +161,35 @@ public class SafeSettingActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject object = new JSONObject(s);
-
                             String isSuccess = object.getString("isSuccess");
                             if ("1".equals(isSuccess)) {
                                 Gson gson = new Gson();
                                 saveBean = gson.fromJson(s, SaveBean.class);
-                                month.setText(saveBean.getManaged());
-                                etTimes.setText(saveBean.getManaged());
-                                lock.setText(saveBean.getWay());
-                                etWay.setText(saveBean.getWay());
-                                tv_time.setText(saveBean.getPeriod());
+                                String way1 = saveBean.getWay();
+
+
+                                if(way1!=null){
+                                    if("1".equals(way1)){
+                                        EventBus.getDefault().post(new MsgEvent("1"));
+                                    }
+                                }
+                                String managed = saveBean.getManaged();
+
+                                if(managed!=null&&managed.length()==1){
+                                    int i = Integer.parseInt(managed);
+                                    month.setText(list1[i]);
+                                    etTimes.setText(list1[i]);
+                                }
+                                if(saveBean.getPeriod().length()<2){
+                                    tv_time.setText("无数据 ");
+
+                                }else {
+
+                                    tv_time.setText(saveBean.getPeriod());
+                                }
+                            }else {
+                                String msg = object.getString("msg");
+                                ToastUtils.showToast(SafeSettingActivity.this,msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -156,35 +203,34 @@ public class SafeSettingActivity extends BaseActivity {
 
     private void initToolbar() {
 
+
         tvSave.setVisibility(View.VISIBLE);
+
         tvSave.setText("保存");
         titleName.setText("存储设置");
         ivBack.setVisibility(View.VISIBLE);
 
-        String[] list = getResources().getStringArray(R.array.pass_change);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        list = getResources().getStringArray(R.array.pass_change);
+        adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, list);
         etWay.setAdapter(adapter);
+        etWay.setText(list[0]);
 
-        String[] list1 = getResources().getStringArray(R.array.times);
+
+        list1 = getResources().getStringArray(R.array.times);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, list1);
         etTimes.setAdapter(adapter1);
 
 
+
     }
 
-    @OnClick({R.id.iv_back, R.id.et_way, R.id.et_times,R.id.tv_save})
+    @OnClick({R.id.iv_back,R.id.tv_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
-                break;
-            case R.id.et_way:
-                lock.setText(etWay.getText());
-                break;
-            case R.id.et_times:
-               // settingTime();
                 break;
             case R.id.tv_save:
                 Save();
@@ -193,30 +239,60 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void settingTime() {
-        long l = dataOne(saveBean.getPeriod());
-        long time=System.currentTimeMillis();
+     int position=0;
+        long l = dateToStamp(saveBean.getLass_time());
+        String string = etTimes.getText().toString();
+        for(int i=0;i<list1.length;i++){
+            if(list1[i].equals(string)){
+                position=i;
+            }
+        }
+        long ls=0;
+            switch (position){
+                case 0:
+                    ls= 604800000;
+                    break;
+                case 1:
+                    ls=2592000000L;
+                    break;
+                case 2:
+                    ls=7776000000L;
+                    break;
+                case 3:
+                    ls=15552000000L;
+                    break;
 
-        long l1 = l + time;
+            }
+
+        long l1 = l + ls;
         String of = String.valueOf(l1);
-        String timedate = stampToDate(of);
-        month.setText(etTimes.getText());
-        tv_time.setText(timedate);
+        String date = stampToDate(of);
+
+        tv_time.setText(date);
+        if(string.equals("永久")){
+            tv_time.setText("永久");
+        }
 
     }
-    public static long dataOne(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss",
-                Locale.CHINA);
-        Date date;
-        long l = 0;
+
+    /**
+     * 转为时间戳
+     * @param s
+     * @return
+     */
+    public static long dateToStamp(String s){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
         try {
-            date = sdr.parse(time);
-            l = date.getTime();
-        } catch (Exception e) {
+            date = simpleDateFormat.parse(s);
+
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-        return l;
+        long ts = date.getTime();
+        return ts;
     }
-
 
 
     public static String stampToDate(String s){
@@ -229,13 +305,30 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void Save() {
+        String var="";
+        String string = etTimes.getText().toString();
+        for(int i=0;i<list1.length;i++){
+            if(list1[i].equals(string)){
+                var= String.valueOf(i);
+            }
+        }
+
+
+
+        String String1 = etWay.getText().toString();
+
+        String parrtern="";
+        for(int i=0;i<list.length;i++){
+            if(list[i].equals(String1)){
+                parrtern= String.valueOf(i);
+            }
+        }
         String token = (String) SPUtils.get(this, "token", "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
-        parms.put("way",lock.getText().toString() );
-        parms.put("managed",month.getText().toString());
-        //parms.put("period",tv_time.getText().toString());
-        parms.put("period","2014-12-05");
+        parms.put("way", parrtern );
+        parms.put("managed",var);
+        parms.put("period",tv_time.getText().toString());
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_URL+Urls.STATUS.Save_Setting)
                 .tag(this)
@@ -262,5 +355,10 @@ public class SafeSettingActivity extends BaseActivity {
                 });
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
 
+    }
 }
