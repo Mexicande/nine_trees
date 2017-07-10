@@ -63,7 +63,7 @@ public class ProductClassifyActivity extends BaseActivity {
 
     private List<ProductListBean.ProductBean> list2;
     private News_ClassBean.ClassBean class_product;
-    private ImageView imageView;
+    private ImageView mImageView;
     private Class_ListProductBean class_List;
 
     public static void launch(Context context) {
@@ -113,11 +113,10 @@ public class ProductClassifyActivity extends BaseActivity {
                                             stateLayout.showContentView();
                                             class_List = gson.fromJson(s, Class_ListProductBean.class);
                                             RequestOptions options = new RequestOptions()
-                                                    .placeholder(com.yalantis.ucrop.R.color.ucrop_color_grey)
                                                     .centerCrop()
                                                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
-                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).apply(options).into(imageView);
+                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).apply(options).into(mImageView);
 
                                             classify_recycler_adapter.setNewData(class_List.getProduct());
                                         } else {
@@ -167,13 +166,20 @@ public class ProductClassifyActivity extends BaseActivity {
     }
 
     private void initView() {
+        View view = getLayoutInflater().inflate(R.layout.class_top_imageview, null);
+        mImageView = (ImageView) view.findViewById(R.id.ic_default_top);
 
-        imageView = new ImageView(this);
+
+
+
+    /*    imageView = new ImageView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        imageView.setLayoutParams(lp);
+        imageView.setLayoutParams(lp);*/
+
+
         classify_recycler_adapter = new Recycler_Classify_Adapter(null);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(this));
-        classify_recycler_adapter.addHeaderView(imageView, 0);
+        classify_recycler_adapter.addHeaderView(view, 0);
         classifyRecycl.setAdapter(classify_recycler_adapter);
     }
 

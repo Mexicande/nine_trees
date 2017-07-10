@@ -37,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.UserBean;
@@ -402,8 +403,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                     tinyDB.putObject("user", bean);
                                     String from = getIntent().getStringExtra("from");
                                     if (from != null) {
-
-
                                         Log.i("from------","from");
                                         if(from.equals("user")){
                                             setResult(Flag_User, new Intent().putExtra("user", bean));
@@ -412,6 +411,9 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                             setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
                                             finish();
                                         }else if(from.equals("user1")){
+                                            setResult(4000, new Intent().putExtra("user", bean));
+                                            finish();
+                                        }else if(from.equals("user2")){
                                             setResult(4000, new Intent().putExtra("user", bean));
                                             finish();
                                         }
@@ -479,9 +481,19 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
             }else if(from.equals("user1")){
                 UserBean userBean=new UserBean();
                 setResult(4000,new Intent().putExtra("user",userBean));
+               // EventBus.getDefault().post(new InformationEvent("user1"));
                 finish();
+            }else if(from.equals("user2")){
+                /*UserBean userBean=new UserBean();
+                setResult(Flag_User,new Intent().putExtra("user",userBean));
+                finish();*/
+                 EventBus.getDefault().post(new InformationEvent("user2"));
+                finish();
+
+                //finish();
             }
         }
+
     /*    UserBean user = (UserBean) SPUtils.get(this, "user", UserBean.class);
             if(user!=null){
                 finish();

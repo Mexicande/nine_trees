@@ -10,9 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhuge.analysis.stat.ZhugeSDK;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +26,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.InformationEvent;
+import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.UpdateInfoBean;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
@@ -70,6 +77,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Utils.init(this);
+        EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         VisionTest();
         initView();
@@ -96,6 +105,7 @@ public class MainActivity extends BaseActivity {
         }
 
     }*/
+
     private void VisionTest() {
 
         String url="http://www.shoujiweidai.com/update/versions.json";
@@ -142,21 +152,29 @@ public class MainActivity extends BaseActivity {
 
         mCurrentFragment = new HomeFragment();
         mFragmentManager = getSupportFragmentManager();
-        mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commit();
+        mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commitAllowingStateLoss();
         navigationController = tab.custom()
                 .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down,"首页"))
                 .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"产品"))
                 .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"彩票"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
                 .build();
-/*        ArrayList<Fragment> list=new ArrayList<>();
-        list.add(new HomeFragment());
-        list.add(new ProductFragment());
-        list.add(new LotteryFragment());
-        list.add(new UserFragment());*/
+
 
         navigationController.addTabItemSelectedListener(listener);
 
+    }
+
+    @Subscribe
+    public void onMessageEvent(InformationEvent event){
+        if(event.message.equals("user2")){
+          /*
+            mCurrentFragment = new HomeFragment();
+            mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commit();
+            */
+            navigationController.setSelect(0);
+
+        }
     }
 
     OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
@@ -211,14 +229,14 @@ public class MainActivity extends BaseActivity {
         if (fragment != null) {
             if (fragment == mCurrentFragment) return;
 
-            mFragmentManager.beginTransaction().show(fragment).commit();
+            mFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss();
         } else {
             fragment = Fragment.instantiate(this, fragmentName);
-            mFragmentManager.beginTransaction().add(R.id.app_item, fragment, fragmentName).commit();
+            mFragmentManager.beginTransaction().add(R.id.app_item, fragment, fragmentName).commitAllowingStateLoss();
         }
 
         if (mCurrentFragment != null) {
-            mFragmentManager.beginTransaction().hide(mCurrentFragment).commit();
+            mFragmentManager.beginTransaction().hide(mCurrentFragment).commitAllowingStateLoss();
         }
         mCurrentFragment = fragment;
     }
@@ -231,7 +249,6 @@ public class MainActivity extends BaseActivity {
                     UserBean user = (UserBean) data.getSerializableExtra("user");
                     if(user!=null&&user.getNickname()!=null){
                         switchMenu(getFragmentName(4));
-
                     }else {
                         navigationController.setSelect(0);
                     }
@@ -274,10 +291,15 @@ public class MainActivity extends BaseActivity {
 
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ZhugeSDK.getInstance().flush(getApplicationContext());
+        EventBus.getDefault().unregister(this);
 
     }
 }
+
+

@@ -28,6 +28,7 @@ import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -46,6 +47,8 @@ public class ImageActivity extends BaseActivity {
     @Bind(R.id.userCard)
     SuperTextView userCard;
 
+    private ACache aCache;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ImageActivity.class));
     }
@@ -56,6 +59,7 @@ public class ImageActivity extends BaseActivity {
         setContentView(R.layout.activity_image);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        aCache = ACache.get(this);
 
         initToolbar();
         getPicStatus();
@@ -63,7 +67,10 @@ public class ImageActivity extends BaseActivity {
     }
     @Subscribe
     public void onPicSatus(PicStatusEvent event){
-        getPicStatus();
+        if("update".equals(event.status)){
+            getPicStatus();
+        }
+
     }
     private void getPicStatus() {
 
@@ -123,9 +130,21 @@ public class ImageActivity extends BaseActivity {
                                         }
 
                                 }else {
-                                    Intent intent = new Intent(ImageActivity.this, Verify_PasswordActivity.class).putExtra("from","PicStatus");
-                                    startActivity(intent);
-                                    finish();
+                                    String lock1 = aCache.getAsString("lock");
+                                    if(lock1!=null){
+                                        if("on".equals(lock1)){
+                                            Intent intent = new Intent(ImageActivity.this, GestureLoginActivity.class).putExtra("from","PicStatus");
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(ImageActivity.this, Verify_PasswordActivity.class).putExtra("from","PicStatus");
+                                            startActivity(intent);
+                                        }
+
+                                    }else {
+
+                                        Intent intent = new Intent(ImageActivity.this, Verify_PasswordActivity.class).putExtra("from","PicStatus");
+                                        startActivity(intent);
+                                    }
                                 }
 
                             }

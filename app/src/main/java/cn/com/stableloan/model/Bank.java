@@ -94,6 +94,32 @@ public class Bank {
         }
 
         public static class DebitBean {
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof DebitBean)) return false;
+
+                DebitBean debitBean = (DebitBean) o;
+
+                if (!getDnumber().equals(debitBean.getDnumber())) return false;
+                if (!getDname().equals(debitBean.getDname())) return false;
+                if (!getDperiod().equals(debitBean.getDperiod())) return false;
+                if (!getDbank().equals(debitBean.getDbank())) return false;
+                return getDphone().equals(debitBean.getDphone());
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getDnumber().hashCode();
+                result = 31 * result + getDname().hashCode();
+                result = 31 * result + getDperiod().hashCode();
+                result = 31 * result + getDbank().hashCode();
+                result = 31 * result + getDphone().hashCode();
+                return result;
+            }
+
             /**
              * dnumber : 0
              * dname : 0
@@ -150,6 +176,32 @@ public class Bank {
         }
 
         public static class CreditBean {
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof CreditBean)) return false;
+
+                CreditBean that = (CreditBean) o;
+
+                if (!getCnumber().equals(that.getCnumber())) return false;
+                if (!getCname().equals(that.getCname())) return false;
+                if (!getCperiod().equals(that.getCperiod())) return false;
+                if (!getCbank().equals(that.getCbank())) return false;
+                return getCphone().equals(that.getCphone());
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getCnumber().hashCode();
+                result = 31 * result + getCname().hashCode();
+                result = 31 * result + getCperiod().hashCode();
+                result = 31 * result + getCbank().hashCode();
+                result = 31 * result + getCphone().hashCode();
+                return result;
+            }
+
             /**
              * cnumber : 0
              * cname : 0

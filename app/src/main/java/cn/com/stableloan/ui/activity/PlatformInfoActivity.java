@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;

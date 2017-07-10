@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.Serializable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,11 +22,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Banner_HotBean;
-import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.utils.NetworkUtils;
-import cn.com.stableloan.utils.ToastUtils;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class HtmlActivity extends BaseActivity {
 
@@ -109,15 +105,7 @@ public class HtmlActivity extends BaseActivity {
 
 
         } else {
-            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText("网络异常，请检查网络")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            finish();
-                        }
-                    })
-                    .show();
+
         }
     }
 

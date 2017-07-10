@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.ProfessionalInformationFragment">
     <ScrollView
@@ -17,6 +19,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="学历信息认证"
+                android:maxLines="1"
+
                 android:layout_marginLeft="@dimen/_20dp"
                 android:textSize="17sp"/>
             <RelativeLayout
@@ -29,13 +33,15 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
+                    whatever:emptyAllowed="true"
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
                     android:textSize="@dimen/textsize"
                     android:tint="@color/gay"
                     android:textColor="@color/gay"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:paddingLeft="5dp"
-
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -57,7 +63,11 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
+                    whatever:emptyAllowed="true"
+
                     android:paddingLeft="5dp"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
                     android:tint="@color/gay"
                     android:textColor="@color/gay"
                     android:layout_width="220dp"
@@ -85,10 +95,15 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
                     android:paddingLeft="5dp"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
+                    android:maxLines="1"
+                    android:inputType="phone"
+                    whatever:testType="regexp"
+                    whatever:customRegexp="^[1]\\d{10}$"
+                    whatever:testErrorString="号码格式不正确"
+                    whatever:emptyAllowed="true"
                     android:tint="@color/gay"
                     android:textColor="@color/gay"
                     android:textSize="@dimen/textsize"
@@ -120,6 +135,9 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
+                    whatever:emptyAllowed="true"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
                     android:paddingLeft="5dp"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
@@ -147,10 +165,13 @@
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
                     whatever:testType="alpha"
+                    whatever:emptyAllowed="true"
+
                     android:paddingLeft="5dp"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:maxLines="1"
                     android:tint="@color/gay"
                     android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
@@ -178,6 +199,8 @@
                     android:paddingLeft="5dp"
                     android:textColor="@color/gay"
 
+                    android:maxLines="1"
+
                     android:layout_height="@dimen/layout_height"
                     android:background="@drawable/editext_normal"
                     />
@@ -199,26 +222,16 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
                     android:paddingLeft="5dp"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
                     android:tint="@color/gay"
                     android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"/>
-            <!--    <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_email"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:textSize="@dimen/textsize"
-                    android:background="@drawable/editext_normal"
-                    />-->
+
                 <TextView
                     android:layout_marginRight="@dimen/_10dp"
                     android:layout_centerVertical="true"
@@ -243,6 +256,10 @@
                     android:paddingLeft="5dp"
                     android:layout_height="@dimen/layout_height"
                     android:tint="@color/gay"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
+                    whatever:emptyAllowed="true"
+                    android:inputType="number"
                     android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
                     />
@@ -264,11 +281,15 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
+                    whatever:testType="regexp"
+                    whatever:emptyAllowed="true"
+                    whatever:customRegexp="^(0\\d{2,3}[-| ]?)?(\\d{7,8})([-| ]?\\d{3,5})?$"
+                    whatever:testErrorString="号码格式不正确"
                     android:paddingLeft="5dp"
                     android:layout_width="220dp"
                     android:layout_height="35dp"
                     android:textSize="@dimen/textsize"
+                    android:maxLines="1"
                     android:tint="@color/gay"
                     android:textColor="@color/gay"
                     android:background="@drawable/editext_normal"
@@ -303,6 +324,8 @@
                     android:paddingLeft="5dp"
                     android:textColor="@color/gay"
                     android:layout_height="@dimen/layout_height"
+                    android:maxLines="1"
+
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
@@ -454,19 +477,23 @@
                     android:text="收入来源 : "
                     android:textSize="@dimen/textsize"/>
             </RelativeLayout>
-            <Button
-                android:id="@+id/Save"
+            <cn.com.stableloan.view.RoundButton
+                android:id="@+id/save"
+                android:layout_marginBottom="50dp"
                 android:layout_marginTop="40dp"
                 android:layout_gravity="center"
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:text="保 存"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="@color/colorPrimary"
+                android:gravity="center"
                 android:textStyle="bold"
-                android:layout_marginBottom="50dp"
-                style="?android:attr/borderlessButtonStyle"
                 android:textSize="20sp"
-                android:textColor="@color/white"
-                android:background="@drawable/button_information"/>
+                android:textColor="#ccffffff"
+                style="?android:attr/borderlessButtonStyle"
+                />
         </LinearLayout>
     </ScrollView>
 

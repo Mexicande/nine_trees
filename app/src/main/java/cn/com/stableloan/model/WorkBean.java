@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by apple on 2017/7/4.
  */
 
-public class WorkBean implements Serializable {
+public class WorkBean {
 
     @Override
     public String toString() {
@@ -53,7 +53,7 @@ public class WorkBean implements Serializable {
 
 
 
-    public static class OccupationBean implements Serializable{
+    public static class OccupationBean {
         @Override
         public String toString() {
             return "OccupationBean{" +
@@ -130,6 +130,27 @@ public class WorkBean implements Serializable {
         }
 
         public static class StudentBean {
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof StudentBean)) return false;
+
+                StudentBean that = (StudentBean) o;
+
+                if (!getSchool().equals(that.getSchool())) return false;
+                if (!getAddress().equals(that.getAddress())) return false;
+                return getTeacherphone().equals(that.getTeacherphone());
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getSchool().hashCode();
+                result = 31 * result + getAddress().hashCode();
+                result = 31 * result + getTeacherphone().hashCode();
+                return result;
+            }
+
             /**
              * school : 家里蹲
              * address : 北京市
@@ -140,20 +161,7 @@ public class WorkBean implements Serializable {
 
             private String school;
             private String address;
-            private String information;
-            private String freelancer;
             private String teacherphone;
-
-            @Override
-            public String toString() {
-                return "StudentBean{" +
-                        "school='" + school + '\'' +
-                        ", address='" + address + '\'' +
-                        ", information='" + information + '\'' +
-                        ", freelancer='" + freelancer + '\'' +
-                        ", teacherphone='" + teacherphone + '\'' +
-                        '}';
-            }
 
             public String getSchool() {
                 return school;
@@ -171,21 +179,8 @@ public class WorkBean implements Serializable {
                 this.address = address;
             }
 
-            public String getInformation() {
-                return information;
-            }
 
-            public void setInformation(String information) {
-                this.information = information;
-            }
 
-            public String getFreelancer() {
-                return freelancer;
-            }
-
-            public void setFreelancer(String freelancer) {
-                this.freelancer = freelancer;
-            }
 
             public String getTeacherphone() {
                 return teacherphone;
@@ -197,6 +192,33 @@ public class WorkBean implements Serializable {
         }
 
         public static class CompanyBean {
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof CompanyBean)) return false;
+
+                CompanyBean that = (CompanyBean) o;
+
+                if (!getCompany().equals(that.getCompany())) return false;
+                if (!getLocation().equals(that.getLocation())) return false;
+                if (!getYears().equals(that.getYears())) return false;
+                if (!getEmail().equals(that.getEmail())) return false;
+                if (!getCincome().equals(that.getCincome())) return false;
+                return getFixedline().equals(that.getFixedline());
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getCompany().hashCode();
+                result = 31 * result + getLocation().hashCode();
+                result = 31 * result + getYears().hashCode();
+                result = 31 * result + getEmail().hashCode();
+                result = 31 * result + getCincome().hashCode();
+                result = 31 * result + getFixedline().hashCode();
+                return result;
+            }
+
             /**
              * company : 嗨钱科技
              * location : 大望路
@@ -275,19 +297,37 @@ public class WorkBean implements Serializable {
         }
 
         public static class BusinessBean {
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof BusinessBean)) return false;
+
+                BusinessBean that = (BusinessBean) o;
+
+                if (!getOperations().equals(that.getOperations())) return false;
+                if (!getLicense().equals(that.getLicense())) return false;
+                return getBincome().equals(that.getBincome());
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getOperations().hashCode();
+                result = 31 * result + getLicense().hashCode();
+                result = 31 * result + getBincome().hashCode();
+                return result;
+            }
+
             /**
              * operations : 5
              * license : 1
              * bincome : 50w
              * employment : 牢固
-             * nature : 私企
              */
 
             private String operations;
             private String license;
             private String bincome;
-            private String employment;
-            private String nature;
 
             public String getOperations() {
                 return operations;
@@ -313,35 +353,28 @@ public class WorkBean implements Serializable {
                 this.bincome = bincome;
             }
 
-            public String getEmployment() {
-                return employment;
-            }
 
-            public void setEmployment(String employment) {
-                this.employment = employment;
-            }
 
-            public String getNature() {
-                return nature;
-            }
-
-            public void setNature(String nature) {
-                this.nature = nature;
-            }
-
-            @Override
-            public String toString() {
-                return "BusinessBean{" +
-                        "operations='" + operations + '\'' +
-                        ", license='" + license + '\'' +
-                        ", bincome='" + bincome + '\'' +
-                        ", employment='" + employment + '\'' +
-                        ", nature='" + nature + '\'' +
-                        '}';
-            }
         }
 
         public static class FreelancerBean {
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof FreelancerBean)) return false;
+
+                FreelancerBean that = (FreelancerBean) o;
+
+                return getSource().equals(that.getSource());
+
+            }
+
+            @Override
+            public int hashCode() {
+                return getSource().hashCode();
+            }
+
             /**
              * source : 1
              */

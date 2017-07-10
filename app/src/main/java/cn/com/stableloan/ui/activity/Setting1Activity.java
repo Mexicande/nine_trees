@@ -65,6 +65,9 @@ public class Setting1Activity extends BaseActivity {
 
     }
 
+
+
+
     @OnClick({R.id.layout_Safe, R.id.layout_nick, R.id.layout_profession, R.id.exit, R.id.layout_go})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -97,8 +100,7 @@ public class Setting1Activity extends BaseActivity {
                 SPUtils.clear(Setting1Activity.this);
                 TinyDB tinyDB = new TinyDB(Setting1Activity.this);
                 tinyDB.clear();
-                aCache.clear();
-                startActivity(new Intent(Setting1Activity.this, LoginActivity.class).putExtra("from", "user1"));
+                startActivity(new Intent(Setting1Activity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();
             }
         });

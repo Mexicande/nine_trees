@@ -47,6 +47,7 @@ public class UserInformationActivity extends BaseActivity {
     SuperTextView UserPic;
 
 
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UserInformationActivity.class));
     }
@@ -146,7 +147,6 @@ public class UserInformationActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(InformationEvent event){
         String message = event.message;
-
         if("informationStatus".equals(message)){
                   getStatus();
         }

@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.multidex.MultiDexApplication;
 
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
@@ -18,21 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import cn.com.stableloan.other.dao.AllInfo;
-import cn.com.stableloan.other.dao.DaoMaster;
-import cn.com.stableloan.other.dao.DaoSession;
-import cn.com.stableloan.other.dao.User;
 
 /**
  * Created by apple on 2017/5/20.
  */
 
-public class AppApplication extends MultiDexApplication {
+public class AppApplication extends Application {
     //dao
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
-    public static User user;
-    public static AllInfo today;
+
     public static String today_date = "";
 
     private static AppApplication instance;
@@ -49,8 +41,8 @@ public class AppApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
 
-        Utils.init(this);
         super.onCreate();
+        Utils.init(this);
         initTypeface();
 
         OkGo.init(this);
@@ -93,25 +85,6 @@ public class AppApplication extends MultiDexApplication {
 
 
 
-
-    public DaoMaster getDaoMaster(Context context){
-        if (daoMaster == null){
-            DaoMaster.OpenHelper helper =
-                    new DaoMaster.DevOpenHelper(context,"easywork.db",null);
-            daoMaster = new DaoMaster(helper.getWritableDatabase());
-        }
-        return daoMaster;
-    }
-
-    public DaoSession getDaoSession(Context context){
-        if (daoSession == null){
-            if (daoMaster == null){
-                daoMaster = getDaoMaster(context);
-            }
-            daoSession = daoMaster.newSession();
-        }
-        return daoSession;
-    }
 
     List<Activity> myActivity = new ArrayList<>();
     public void addToList(Activity activity){

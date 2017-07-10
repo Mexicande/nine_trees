@@ -7,22 +7,14 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 
-import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import java.lang.ref.WeakReference;
 
-import cn.com.stableloan.model.UpdateInfoBean;
-import cn.com.stableloan.other.Main1Activity;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
-import cn.com.stableloan.utils.ToastUtils;
-import ezy.boost.update.IUpdateParser;
-import ezy.boost.update.UpdateInfo;
-import ezy.boost.update.UpdateManager;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -39,14 +31,14 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).transparentBar().init();
-
-        boolean flag = SPUtils.contains(this, "url");
+        setWelcome( );
+      /*  boolean flag = SPUtils.contains(this, "url");
 
         if(flag){
             mHandler.sendEmptyMessageDelayed(1, 1000);
         }else {
             GoHtml();
-        }
+        }*/
     }
 
     private void GoHtml() {
@@ -83,10 +75,7 @@ public class SplashActivity extends AppCompatActivity {
                         MainActivity.launch(activity);
                         activity.finish();
                         break;
-                    case 2:
-                        Main1Activity.launch(activity);
-                        activity.finish();
-                        break;
+
                 }
             }
         }

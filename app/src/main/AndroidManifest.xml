@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -102,27 +102,18 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <!--高德城市选择-->
+        <meta-data android:name="com.amap.api.v2.apikey"
+            android:value="41551e9365727dbf1b539c5c8e36557a"/>
+        <activity
+            android:name="com.zaaach.citypicker.CityPickerActivity"
+            android:theme="@style/CityPicker.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+
         <activity android:name=".ui.activity.Setting1Activity" />
-        <activity android:name=".utils.AddDiaryActivity" />
-        <activity android:name=".other.AddBillActivity" />
-        <activity android:name=".other.AddCardActivity" />
-        <activity android:name=".other.AddNoteActivity" />
-        <activity android:name=".other.AllBillActivity" />
-        <activity android:name=".other.AllCardActivity" />
-        <activity android:name=".other.AllCardItemActivity" />
-        <activity android:name=".other.AllCompanyItemActivity" />
-        <activity android:name=".other.AllDiaryActivity" />
-        <activity android:name=".other.AllNotesActivity" />
-        <activity android:name=".other.AllPlaceItemActivity" />
-        <activity android:name=".other.BaseSettingActivity" />
-        <activity android:name=".other.CloudActivity" />
-        <activity android:name=".other.Login1Activity" />
-        <activity android:name=".other.Main1Activity" />
-        <activity android:name=".other.OneDayAllActivity" />
-        <activity android:name=".other.PassToActivity" />
-        <activity android:name=".other.RegistActivity" />
-        <activity android:name=".other.SettingActivity" />
-        <activity android:name=".other.UserBaseInfoActivity" />
+
         <activity android:name=".ui.activity.SafeActivity" />
         <activity android:name=".ui.activity.UserInformationActivity"
             android:windowSoftInputMode="adjustResize"

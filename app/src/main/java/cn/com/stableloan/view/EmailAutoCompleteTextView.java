@@ -61,16 +61,7 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView {
                     if (!"".equals(text))
                         performFiltering(text, 0);
                 } else {
-                    //当文本域丢失焦点后，检查输入email地址的格式
-                    EmailAutoCompleteTextView ev = (EmailAutoCompleteTextView) v;
-                    String text = ev.getText().toString();
-                    //这里正则写的有点粗暴:)
-                    if (text != null && text.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$")) {
 
-                    } else {
-                        Toast toast = Toast.makeText(context, "邮件地址格式不正确", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
                 }
             }
         });

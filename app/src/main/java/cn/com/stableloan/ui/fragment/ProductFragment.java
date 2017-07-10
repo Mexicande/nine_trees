@@ -101,7 +101,6 @@ public class ProductFragment extends ImmersionFragment {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
                 .statusBarAlpha(0.3f)
-
                 .navigationBarColor(R.color.colorPrimary)
                 .init();
     }

@@ -9,13 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
@@ -39,15 +35,8 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.ui.activity.CreateGestureActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.MainActivity;
-import cn.com.stableloan.ui.activity.SafeSettingActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
-import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
-import cn.com.stableloan.ui.activity.UpdateNickActivity;
-import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.LogUtils;
@@ -57,8 +46,6 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
-import de.greenrobot.event.ThreadMode;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -199,7 +186,6 @@ public class UserFragment extends ImmersionFragment {
         tvNick.setText(event.userNick);
 
         if(event.phone!=null){
-
             tvUserPhone.setText(event.phone);
         }
     }

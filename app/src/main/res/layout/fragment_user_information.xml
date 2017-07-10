@@ -3,14 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/base_white"
     tools:context="cn.com.stableloan.ui.fragment.UserInformationFragment">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -24,6 +21,13 @@
                     android:layout_height="wrap_content">
                     <com.andreabaccega.widget.FormEditText
                         android:id="@+id/et_name"
+                        android:maxLines="1"
+                        whatever:testType="regexp"
+                        android:imeOptions="actionNext"
+                        whatever:customRegexp="^([a-zA-Z\\u4e00-\\u9fa5\\·]{1,10})$"
+                        whatever:emptyAllowed="true"
+                        whatever:testErrorString="姓名格式不正确"
+                        android:inputType="textPersonName"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
@@ -56,7 +60,6 @@
                         android:gravity="center_vertical"
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
-                        android:text="18500634223"
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
                         android:textSize="@dimen/textsize"/>
@@ -76,11 +79,14 @@
                     android:layout_height="wrap_content">
                     <com.andreabaccega.widget.FormEditText
                         android:id="@+id/et_IDCard"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
                         whatever:testType="regexp"
-                        whatever:customRegexp="^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9Xx])$"
+                        whatever:emptyAllowed="true"
+                        whatever:customRegexp="^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$"
                         whatever:testErrorString="身份证格式不正确"
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
@@ -89,7 +95,6 @@
                         android:textSize="@dimen/textsize"
                         android:maxLength="18"
                         android:paddingLeft="@dimen/_5dp"
-
                         android:background="@drawable/editext_normal"
                         />
                     <TextView
@@ -111,13 +116,13 @@
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
                         whatever:testType="regexp"
+                        android:maxLines="1"
                         whatever:customRegexp="[\u4e00-\u9fa5]"
                         whatever:testErrorString="格式不正确"
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
                         android:textSize="@dimen/textsize"
                         android:paddingLeft="@dimen/_5dp"
-
                         android:layout_width="220dp"
                         android:layout_height="@dimen/layout_height"
                         android:background="@drawable/editext_normal"
@@ -144,13 +149,13 @@
                         android:layout_alignParentRight="true"
                         android:textSize="@dimen/textsize"
                         android:inputType="number"
+                        android:maxLines="1"
                         android:maxLength="3"
                         android:paddingLeft="@dimen/_5dp"
                         android:layout_width="220dp"
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
                         android:layout_height="@dimen/layout_height"
-
                         android:background="@drawable/editext_normal"
                         />
                     <TextView
@@ -171,8 +176,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
-                        whatever:testType="alpha"
+                        android:imeOptions="actionNext"
                         android:layout_width="220dp"
+                        android:maxLines="1"
                         android:textSize="@dimen/textsize"
                         android:paddingLeft="@dimen/_5dp"
                         android:tint="@color/gay"
@@ -231,32 +237,35 @@
                         android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
                         android:layout_height="35dp">
-                        <com.andreabaccega.widget.FormEditText
+
+                        <TextView
                             android:id="@+id/et_City"
-                            android:layout_centerVertical="true"
+                            style="@android:style/Widget.EditText"
+                            android:textColor="@color/gay"
                             android:layout_width="130dp"
                             android:paddingLeft="@dimen/_5dp"
                             android:layout_height="@dimen/layout_height"
                             android:textSize="@dimen/textsize"
+                            android:layout_centerVertical="true"
                             android:background="@drawable/editext_normal"
-                            whatever:testType="regexp"
-                            whatever:customRegexp="[\u4e00-\u9fa5]"
-                            whatever:testErrorString="格式不正确"
-                            android:tint="@color/gay"
-                            android:textColor="@color/gay"
                             />
-                        <Button
-                            android:id="@+id/getCity"
-                            android:layout_marginLeft="@dimen/_10dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:textColor="@color/gay"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:background="@drawable/buttin_radio"
-                            android:text="自动获取"
 
+
+                        <cn.com.stableloan.view.RoundButton
+                            android:id="@+id/getCity"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="@dimen/_10dp"
+                            android:text="自动获取"
+                            app:btnCornerRadius="5dp"
+                            app:btnPressedRatio="0.8"
+                            app:btnSolidColor="@color/white"
+                            android:textColor="@color/gay"
+                            app:btnStrokeColor="@color/gay"
+                            app:btnStrokeWidth="1dp"
                             />
+
                     </LinearLayout>
                     <TextView
                         android:layout_marginRight="@dimen/_10dp"
@@ -284,25 +293,30 @@
                             android:layout_width="130dp"
                             android:textSize="@dimen/textsize"
                             android:layout_height="@dimen/layout_height"
-                            whatever:testType="regexp"
-                            whatever:customRegexp="[\u4e00-\u9fa5]"
-                            whatever:testErrorString="格式不正确"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
                             android:tint="@color/gay"
                             android:maxLength="10"
                             android:textColor="@color/gay"
                             android:background="@drawable/editext_normal"
                             />
-                        <Button
+
+                        <cn.com.stableloan.view.RoundButton
                             android:id="@+id/getContact1"
-                            android:layout_marginLeft="@dimen/_10dp"
                             android:layout_gravity="center_vertical"
-                            android:layout_width="wrap_content"
+                            android:layout_width="80dp"
                             android:layout_height="30dp"
-                            android:textColor="@color/gay"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:background="@drawable/buttin_radio"
+                            android:layout_marginLeft="@dimen/_10dp"
                             android:text="读取通讯录"
+                            app:btnCornerRadius="5dp"
+                            app:btnPressedRatio="0.8"
+                            app:btnSolidColor="@color/white"
+                            android:textColor="@color/gay"
+                            app:btnStrokeColor="@color/gay"
+                            app:btnStrokeWidth="1dp"
                             />
+
+
                     </LinearLayout>
                     <TextView
                         android:layout_marginRight="@dimen/_10dp"
@@ -327,8 +341,13 @@
                             android:id="@+id/et_Contact1"
                             android:layout_centerVertical="true"
                             android:paddingLeft="@dimen/_5dp"
+                            whatever:testType="regexp"
+                            whatever:customRegexp="^[1]\\d{10}$"
+                            whatever:testErrorString="号码格式不正确"
+                            whatever:emptyAllowed="true"
                             android:layout_width="220dp"
-                            android:inputType="number"
+                            android:inputType="phone"
+                            android:maxLines="1"
                             android:maxLength="11"
                             android:tint="@color/gay"
                             android:textColor="@color/gay"
@@ -362,6 +381,7 @@
                         android:paddingLeft="5dp"
                         android:textColor="@color/gay"
                         android:layout_height="@dimen/layout_height"
+
                         android:background="@drawable/editext_normal"
                         />
                     <TextView
@@ -394,11 +414,13 @@
                             whatever:testType="regexp"
                             android:tint="@color/gay"
                             android:maxLength="10"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
                             android:textColor="@color/gay"
                             whatever:customRegexp="[\u4e00-\u9fa5]"
                             whatever:testErrorString="格式不正确"
                             />
-                        <Button
+                        <!--<Button
                             android:id="@+id/getContact2"
                             android:layout_marginLeft="@dimen/_10dp"
                             android:layout_gravity="center_vertical"
@@ -408,7 +430,23 @@
                             style="?android:attr/borderlessButtonStyle"
                             android:background="@drawable/buttin_radio"
                             android:text="读取通讯录"
+                            />-->
+                        <cn.com.stableloan.view.RoundButton
+                            android:id="@+id/getContact2"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="@dimen/_10dp"
+                            android:text="读取通讯录"
+                            app:btnCornerRadius="5dp"
+                            app:btnPressedRatio="0.8"
+                            app:btnSolidColor="@color/white"
+                            android:textColor="@color/gay"
+                            app:btnStrokeColor="@color/gay"
+                            app:btnStrokeWidth="1dp"
                             />
+
+
                     </LinearLayout>
                     <TextView
                         android:layout_marginRight="@dimen/_10dp"
@@ -439,6 +477,11 @@
                             android:layout_width="220dp"
                             android:inputType="number"
                             android:maxLength="11"
+                            android:maxLines="1"
+                            whatever:testType="regexp"
+                            whatever:customRegexp="^[1]\\d{10}$"
+                            whatever:testErrorString="号码格式不正确"
+                            whatever:emptyAllowed="true"
                             android:layout_height="@dimen/layout_height"
                             android:background="@drawable/editext_normal"
                             />
@@ -480,23 +523,23 @@
                         android:text="与您的关系 : "
                         android:textSize="@dimen/textsize"/>
                 </RelativeLayout>
-                <Button
+                <cn.com.stableloan.view.RoundButton
                     android:id="@+id/save"
                     android:layout_marginBottom="50dp"
                     android:layout_marginTop="40dp"
                     android:layout_gravity="center"
                     android:layout_width="180dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:text="保 存"
+                    app:btnCornerRadius="10dp"
+                    app:btnPressedRatio="0.9"
+                    app:btnSolidColor="@color/colorPrimary"
+                    android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="20sp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/button_information"/>
-
+                    android:textColor="#ccffffff"
+                    />
 
             </LinearLayout>
         </ScrollView>
-
-    </LinearLayout>
-
 </LinearLayout>

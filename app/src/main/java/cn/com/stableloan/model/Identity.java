@@ -64,6 +64,7 @@ public class Identity implements Serializable {
     }
 
     public static class IdentityBean {
+
         /**
          * name :
          * userphone :
@@ -81,6 +82,8 @@ public class Identity implements Serializable {
         private String idcard;
         private String sex;
         private String age;
+
+
 
         public String getMarriage() {
             return marriage;
@@ -177,7 +180,35 @@ public class Identity implements Serializable {
             this.contact = contact;
         }
 
+        @Override
+        public String toString() {
+            return "IdentityBean{" +
+                    "name='" + name + '\'' +
+                    ", userphone='" + userphone + '\'' +
+                    ", idcard='" + idcard + '\'' +
+                    ", sex='" + sex + '\'' +
+                    ", age='" + age + '\'' +
+                    ", marriage='" + marriage + '\'' +
+                    ", idaddress='" + idaddress + '\'' +
+                    ", city='" + city + '\'' +
+                    ", ilass_time='" + ilass_time + '\'' +
+                    ", contact=" + contact +
+                    ", istatus='" + istatus + '\'' +
+                    '}';
+        }
+
         public static class ContactBean {
+
+            @Override
+            public int hashCode() {
+                return super.hashCode();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return super.equals(obj);
+            }
+
             /**
              * contact :
              * relation :
@@ -210,6 +241,15 @@ public class Identity implements Serializable {
 
             public void setUserphone(String userphone) {
                 this.userphone = userphone;
+            }
+
+            @Override
+            public String toString() {
+                return "ContactBean{" +
+                        "contact='" + contact + '\'' +
+                        ", relation='" + relation + '\'' +
+                        ", userphone='" + userphone + '\'' +
+                        '}';
             }
         }
     }

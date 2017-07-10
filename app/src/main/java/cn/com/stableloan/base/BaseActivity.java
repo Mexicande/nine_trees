@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import cn.com.stableloan.R;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by apple on 2017/5/20.

@@ -3,7 +3,6 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -32,13 +30,12 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.MsgEvent;
-import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.SaveBean;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
+import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.BetterSpinner;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -73,6 +70,7 @@ public class SafeSettingActivity extends BaseActivity {
     private String[] list;
     private String[] list1;
 
+    private ACache aCache;
 
     private   ArrayAdapter<String> adapter;
     private  SaveBean saveBean;
@@ -87,6 +85,8 @@ public class SafeSettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
+        aCache = ACache.get(this);
+
         initToolbar();
         getDate();
         setLisenter();
@@ -94,8 +94,14 @@ public class SafeSettingActivity extends BaseActivity {
 
     @Subscribe
     public void onMessageEvent(MsgEvent event){
-            if(event!=null){
+            if(event.msg!=null&&"ok".equals(event.msg)){
                 etWay.setText(list[1]);
+                lock.setText(list[1]);
+            }else if(event.msg!=null){
+                etWay.setText(list[0]);
+                lock.setText(list[0]);
+
+
             }
     }
 
@@ -116,6 +122,13 @@ public class SafeSettingActivity extends BaseActivity {
         etWay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(etWay.getText().toString().equals("手机解锁")){
+                    String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                    if(gesturePassword == null || "".equals(gesturePassword)) {
+                        startActivity(new Intent(SafeSettingActivity.this,CreateGestureActivity.class).putExtra("ok","1"));
+                        //CreateGestureActivity.launch(SafeSettingActivity.this);
+                    }
+                }
                 lock.setText(etWay.getText());
 /*
                 if("0".equals(saveBean.getPeriod())){
@@ -148,6 +161,18 @@ public class SafeSettingActivity extends BaseActivity {
 
     private void getDate() {
 
+
+        String lock1 = aCache.getAsString("lock");
+        if(lock1!=null){
+
+            if(lock1.length()>1){
+
+                etWay.setText(list[1]);
+                lock.setText(etWay.getText());
+            }
+
+        }
+
         String token = (String) SPUtils.get(this, "token", "1");
 
         Map<String, String> parms = new HashMap<>();
@@ -166,7 +191,6 @@ public class SafeSettingActivity extends BaseActivity {
                                 Gson gson = new Gson();
                                 saveBean = gson.fromJson(s, SaveBean.class);
                                 String way1 = saveBean.getWay();
-
 
                                 if(way1!=null){
                                     if("1".equals(way1)){
@@ -341,6 +365,12 @@ public class SafeSettingActivity extends BaseActivity {
                             String isSuccess = object.getString("isSuccess");
                             String msg = object.getString("msg");
                             if("1".equals(isSuccess)){
+                                if(etWay.getText().toString().equals("手机解锁")){
+                                    aCache.put("lock","off");
+                                }else {
+                                    aCache.put("lock","on");
+                                }
+
                                 ToastUtils.showToast(SafeSettingActivity.this,msg);
                                 finish();
                             }else {
@@ -355,6 +385,7 @@ public class SafeSettingActivity extends BaseActivity {
                 });
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

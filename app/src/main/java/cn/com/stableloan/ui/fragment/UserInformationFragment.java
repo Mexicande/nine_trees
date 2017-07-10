@@ -35,6 +35,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
+import com.zaaach.citypicker.CityPickerActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,8 +64,11 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.BetterSpinner;
+import cn.com.stableloan.view.RoundButton;
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +83,7 @@ public class UserInformationFragment extends Fragment {
     @Bind(R.id.et_Between2)
     BetterSpinner etBetween2;
     @Bind(R.id.et_City)
-    FormEditText etCity;
+    TextView etCity;
     @Bind(R.id.et_Contact1)
     FormEditText etContact1;
     @Bind(R.id.et_Contact)
@@ -104,27 +108,29 @@ public class UserInformationFragment extends Fragment {
     @Bind(R.id.textView3)
     TextView textView3;
     @Bind(R.id.getCity)
-    Button getCity;
+    RoundButton getCity;
     @Bind(R.id.layout)
     LinearLayout layout;
     @Bind(R.id.getContact1)
-    Button getContact1;
+    RoundButton getContact1;
     @Bind(R.id.layout4)
     LinearLayout layout4;
     @Bind(R.id.layout1)
     LinearLayout layout1;
     @Bind(R.id.getContact2)
-    Button getContact2;
+    RoundButton getContact2;
     @Bind(R.id.layout5)
     LinearLayout layout5;
     @Bind(R.id.layout3)
     LinearLayout layout3;
-    @Bind(R.id.save)
-    Button save;
 
+
+    private  UserBean user;
     private String[] list1;
 
     private String[] list;
+
+    private Identity.IdentityBean identityBean;
 
     public UserInformationFragment() {
         // Required empty public constructor
@@ -141,20 +147,29 @@ public class UserInformationFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         ButterKnife.bind(this, view);
-        ToastUtils.showToast(getActivity(), "-------");
         EventBus.getDefault().register(this);
         getDate();
         mLocationClient = new LocationClient(getActivity().getApplicationContext());
         mLocationClient.registerLocationListener(myListener);
         initSpinner();
-
         setListenter();
         return view;
     }
+    private static final int REQUEST_CODE_PICK_CITY = 0;
 
 
     private void setListenter() {
+        etCity.setFocusableInTouchMode(false);
+        etCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
+            }
+        });
 
+        etSex.setKeyListener(null);
+        etAge.setKeyListener(null);
         etIDCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -180,9 +195,9 @@ public class UserInformationFragment extends Fragment {
                         } else {
                             etSex.setText("男");
                         }
+                        int age = IdNOToAge(idCard);
+                        etAge.setText(String.valueOf(age));
                     }
-                    int age = IdNOToAge(idCard);
-                    etAge.setText(String.valueOf(age));
                 }
             }
         });
@@ -208,12 +223,18 @@ public class UserInformationFragment extends Fragment {
     @Subscribe
     public void onMessageEvent(InformationEvent event) {
         String message = event.message;
-        if ("informationStatus".equals(message)) {
+        if ("ok".equals(message)) {
             getDate();
         }
     }
 
     private void getDate() {
+
+        TinyDB tinyDB = new TinyDB(getActivity());
+        user = (UserBean) tinyDB.getObject("user", UserBean.class);
+
+        userPhone.setText(user.getUserphone());
+
         Map<String, String> parms = new HashMap<>();
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
@@ -234,71 +255,45 @@ public class UserInformationFragment extends Fragment {
                                 String status = json.getString("status");
                                 if ("1".equals(status)) {
                                     String string = json.getString("identity");
-
                                     Gson gson = new Gson();
-                                    Identity.IdentityBean identity = gson.fromJson(string, Identity.IdentityBean.class);
-                                    etName.setText(identity.getName());
-                                    etIDCard.setText(identity.getIdcard());
-
-                                    String sex = identity.getSex();
+                                    identityBean = gson.fromJson(string, Identity.IdentityBean.class);
+                                    etName.setText(identityBean.getName());
+                                    etIDCard.setText(identityBean.getIdcard());
+                                    String sex = identityBean.getSex();
                                     if ("0".equals(sex)) {
                                         etSex.setText("女");
                                     } else if ("1".equals(sex)) {
                                         etSex.setText("男");
                                     }
-                                    etAge.setText(identity.getAge());
-                                    etAddress.setText(identity.getIdaddress());
+                                    etAge.setText(identityBean.getAge());
 
-                                    String marriage = identity.getMarriage();
+                                    etAddress.setText(identityBean.getIdaddress());
+
+                                    String marriage = identityBean.getMarriage();
 
                                     if (marriage.equals("0")) {
                                         etMarriage.setText("未婚");
                                     } else if (marriage.equals("1")) {
                                         etMarriage.setText("已婚");
                                     }
-                                    etCity.setText(identity.getCity());
-                                    Identity.IdentityBean.ContactBean bean = identity.getContact().get(0);
+                                    etCity.setText(identityBean.getCity());
+                                    Identity.IdentityBean.ContactBean bean = identityBean.getContact().get(0);
                                     etContact.setText(bean.getUserphone());
 
                                     etContactName.setText(bean.getContact());
-
 
                                     String bet = bean.getRelation();
                                     int i2 = Integer.parseInt(bet);
                                     etBetween1.setText(list[i2]);
 
-
-                                    /*for (int i = 0; i < list.length; i++) {
-                                        if (list[i].equals(bet)) {
-                                            String s1 = String.valueOf(i);
-                                            etBetween1.setText(s1);
-                                        }
-                                    }*/
-
-
-
-
-
-                                    Identity.IdentityBean.ContactBean bean1 = identity.getContact().get(1);
+                                    Identity.IdentityBean.ContactBean bean1 = identityBean.getContact().get(1);
 
                                     etContact1.setText(bean1.getUserphone());
                                     etContactName2.setText(bean1.getContact());
 
-
-
-
                                     String bet2 = bean1.getRelation();
                                     int i1 = Integer.parseInt(bet2);
-
                                     etBetween2.setText(list[i1]);
-
-
-                                  /*  for (int i = 0; i < list.length; i++) {
-                                        if (list[i].equals(bet2)) {
-                                            String s2 = String.valueOf(i);
-                                            etBetween2.setText(s2);
-                                        }
-                                    }*/
 
 
                                 } else {
@@ -359,42 +354,44 @@ public class UserInformationFragment extends Fragment {
 
     private void saveDate() {
 
-      /*  FormEditText[] allFields = {etAge, etIDCard, etSex, etAddress, etCity, etContact, etContact1};
+        final Identity.IdentityBean identity1=new Identity.IdentityBean();
 
 
-        boolean allValid = true;
-        for (FormEditText field : allFields) {
-            allValid = field.testValidity() && allValid;
+        String userName = etName.getText().toString();
+        String IdCard = etIDCard.getText().toString();
+        String address = etAddress.getText().toString();
+        String age = etAge.getText().toString();
+        String city = etCity.getText().toString();
+        String between1 = etBetween1.getText().toString();
+        String between2 = etBetween2.getText().toString();
+        String contact1 = etContact.getText().toString();
+        String contact2 = etContact1.getText().toString();
+        String contactName1 = etContactName.getText().toString();
+        String contactName2 = etContactName2.getText().toString();
+
+        Identity.IdentityBean.ContactBean identity2 = new Identity.IdentityBean.ContactBean();
+        identity2.setUserphone(contact1);
+        identity2.setContact(contactName1);
+        identity2.setRelation("");
+
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(between1)) {
+                String s = String.valueOf(i);
+                identity2.setRelation(s);
+            }
         }
 
+        Identity.IdentityBean.ContactBean identity3 = new Identity.IdentityBean.ContactBean();
+        identity3.setUserphone(contact2);
+        identity3.setContact(contactName2);
+        identity3.setRelation("");
 
-        if (allValid) {
-
-        } else {
-
-        }*/
-
-
-        Identity identity = new Identity();
-
-        Identity.IdentityBean identity1 = new Identity.IdentityBean();
-
-        if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
-                && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
-                && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
-                && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()) {
-            identity1.setIstatus("1");
-        } else {
-            identity1.setIstatus("0");
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(between2)) {
+                String s = String.valueOf(i);
+                identity3.setRelation(s);
+            }
         }
-
-        identity1.setName(etName.getText().toString());
-        identity1.setAge(etAge.getText().toString());
-        identity1.setCity(etCity.getText().toString());
-        identity1.setIdcard(etIDCard.getText().toString());
-        identity1.setIdaddress(etAddress.getText().toString());
-        identity1.setUserphone(userPhone.getText().toString());
-
 
         String s1 = etSex.getText().toString();
         if (s1.equals("女")) {
@@ -405,7 +402,6 @@ public class UserInformationFragment extends Fragment {
             identity1.setSex("");
         }
 
-
         String marr = etMarriage.getText().toString();
         identity1.setMarriage("");
         for (int i = 0; i < list1.length; i++) {
@@ -414,80 +410,97 @@ public class UserInformationFragment extends Fragment {
                 identity1.setMarriage(s);
             }
         }
-        Identity.IdentityBean.ContactBean identity2 = new Identity.IdentityBean.ContactBean();
-        identity2.setUserphone(etContact.getText().toString());
-        identity2.setContact(etContactName.getText().toString());
 
-        identity2.setRelation("");
+        Identity.IdentityBean bean=new Identity.IdentityBean();
+        bean.setSex(identity1.getSex());
+        bean.setMarriage(identity1.getMarriage());
+        bean.setAge(age);
+        bean.setCity(city);
+        bean.setIdaddress(address);
+        bean.setIdcard(IdCard);
+        bean.setName(userName);
 
-        String bet = etBetween1.getText().toString();
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].equals(bet)) {
-                String s = String.valueOf(i);
-                identity2.setRelation(s);
+        if(identityBean.getMarriage().equals(identity1.getMarriage())
+                &&identityBean.getName().equals(userName)
+                &&identityBean.getIdcard().equals(IdCard)
+                &&identityBean.getIdaddress().equals(address)
+                &&identityBean.getAge().equals(age)
+                &&identityBean.getSex().equals(identity1.getSex())
+                &&identityBean.getCity().equals(city)
+                &&identityBean.getContact().get(0).getRelation().equals(identity2.getRelation())
+                &&identityBean.getContact().get(0).getUserphone().equals(contact1)
+                &&identityBean.getContact().get(0).getContact().equals(contactName1)
+                &&identityBean.getContact().get(1).getRelation().equals(identity3.getRelation())
+                &&identityBean.getContact().get(1).getUserphone().equals(contact2)
+                &&identityBean.getContact().get(1).getContact().equals(contactName2)) {
+            ToastUtils.showToast(getActivity(),"无修改内容");
+        }else {
+            FormEditText[] allFields = {etName, etIDCard,  etContact, etContact1};
+            boolean allValid = true;
+            for (FormEditText field : allFields) {
+                allValid = field.testValidity() && allValid;
             }
-        }
+            if (allValid) {
+
+                final Identity identity = new Identity();
+                if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
+                        && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
+                        && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
+                        && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()
+                        && !userPhone.getText().toString().isEmpty()) {
+                    identity1.setIstatus("1");
+                } else {
+                    identity1.setIstatus("0");
+                }
+                identity1.setName(etName.getText().toString());
+                identity1.setAge(etAge.getText().toString());
+                identity1.setCity(etCity.getText().toString());
+                identity1.setIdcard(etIDCard.getText().toString());
+                identity1.setIdaddress(etAddress.getText().toString());
+                identity1.setUserphone(userPhone.getText().toString());
+
+                ArrayList<Identity.IdentityBean.ContactBean> list = new ArrayList<>();
+                list.add(identity2);
+                list.add(identity3);
+                identity1.setContact(list);
+                identity.setIdentity(identity1);
 
 
-        Identity.IdentityBean.ContactBean identity3 = new Identity.IdentityBean.ContactBean();
-        identity3.setUserphone(etContact1.getText().toString());
-        identity3.setContact(etContactName2.getText().toString());
+                String token = (String) SPUtils.get(getActivity(), "token", "1");
+                identity.setToken(token);
+                identity.setUserphone(user.getUserphone());
+                Gson gson = new Gson();
+                String json = gson.toJson(identity);
 
+                OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddIdentity)
+                        .tag(this)
+                        .upJson(json)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    String isSuccess = object.getString("isSuccess");
+                                    if ("1".equals(isSuccess)) {
+                                        identityBean=identity1;
 
-        identity3.setRelation("");
-        String bet1 = etBetween1.getText().toString();
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].equals(bet1)) {
-                String s = String.valueOf(i);
-                identity3.setRelation(s);
-            }
-        }
+                                        String msg = object.getString("msg");
+                                        ToastUtils.showToast(getActivity(), msg);
+                                    } else {
+                                        String msg = object.getString("msg");
+                                        ToastUtils.showToast(getActivity(), msg);
 
-        ArrayList<Identity.IdentityBean.ContactBean> list = new ArrayList<>();
-        list.add(identity2);
-        list.add(identity3);
-
-        identity1.setContact(list);
-
-        identity.setIdentity(identity1);
-
-        TinyDB tinyDB = new TinyDB(getActivity());
-
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        // identity.getIdentity().setMarriage(etMarriage.getText().toString());
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
-        identity.setToken(token);
-        identity.setUserphone(user.getUserphone());
-        Gson gson = new Gson();
-        String json = gson.toJson(identity);
-       /* TinyDB tinyDB = new TinyDB(getActivity());
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        Map<String, String> parms = new HashMap<>();
-        parms.put("token", token);
-        parms.put("userphone", user.getUserphone());
-        JSONObject jsonObject = new JSONObject(parms);*/
-        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddIdentity)
-                .tag(this)
-                .upJson(json)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String msg = object.getString("msg");
-                                ToastUtils.showToast(getActivity(), msg);
-                            } else {
-                                String msg = object.getString("msg");
-                                ToastUtils.showToast(getActivity(), msg);
-
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                        });
+            } else {
+
+            }
+        }
+
     }
 
     private void getLocationPermission() {
@@ -505,6 +518,7 @@ public class UserInformationFragment extends Fragment {
                 // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
                 AndPermission.rationaleDialog(getActivity(), rationale)
                         .show();
+
             }
         }).callback(new PermissionListener() {
             @Override
@@ -513,11 +527,15 @@ public class UserInformationFragment extends Fragment {
                     LogUtils.i("location", "权限");
                     initLocation();
                     mLocationClient.start();
+
+
                 }
             }
 
             @Override
             public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
 
             }
         })
@@ -607,17 +625,17 @@ public class UserInformationFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     if (data == null) {
                         return;
                     } else {
                         //处理返回的data,获取选择的联系人信息
                         Uri uri = data.getData();
                         String[] contacts = getPhoneContacts(uri);
-                        if (contacts!=null&&contacts.length>1) {
+                        if (contacts != null && contacts.length > 1) {
                             etContact1.setText(contacts[1]);
                         }
-                        if(contacts!=null){
+                        if (contacts != null) {
                             etContactName.setText(contacts[0]);
                         }
 
@@ -625,22 +643,29 @@ public class UserInformationFragment extends Fragment {
                 }
                 break;
             case 2:
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     if (data == null) {
                         return;
                     } else {
                         //处理返回的data,获取选择的联系人信息
                         Uri uri = data.getData();
-                            String[] contacts = getPhoneContacts(uri);
-                            if (contacts!=null&&contacts.length>1) {
-                                etContact.setText(contacts[1]);
-                            }
-                            if(contacts!=null){
-                                etContactName2.setText(contacts[0]);
-                            }
+                        String[] contacts = getPhoneContacts(uri);
+                        if (contacts != null && contacts.length > 1) {
+                            etContact.setText(contacts[1]);
+                        }
+                        if (contacts != null) {
+                            etContactName2.setText(contacts[0]);
+                        }
                     }
                 }
                 break;
+            case REQUEST_CODE_PICK_CITY:
+                if(resultCode == RESULT_OK){
+                    if (data != null){
+                        String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                        etCity.setText(city);
+                    }
+                }
         }
         super.onActivityResult(requestCode, resultCode, data);
 

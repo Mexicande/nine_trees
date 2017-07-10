@@ -2,9 +2,6 @@ package cn.com.stableloan.net;
 
 import android.content.Context;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Administrator on 2016/5/6.
@@ -12,7 +9,7 @@ import com.android.volley.toolbox.Volley;
  */
 public class MyVolleySingle {
     //私有化属性
-    private static MyVolleySingle singleQueue;
+  /*  private static MyVolleySingle singleQueue;
     private RequestQueue requestQueue;
     private static Context context;
     private MyVolleySingle (Context context){
@@ -36,6 +33,6 @@ public class MyVolleySingle {
     public <T> void addToRequestQueue(Request<T> req) {
         //防止回收而出现空指针异常
         getRequestQueue().add(req);
-    }
+    }*/
 
 }
