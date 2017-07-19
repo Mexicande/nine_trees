@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 
+
 /**
  * Created by apple on 2017/5/20.
  */
@@ -40,8 +41,8 @@ public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
-
         super.onCreate();
+
         Utils.init(this);
         initTypeface();
 

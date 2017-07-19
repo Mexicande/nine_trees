@@ -132,12 +132,10 @@ public class UserInformationActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.User_information:
-
                 IdentityinformationActivity.launch(this);
-
                 break;
             case R.id.User_Authorization:
-
+                CertificationActivity.launch(this);
                 break;
             case R.id.User_Pic:
                 ImageActivity.launch(this);

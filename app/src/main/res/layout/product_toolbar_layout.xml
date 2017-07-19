@@ -15,7 +15,6 @@
         android:textSize="20sp"
         />
 
-
     <com.coorchice.library.SuperTextView
         android:layout_marginTop="20dp"
         android:id="@+id/cardBank"

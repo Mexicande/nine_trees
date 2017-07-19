@@ -130,10 +130,8 @@ public class ProfessionalInformationFragment extends Fragment {
 
                                     if(!years.isEmpty()){
                                         int year = Integer.parseInt(company.getYears());
-                                        ToastUtils.showToast(getActivity(),"---"+year);
                                         etYears.setText(list2[year]);
                                     }
-
                                     String cincome = company.getCincome();
                                     etCincome.setText(cincome);
                                     etFixedline.setText(company.getFixedline());

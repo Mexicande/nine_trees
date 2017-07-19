@@ -7,8 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.BankInformationFragment">
 
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,30 +20,18 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankCard1"
+                    style="@style/information_style"
                     android:inputType="number"
-                    android:maxLines="1"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    whatever:testType="creditCard"
                     whatever:emptyAllowed="true"
+
+                    whatever:testType="creditCard"
                     android:imeOptions="actionNext"
-                    android:textSize="15sp"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_BankCard1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="借记卡卡号 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -54,30 +40,18 @@
 
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankPersonName1"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:tint="@color/gay"
-                    android:maxLines="1"
-                    android:textColor="@color/gay"
+                    style="@style/information_style"
                     whatever:testType="regexp"
-                    whatever:customRegexp="^([a-zA-Z\\u4e00-\\u9fa5\\·]{1,10})$"
                     whatever:emptyAllowed="true"
+
+                    whatever:customRegexp="^([a-zA-Z\\u4e00-\\u9fa5\\·]{1,10})$"
                     whatever:testErrorString="姓名格式不正确"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:textSize="@dimen/textsize"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_BankPersonName1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="持卡人姓名 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="10dp"
@@ -98,13 +72,10 @@
                     />
 
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_ValidityTime1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="有效期 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -113,29 +84,17 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_SelectBank1"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     whatever:testType="alpha"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:tint="@color/gay"
-                    android:maxLines="1"
-                    android:imeOptions="actionNext"
+                    whatever:emptyAllowed="true"
 
-                    android:textColor="@color/gay"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:textSize="@dimen/textsize"
-                    android:background="@drawable/editext_normal"
+                    android:imeOptions="actionNext"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_SelectBank1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="所属银行 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -144,39 +103,21 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankPhone1"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:layout_width="220dp"
-                    android:maxLines="1"
+                    style="@style/information_style"
                     android:inputType="phone"
                     android:imeOptions="actionNext"
                     whatever:testType="regexp"
+                    whatever:emptyAllowed="true"
+
                     whatever:customRegexp="^[1]\\d{10}$"
                     whatever:testErrorString="号码格式不正确"
-                    whatever:emptyAllowed="true"
-                    android:layout_height="@dimen/layout_height"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:textSize="@dimen/textsize"
-
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_BankPhone1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="绑定的手机号 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
-
-
-
-
-
 
             <RelativeLayout
                 android:layout_marginTop="40dp"
@@ -184,31 +125,19 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankCard2"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     android:inputType="number"
-                    android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:maxLines="1"
-                    android:imeOptions="actionNext"
-
-                    whatever:testType="creditCard"
                     whatever:emptyAllowed="true"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
+
+                    android:imeOptions="actionNext"
+                    whatever:testType="creditCard"
                     />
+
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_BankCard2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="信用卡卡号 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -216,30 +145,18 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankPersonName2"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:maxLines="1"
+                    style="@style/information_style"
                     whatever:testType="regexp"
-                    whatever:customRegexp="^([a-zA-Z\\u4e00-\\u9fa5\\·]{1,10})$"
                     whatever:emptyAllowed="true"
+
+                    whatever:customRegexp="^([a-zA-Z\\u4e00-\\u9fa5\\·]{1,10})$"
                     whatever:testErrorString="姓名格式不正确"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_BankPersonName2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="持卡人姓名 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -260,13 +177,10 @@
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_ValidityTime2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="有效期 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -275,28 +189,17 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_SelectBank2"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     whatever:testType="alpha"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:textSize="@dimen/textsize"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:maxLines="1"
+                    whatever:emptyAllowed="true"
+
                     android:imeOptions="actionNext"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_SelectBank2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="所属银行 : "
-                    android:textSize="@dimen/textsize"/>
+                   />
             </RelativeLayout>
 
             <RelativeLayout
@@ -305,31 +208,19 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_BankPhone2"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="220dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:paddingLeft="@dimen/_5dp"
+                    style="@style/information_style"
                     android:inputType="number"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:maxLines="1"
                     whatever:testType="regexp"
+                    whatever:emptyAllowed="true"
+
                     whatever:customRegexp="^[1]\\d{10}$"
                     whatever:testErrorString="号码格式不正确"
-                    whatever:emptyAllowed="true"
-                    android:textSize="@dimen/textsize"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_BankPhone2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="绑定的手机号 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
 
             <cn.com.stableloan.view.RoundButton

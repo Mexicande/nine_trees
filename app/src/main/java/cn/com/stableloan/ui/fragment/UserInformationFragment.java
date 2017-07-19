@@ -3,15 +3,18 @@ package cn.com.stableloan.ui.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -353,10 +356,7 @@ public class UserInformationFragment extends Fragment {
     }
 
     private void saveDate() {
-
         final Identity.IdentityBean identity1=new Identity.IdentityBean();
-
-
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
@@ -392,7 +392,6 @@ public class UserInformationFragment extends Fragment {
                 identity3.setRelation(s);
             }
         }
-
         String s1 = etSex.getText().toString();
         if (s1.equals("女")) {
             identity1.setSex("0");
@@ -420,6 +419,135 @@ public class UserInformationFragment extends Fragment {
         bean.setIdcard(IdCard);
         bean.setName(userName);
 
+        if(!changeTest()){
+            commitChange(identity1,identity2,identity3);
+        }else {
+            ToastUtils.showToast(getActivity(),"无修改内容");
+        }
+
+    }
+
+    /**
+     * 修改提交
+     * @param identity1
+     * @param identity2
+     * @param identity3
+     */
+    private  void commitChange(final Identity.IdentityBean identity1, Identity.IdentityBean.ContactBean identity2,
+                               Identity.IdentityBean.ContactBean identity3){
+
+        FormEditText[] allFields = {etName, etIDCard,  etContact, etContact1};
+        boolean allValid = true;
+        for (FormEditText field : allFields) {
+            allValid = field.testValidity() && allValid;
+        }
+        if (allValid) {
+            final Identity identity = new Identity();
+            if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
+                    && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
+                    && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
+                    && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()
+                    && !userPhone.getText().toString().isEmpty()) {
+                identity1.setIstatus("1");
+            } else {
+                identity1.setIstatus("0");
+            }
+            identity1.setName(etName.getText().toString());
+            identity1.setAge(etAge.getText().toString());
+            identity1.setCity(etCity.getText().toString());
+            identity1.setIdcard(etIDCard.getText().toString());
+            identity1.setIdaddress(etAddress.getText().toString());
+            identity1.setUserphone(userPhone.getText().toString());
+
+            ArrayList<Identity.IdentityBean.ContactBean> list = new ArrayList<>();
+            list.add(identity2);
+            list.add(identity3);
+            identity1.setContact(list);
+            identity.setIdentity(identity1);
+
+
+            String token = (String) SPUtils.get(getActivity(), "token", "1");
+            identity.setToken(token);
+            identity.setUserphone(user.getUserphone());
+            Gson gson = new Gson();
+            String json = gson.toJson(identity);
+
+            OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddIdentity)
+                    .tag(this)
+                    .upJson(json)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                String isSuccess = object.getString("isSuccess");
+                                if ("1".equals(isSuccess)) {
+                                    identityBean=identity1;
+
+                                    String msg = object.getString("msg");
+                                    ToastUtils.showToast(getActivity(), msg);
+                                } else {
+                                    String msg = object.getString("msg");
+                                    ToastUtils.showToast(getActivity(), msg);
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } else {
+
+        }
+
+    }
+
+    /**
+     * 内容有无修改
+     *
+     * @return
+     */
+    private  boolean changeTest(){
+        boolean flag;
+
+        final Identity.IdentityBean identity1=new Identity.IdentityBean();
+        String userName = etName.getText().toString();
+        String IdCard = etIDCard.getText().toString();
+        String address = etAddress.getText().toString();
+        String age = etAge.getText().toString();
+        String city = etCity.getText().toString();
+        String between1 = etBetween1.getText().toString();
+        String between2 = etBetween2.getText().toString();
+        String contact1 = etContact.getText().toString();
+        String contact2 = etContact1.getText().toString();
+        String contactName1 = etContactName.getText().toString();
+        String contactName2 = etContactName2.getText().toString();
+
+
+        Identity.IdentityBean.ContactBean identity2 = new Identity.IdentityBean.ContactBean();
+        identity2.setUserphone(contact1);
+        identity2.setContact(contactName1);
+        identity2.setRelation("");
+
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(between1)) {
+                String s = String.valueOf(i);
+                identity2.setRelation(s);
+            }
+        }
+
+        Identity.IdentityBean.ContactBean identity3 = new Identity.IdentityBean.ContactBean();
+        identity3.setUserphone(contact2);
+        identity3.setContact(contactName2);
+        identity3.setRelation("");
+
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(between2)) {
+                String s = String.valueOf(i);
+                identity3.setRelation(s);
+            }
+        }
+
         if(identityBean.getMarriage().equals(identity1.getMarriage())
                 &&identityBean.getName().equals(userName)
                 &&identityBean.getIdcard().equals(IdCard)
@@ -433,74 +561,12 @@ public class UserInformationFragment extends Fragment {
                 &&identityBean.getContact().get(1).getRelation().equals(identity3.getRelation())
                 &&identityBean.getContact().get(1).getUserphone().equals(contact2)
                 &&identityBean.getContact().get(1).getContact().equals(contactName2)) {
-            ToastUtils.showToast(getActivity(),"无修改内容");
+
+            flag=true;
         }else {
-            FormEditText[] allFields = {etName, etIDCard,  etContact, etContact1};
-            boolean allValid = true;
-            for (FormEditText field : allFields) {
-                allValid = field.testValidity() && allValid;
-            }
-            if (allValid) {
-
-                final Identity identity = new Identity();
-                if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
-                        && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
-                        && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
-                        && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()
-                        && !userPhone.getText().toString().isEmpty()) {
-                    identity1.setIstatus("1");
-                } else {
-                    identity1.setIstatus("0");
-                }
-                identity1.setName(etName.getText().toString());
-                identity1.setAge(etAge.getText().toString());
-                identity1.setCity(etCity.getText().toString());
-                identity1.setIdcard(etIDCard.getText().toString());
-                identity1.setIdaddress(etAddress.getText().toString());
-                identity1.setUserphone(userPhone.getText().toString());
-
-                ArrayList<Identity.IdentityBean.ContactBean> list = new ArrayList<>();
-                list.add(identity2);
-                list.add(identity3);
-                identity1.setContact(list);
-                identity.setIdentity(identity1);
-
-
-                String token = (String) SPUtils.get(getActivity(), "token", "1");
-                identity.setToken(token);
-                identity.setUserphone(user.getUserphone());
-                Gson gson = new Gson();
-                String json = gson.toJson(identity);
-
-                OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddIdentity)
-                        .tag(this)
-                        .upJson(json)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                try {
-                                    JSONObject object = new JSONObject(s);
-                                    String isSuccess = object.getString("isSuccess");
-                                    if ("1".equals(isSuccess)) {
-                                        identityBean=identity1;
-
-                                        String msg = object.getString("msg");
-                                        ToastUtils.showToast(getActivity(), msg);
-                                    } else {
-                                        String msg = object.getString("msg");
-                                        ToastUtils.showToast(getActivity(), msg);
-
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-            } else {
-
-            }
+            flag=false;
         }
-
+        return flag;
     }
 
     private void getLocationPermission() {
@@ -544,6 +610,10 @@ public class UserInformationFragment extends Fragment {
 
     }
 
+    /**
+     * 城市定位
+     *
+     */
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
@@ -634,11 +704,14 @@ public class UserInformationFragment extends Fragment {
                         String[] contacts = getPhoneContacts(uri);
                         if (contacts != null && contacts.length > 1) {
                             etContact1.setText(contacts[1]);
+                        }else {
+                            ToastUtils.showToast(getActivity(),"获取号码失败，请手动添加");
                         }
                         if (contacts != null) {
                             etContactName.setText(contacts[0]);
+                        }else {
+                            ToastUtils.showToast(getActivity(),"获取联系人失败，请手动添加");
                         }
-
                     }
                 }
                 break;
@@ -652,9 +725,14 @@ public class UserInformationFragment extends Fragment {
                         String[] contacts = getPhoneContacts(uri);
                         if (contacts != null && contacts.length > 1) {
                             etContact.setText(contacts[1]);
+                        }else {
+                            ToastUtils.showToast(getActivity(),"获取号码失败，请手动添加");
                         }
                         if (contacts != null) {
                             etContactName2.setText(contacts[0]);
+                        }else {
+                            ToastUtils.showToast(getActivity(),"获取联系人失败，请手动添加");
+
                         }
                     }
                 }
@@ -689,7 +767,6 @@ public class UserInformationFragment extends Fragment {
             if (phone.getCount() > 0) {
                 phone.moveToFirst();
                 contact[1] = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
             }
             phone.close();
             cursor.close();
@@ -701,9 +778,27 @@ public class UserInformationFragment extends Fragment {
         return contact;
     }
 
+ /*   @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            //相当于Fragment的onPause
+            CreateDialogDialogFragment fragment = CreateDialogDialogFragment.newInstance();
+            fragment.show(getChildFragmentManager(), "dialog1");
+                   *//* if(!changeTest()){
+
+                    }*//*
+            LogUtils.i("1","不可见");
+        } else {
+            // 相当于Fragment的onResume
+            System.out.println("界面可见");
+        }
+    }*/
+
     @Override
     public void onDestroy() {
+        LogUtils.i("1-onDestroy()","11111");
         super.onDestroy();
+
         EventBus.getDefault().unregister(this);
 
     }

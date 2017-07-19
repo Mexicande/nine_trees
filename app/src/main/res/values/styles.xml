@@ -5,11 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:typeface">serif</item>
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
-
-
     </style>
 
     <style name="activityAnimation" parent="@android:style/Animation">
@@ -23,7 +20,6 @@
     <!--  <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
           <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
       </style>-->
-
 
     <style name="WrapWrap">
         <item name="android:layout_width">wrap_content</item>
@@ -227,4 +223,37 @@
         <!--相册文件夹列表选中图标-->
         <item name="picture.folder_checked_dot">@drawable/orange_oval</item>
     </style>
+
+
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@color/login_button</item>
+    </style>
+
+
+    <style name="information_style">
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">@dimen/_30dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:paddingLeft">@dimen/_5dp</item>
+        <item name="android:layout_width">220dp</item>
+        <item name="android:textSize">@dimen/textsize</item>
+        <item name="android:tint">@color/gay</item>
+        <item name="android:textColor">@color/gay</item>
+        <item name="android:layout_height">@dimen/layout_height</item>
+        <item name="android:background">@drawable/editext_normal</item>
+    </style>
+
+
+    <style name="information_text_style">
+        <item name="android:layout_marginRight">@dimen/_10dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textsize</item>
+    </style>
+
+
+
 </resources>

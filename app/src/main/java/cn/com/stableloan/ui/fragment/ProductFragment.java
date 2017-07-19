@@ -68,6 +68,7 @@ public class ProductFragment extends ImmersionFragment {
     SmoothCheckBox checkbox4;
     @Bind(R.id.layout_select)
     SuperTextView layoutSelect;
+
     private SlideUp slideUp;
 
     @Bind(R.id.title_name)

@@ -76,6 +76,7 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
         setContentView(R.layout.activity_update_nick);
         ButterKnife.bind(this);
         Validate.reg(this);
+
         initView();
     }
 

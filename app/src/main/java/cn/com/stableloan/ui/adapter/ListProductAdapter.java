@@ -68,13 +68,11 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
                     view.setSolid(Color.parseColor(lables.get(0).getBackground()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
-
                     view1.setVisibility(View.VISIBLE);
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setSolid(Color.parseColor(lables.get(1).getBackground()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
-
                     break;
                 case 3:
                     view.setVisibility(View.VISIBLE);

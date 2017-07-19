@@ -36,6 +36,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Bank;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.BankUtils;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
@@ -327,4 +328,15 @@ public class BankInformationFragment extends Fragment {
         }
 
     }
+   /* @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            //相当于Fragment的onPause
+            LogUtils.i("22222","不可见");
+        } else {
+            // 相当于Fragment的onResume
+            System.out.println("界面可见");
+        }
+    }*/
+
 }

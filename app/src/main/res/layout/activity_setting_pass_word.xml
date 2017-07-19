@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="cn.com.stableloan.ui.activity.SettingPassWordActivity">
+    <TextView
+        android:id="@+id/text"
+        android:layout_marginTop="@dimen/_100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gay"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:text="欢迎来到安稳钱包"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+86 138 0013 8000"
+        android:textColor="@color/gay"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/text"
+        android:textSize="25sp"/>
+    <cn.com.stableloan.utils.editext.PowerfulEditText
+        android:id="@+id/et_SettingPassWord"
+        android:layout_centerInParent="true"
+        android:theme="@style/MyEditText"
+        android:paddingLeft="@dimen/_40dp"
+        android:paddingRight="17dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginLeft="@dimen/_50dp"
+        android:layout_marginRight="@dimen/_50dp"
+        android:hint="设置6-20位密码"
+
+        android:maxLines="20"
+        android:minLines="1"
+        android:textSize="18sp"
+        android:textColorHint="@color/gay"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textCursorDrawable="@null"
+        app:funcType="canWatchPwd"
+        android:inputType="textPassword"
+        />
+
+    <cn.com.stableloan.view.RoundButton
+        android:id="@+id/bt_login"
+        android:layout_below="@id/et_SettingPassWord"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="开始"
+        app:btnCornerRadius="10dp"
+        app:btnPressedRatio="0.9"
+        app:btnSolidColor="@color/login_button"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#ffffff"
+        />
+</RelativeLayout>

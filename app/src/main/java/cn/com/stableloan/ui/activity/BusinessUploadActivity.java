@@ -46,6 +46,7 @@ import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.RoundButton;
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -61,9 +62,9 @@ public class BusinessUploadActivity extends BaseActivity {
     @Bind(R.id.fiv)
     ImageView fiv;
     @Bind(R.id.bt_takePhoto)
-    Button btTakePhoto;
+    RoundButton btTakePhoto;
     @Bind(R.id.bt_Picture)
-    Button btPicture;
+    RoundButton btPicture;
     @Bind(R.id.progress)
     RingProgressBar progress;
     private String UserToken;

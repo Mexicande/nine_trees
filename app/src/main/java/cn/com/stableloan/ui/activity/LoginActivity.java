@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
-
         Validate.reg(this);
         initView();
 
@@ -351,7 +350,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                 JSONObject object = new JSONObject(s);
                                 String success = object.getString("isSuccess");
                                 if (success.equals("1")) {
-
                                     SPUtils.put(LoginActivity.this, "token", object.getString("token"));
                                     SPUtils.put(LoginActivity.this, "login", true);
                                     getUserInfo();
@@ -398,7 +396,6 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
                                     Gson gson = new Gson();
                                     UserBean bean = gson.fromJson(s, UserBean.class);
                                     EventBus.getDefault().post(new MessageEvent(bean.getNickname(),bean.getUserphone()));
-
                                     TinyDB tinyDB = new TinyDB(LoginActivity.this);
                                     tinyDB.putObject("user", bean);
                                     String from = getIntent().getStringExtra("from");

@@ -68,17 +68,27 @@
             android:layout_below="@id/fiv"
             android:layout_width="match_parent"
             android:layout_height="50dp">
-            <Button
-                android:layout_marginLeft="@dimen/_20dp"
+
+            <cn.com.stableloan.view.RoundButton
                 android:id="@+id/bt_takePhoto"
+                android:layout_marginLeft="@dimen/_20dp"
+                android:layout_centerVertical="true"
                 android:layout_width="140dp"
                 android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/pic_button"
-                android:textColor="@color/pic_textColor"
+                android:text="拍照上传"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="@color/white"
+                android:gravity="center"
+                android:textStyle="bold"
                 android:textSize="15sp"
-                android:text="拍照上传"/>
-            <Button
+                android:textColor="@color/pic_textColor"
+                app:btnStrokeColor="@color/gay"
+                app:btnStrokeWidth="1dp"
+                />
+
+
+            <cn.com.stableloan.view.RoundButton
                 android:layout_marginRight="@dimen/_20dp"
                 android:layout_alignParentRight="true"
                 android:id="@+id/bt_Picture"
@@ -88,7 +98,14 @@
                 android:textColor="@color/pic_textColor"
                 android:layout_width="140dp"
                 android:textSize="15sp"
-                android:text="从图库获取"/>
+                android:text="从图库获取"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="@color/white"
+                android:gravity="center"
+                android:textStyle="bold"
+                app:btnStrokeColor="@color/gay"
+                app:btnStrokeWidth="1dp"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

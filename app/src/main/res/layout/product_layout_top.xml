@@ -42,7 +42,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/flow"
             android:layout_below="@id/layout3"
-            android:layout_marginLeft="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />

@@ -14,6 +14,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
+    <string name="hint_feedback">期待您的宝贵建议(1000字)</string>
 
     <string name="loading">正在加载…</string>
     <string name="error">出错了（┬＿┬）</string>

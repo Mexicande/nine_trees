@@ -12,7 +12,7 @@
     <!--图片上传进度-->
     <declare-styleable name="ShapeButton">
         <attr name="buttonColor" format="reference" />
-        <attr name="radius" format="dimension" />
+        <attr name="radius1" format="dimension" />
         <attr name="stroke" format="dimension" />
         <attr name="shapeStyle" format="dimension" />
     </declare-styleable>
@@ -72,5 +72,43 @@
         </attr>
         <!-- 自动计算按下(pressed)状态颜色的系数, 值为0时不自动计算 -->
         <attr name="btnPressedRatio" format="float"/>
+
+    </declare-styleable>
+
+    <!--edittext-->
+    <declare-styleable name="PowerfulEditText">
+        <!--功能的类型-->
+        <attr name="funcType">
+            <enum name="normal" value="-1"/>
+            <enum name="canClear" value="0"/>
+            <enum name="canWatchPwd" value="1" />
+        </attr>
+        <!--关闭查看密码的图标-->
+        <attr name="eyeClose" format="reference"/>
+        <!--开启查看密码的图标-->
+        <attr name="eyeOpen" format="reference"/>
+        <!--左侧Drawable的宽度-->
+        <attr name="leftDrawableWidth" format="dimension"/>
+        <!--左侧Drawable的高度-->
+        <attr name="leftDrawableHeight" format="dimension"/>
+        <!--右侧Drawable的宽度-->
+        <attr name="rightDrawableWidth" format="dimension"/>
+        <!--右侧Drawable的高度-->
+        <attr name="rightDrawableHeight" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="PhoneEditText">
+        <attr name="dividerString" format="string" />
+    </declare-styleable>
+
+
+
+    <declare-styleable name="SwitchMultiButton">
+        <attr name="strokeRadius" format="dimension" />
+        <attr name="strokeWidthSwitch" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="selectedTab" format="integer" />
+        <attr name="selectedColor" format="color|reference" />
+        <attr name="switchTabs" format="reference" />
     </declare-styleable>
 </resources>

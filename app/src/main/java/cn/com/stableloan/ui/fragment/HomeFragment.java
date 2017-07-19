@@ -124,8 +124,11 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 re_View.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (rc_adapter.getData().size() > 2) {
-                            re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);
+
+                        if(!rc_adapter.getData().isEmpty()){
+                            if (rc_adapter.getData().size() > 2) {
+                                re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);
+                            }
                         }
                     }
                 }, 100);

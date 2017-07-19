@@ -171,15 +171,5 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
 
         Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.ic_product_logo));
 
-       /* if(mData.indexOf(item)){
-            helper.getView(R.id.top).setVisibility(View.GONE);
-        }else {
-            helper.getView(R.id.top).setVisibility(View.VISIBLE);
-        }*/
-        //helper.setText(R.id.tv_ProductName,item.getPname());
-
-        //Glide.with(mContext).load(str+item.getLogo()).crossFade().centerCrop().bitmapTransform(new CropCircleTransformation(mContext) ).placeholder(R.mipmap.logo).placeholder(R.mipmap.logo).diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.head));
-
-       // Glide.with(mContext).load(R.mipmap.new_product).crossFade().centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.biaoqian));
     }
 }

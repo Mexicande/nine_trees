@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.allen.library.SuperTextView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
@@ -35,6 +36,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
@@ -61,11 +63,14 @@ public class UserFragment extends ImmersionFragment {
     TextView tvNick;
     @Bind(R.id.tv_UserPhone)
     TextView tvUserPhone;
+    @Bind(R.id.feedback)
+    SuperTextView feedback;
 
     private ACache aCache;
     private Bitmap splashBitmap;
     private int screenWidth, screenHeight;
-    private Handler handler = new Handler(){};
+    private Handler handler = new Handler() {
+    };
 
     private SelfDialog selfDialog;
 
@@ -182,31 +187,33 @@ public class UserFragment extends ImmersionFragment {
     }
 
     @Subscribe
-    public void onMessageEvent(MessageEvent event){
+    public void onMessageEvent(MessageEvent event) {
         tvNick.setText(event.userNick);
 
-        if(event.phone!=null){
+        if (event.phone != null) {
             tvUserPhone.setText(event.phone);
         }
     }
 
 
-    @OnClick({R.id.layout_my, R.id.layout_setting})
+    @OnClick({R.id.layout_my, R.id.layout_setting,R.id.feedback})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
-
                 TextUser();
-
                 break;
             case R.id.layout_setting:
                 Setting1Activity.launch(getActivity());
+                break;
+            case R.id.feedback:
+                FeedbackActivity.launch(getActivity());
                 break;
         }
     }
 
 
-    private  KProgressHUD hud;
+    private KProgressHUD hud;
+
     private void TextUser() {
 
         hud = KProgressHUD.create(getActivity())
@@ -216,62 +223,61 @@ public class UserFragment extends ImmersionFragment {
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
-            HashMap<String, String> params = new HashMap<>();
-            params.put("token", token);
-            params.put("signature", signature);
-            JSONObject jsonObject = new JSONObject(params);
-            OkGo.<String>post(Urls.NEW_URL+Urls.Login.Immunity)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            hud.dismiss();
-                            try {
-                                JSONObject object=new JSONObject(s);
-                                String isSuccess = object.getString("isSuccess");
-                                if("1".equals(isSuccess)){
-                                    String status = object.getString("status");
-                                            if("1".equals(status)){
-                                                UserInformationActivity.launch(getActivity());
-                                            }else {
-                                                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
-                                                if(gesturePassword == null || "".equals(gesturePassword)) {
-                                                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
-                                                    startActivity(intent);
-                                                } else {
-                                                    Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
-                                                    startActivity(intent);
-                                                }
-                                            }
-
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("signature", signature);
+        JSONObject jsonObject = new JSONObject(params);
+        OkGo.<String>post(Urls.NEW_URL + Urls.Login.Immunity)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        hud.dismiss();
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String isSuccess = object.getString("isSuccess");
+                            if ("1".equals(isSuccess)) {
+                                String status = object.getString("status");
+                                if ("1".equals(status)) {
+                                    UserInformationActivity.launch(getActivity());
+                                } else {
+                                    String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                                    if (gesturePassword == null || "".equals(gesturePassword)) {
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
+                                        startActivity(intent);
+                                    } else {
+                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
+                                        startActivity(intent);
+                                    }
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
 
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
 
                         }
 
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    hud.dismiss();
-                                    ToastUtils.showToast(getActivity(),"网络异常，请稍后再试");
-                                }
-                            });
-                        }
-                    });
 
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                hud.dismiss();
+                                ToastUtils.showToast(getActivity(), "网络异常，请稍后再试");
+                            }
+                        });
+                    }
+                });
 
 
     }
 
-    private  SaveBean saveBean;
+    private SaveBean saveBean;
 
     private void getDate() {
 
@@ -294,26 +300,26 @@ public class UserFragment extends ImmersionFragment {
                                 saveBean = gson.fromJson(s, SaveBean.class);
                                 String way1 = saveBean.getWay();
                                 String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
-                                if(way1!=null){
-                                    if("0".equals(way1)){
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
+                                if (way1 != null) {
+                                    if ("0".equals(way1)) {
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
                                         startActivity(intent);
 
-                                    }else {
-                                        if(gesturePassword == null|| "".equals(gesturePassword) ){
+                                    } else {
+                                        if (gesturePassword == null || "".equals(gesturePassword)) {
                                             Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
                                             startActivity(intent);
-                                        }else {
-                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from","userinformation");
+                                        } else {
+                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
                                             startActivity(intent);
                                         }
 
                                     }
                                 }
 
-                            }else {
+                            } else {
                                 String msg = object.getString("msg");
-                                ToastUtils.showToast(getActivity(),msg);
+                                ToastUtils.showToast(getActivity(), msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -324,7 +330,6 @@ public class UserFragment extends ImmersionFragment {
 
 
     }
-
 
 
     @Override

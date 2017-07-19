@@ -7,24 +7,31 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Base64;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
@@ -37,6 +44,7 @@ import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
+import cn.com.stableloan.utils.DesUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -50,6 +58,8 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -69,6 +79,9 @@ public class MainActivity extends BaseActivity {
 
     private static final int LOTTERY_CODE = 500;
     private static final int LOTTERY_SNED = 5000;
+
+    String content="1231313";
+    String key="123456789jkliuyt";
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -77,6 +90,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
         Utils.init(this);
         EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
@@ -86,12 +101,9 @@ public class MainActivity extends BaseActivity {
 
   /*  private void CheckVsion() {
         boolean contains = SPUtils.contains(this, "time");
-
         // String time1 = (String) SPUtils.get(this, "time", "1");
-
         SimpleDateFormat  formatter  =  new SimpleDateFormat("yyyy-MM-dd");
         String time = formatter.format(new Date());
-
         if(!contains){
             SPUtils.put(this,"time",time);
             VisionTest();
@@ -100,10 +112,8 @@ public class MainActivity extends BaseActivity {
             if(time2!=null&&!time2.equals(time)){
                 VisionTest();
                 SPUtils.put(this,"time",time);
-
             }
         }
-
     }*/
 
     private void VisionTest() {
@@ -168,12 +178,12 @@ public class MainActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(InformationEvent event){
         if(event.message.equals("user2")){
-          /*
-            mCurrentFragment = new HomeFragment();
-            mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commit();
-            */
             navigationController.setSelect(0);
+        }else if(event.message.equals("user4")){
+            navigationController.setSelect(3);
 
+        }else if(event.message.equals("user3")){
+            switchMenu(getFragmentName(3));
         }
     }
 
@@ -191,7 +201,7 @@ public class MainActivity extends BaseActivity {
             }else if(index==2){
                 Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
                 if (!login) {
-                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "123"), LOTTERY_SNED);
+                    startActivityForResult(new Intent(MainActivity.this, Login2Activity.class).putExtra("from", "123"), LOTTERY_SNED);
                 }else {
                     switchMenu(getFragmentName(3));
                 }

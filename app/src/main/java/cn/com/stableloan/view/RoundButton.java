@@ -18,6 +18,8 @@ import cn.com.stableloan.R;
  */
 
 public class RoundButton extends TextView {
+
+
     public RoundButton(Context context) {
         this(context, null);
     }
@@ -36,6 +38,7 @@ public class RoundButton extends TextView {
         int cornerRadius = a.getLayoutDimension(R.styleable.RoundButton_btnCornerRadius, 0);
 
         ColorStateList solidColor = a.getColorStateList(R.styleable.RoundButton_btnSolidColor);
+
         int strokeColor = a.getColor(R.styleable.RoundButton_btnStrokeColor, 0x0);
         int strokeWidth = a.getDimensionPixelSize(R.styleable.RoundButton_btnStrokeWidth, 0);
         int strokeDashWidth = a.getDimensionPixelSize(R.styleable.RoundButton_btnStrokeDashWidth, 0);

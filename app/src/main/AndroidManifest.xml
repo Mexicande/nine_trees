@@ -102,23 +102,21 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <!--高德城市选择-->
-        <meta-data android:name="com.amap.api.v2.apikey"
-            android:value="41551e9365727dbf1b539c5c8e36557a"/>
+        <!-- 高德城市选择 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="41551e9365727dbf1b539c5c8e36557a" />
+
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
-            android:theme="@style/CityPicker.NoActionBar"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
-
-
+            android:theme="@style/CityPicker.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".ui.activity.Setting1Activity" />
-
         <activity android:name=".ui.activity.SafeActivity" />
-        <activity android:name=".ui.activity.UserInformationActivity"
-            android:windowSoftInputMode="adjustResize"
-
-            />
+        <activity
+            android:name=".ui.activity.UserInformationActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activity.IdentityinformationActivity" />
         <activity android:name=".ui.activity.ImageActivity" />
         <activity android:name=".ui.activity.IdentityUploadActivity" />
@@ -130,7 +128,16 @@
         <activity android:name=".ui.activity.CreditBankUploadActivity" />
         <activity android:name=".ui.activity.BusinessUploadActivity" />
         <activity android:name=".ui.activity.CardUploadActivity" />
-        <activity android:name=".ui.activity.WorkUploadActivity"></activity>
+        <activity
+            android:name=".ui.activity.Login2Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".ui.activity.SettingPassWordActivity" />
+        <activity android:name=".ui.activity.CertificationActivity" />
+        <activity
+            android:name=".ui.activity.FeedbackActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

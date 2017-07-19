@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/base_white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.ProfessionalInformationFragment">
     <ScrollView
@@ -20,7 +19,6 @@
                 android:layout_height="wrap_content"
                 android:text="学历信息认证"
                 android:maxLines="1"
-
                 android:layout_marginLeft="@dimen/_20dp"
                 android:textSize="17sp"/>
             <RelativeLayout
@@ -29,29 +27,17 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_School"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     whatever:testType="alpha"
                     whatever:emptyAllowed="true"
+
                     android:imeOptions="actionNext"
-                    android:maxLines="1"
-                    android:textSize="@dimen/textsize"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:paddingLeft="5dp"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_School"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="学校名称 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -59,30 +45,16 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_SchoolAddress"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    whatever:testType="alpha"
+                    style="@style/information_style"
                     whatever:emptyAllowed="true"
 
-                    android:paddingLeft="5dp"
-                    android:maxLines="1"
+                    whatever:testType="alpha"
                     android:imeOptions="actionNext"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:textSize="@dimen/textsize"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_SchoolAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="学校地址 : "
-                    android:textSize="@dimen/textsize"
                     android:id="@+id/textView" />
 
             </RelativeLayout>
@@ -92,31 +64,19 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_Teacher"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:maxLines="1"
+                    style="@style/information_style"
                     android:inputType="phone"
                     whatever:testType="regexp"
+                    whatever:emptyAllowed="true"
+
                     whatever:customRegexp="^[1]\\d{10}$"
                     whatever:testErrorString="号码格式不正确"
-                    whatever:emptyAllowed="true"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:textSize="@dimen/textsize"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_Teacher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="班主任电话 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <TextView
                 android:layout_marginTop="20dp"
@@ -131,29 +91,17 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/company"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     whatever:testType="alpha"
                     whatever:emptyAllowed="true"
-                    android:maxLines="1"
+
                     android:imeOptions="actionNext"
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:textSize="@dimen/textsize"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/company"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="单位名称 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -161,29 +109,16 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/location"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     whatever:testType="alpha"
                     whatever:emptyAllowed="true"
 
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:textSize="@dimen/textsize"
-                    android:maxLines="1"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="单位地址 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -205,13 +140,10 @@
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_years"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="工作年限 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -233,13 +165,10 @@
                     android:background="@drawable/editext_normal"/>
 
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="邮箱地址 : "
-                    android:textSize="@dimen/textsize"/>
+                   />
             </RelativeLayout>
 
             <RelativeLayout
@@ -248,29 +177,17 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_Cincome"
-                    android:layout_width="220dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:textSize="@dimen/textsize"
-                    android:paddingLeft="5dp"
-                    android:layout_height="@dimen/layout_height"
-                    android:tint="@color/gay"
-                    android:maxLines="1"
+                    style="@style/information_style"
                     android:imeOptions="actionNext"
-                    whatever:emptyAllowed="true"
                     android:inputType="number"
-                    android:textColor="@color/gay"
-                    android:background="@drawable/editext_normal"
+                    whatever:emptyAllowed="true"
+
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_Cincome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="月收入 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -278,30 +195,17 @@
                 android:layout_height="wrap_content">
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_fixedline"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
+                    style="@style/information_style"
                     whatever:testType="regexp"
                     whatever:emptyAllowed="true"
                     whatever:customRegexp="^(0\\d{2,3}[-| ]?)?(\\d{7,8})([-| ]?\\d{3,5})?$"
                     whatever:testErrorString="号码格式不正确"
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:textSize="@dimen/textsize"
-                    android:maxLines="1"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_fixedline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="单位固话 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <TextView
                 android:layout_marginTop="20dp"
@@ -325,17 +229,13 @@
                     android:textColor="@color/gay"
                     android:layout_height="@dimen/layout_height"
                     android:maxLines="1"
-
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_operations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="经营年限 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="@dimen/_10dp"
@@ -361,7 +261,6 @@
                         android:tint="@color/gay" />
                     <TextView
                         android:textColor="@color/gay"
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="有"/>
@@ -408,13 +307,10 @@
                     android:background="@drawable/editext_normal"
                     />
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/bincome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="月收入 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <TextView
                 android:layout_marginTop="20dp"
@@ -449,7 +345,6 @@
                         android:tint="@color/gay" />
                     <TextView
                         android:textColor="@color/gay"
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="有"/>
@@ -469,13 +364,10 @@
                         android:text="没有"/>
                 </LinearLayout>
                 <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
+                    style="@style/information_text_style"
                     android:layout_toLeftOf="@id/layout5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="收入来源 : "
-                    android:textSize="@dimen/textsize"/>
+                    />
             </RelativeLayout>
             <cn.com.stableloan.view.RoundButton
                 android:id="@+id/save"

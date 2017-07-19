@@ -2,6 +2,7 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import java.io.Serializable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,7 +26,10 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
+import cn.com.stableloan.model.WelfareBean;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.NetworkUtils;
+import cn.com.stableloan.utils.ToastUtils;
 
 public class HtmlActivity extends BaseActivity {
 
@@ -36,7 +42,6 @@ public class HtmlActivity extends BaseActivity {
 
     @Bind(R.id.web_progress_bar)
     ProgressBar mProgressBar;
-
 
     @Bind(R.id.web_container)
     FrameLayout mContainer;
@@ -87,7 +92,6 @@ public class HtmlActivity extends BaseActivity {
             if(desc1!=null){
                 titleName.setText(desc1.getPlatformdetail().getPl_name()+"攻略");
                 ivBack.setVisibility(View.VISIBLE);
-
                 String url = desc1.getProduct().getRaiders_connection();
                 getDate(url);
             }
@@ -97,13 +101,12 @@ public class HtmlActivity extends BaseActivity {
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(bank);
             }
-          /*  if(product!=null){
-                titleName.setText(product.getAdvername());
+            WelfareBean.DataBean welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
+            if(welfare!=null){
+                titleName.setText(welfare.getName());
                 ivBack.setVisibility(View.VISIBLE);
-                getDate(product.getApp());
-            }*/
-
-
+                getDate(welfare.getLink());
+            }
         } else {
 
         }
@@ -132,7 +135,13 @@ public class HtmlActivity extends BaseActivity {
                 mWebView.setWebViewClient(new WebViewClient() {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        view.loadUrl(url);
+                        LogUtils.i("webView", url);
+                        if (parseScheme(url)) {
+
+                        } else {
+                            view.loadUrl(url);
+                        }
+
                         return false;
                     }
                 });
@@ -141,6 +150,39 @@ public class HtmlActivity extends BaseActivity {
 
         }
     }
+    public boolean parseScheme(String url) {
+        if (url.contains("platformapi/startapp")) {
+            try {
+                Uri uri = Uri.parse(url);
+                Intent intent;
+                intent = Intent.parseUri(url,
+                        Intent.URI_INTENT_SCHEME);
+                intent.addCategory("android.intent.category.BROWSABLE");
+                intent.setComponent(null);
+                startActivity(intent);
+            } catch (Exception e) {
+                ToastUtils.showToast(this, "请安装最新版支付宝");
+            }
+            return true;
+        } else if (url.contains("qqapi")) {
+            try {
+                Uri uri = Uri.parse(url);
+                Intent intent;
+                intent = Intent.parseUri(url,
+                        Intent.URI_INTENT_SCHEME);
+                intent.addCategory("android.intent.category.BROWSABLE");
+                intent.setComponent(null);
+                startActivity(intent);
+            } catch (Exception e) {
+
+                ToastUtils.showToast(this, "请安装最新版腾讯QQ");
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private class MyWebChromeClient extends WebChromeClient {
 
         @Override
