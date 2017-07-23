@@ -100,7 +100,7 @@ public class Setting1Activity extends BaseActivity {
                 SPUtils.clear(Setting1Activity.this);
                 TinyDB tinyDB = new TinyDB(Setting1Activity.this);
                 tinyDB.clear();
-                startActivity(new Intent(Setting1Activity.this, LoginActivity.class).putExtra("from", "user2"));
+                startActivity(new Intent(Setting1Activity.this, Login2Activity.class).putExtra("from", "user2"));
                 finish();
             }
         });

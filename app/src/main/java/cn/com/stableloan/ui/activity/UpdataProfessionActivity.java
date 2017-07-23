@@ -67,6 +67,7 @@ public class UpdataProfessionActivity extends BaseActivity {
 
     private static int Flge = 0;
 
+    private int Userid=0;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UpdataProfessionActivity.class));
     }
@@ -78,35 +79,39 @@ public class UpdataProfessionActivity extends BaseActivity {
         ButterKnife.bind(this);
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("身份修改");
-        TinyDB tinyDB=new TinyDB(this);
+        TinyDB tinyDB = new TinyDB(this);
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        if(user!=null){
-            String identity =  user.getIdentity();
-            if(identity!=null){
-                int i = Integer.parseInt(identity);
-                switch (i){
-                    case 1:
-                        ivWork.setColorFilter(getResources().getColor(R.color.mask));
-                        tick.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        ivFree.setColorFilter(getResources().getColor(R.color.mask));
-                        tickFree.setVisibility(View.VISIBLE);
-                        break;
-                    case 3:
-                        ivStudent.setColorFilter(getResources().getColor(R.color.mask));
-                        tickStudent.setVisibility(View.VISIBLE);
-                        break;
-                    case 4:
-                        ivCompany.setColorFilter(getResources().getColor(R.color.mask));
-                        tickCompany.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        break;
-                }
+        LogUtils.i("identity", user.toString());
+        String identity1 = (String) SPUtils.get(this, "identity", "");
+        if (!identity1.isEmpty()) {
+            Userid = Integer.parseInt(identity1);
+        } else {
+            if (user.getIdentity() != 0) {
+                Userid = user.getIdentity();
             }
         }
-
+        switch (Userid) {
+            case 1:
+                ivWork.setColorFilter(getResources().getColor(R.color.mask));
+                tick.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                ivFree.setColorFilter(getResources().getColor(R.color.mask));
+                tickFree.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                ivStudent.setColorFilter(getResources().getColor(R.color.mask));
+                tickStudent.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                ivCompany.setColorFilter(getResources().getColor(R.color.mask));
+                tickCompany.setVisibility(View.VISIBLE);
+                break;
+            default:
+                ivWork.setColorFilter(getResources().getColor(R.color.mask));
+                tick.setVisibility(View.VISIBLE);
+                break;
+        }
 
     }
 
@@ -177,11 +182,12 @@ public class UpdataProfessionActivity extends BaseActivity {
                                 String success = object.getString("isSuccess");
                                 if(success.equals("1")){
                                     hud.dismiss();
+                                    LogUtils.i("-----",identity);
+                                    SPUtils.put(UpdataProfessionActivity.this,"identity",identity);
                                     setResult(1000,new Intent().putExtra("HeadPhoto",identity));
                                     finish();
                                 }else {
                                     hud.dismiss();
-
                                     String string = object.getString("msg");
                                     ToastUtils.showToast(UpdataProfessionActivity.this,string);
                                 }

@@ -341,3 +341,19 @@ public static java.lang.String TABLENAME;
 -keep class com.amap.api.location.**{*;}
 -keep class com.amap.api.fence.**{*;}
 -keep class com.autonavi.aps.amapapi.model.**{*;}
+-keepattributes *Annotation*
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+
+-keep @com.proguard.annotation.NotProguard class * {*;}
+-keep class * {
+    @com.proguard.annotation <fields>;
+    @android.webkit.JavascriptInterface <fields>;
+}
+-keepclassmembers class * {
+    @com.proguard.annotation <fields>;
+    @android.webkit.JavascriptInterface <fields>;
+}

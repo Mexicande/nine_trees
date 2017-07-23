@@ -315,7 +315,7 @@ public class ProductDesc extends BaseActivity {
             case R.id.apply:
                 Boolean login = (Boolean) SPUtils.get(this, "login", false);
                 if (!login) {
-                    LoginActivity.launch(this);
+                    Login2Activity.launch(this);
                 } else {
                     sendIO();
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));

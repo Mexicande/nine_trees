@@ -8,16 +8,16 @@ public interface Urls{
 
     String STATUS_WordLogin                 =           "1";
     String STATUS_MessageLogin              =           "3";
-
+    String Ip_url="http://47.94.175.112:8081/v1/";
 
     String CardBack="http://www.shoujiweidai.com/Card/index.html";
     String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
 
     String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
-    String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUsxpie3g+dTnPv6vjRuCOVB6h" +
-            "c0V6qFXAbzjSEs1HZHCo/JRgUBHK+fCyc+LKUhcsYe00aTnzDRNuW0MAhG1lXIu+" +
-            "Jo0En3yiFB4a4jcMUThVx1s7p/Cmqk+KUAmM9FLBrT6UoKzbLNKi99Yh6ybSMJuy" +
-            "X4HrXK/lU7Q44b4fMwIDAQAB";
+    String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
+            "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
+            "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4" +
+            "DkeI2HZ45KR+7qkSXQIDAQAB";
 
     String PRIVATE_KEY = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANSzGmJ7eD51Oc+/" +
             "q+NG4I5UHqFzRXqoVcBvONISzUdkcKj8lGBQEcr58LJz4spSFyxh7TRpOfMNE25b" +
@@ -34,6 +34,8 @@ public interface Urls{
             "y0puJ4EGhEa+jwiSi8rSD/vw09CNUNTieVGqx5DzxvPUzTyvRQ9y4dpU8zufqq5p" +
             "BI1hNZWOmpTyld2F";
 
+    String Api_Id="3846f6f1e99e4f1b958111fda257c368";
+
     //
     interface  times{
         String MESSAGE_SEND="http://47.94.175.112:8081/v1/sms/getcode";
@@ -42,7 +44,7 @@ public interface Urls{
 
 
         //验证码发送
-        String SEND_MESSAGE="http://test.api.shoujijiekuan.com/Home/ChuanglanSmsApi/sendSMS";
+        String SEND_MESSAGE="http://47.94.175.112:8081/v1/sms/getcode";
         String LOGIN="Login";
         String USER_INFOMATION="Mine/Locking";
         String GET_SIGNATURE="Mine/GetSignature";
@@ -80,8 +82,7 @@ public interface Urls{
         String AddOccupation="Identity/AddOccupation";
     }
     interface STATUS{
-        String GetStatus="Status/GetStatus";
-
+        String GetCerftication="accredit/status";
         String GetPictrueStatus="Status/GetPictrueStatus";
         String Getsetting="SaveSetting/Getsetting";
         String Save_Setting="SaveSetting/setting";
@@ -97,7 +98,7 @@ public interface Urls{
 
         String REGSTER  = "Registered";
 
-        String FORGETWORD="ForgetPassword";
+        String FORGETWORD="set/forgetpassword";
     }
 
     interface product{

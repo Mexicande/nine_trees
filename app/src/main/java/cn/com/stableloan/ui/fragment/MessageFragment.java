@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FragmentUtils;
 import com.example.gt3unbindsdk.GT3GeetestButton;
 import com.example.gt3unbindsdk.GT3GeetestUtils;
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +46,7 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.SettingPassWordActivity;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.LogUtils;
@@ -171,53 +174,6 @@ public class MessageFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (etCode.getText().toString().length() == 4) {
                     btMessageLogin.setEnabled(true);
-                    btMessageLogin.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            HashMap<String, String> params = new HashMap<>();
-                            params.put("userphone", etPhone.getText().toString());
-                            params.put("code", etCode.getText().toString());
-                            JSONObject object=new JSONObject(params);
-                            OkGo.<String>post("http://47.94.175.112:8081/v1/quick/login")
-                                    .tag(this)
-                                    .upJson(object)
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onSuccess(String s, Call call, Response response) {
-                                                Gson gson=new Gson();
-                                            CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
-                                                    if("0".equals(codeMessage.getError_code())){
-                                                        if("1".equals(codeMessage.getData().getStatus())){
-                                                            SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
-                                                            String from = getActivity().getIntent().getStringExtra("from");
-                                                            SPUtils.put(getActivity(), "login", true);
-                                                            if (from != null) {
-                                                                Log.i("from------","from");
-                                                                if(from.equals("user")){
-                                                                    EventBus.getDefault().post(new InformationEvent("user4"));
-                                                                    getActivity().finish();
-                                                                }else if(from.equals("123")){
-                                                                    EventBus.getDefault().post(new InformationEvent("user3"));
-                                                                    getActivity().finish();
-                                                                }/*else if(from.equals("user1")){
-                                                                    setResult(4000, new Intent().putExtra("user", bean));
-                                                                    finish();
-                                                                }else if(from.equals("user2")){
-                                                                    setResult(4000, new Intent().putExtra("user", bean));
-                                                                    finish();
-                                                                }*/
-                                                            } else {
-                                                                getActivity().finish();
-                                                            }
-                                                        }
-                                                    }
-
-                                        }
-                                    });
-                        }
-                    });
-
                 }
             }
 
@@ -227,6 +183,7 @@ public class MessageFragment extends Fragment {
             }
         });
     }
+
 
     private void GT3GeetestListener() {
         gt3GeetestUtils.getGeetest(captchaURL, validateURL, null);
@@ -481,7 +438,9 @@ public class MessageFragment extends Fragment {
 
                             Gson gson = new Gson();
                             MessageCode body = gson.fromJson(s, MessageCode.class);
-                                if ("0".equals(body.getError_code())) {
+                                if (0==body.getError_code()) {
+                                    Atest=false;
+
                                     ToastUtils.showToast(getActivity(), "发送成功");
                                     String phone = etPhone.getText().toString();
                                     if (phone.length() == 11) {
@@ -538,8 +497,69 @@ public class MessageFragment extends Fragment {
         switch (view.getId()) {
 
             case R.id.bt_message_login:
+                HashMap<String, String> params = new HashMap<>();
+                params.put("userphone", etPhone.getText().toString());
+                params.put("code", etCode.getText().toString());
+                JSONObject object=new JSONObject(params);
+                OkGo.<String>post("http://47.94.175.112:8081/v1/quick/login")
+                        .tag(this)
+                        .upJson(object)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                Gson gson=new Gson();
+                                CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
+                                if("0".equals(codeMessage.getError_code())){
+                                    if("1".equals(codeMessage.getData().getStatus())){
+                                        SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
+                                        String from = getActivity().getIntent().getStringExtra("from");
+                                        SPUtils.put(getActivity(), "login", true);
+                                        if (from != null) {
+                                            if(from.equals("user")){
+                                                EventBus.getDefault().post(new InformationEvent("user4"));
+                                                getActivity().finish();
+                                            }else if(from.equals("123")){
+                                                EventBus.getDefault().post(new InformationEvent("user3"));
+                                                getActivity().finish();
+                                            }/*else if(from.equals("user1")){
+                                                                    setResult(4000, new Intent().putExtra("user", bean));
+                                                                    finish();
+                                                                }else if(from.equals("user2")){
+                                                                    setResult(4000, new Intent().putExtra("user", bean));
+                                                                    finish();
+                                                                }*/
+                                        } else {
+                                            getActivity().finish();
+                                        }
+                                    }else {
+                                        LogUtils.i("status",codeMessage.getData().getStatus());
+                                       /*Fragment fragment = SettingPassWordFragment.newInstance(etPhone.getText().toString());
+                                        getFragmentManager()
+                                                .beginTransaction()
+                                                .add(R.id.fragment, fragment)
+                                                .show(fragment)
+                                                .addToBackStack("password")
+                                                .commitAllowingStateLoss();*/
+                                        startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
 
+
+                                    }
+                                }else {
+                                    ToastUtils.showToast(getActivity(),codeMessage.getError_message());
+                                }
+                            }
+                        });
                 break;
         }
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            Atest=false;
+        LogUtils.i("1","不可见");
+         } else {
+        // 相当于Fragment的onResume
+        System.out.println("界面可见");
+         }
     }
 }

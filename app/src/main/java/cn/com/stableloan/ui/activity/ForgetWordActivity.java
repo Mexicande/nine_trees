@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,12 +29,17 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.CodeMessage;
+import cn.com.stableloan.model.DesBean;
+import cn.com.stableloan.model.MessageCode;
+import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.aes.Des4;
+import cn.com.stableloan.utils.ras.RSA;
 import cxy.com.validate.IValidateResult;
 import cxy.com.validate.Validate;
 import cxy.com.validate.ValidateAnimation;
@@ -133,29 +140,22 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
         if (RegexUtils.isMobileExact(phone)) {
             captchaTimeCount.start();
             HashMap<String, String> params = new HashMap<>();
-            params.put("userPhone", phone);
-            params.put("status", "1");
-
+            params.put("userphone", phone);
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.Login.SEND_MESSAGE)
+            OkGo.post(Urls.times.MESSAGE_SEND)
                     .tag(this)
-                    .upJson(jsonObject.toString())
+                    .upJson(jsonObject)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                String status = jsonObject.getString("isSuccess");
-                                if (status.equals("1")) {
-                                    MessageCode = jsonObject.getString("check");
-                                    String msg = jsonObject.getString("msg");
-                                    ToastUtils.showToast(ForgetWordActivity.this, msg);
-                                } else {
-                                    String msg = jsonObject.getString("msg");
-                                    ToastUtils.showToast(ForgetWordActivity.this, msg);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                            Gson gson = new Gson();
+                            MessageCode body = gson.fromJson(s, MessageCode.class);
+                            if (body.getError_code() == 0) {
+                                ToastUtils.showToast(ForgetWordActivity.this, "发送成功");
+                            } else {
+                                ToastUtils.showToast(ForgetWordActivity.this, body.getError_message());
+
                             }
                         }
                     });
@@ -172,49 +172,77 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
     private KProgressHUD hud;
 
     private void setPassWord() {
+
+        String confirmPassword = etPassword.getText().toString();
+        String tel = etMessage.getText().toString();
+        String code = etCodeMessage.getText().toString();
+
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
                 .setCancellable(true)
                 .show();
-        String confirmPassword = etPassword.getText().toString();
-        String tel = etMessage.getText().toString();
-        String code = etCodeMessage.getText().toString();
-        if (tel.equals(phone) && MessageCode != null && code.equals(MessageCode)) {
-            String md5ToString = EncryptUtils.encryptMD5ToString(confirmPassword);
-            HashMap<String, String> params = new HashMap<>();
-            params.put("userphone", phone);
-            params.put("password", md5ToString);
-            JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.puk_URL + Urls.register.FORGETWORD)
-                    .tag(this)
-                    .upJson(jsonObject.toString())
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if(success.equals("1")){
-                                    hud.dismiss();
-                                    String string = object.getString("msg");
-                                    ToastUtils.showToast(ForgetWordActivity.this, string);
-                                    finish();
-                                } else {
-                                    String string = object.getString("msg");
-                                    hud.dismiss();
-                                    ToastUtils.showToast(ForgetWordActivity.this, string);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-        } else {
-            ToastUtils.showToast(this, "手机号或验证码不正确");
+        HashMap<String, String> params = new HashMap<>();
+        String md5ToString = EncryptUtils.encryptMD5ToString(confirmPassword);
+        params.put("userphone", tel);
+        params.put("password", md5ToString);
+        params.put("code", code);
+        JSONObject object = new JSONObject(params);
+        LogUtils.i("json",object.toString());
+        String Deskey = null;
+        String sign = null;
+        String deskey = null;
+        try {
+            int random = new Random().nextInt(10000000) + 89999999;
+            LogUtils.i("random", random);
+            Deskey = Des4.encode(object.toString(), String.valueOf(random));
+            deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY);
+            sign = RSA.sign(deskey, Urls.PRIVATE_KEY);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        hud.dismiss();
+
+        DesBean bean = new DesBean();
+        bean.setData(Deskey);
+        bean.setDeskey(deskey);
+        final Gson gson = new Gson();
+
+        String json = gson.toJson(bean);
+
+        LogUtils.i("json",json);
+
+        OkGo.post(Urls.Ip_url + Urls.register.FORGETWORD)
+                .tag(this)
+                .headers("sign", sign)
+                .upJson(json)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        hud.dismiss();
+
+                        UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
+
+                        if(infromBean.getError_code()==0){
+                            ToastUtils.showToast(ForgetWordActivity.this, "设置成功");
+                            finish();
+                        }else {
+                            ToastUtils.showToast(ForgetWordActivity.this, infromBean.getError_message());
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ForgetWordActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                hud.dismiss();
+                            }
+                        });
+                    }
+                });
 
     }
 

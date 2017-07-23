@@ -31,7 +31,7 @@
         stv:sRightTextColor="@color/gay"
         stv:sRightTextString="待完成"
         stv:sLeftTopTextString="支付宝" />
-    <com.allen.library.SuperTextView
+<!--    <com.allen.library.SuperTextView
         android:id="@+id/jd"
         android:layout_marginTop="2dp"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
         stv:sLeftTextSize="16dp"
         stv:sRightTextColor="@color/gay"
         stv:sRightTextString="待完成"
-        stv:sLeftTopTextString="京东" />
+        stv:sLeftTopTextString="京东" />-->
     <com.allen.library.SuperTextView
         android:id="@+id/mobile"
         android:layout_marginTop="2dp"

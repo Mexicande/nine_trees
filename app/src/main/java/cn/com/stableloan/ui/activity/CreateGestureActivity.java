@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.CacheUtils;
 import com.star.lock.util.LockPatternUtil;
 import com.star.lock.widget.LockPatternIndicator;
 import com.star.lock.widget.LockPatternView;
@@ -162,6 +163,7 @@ public class CreateGestureActivity extends BaseActivity {
      * 成功设置了手势密码(跳到首页)
      */
     private void setLockPatternSuccess() {
+
         aCache.put("lock","on");
         if(getIntent().getStringExtra("ok")!=null){
             EventBus.getDefault().post(new MsgEvent("ok"));

@@ -104,14 +104,9 @@ public class UserFragment extends ImmersionFragment {
 
 
     private void getUserInfo() {
-        TinyDB tinyDB = new TinyDB(getActivity());
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        if (user != null) {
-            tvNick.setText(user.getNickname());
-            tvUserPhone.setText(user.getUserphone());
-        } else {
             String token = (String) SPUtils.get(getActivity(), "token", "1");
-            if (!token.isEmpty()) {
+        final TinyDB tinyDB = new TinyDB(getActivity());
+        if (!"1".equals(token)) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("token", token);
                 JSONObject jsonObject = new JSONObject(params);
@@ -128,18 +123,24 @@ public class UserFragment extends ImmersionFragment {
                                     if (success.equals("1")) {
                                         Gson gson = new Gson();
                                         UserBean bean = gson.fromJson(s, UserBean.class);
+                                        tinyDB.putObject("user",bean);
                                         tvNick.setText(bean.getNickname());
                                         tvUserPhone.setText(bean.getUserphone());
                                     } else {
-                                        String string = object.getString("msg");
-                                        ToastUtils.showToast(getActivity(), string);
+                                        final UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                        if (user != null) {
+                                            tvNick.setText(user.getNickname());
+                                            tvUserPhone.setText(user.getUserphone());
+                                        }else {
+                                            String string = object.getString("msg");
+                                            ToastUtils.showToast(getActivity(), string);
+                                        }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
                         });
-            }
         }
 
 

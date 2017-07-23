@@ -14,7 +14,10 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 
@@ -87,10 +90,27 @@ public class AppApplication extends Application {
 
 
 
-    List<Activity> myActivity = new ArrayList<>();
+    private static List<Activity> myActivity = new ArrayList<>();
+    private static Map<String,Activity> destoryMap = new HashMap<>();
     public void addToList(Activity activity){
+
         myActivity.add(activity);
+
     }
+    public static void addDestoryActivity(Activity activity,String activityName) {
+        destoryMap.put(activityName,activity);
+    }
+    /**
+     *销毁指定Activity
+     */
+
+    public static void destoryActivity(String activityName) {
+        Set<String> keySet=destoryMap.keySet();
+        for (String key:keySet){
+            destoryMap.get(key).finish();
+        }
+    }
+
 
     @Override
     public void onTerminate() {

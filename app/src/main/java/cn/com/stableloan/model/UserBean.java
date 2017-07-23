@@ -16,9 +16,9 @@ public class UserBean implements Serializable {
      */
 
     private String userphone;
-    private String identity;
+    private int identity;
     private String nickname;
-    private boolean isSuccess;
+    private String token;
 
     public String getUserphone() {
         return userphone;
@@ -28,11 +28,11 @@ public class UserBean implements Serializable {
         this.userphone = userphone;
     }
 
-    public String getIdentity() {
+    public int getIdentity() {
         return identity;
     }
 
-    public void setIdentity(String identity) {
+    public void setIdentity(int identity) {
         this.identity = identity;
     }
 
@@ -44,21 +44,21 @@ public class UserBean implements Serializable {
         this.nickname = nickname;
     }
 
-    public boolean isIsSuccess() {
-        return isSuccess;
+    public String getToken() {
+        return token;
     }
 
-    public void setIsSuccess(boolean isSuccess) {
-        this.isSuccess = isSuccess;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
     public String toString() {
         return "UserBean{" +
                 "userphone='" + userphone + '\'' +
-                ", identity='" + identity + '\'' +
+                ", identity=" + identity +
                 ", nickname='" + nickname + '\'' +
-                ", isSuccess=" + isSuccess +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

@@ -173,6 +173,7 @@ public class MainActivity extends BaseActivity {
 
         navigationController.addTabItemSelectedListener(listener);
 
+
     }
 
     @Subscribe
@@ -181,9 +182,14 @@ public class MainActivity extends BaseActivity {
             navigationController.setSelect(0);
         }else if(event.message.equals("user4")){
             navigationController.setSelect(3);
-
         }else if(event.message.equals("user3")){
-            switchMenu(getFragmentName(3));
+           // switchMenu(getFragmentName(3));
+            int selected = navigationController.getSelected();
+            switchMenu(getFragmentName(selected+1));
+
+        }else if(event.message.equals("userinform")){
+            navigationController.setSelect(4);
+
         }
     }
 
@@ -194,7 +200,7 @@ public class MainActivity extends BaseActivity {
             if(index==3){
                 Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
                 if (!login) {
-                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
+                    startActivityForResult(new Intent(MainActivity.this, Login2Activity.class).putExtra("from", "user"), FLAG_LOGIN);
                 }else {
                     switchMenu(getFragmentName(4));
                 }
@@ -258,7 +264,9 @@ public class MainActivity extends BaseActivity {
                 if (SEND_LOGIN == resultCode) {
                     UserBean user = (UserBean) data.getSerializableExtra("user");
                     if(user!=null&&user.getNickname()!=null){
+
                         switchMenu(getFragmentName(4));
+
                     }else {
                         navigationController.setSelect(0);
                     }

@@ -13,11 +13,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Des4 {
 
-    private final static String secretKey = "01234567";
     private static byte[] iv = {0, 1, 2, 3, 4, 5, 6, 7};
 
-    public static String encode(String plainText) throws Exception {
-        IvParameterSpec zeroIv = new IvParameterSpec(iv);
+    public static String encode(String plainText,String secretKey) throws Exception {
+        IvParameterSpec zeroIv = new IvParameterSpec(secretKey.getBytes());
         SecretKeySpec key = new SecretKeySpec(secretKey.getBytes(), "DES");
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.ENCRYPT_MODE, key, zeroIv);
@@ -25,8 +24,8 @@ public class Des4 {
         return Base64.encodeToString(encryptedData, 1);
     }
 
-    public static String decode(String encryptText) throws Exception {
-        IvParameterSpec zeroIv = new IvParameterSpec(iv);
+    public static String decode(String encryptText,String secretKey) throws Exception {
+        IvParameterSpec zeroIv = new IvParameterSpec(secretKey.getBytes());
         SecretKeySpec key = new SecretKeySpec(secretKey.getBytes(), "DES");
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.DECRYPT_MODE, key, zeroIv);

@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context="cn.com.stableloan.ui.activity.SettingPassWordActivity">
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginLeft="@dimen/_10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+        <ImageView
+            android:layout_centerInParent="true"
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/iv_goback"/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/text"
         android:layout_marginTop="@dimen/_100dp"
@@ -16,6 +30,7 @@
         android:layout_centerHorizontal="true"
         android:text="欢迎来到安稳钱包"/>
     <TextView
+        android:id="@+id/phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="+86 138 0013 8000"
@@ -48,6 +63,7 @@
 
     <cn.com.stableloan.view.RoundButton
         android:id="@+id/bt_login"
+        android:visibility="gone"
         android:layout_below="@id/et_SettingPassWord"
         android:layout_marginTop="120dp"
         android:layout_marginLeft="70dp"
@@ -58,6 +74,23 @@
         app:btnCornerRadius="10dp"
         app:btnPressedRatio="0.9"
         app:btnSolidColor="@color/login_button"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#ffffff"
+        />
+    <cn.com.stableloan.view.RoundButton
+        android:id="@+id/bt_button"
+        android:enabled="false"
+        android:layout_below="@id/et_SettingPassWord"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="开始"
+        app:btnCornerRadius="10dp"
+        app:btnPressedRatio="0.9"
+        app:btnSolidColor="#99CCFF"
         android:gravity="center"
         android:textSize="24sp"
         android:textColor="#ffffff"

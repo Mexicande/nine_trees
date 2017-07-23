@@ -12,6 +12,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
@@ -31,7 +33,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).transparentBar().init();
-        setWelcome( );
+        setWelcome();
+
+
+
+
+
       /*  boolean flag = SPUtils.contains(this, "url");
 
         if(flag){

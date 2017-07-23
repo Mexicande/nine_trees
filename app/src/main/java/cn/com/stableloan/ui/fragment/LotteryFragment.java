@@ -127,9 +127,7 @@ public class LotteryFragment extends ImmersionFragment {
                         welfareAdapter = new WelfareAdapter(bean.getData());
                         welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
                         welfareRecycler.setAdapter(welfareAdapter);
-
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

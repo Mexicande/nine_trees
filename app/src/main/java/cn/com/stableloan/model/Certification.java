@@ -1,30 +1,31 @@
 package cn.com.stableloan.model;
 
 /**
- * Created by apple on 2017/7/14.
+ * Created by apple on 2017/7/21.
  */
 
-public class MessageCode {
+public class Certification {
+
 
     /**
      * code : 200
      * message :
-     * data : {"isSuccess":"0"}
-     * error_code :
+     * data : {"TaobaoStatus":1,"CapStatus":1,"AliStatus":1}
+     * error_code : 1
      * error_message :
      */
 
-    private String code;
+    private int code;
     private String message;
     private DataBean data;
     private int error_code;
     private String error_message;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -62,17 +63,37 @@ public class MessageCode {
 
     public static class DataBean {
         /**
-         * isSuccess : 0
+         * TaobaoStatus : 1
+         * CapStatus : 1
+         * AliStatus : 1
          */
 
-        private String isSuccess;
+        private int TaobaoStatus;
+        private int CapStatus;
+        private int AliStatus;
 
-        public String getIsSuccess() {
-            return isSuccess;
+        public int getTaobaoStatus() {
+            return TaobaoStatus;
         }
 
-        public void setIsSuccess(String isSuccess) {
-            this.isSuccess = isSuccess;
+        public void setTaobaoStatus(int TaobaoStatus) {
+            this.TaobaoStatus = TaobaoStatus;
+        }
+
+        public int getCapStatus() {
+            return CapStatus;
+        }
+
+        public void setCapStatus(int CapStatus) {
+            this.CapStatus = CapStatus;
+        }
+
+        public int getAliStatus() {
+            return AliStatus;
+        }
+
+        public void setAliStatus(int AliStatus) {
+            this.AliStatus = AliStatus;
         }
     }
 }
