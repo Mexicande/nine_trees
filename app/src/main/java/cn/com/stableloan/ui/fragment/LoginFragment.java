@@ -13,9 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FragmentUtils;
-import com.blankj.utilcode.util.TimeUtils;
-import com.blankj.utilcode.util.Utils;
 import com.example.gt3unbindsdk.GT3GeetestButton;
 import com.example.gt3unbindsdk.GT3GeetestUtils;
 import com.google.gson.Gson;
@@ -48,6 +45,7 @@ import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.aes.Des4;
@@ -118,6 +116,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     private void setListener() {
@@ -417,7 +416,7 @@ public class LoginFragment extends Fragment {
 
         String json = gson.toJson(bean);
 
-        OkGo.<String>post("http://47.94.175.112:8081/v1/login/login")
+        OkGo.<String>post(Urls.Ip_url+Urls.Login.LOGIN)
                 .tag(this)
                 .headers("sign",sign)
                 .upJson(json)
@@ -444,14 +443,14 @@ public class LoginFragment extends Fragment {
                                 Log.i("from------","from");
                                 if(from.equals("user")){
                                     getActivity().setResult(Flag_User, new Intent().putExtra("user", userBean));
-                                    getActivity(). finish();
+                                    getActivity().finish();
                                 }else if(from.equals("123")){
                                     //EventBus.getDefault().post(new InformationEvent("user2"));
                                     getActivity().setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
                                     getActivity(). finish();
                                 }else if(from.equals("user1")){
-                                    getActivity(). setResult(4000, new Intent().putExtra("user", userBean));
-                                    getActivity(). finish();
+                                    getActivity().setResult(4000, new Intent().putExtra("user", userBean));
+                                    getActivity().finish();
                                 }else if(from.equals("user2")){
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();

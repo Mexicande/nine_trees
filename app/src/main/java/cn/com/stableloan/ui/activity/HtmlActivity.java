@@ -13,23 +13,34 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
-import java.io.Serializable;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
+import cn.com.stableloan.model.WelfareShutBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.NetworkUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class HtmlActivity extends BaseActivity {
 
@@ -45,9 +56,11 @@ public class HtmlActivity extends BaseActivity {
 
     @Bind(R.id.web_container)
     FrameLayout mContainer;
+    @Bind(R.id.error_content)
+    LinearLayout errorContent;
 
     private WebView mWebView;
-
+   private WelfareBean.DataBean welfare;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, HtmlActivity.class));
@@ -69,87 +82,122 @@ public class HtmlActivity extends BaseActivity {
 
         boolean available = NetworkUtils.isAvailable(this);
         if (available) {
-            Product_DescBean desc= (Product_DescBean) getIntent().getSerializableExtra("product");
-            if(desc!=null){
+            Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
+            if (desc != null) {
                 titleName.setText(desc.getPlatformdetail().getPl_name());
                 ivBack.setVisibility(View.VISIBLE);
                 String link = desc.getProduct().getLink();
                 getDate(link);
             }
             Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
-            if(extra!=null){
+            if (extra != null) {
                 titleName.setText(extra.getAdvername());
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(extra.getApp());
             }
             Banner_HotBean.RecommendsBean hotbean = (Banner_HotBean.RecommendsBean) getIntent().getSerializableExtra("hotbean");
-            if(hotbean!=null){
+            if (hotbean != null) {
                 titleName.setText(hotbean.getName());
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(hotbean.getApp());
             }
-            Product_DescBean desc1= (Product_DescBean) getIntent().getSerializableExtra("Strate");
-            if(desc1!=null){
-                titleName.setText(desc1.getPlatformdetail().getPl_name()+"攻略");
+            Product_DescBean desc1 = (Product_DescBean) getIntent().getSerializableExtra("Strate");
+            if (desc1 != null) {
+                titleName.setText(desc1.getPlatformdetail().getPl_name() + "攻略");
                 ivBack.setVisibility(View.VISIBLE);
                 String url = desc1.getProduct().getRaiders_connection();
                 getDate(url);
             }
             String bank = getIntent().getStringExtra("bank");
-            if(bank!=null){
+            if (bank != null) {
                 titleName.setText("信用卡分类");
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(bank);
             }
-            WelfareBean.DataBean welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
-            if(welfare!=null){
+            welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
+            if (welfare != null) {
                 titleName.setText(welfare.getName());
                 ivBack.setVisibility(View.VISIBLE);
-                getDate(welfare.getLink());
+                getUrl(welfare.getId());
             }
         } else {
 
         }
     }
 
-    private void getDate(String url) {
-        //String html = getIntent().getStringExtra("html");
-            if (url != null) {
-                WebSettings webSettings = mWebView.getSettings();
-                webSettings.setJavaScriptEnabled(true);
-                webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-                webSettings.setUseWideViewPort(true);
-                webSettings.setLoadWithOverviewMode(true);
-                webSettings.setBuiltInZoomControls(true);
-                webSettings.setGeolocationEnabled(true);
-                webSettings.setDomStorageEnabled(true);
-                webSettings.setDatabaseEnabled(true);
-                webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-                webSettings.setAllowFileAccess(true);
-                webSettings.setAppCacheEnabled(true);
-                webSettings.setDisplayZoomControls(false);
-                if (Build.VERSION.SDK_INT >= 21) {
-                    webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-                }
-                mWebView.loadUrl(url);
-                mWebView.setWebViewClient(new WebViewClient() {
+    private void getUrl(int id) {
+        String token = (String) SPUtils.get(this, "token", "1");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("id", String.valueOf(id));
+        final JSONObject jsonObject = new JSONObject(params);
+        OkGo.post(Urls.Ip_url + Urls.LOTTERY.Welfare)
+                .tag(this)
+                .upJson(jsonObject.toString())
+                .execute(new StringCallback() {
                     @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        LogUtils.i("webView", url);
-                        if (parseScheme(url)) {
-
-                        } else {
-                            view.loadUrl(url);
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (!s.isEmpty()) {
+                            Gson gson = new Gson();
+                            WelfareShutBean shutBean = gson.fromJson(s, WelfareShutBean.class);
+                            if (shutBean.getError_code() == 0) {
+                                errorContent.setVisibility(View.GONE);
+                                getDate(shutBean.getData().getLink());
+                            } else {
+                                errorContent.setVisibility(View.VISIBLE);
+                            }
                         }
 
-                        return false;
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
                     }
                 });
-                mWebView.setWebChromeClient(new MyWebChromeClient());
+
+
+    }
+
+    private void getDate(String url) {
+        //String html = getIntent().getStringExtra("html");
+        if (url != null) {
+            WebSettings webSettings = mWebView.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+            webSettings.setUseWideViewPort(true);
+            webSettings.setLoadWithOverviewMode(true);
+            webSettings.setBuiltInZoomControls(true);
+            webSettings.setGeolocationEnabled(true);
+            webSettings.setDomStorageEnabled(true);
+            webSettings.setDatabaseEnabled(true);
+            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+            webSettings.setAllowFileAccess(true);
+            webSettings.setAppCacheEnabled(true);
+            webSettings.setDisplayZoomControls(false);
+            if (Build.VERSION.SDK_INT >= 21) {
+                webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            }
+            mWebView.loadUrl(url);
+            mWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    LogUtils.i("webView", url);
+                    if (parseScheme(url)) {
+
+                    } else {
+                        view.loadUrl(url);
+                    }
+
+                    return false;
+                }
+            });
+            mWebView.setWebChromeClient(new MyWebChromeClient());
 
 
         }
     }
+
     public boolean parseScheme(String url) {
         if (url.contains("platformapi/startapp")) {
             try {
@@ -182,6 +230,21 @@ public class HtmlActivity extends BaseActivity {
             return false;
         }
     }
+
+    @OnClick({R.id.iv_back, R.id.web_container})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.web_container:
+                if(welfare!=null){
+                    getUrl(welfare.getId());
+                }
+                break;
+        }
+    }
+
 
     private class MyWebChromeClient extends WebChromeClient {
 
@@ -217,8 +280,4 @@ public class HtmlActivity extends BaseActivity {
         mWebView = null;
     }
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        finish();
-    }
 }

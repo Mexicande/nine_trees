@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.allen.library.SuperTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -73,6 +74,15 @@ public class ImageActivity extends BaseActivity {
 
     }
     private void getPicStatus() {
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("authmaterials", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(this, "图片材料页",  eventObject);
+
 
         String token = (String) SPUtils.get(this, "token", "1");
         String signature = (String) SPUtils.get(this, "signature", "1");

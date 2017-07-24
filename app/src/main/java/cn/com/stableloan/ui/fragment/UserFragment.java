@@ -19,6 +19,7 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,7 +105,18 @@ public class UserFragment extends ImmersionFragment {
 
 
     private void getUserInfo() {
-            String token = (String) SPUtils.get(getActivity(), "token", "1");
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("我的", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "minepage",  eventObject);
+
+
+
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {
                 HashMap<String, String> params = new HashMap<>();
@@ -187,12 +199,24 @@ public class UserFragment extends ImmersionFragment {
                 .init();
     }
 
+  /*  @Override
+    public void onResume() {
+        super.onResume();
+        TextUser();
+    }
+*/
+
     @Subscribe
     public void onMessageEvent(MessageEvent event) {
-        tvNick.setText(event.userNick);
 
+        if(!event.userNick.isEmpty()){
+            tvNick.setText(event.userNick);
+        }
         if (event.phone != null) {
             tvUserPhone.setText(event.phone);
+        }
+        if(event.phone.equals("1")){
+            TextUser();
         }
     }
 
@@ -217,10 +241,6 @@ public class UserFragment extends ImmersionFragment {
 
     private void TextUser() {
 
-        hud = KProgressHUD.create(getActivity())
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(true)
-                .show();
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
@@ -234,7 +254,6 @@ public class UserFragment extends ImmersionFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        hud.dismiss();
                         try {
                             JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
@@ -268,7 +287,6 @@ public class UserFragment extends ImmersionFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                hud.dismiss();
                                 ToastUtils.showToast(getActivity(), "网络异常，请稍后再试");
                             }
                         });

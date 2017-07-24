@@ -35,10 +35,6 @@ public class SplashActivity extends AppCompatActivity {
         ImmersionBar.with(this).transparentBar().init();
         setWelcome();
 
-
-
-
-
       /*  boolean flag = SPUtils.contains(this, "url");
 
         if(flag){

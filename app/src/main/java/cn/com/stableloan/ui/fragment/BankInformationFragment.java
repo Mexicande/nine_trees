@@ -19,6 +19,7 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,6 +93,15 @@ public class BankInformationFragment extends Fragment {
     }
 
     private void initTime() {
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("persmaterials2", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息",  eventObject);
+
 
         pvTime = new TimePickerView.Builder(getActivity(), new TimePickerView.OnTimeSelectListener() {
             @Override

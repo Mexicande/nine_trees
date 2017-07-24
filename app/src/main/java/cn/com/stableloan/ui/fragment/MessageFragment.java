@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.FragmentUtils;
 import com.example.gt3unbindsdk.GT3GeetestButton;
 import com.example.gt3unbindsdk.GT3GeetestUtils;
 import com.google.gson.Gson;
@@ -44,8 +43,10 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.CodeMessage;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
+import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
@@ -429,7 +430,7 @@ public class MessageFragment extends Fragment {
             HashMap<String, String> params = new HashMap<>();
             params.put("userphone", etPhone.getText().toString());
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.<MessageCode>post(Urls.times.MESSAGE_SEND)
+            OkGo.<MessageCode>post(Urls.Ip_url+Urls.times.MESSAGE_SEND)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
@@ -501,7 +502,7 @@ public class MessageFragment extends Fragment {
                 params.put("userphone", etPhone.getText().toString());
                 params.put("code", etCode.getText().toString());
                 JSONObject object=new JSONObject(params);
-                OkGo.<String>post("http://47.94.175.112:8081/v1/quick/login")
+                OkGo.<String>post(Urls.Ip_url+Urls.Login.QUICK_LOGIN)
                         .tag(this)
                         .upJson(object)
                         .execute(new StringCallback() {
@@ -509,19 +510,28 @@ public class MessageFragment extends Fragment {
                             public void onSuccess(String s, Call call, Response response) {
                                 Gson gson=new Gson();
                                 CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
-                                if("0".equals(codeMessage.getError_code())){
+                                LogUtils.i("CodeMessage",codeMessage);
+
+                                if(codeMessage.getError_code()==0){
                                     if("1".equals(codeMessage.getData().getStatus())){
                                         SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
                                         String from = getActivity().getIntent().getStringExtra("from");
                                         SPUtils.put(getActivity(), "login", true);
                                         if (from != null) {
                                             if(from.equals("user")){
-                                                EventBus.getDefault().post(new InformationEvent("user4"));
+                                               // MainActivity.launch(getActivity());
+                                                EventBus.getDefault().post(new InformationEvent("user3"));
                                                 getActivity().finish();
                                             }else if(from.equals("123")){
                                                 EventBus.getDefault().post(new InformationEvent("user3"));
                                                 getActivity().finish();
-                                            }/*else if(from.equals("user1")){
+                                            }else if(from.equals("user2")){
+                                                EventBus.getDefault().post(new InformationEvent("userinfor"));
+                                                getActivity().finish();
+
+                                            }
+
+                                            /*else if(from.equals("user1")){
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();
                                                                 }else if(from.equals("user2")){
@@ -529,20 +539,12 @@ public class MessageFragment extends Fragment {
                                                                     finish();
                                                                 }*/
                                         } else {
+                                            EventBus.getDefault().post(new MessageEvent("","1"));
                                             getActivity().finish();
                                         }
                                     }else {
                                         LogUtils.i("status",codeMessage.getData().getStatus());
-                                       /*Fragment fragment = SettingPassWordFragment.newInstance(etPhone.getText().toString());
-                                        getFragmentManager()
-                                                .beginTransaction()
-                                                .add(R.id.fragment, fragment)
-                                                .show(fragment)
-                                                .addToBackStack("password")
-                                                .commitAllowingStateLoss();*/
                                         startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
-
-
                                     }
                                 }else {
                                     ToastUtils.showToast(getActivity(),codeMessage.getError_message());

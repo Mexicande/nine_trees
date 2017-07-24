@@ -44,11 +44,11 @@
                    <io.netopen.hotbitmapgg.library.view.RingProgressBar
                        android:id="@+id/progress1"
                        android:visibility="gone"
+                       android:layout_marginTop="10dp"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_centerHorizontal="true"
                        android:layout_below="@id/text"
-                       android:layout_marginTop="70dp"
                        app:ringColor="#ffffff"
                        app:ringProgressColor="#60ffffff"
                        app:ringWidth="3dp"

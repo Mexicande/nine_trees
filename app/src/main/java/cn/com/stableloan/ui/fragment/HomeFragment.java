@@ -23,6 +23,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +95,15 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("首页", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "homepage",  eventObject);
+
         getDate();
         setListener();
         return view;
@@ -140,6 +150,14 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         recylerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                JSONObject eventObject = new JSONObject();
+                try {
+                    eventObject.put("xinshangxian", productAdapter.getData().get(position).getPname());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ZhugeSDK.getInstance().track(getActivity(), "新上线产品",  eventObject);
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
             }
@@ -202,6 +220,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         banner.setDelegate(new BGABanner.Delegate<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void onBannerItemClick(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
+
+
                 startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("Advertising", hotBean.getAdvertising().get(position)));
             }
         });
@@ -217,6 +237,14 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String app = hotBean.getRecommends().get(position).getApp();
+                JSONObject eventObject = new JSONObject();
+                try {
+                    eventObject.put("remen1", hotBean.getRecommends().get(position).getName());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ZhugeSDK.getInstance().track(getActivity(), "rementuijian",  eventObject);
                 if (app.startsWith("http")) {
                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("hotbean", hotBean.getRecommends().get(position)));
                 } else if (app.startsWith("product")) {
@@ -238,6 +266,13 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if(newBean.getClassX().get(position).getName()!=null){
+                    JSONObject eventObject = new JSONObject();
+                    try {
+                        eventObject.put("fenleizhuanti", newBean.getClassX().get(position).getName());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ZhugeSDK.getInstance().track(getActivity(), "分类专题",  eventObject);
                     startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
                 }
             }
@@ -357,25 +392,35 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+
     }
 
-
+    private String professional;
     @Override
     public void onClick(View v) {
+        JSONObject eventObject = new JSONObject();
+
         switch (v.getId()) {
             case R.id.iv_free:
+                professional="xiaoyaoke";
                 SPUtils.put(getActivity(), "plat", 3);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_student:
+                professional="xueshengdang";
+
                 SPUtils.put(getActivity(), "plat", 2);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_work:
+                professional="shangbanzu";
+
                 SPUtils.put(getActivity(), "plat", 1);
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_enterprise:
+                professional="qiyezhu";
+
                 SPUtils.put(getActivity(), "plat", 4);
                 MainActivity.navigationController.setSelect(1);
                 break;
@@ -383,8 +428,15 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 NoticeActivity.launch(getActivity());
                 ivNotice.setImageResource(R.mipmap.icon_unnotice);
                 break;
-        }
 
+        }
+        try {
+            eventObject.put("职业", professional);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "职业搜索",  eventObject);
 
     }
 }

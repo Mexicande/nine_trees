@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.allen.library.SuperTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,6 +65,17 @@ public class UserInformationActivity extends BaseActivity {
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("我的资料");
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("mymaterials", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(this, "我的资料",  eventObject);
+
+
+
     }
 
     private void getStatus() {

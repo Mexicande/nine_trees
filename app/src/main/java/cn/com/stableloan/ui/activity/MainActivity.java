@@ -2,49 +2,29 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Base64;
-import android.util.Log;
-import android.view.WindowManager;
 
-import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
-import com.gyf.barlibrary.ImmersionBar;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.MessageEvent;
-import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.UpdateInfoBean;
 import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
-import cn.com.stableloan.ui.adapter.NoTouchViewPager;
 import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
-import cn.com.stableloan.utils.DesUtils;
+import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -58,8 +38,6 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
-import okhttp3.Call;
-import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -81,7 +59,6 @@ public class MainActivity extends BaseActivity {
     private static final int LOTTERY_SNED = 5000;
 
     String content="1231313";
-    String key="123456789jkliuyt";
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -90,31 +67,11 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-
-        Utils.init(this);
         EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         VisionTest();
         initView();
     }
-
-  /*  private void CheckVsion() {
-        boolean contains = SPUtils.contains(this, "time");
-        // String time1 = (String) SPUtils.get(this, "time", "1");
-        SimpleDateFormat  formatter  =  new SimpleDateFormat("yyyy-MM-dd");
-        String time = formatter.format(new Date());
-        if(!contains){
-            SPUtils.put(this,"time",time);
-            VisionTest();
-        }else {
-            String time2 = (String) SPUtils.get(this, "time", "1");
-            if(time2!=null&&!time2.equals(time)){
-                VisionTest();
-                SPUtils.put(this,"time",time);
-            }
-        }
-    }*/
 
     private void VisionTest() {
 
@@ -186,10 +143,10 @@ public class MainActivity extends BaseActivity {
            // switchMenu(getFragmentName(3));
             int selected = navigationController.getSelected();
             switchMenu(getFragmentName(selected+1));
-
         }else if(event.message.equals("userinform")){
-            navigationController.setSelect(4);
-
+            navigationController.setSelect(3);
+        }else if(event.message.equals("userinfor")){
+            navigationController.setSelect(3);
         }
     }
 

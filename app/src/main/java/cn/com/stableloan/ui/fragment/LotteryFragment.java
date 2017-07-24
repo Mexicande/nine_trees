@@ -29,7 +29,9 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -81,7 +83,6 @@ public class LotteryFragment extends ImmersionFragment {
                 .init();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,6 +97,15 @@ public class LotteryFragment extends ImmersionFragment {
     }
 
     private void SetListener() {
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("福利", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "popuppage",  eventObject);
+
 
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
@@ -114,7 +124,7 @@ public class LotteryFragment extends ImmersionFragment {
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         final JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.LOTTERY.GetLottery)
+        OkGo.post(Urls.Ip_url+Urls.LOTTERY.GetLottery)
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(new StringCallback() {

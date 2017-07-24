@@ -8,41 +8,44 @@ import java.util.List;
  */
 
 public class WelfareBean implements Serializable {
+
     /**
      * code : 200
-     * message :
-     * data : [{"name":"wangdong","link":"www.ali.com","image":"56"},{"name":"haidong","link":"www.baidu.com","image":"aksdjsda"}]
-     * error_code :
+     * message : 200
+     * data : [{"id":1,"name":"福利彩票","image":"http://or2eh71ll.bkt.clouddn.com/150088225087834.jpg?e=15008"}]
+     * error_code : 0
      * error_message :
+     * time : 2017-07-24 17:59:15
      */
 
-    private String code;
-    private String message;
-    private String error_code;
+    private int code;
+    private int message;
+    private int error_code;
     private String error_message;
+    private String time;
     private List<DataBean> data;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
-    public String getMessage() {
+    public int getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(int message) {
         this.message = message;
     }
 
-    public String getError_code() {
+    public int getError_code() {
         return error_code;
     }
 
-    public void setError_code(String error_code) {
+    public void setError_code(int error_code) {
         this.error_code = error_code;
     }
 
@@ -54,6 +57,14 @@ public class WelfareBean implements Serializable {
         this.error_message = error_message;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public List<DataBean> getData() {
         return data;
     }
@@ -62,16 +73,24 @@ public class WelfareBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean  implements Serializable{
         /**
-         * name : wangdong
-         * link : www.ali.com
-         * image : 56
+         * id : 1
+         * name : 福利彩票
+         * image : http://or2eh71ll.bkt.clouddn.com/150088225087834.jpg?e=15008
          */
 
+        private int id;
         private String name;
-        private String link;
         private String image;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getName() {
             return name;
@@ -79,14 +98,6 @@ public class WelfareBean implements Serializable {
 
         public void setName(String name) {
             this.name = name;
-        }
-
-        public String getLink() {
-            return link;
-        }
-
-        public void setLink(String link) {
-            this.link = link;
         }
 
         public String getImage() {

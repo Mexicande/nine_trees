@@ -38,18 +38,17 @@ public interface Urls{
 
     //
     interface  times{
-        String MESSAGE_SEND="http://47.94.175.112:8081/v1/sms/getcode";
+        String MESSAGE_SEND="sms/getcode";
     }
     interface Login{
 
-
         //验证码发送
         String SEND_MESSAGE="http://47.94.175.112:8081/v1/sms/getcode";
-        String LOGIN="Login";
+        String LOGIN="login/login";
         String USER_INFOMATION="Mine/Locking";
         String GET_SIGNATURE="Mine/GetSignature";
         String Immunity="Mine/Immunity";
-
+        String QUICK_LOGIN="quick/login";
 
 
     }
@@ -74,11 +73,13 @@ public interface Urls{
     interface  Identity{
         String GetIdentity="Identity/GetIdentity";
         String Getbank="Identity/Getbank ";
+
         String GetOccupation="Identity/GetOccupation";
 
         String AddIdentity="Identity/AddIdentity";
 
         String Addbank="Identity/Addbank";
+
         String AddOccupation="Identity/AddOccupation";
     }
     interface STATUS{
@@ -119,6 +120,7 @@ public interface Urls{
     interface user{
         String USERT_INFO="Personal";
         String USER_STATUS="Status/GetStatus";
+        String FEEDBACK="feedback/opinion";
 
     }
     interface  notice{
@@ -126,7 +128,9 @@ public interface Urls{
     }
 
     interface  LOTTERY{
-        String GetLottery="http://47.94.175.112:8081/v1/welfare/getwelfare";
+        String GetLottery="welfare/getwelfare";
+
+        String Welfare="welfare/shunt";
     }
 
     interface Pictrue{

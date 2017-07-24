@@ -13,6 +13,7 @@ import com.andreabaccega.widget.FormEditText;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,6 +98,16 @@ public class ProfessionalInformationFragment extends Fragment {
         return view;
     }
     private void getDate() {
+
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("persmaterials3", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息",  eventObject);
+
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         Map<String, String> parms = new HashMap<>();

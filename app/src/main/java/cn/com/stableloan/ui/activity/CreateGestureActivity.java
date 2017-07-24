@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.CacheUtils;
 import com.star.lock.util.LockPatternUtil;
 import com.star.lock.widget.LockPatternIndicator;
 import com.star.lock.widget.LockPatternView;

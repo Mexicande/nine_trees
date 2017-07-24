@@ -73,6 +73,7 @@ public static java.lang.String TABLENAME;
 
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
 #指定压缩级别
 -optimizationpasses 5
 
@@ -330,7 +331,7 @@ public static java.lang.String TABLENAME;
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keep resourcexmlelements manifest/application/meta-data@value=GlideModule
 
 
 # 七牛
@@ -343,10 +344,15 @@ public static java.lang.String TABLENAME;
 -keep class com.autonavi.aps.amapapi.model.**{*;}
 -keepattributes *Annotation*
 
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
 # Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
+
+
 
 -keep @com.proguard.annotation.NotProguard class * {*;}
 -keep class * {
@@ -357,3 +363,6 @@ public static java.lang.String TABLENAME;
     @com.proguard.annotation <fields>;
     @android.webkit.JavascriptInterface <fields>;
 }
+-keep class org.apache.commons.codec.** { *; }
+-keep class com.adobe.fre.**{*;}
+-keep class test.com.**{*;}

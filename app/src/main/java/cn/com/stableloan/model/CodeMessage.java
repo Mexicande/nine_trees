@@ -14,17 +14,17 @@ public class CodeMessage {
      * error_message :
      */
 
-    private String code;
+    private int code;
     private String message;
     private DataBean data;
-    private String error_code;
+    private int error_code;
     private String error_message;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -44,11 +44,11 @@ public class CodeMessage {
         this.data = data;
     }
 
-    public String getError_code() {
+    public int getError_code() {
         return error_code;
     }
 
-    public void setError_code(String error_code) {
+    public void setError_code(int error_code) {
         this.error_code = error_code;
     }
 
@@ -58,6 +58,17 @@ public class CodeMessage {
 
     public void setError_message(String error_message) {
         this.error_message = error_message;
+    }
+
+    @Override
+    public String toString() {
+        return "CodeMessage{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                ", error_code=" + error_code +
+                ", error_message='" + error_message + '\'' +
+                '}';
     }
 
     public static class DataBean {
@@ -83,6 +94,14 @@ public class CodeMessage {
 
         public void setToken(String token) {
             this.token = token;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "status='" + status + '\'' +
+                    ", token='" + token + '\'' +
+                    '}';
         }
     }
 }

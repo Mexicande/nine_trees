@@ -12,7 +12,6 @@
         android:id="@+id/web_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <ProgressBar
             android:id="@+id/web_progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
@@ -21,5 +20,7 @@
             android:background="@android:color/transparent"
             android:indeterminateOnly="false"
             android:visibility="visible"/>
+        <include layout="@layout/view_error"
+            android:visibility="gone"/>
     </FrameLayout>
 </LinearLayout>

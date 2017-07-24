@@ -35,7 +35,9 @@
                 android:inputType="textMultiLine"
                 android:background="@drawable/view_linnerlayout_border"
                 android:padding="5dp"
-                android:minLines="15" />
+                android:minLines="15"
+                android:maxLength="120"
+                />
             <TextView
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="wrap_content"

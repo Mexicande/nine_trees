@@ -25,6 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -69,7 +70,7 @@ public class FeedbackActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (etMessagePhone.getText().toString().length()==11&&!etMessage.getText().toString().isEmpty()) {
+                if (!etMessage.getText().toString().isEmpty()) {
                         btLogin.setEnabled(true);
                 }
             }
@@ -80,24 +81,6 @@ public class FeedbackActivity extends BaseActivity {
             }
         });
 
-        etMessagePhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (etMessagePhone.getText().toString().length()==11&&!etMessage.getText().toString().isEmpty()) {
-                    btLogin.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @OnClick({R.id.iv_back, R.id.bt_login})
@@ -115,16 +98,22 @@ public class FeedbackActivity extends BaseActivity {
     private void sendMessageFeed() {
         String phone = etMessagePhone.getText().toString();
         String message = etMessage.getText().toString();
+
         if (!phone.isEmpty() && !message.isEmpty()) {
             String token = (String) SPUtils.get(this, "token", "1");
             if (token != null) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("token", token);
                 params.put("content", message);
-                params.put("phone", phone);
+                if(phone.isEmpty()){
+                    params.put("phone", "");
+                }else {
+                    params.put("phone", phone);
+
+                }
                 JSONObject jsonObject = new JSONObject(params);
 
-                OkGo.<String>post("http://47.94.175.112:8081/v1/feedback/opinion")
+                OkGo.<String>post(Urls.Ip_url+Urls.user.FEEDBACK)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {

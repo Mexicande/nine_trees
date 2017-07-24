@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 
-import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.qiniu.android.storage.UploadManager;
@@ -46,7 +45,6 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Utils.init(this);
         initTypeface();
 
         OkGo.init(this);

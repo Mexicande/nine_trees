@@ -438,7 +438,7 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
         params.put("userPhone", etPhone.getText().toString());
         params.put("status", "1");
         JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.Login.SEND_MESSAGE)
+        OkGo.post(Urls.Ip_url+Urls.times.MESSAGE_SEND)
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(new StringCallback() {

@@ -27,7 +27,8 @@ public class WelfareAdapter extends BaseQuickAdapter<WelfareBean.DataBean,BaseVi
     protected void convert(BaseViewHolder helper, WelfareBean.DataBean item) {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-
+                .error(R.mipmap.lottery_default)
+                .placeholder(R.mipmap.lottery_default)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
         Glide.with(mContext).load(item.getImage()).apply(options).into((ImageView) helper.getView(R.id.welfare));

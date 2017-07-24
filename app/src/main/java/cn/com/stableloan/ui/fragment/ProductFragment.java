@@ -25,6 +25,7 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,16 +114,28 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
+
         stateLayout= (StateLayout) view.findViewById(R.id.stateLayout);
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
         initViewTitle();
         initRecyclView();
         setListener();
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("产品列表", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "loanpage",  eventObject);
 
         return view;
     }
 
     private void getDate(final int var, final int action) {
+
+
+
         if (var == 1) {
             stateLayout.showProgressView();
          }

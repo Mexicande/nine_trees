@@ -39,6 +39,7 @@ import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.zaaach.citypicker.CityPickerActivity;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -162,6 +163,16 @@ public class UserInformationFragment extends Fragment {
 
 
     private void setListenter() {
+
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("persmaterials1", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息",  eventObject);
+
         etCity.setFocusableInTouchMode(false);
         etCity.setOnClickListener(new View.OnClickListener() {
             @Override

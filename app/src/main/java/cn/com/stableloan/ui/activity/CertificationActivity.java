@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.allen.library.SuperTextView;
 import com.google.gson.Gson;
@@ -26,8 +25,10 @@ import com.rong360.app.crawler.CrawlerManager;
 import com.rong360.app.crawler.CrawlerStatus;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
-import com.yanzhenjie.permission.PermissionNo;
-import com.yanzhenjie.permission.PermissionYes;
+import com.zhuge.analysis.stat.ZhugeSDK;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,8 +64,8 @@ public class CertificationActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.alipay)
     SuperTextView alipay;
-   /* @Bind(R.id.jd)
-    SuperTextView jd;*/
+    /* @Bind(R.id.jd)
+     SuperTextView jd;*/
     @Bind(R.id.mobile)
     SuperTextView mobile;
     @Bind(R.id.contact)
@@ -85,12 +86,26 @@ public class CertificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certification);
         ButterKnife.bind(this);
+
         getStatus();
         initView();
 
     }
 
     private void getStatus() {
+
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("persmaterials2", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(this, "授权材料页",  eventObject);
+
+
+
+
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
@@ -115,7 +130,7 @@ public class CertificationActivity extends BaseActivity {
                                     alipay.setRightString("已认证");
                                 } else if (data.getTaobaoStatus() == 1) {
                                     taobao.setRightString("已认证");
-                                }else if(data.getCapStatus()==1){
+                                } else if (data.getCapStatus() == 1) {
                                     mobile.setRightString("已认证");
                                 }
                             }
@@ -159,6 +174,7 @@ public class CertificationActivity extends BaseActivity {
         crawlerStatus.taskid = String.valueOf(System.currentTimeMillis());
 
     }
+
     private PermissionListener listener = new PermissionListener() {
         @Override
         public void onSucceed(int requestCode, List<String> grantedPermissions) {
@@ -166,7 +182,7 @@ public class CertificationActivity extends BaseActivity {
 
             // 这里的requestCode就是申请时设置的requestCode。
             // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
-            if(requestCode == 200) {
+            if (requestCode == 200) {
                 contact.setRightString("已认证");
             }
         }
@@ -174,7 +190,7 @@ public class CertificationActivity extends BaseActivity {
         @Override
         public void onFailed(int requestCode, List<String> deniedPermissions) {
             // 权限申请失败回调。
-            if(requestCode == 200) {
+            if (requestCode == 200) {
                 // TODO ...
             }
         }
@@ -186,7 +202,7 @@ public class CertificationActivity extends BaseActivity {
         hud.dismiss();
     }
 
-    @OnClick({R.id.mobile, R.id.alipay, R.id.taobao})
+    @OnClick({R.id.mobile, R.id.alipay, R.id.taobao,R.id.layout_go})
     public void onViewClicked(View view) {
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -194,6 +210,9 @@ public class CertificationActivity extends BaseActivity {
                 .setCancellable(true)
                 .show();
         switch (view.getId()) {
+            case R.id.layout_go:
+                finish();
+                break;
             case R.id.mobile:
 
                 CrawlerCallBack callBack = new CrawlerCallBack() {
@@ -202,12 +221,12 @@ public class CertificationActivity extends BaseActivity {
                         LogUtils.i("mobile", crawlerStatus.status);
                         switch (crawlerStatus.status) {
                             case 2:
-                                ToastUtils.showToast(CertificationActivity.this,"认证需要几分钟,请稍后再来查看");
+                                ToastUtils.showToast(CertificationActivity.this, "认证需要几分钟,请稍后再来查看");
                                 break;
                             case 3:
                                 break;
                             case 4:
-                                ToastUtils.showToast(CertificationActivity.this,"抓取失败,请重新抓取");
+                                ToastUtils.showToast(CertificationActivity.this, "抓取失败,请重新抓取");
                                 break;
                         }
                     }
@@ -222,12 +241,12 @@ public class CertificationActivity extends BaseActivity {
                         LogUtils.i("taobao", crawlerStatus.status);
                         switch (crawlerStatus.status) {
                             case 2:
-                                ToastUtils.showToast(CertificationActivity.this,"认证需要几分钟,请稍后再来查看");
+                                ToastUtils.showToast(CertificationActivity.this, "认证需要几分钟,请稍后再来查看");
                                 break;
                             case 3:
                                 break;
                             case 4:
-                                ToastUtils.showToast(CertificationActivity.this,"认证失败,请重新认证");
+                                ToastUtils.showToast(CertificationActivity.this, "认证失败,请重新认证");
                                 break;
                         }
                     }
@@ -238,7 +257,7 @@ public class CertificationActivity extends BaseActivity {
                 break;
             case R.id.alipay:
                 String mApiKey = Urls.Api_Id;
-                String mThemeColor= "#ff9500";
+                String mThemeColor = "#ff9500";
                 MxParam mxParam = new MxParam();
                 mxParam.setUserId(phone);
                 mxParam.setApiKey(mApiKey);
@@ -248,8 +267,8 @@ public class CertificationActivity extends BaseActivity {
                     @Override
                     public boolean callback(MoxieContext moxieContext, MoxieCallBackData moxieCallBackData) {
                         if (moxieCallBackData != null) {
-                            LogUtils.i("moxieCallBackData",moxieCallBackData.toString());
-                            LogUtils.i("code",moxieCallBackData.getCode());
+                            LogUtils.i("moxieCallBackData", moxieCallBackData.toString());
+                            LogUtils.i("code", moxieCallBackData.getCode());
                             int code = moxieCallBackData.getCode();
                             switch (code) {
                                 case 3:
@@ -274,5 +293,7 @@ public class CertificationActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         CrawlerManager.getInstance(this.getApplication()).unregistAllCallBack();
+
     }
+
 }

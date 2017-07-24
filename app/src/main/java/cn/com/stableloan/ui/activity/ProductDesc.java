@@ -195,6 +195,14 @@ public class ProductDesc extends BaseActivity {
     private SuperTextAdapter superTextAdapter;
 
     private void dateInset(Product_DescBean descBean) {
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("产品", descBean.getProduct().getPname()+"detail");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(this, "产品详情贷款",  eventObject);
 
 
         List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
@@ -317,6 +325,7 @@ public class ProductDesc extends BaseActivity {
                 if (!login) {
                     Login2Activity.launch(this);
                 } else {
+
                     sendIO();
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                 }
@@ -327,18 +336,12 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void sendIO() {
-        TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("产品名称", descBean.getProduct().getPname());
-            if(user!=null){
-                if(user.getUserphone()!=null){
-                    eventObject.put("用户ID", user.getUserphone());
-                }
-            }
-            ZhugeSDK.getInstance().track(getApplicationContext(), "安稳钱包",
+            ZhugeSDK.getInstance().track(getApplicationContext(), "立即申请",
                     eventObject);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
