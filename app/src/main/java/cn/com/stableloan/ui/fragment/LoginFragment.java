@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,11 +36,14 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.DesBean;
+import cn.com.stableloan.model.GtDateBean;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
+import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
+import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.Login2Activity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.utils.EncryptUtils;
@@ -80,7 +84,8 @@ public class LoginFragment extends Fragment {
     private boolean Atest = false;
     private boolean PowerfulEditText = false;
 
-
+    private String gtcode="";
+    private String status="2";
     private String AdressIp = "";
 
     private String times = "";
@@ -178,15 +183,10 @@ public class LoginFragment extends Fragment {
         if (ip != null) {
             AdressIp = ip;
         }
-
+        String unique = (String) SPUtils.get(getActivity(), "unique", "1212");
         LogUtils.i("ipAddress", AdressIp);
-        Random random = new Random();
-        int i = random.nextInt(99999) + 10000;
 
-        long l = System.currentTimeMillis();
-
-        times = String.valueOf(i) + String.valueOf(l);
-
+        times =unique;
         gt3GeetestUtils.setGtListener(new GT3GeetestUtils.GT3Listener() {
             /**
              * Api1可以在这添加参数
@@ -242,6 +242,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void gt3GetDialogResult(boolean success, String result) {
+
                 if (success) {
                     HashMap<String, String> params = null;
                     try {
@@ -268,11 +269,16 @@ public class LoginFragment extends Fragment {
                                         JSONObject jsonObject = new JSONObject(s);
 
                                         String code = jsonObject.getString("code");
+                                        String data = jsonObject.getString("data");
                                         String error_code = jsonObject.getString("error_code");
 
                                         if ("200".equals(code) || "0".equals(error_code)) {
+                                            Gson gson=new Gson();
+                                            GtDateBean bean = gson.fromJson(data, GtDateBean.class);
                                             Atest = true;
+                                            status="1";
                                             gt3GeetestUtils.gt3TestFinish();
+                                            gtcode=bean.getGtcode();
                                         } else {
                                             gt3DialogOnError("验证失败，请重新验证");
                                         }
@@ -395,6 +401,9 @@ public class LoginFragment extends Fragment {
         String md5ToString = EncryptUtils.encryptMD5ToString(etPassWord.getText().toString());
         params.put("userphone", etPhone.getText().toString());
         params.put("password", md5ToString);
+        params.put("gtcode", gtcode);
+        params.put("status",status);
+        params.put("unique",times);
         JSONObject object = new JSONObject(params);
         String Deskey=null;
         String sign=null;
@@ -439,6 +448,7 @@ public class LoginFragment extends Fragment {
                             TinyDB tinyDB = new TinyDB(getActivity());
                             tinyDB.putObject("user", userBean);
                             String from = getActivity().getIntent().getStringExtra("from");
+                            WelfareBean.DataBean welfare = (WelfareBean.DataBean) getActivity().getIntent().getSerializableExtra("welfare");
                             if (from != null) {
                                 Log.i("from------","from");
                                 if(from.equals("user")){
@@ -455,6 +465,10 @@ public class LoginFragment extends Fragment {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
                                 }
+                            }else if(welfare!=null){
+                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
+                                    getActivity().finish();
+
                             } else {
                                 getActivity().finish();
                             }

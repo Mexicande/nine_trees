@@ -42,6 +42,8 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.Login2Activity;
+import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.adapter.WelfareAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -110,7 +112,17 @@ public class LotteryFragment extends ImmersionFragment {
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
+
+                Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
+                if(login!=null){
+                    if(!login){
+                        startActivity(new Intent(getActivity(), Login2Activity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
+                    }else {
+                        startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
+                    }
+
+                }
+
             }
         });
 

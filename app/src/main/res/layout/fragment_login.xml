@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="登 录"
+        android:enabled="false"
         app:btnCornerRadius="10dp"
         app:btnPressedRatio="0.9"
         app:btnSolidColor="@color/login_button"

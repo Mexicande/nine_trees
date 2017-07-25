@@ -18,7 +18,7 @@ public class MessageCode  implements Serializable{
 
     private String code;
     private String message;
-    private DataBean data;
+    private GtDateBean data;
     private int error_code;
     private String error_message;
 
@@ -38,11 +38,11 @@ public class MessageCode  implements Serializable{
         this.message = message;
     }
 
-    public DataBean getData() {
+    public GtDateBean getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(GtDateBean data) {
         this.data = data;
     }
 
@@ -62,19 +62,5 @@ public class MessageCode  implements Serializable{
         this.error_message = error_message;
     }
 
-    public static class DataBean implements Serializable{
-        /**
-         * isSuccess : 0
-         */
 
-        private String isSuccess;
-
-        public String getIsSuccess() {
-            return isSuccess;
-        }
-
-        public void setIsSuccess(String isSuccess) {
-            this.isSuccess = isSuccess;
-        }
-    }
 }

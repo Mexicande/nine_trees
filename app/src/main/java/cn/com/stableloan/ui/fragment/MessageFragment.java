@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -41,10 +42,12 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.CodeMessage;
+import cn.com.stableloan.model.GtDateBean;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
+import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
@@ -94,6 +97,10 @@ public class MessageFragment extends Fragment {
 
     private String times = "";
     private Context context;
+
+    private String unique="";
+    private String gtcode="";
+    private String status="1";
 
     private boolean Atest = false;
 
@@ -454,6 +461,11 @@ public class MessageFragment extends Fragment {
                                     btGetCodeLogin.setEnabled(true);
                                     layoutPhoe.setVisibility(View.GONE);
                                     layoutCode.setVisibility(View.VISIBLE);
+                                    status="1";
+                                    gt3GeetestUtils.gt3TestFinish();
+
+                                    gtcode=body.getData().getGtcode();
+
                                 } else {
                                     ToastUtils.showToast(getActivity(), body.getError_message());
                                 }
@@ -501,6 +513,9 @@ public class MessageFragment extends Fragment {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userphone", etPhone.getText().toString());
                 params.put("code", etCode.getText().toString());
+                params.put("gtcode", gtcode);
+                params.put("status",status);
+                params.put("unique",times);
                 JSONObject object=new JSONObject(params);
                 OkGo.<String>post(Urls.Ip_url+Urls.Login.QUICK_LOGIN)
                         .tag(this)
@@ -516,6 +531,7 @@ public class MessageFragment extends Fragment {
                                     if("1".equals(codeMessage.getData().getStatus())){
                                         SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
                                         String from = getActivity().getIntent().getStringExtra("from");
+                                        Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
                                         SPUtils.put(getActivity(), "login", true);
                                         if (from != null) {
                                             if(from.equals("user")){
@@ -537,7 +553,11 @@ public class MessageFragment extends Fragment {
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();
                                                                 }*/
-                                        } else {
+                                        } else if(welfare!=null){
+                                            startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
+                                            getActivity().finish();
+
+                                        } else{
                                             EventBus.getDefault().post(new MessageEvent("","1"));
                                             getActivity().finish();
                                         }

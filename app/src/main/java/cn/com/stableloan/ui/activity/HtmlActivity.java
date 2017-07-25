@@ -121,7 +121,7 @@ public class HtmlActivity extends BaseActivity {
                 getUrl(welfare.getId());
             }
         } else {
-
+            ToastUtils.showToast(this,"网络异常");
         }
     }
 
@@ -147,9 +147,7 @@ public class HtmlActivity extends BaseActivity {
                                 errorContent.setVisibility(View.VISIBLE);
                             }
                         }
-
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -158,9 +156,7 @@ public class HtmlActivity extends BaseActivity {
 
 
     }
-
     private void getDate(String url) {
-        //String html = getIntent().getStringExtra("html");
         if (url != null) {
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
