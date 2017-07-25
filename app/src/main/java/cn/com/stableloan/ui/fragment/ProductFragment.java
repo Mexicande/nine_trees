@@ -133,9 +133,6 @@ public class ProductFragment extends ImmersionFragment {
     }
 
     private void getDate(final int var, final int action) {
-
-
-
         if (var == 1) {
             stateLayout.showProgressView();
          }
@@ -181,7 +178,13 @@ public class ProductFragment extends ImmersionFragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        stateLayout.showErrorView();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showToast(getActivity(),"网络异常");
+
+                            }
+                        });
                     }
                 });
     }
@@ -458,8 +461,13 @@ public class ProductFragment extends ImmersionFragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showToast(getActivity(),"网络异常");
-                        stateLayout.showErrorView();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showToast(getActivity(),"网络异常");
+
+                            }
+                        });
 
                     }
                 });

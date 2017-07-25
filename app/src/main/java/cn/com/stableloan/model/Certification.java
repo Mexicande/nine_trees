@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/7/21.
  */
 
-public class Certification {
+public class Certification implements Serializable{
 
 
     /**
@@ -61,7 +63,7 @@ public class Certification {
         this.error_message = error_message;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * TaobaoStatus : 1
          * CapStatus : 1

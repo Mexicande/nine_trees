@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/7/4.
  */
 
-public class SaveBean {
+public class SaveBean implements Serializable{
 
     /**
      * way : 0

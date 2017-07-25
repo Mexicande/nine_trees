@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/7/4.
  */
 
-public class Bank {
+public class Bank implements Serializable {
 
     /**
      * isSuccess : 1
@@ -49,7 +51,7 @@ public class Bank {
         this.status = status;
     }
 
-    public static class BankBean {
+    public static class BankBean implements Serializable{
         /**
          * debit : {"dnumber":"0","dname":"0","dperiod":"0","dbank":"0","dphone":"0"}
          * credit : {"cnumber":"0","cname":"0","cperiod":"0","cbank":"0","cphone":"0"}

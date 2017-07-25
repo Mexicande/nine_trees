@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by apple on 2017/7/4.
  */
 
-public class WorkBean {
+public class WorkBean implements Serializable{
 
     @Override
     public String toString() {
@@ -53,7 +53,7 @@ public class WorkBean {
 
 
 
-    public static class OccupationBean {
+    public static class OccupationBean implements Serializable{
         @Override
         public String toString() {
             return "OccupationBean{" +

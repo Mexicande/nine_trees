@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/7/14.
  */
 
-public class MessageCode {
+public class MessageCode  implements Serializable{
 
     /**
      * code : 200
@@ -60,7 +62,7 @@ public class MessageCode {
         this.error_message = error_message;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * isSuccess : 0
          */

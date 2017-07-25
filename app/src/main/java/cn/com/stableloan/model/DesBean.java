@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/7/20.
  */
 
-public class DesBean {
+public class DesBean implements Serializable{
 
     private String data;
     private String Deskey;

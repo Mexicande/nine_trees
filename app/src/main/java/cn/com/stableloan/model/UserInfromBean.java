@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by apple on 2017/7/20.
  */
 
-public class UserInfromBean {
+public class UserInfromBean implements Serializable{
 
     /**
      * code : 200

@@ -123,10 +123,9 @@ public class MainActivity extends BaseActivity {
         navigationController = tab.custom()
                 .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down,"首页"))
                 .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"产品"))
-                .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"彩票"))
+                .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"福利"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
                 .build();
-
 
         navigationController.addTabItemSelectedListener(listener);
 
@@ -161,17 +160,9 @@ public class MainActivity extends BaseActivity {
                 }else {
                     switchMenu(getFragmentName(4));
                 }
-            }else if(index==2){
-                Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
-                if (!login) {
-                    startActivityForResult(new Intent(MainActivity.this, Login2Activity.class).putExtra("from", "123"), LOTTERY_SNED);
-                }else {
-                    switchMenu(getFragmentName(3));
-                }
             }else {
                 switchMenu(getFragmentName(index + 1));
             }
-
         }
         @Override
         public void onRepeat(int index) {

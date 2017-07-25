@@ -528,7 +528,6 @@ public class MessageFragment extends Fragment {
                                             }else if(from.equals("user2")){
                                                 EventBus.getDefault().post(new InformationEvent("userinfor"));
                                                 getActivity().finish();
-
                                             }
 
                                             /*else if(from.equals("user1")){

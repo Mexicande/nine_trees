@@ -1,10 +1,12 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/7/17.
  */
 
-public class CodeMessage {
+public class CodeMessage implements Serializable{
 
     /**
      * code : 200
@@ -71,7 +73,7 @@ public class CodeMessage {
                 '}';
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * status : 1
          * token : dasfsadfasdfsadfdasfaskakflka
