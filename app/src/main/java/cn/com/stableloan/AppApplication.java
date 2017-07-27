@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.https.HttpsUtils;
 import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import okhttp3.OkHttpClient;
 
 
 /**
@@ -50,8 +52,11 @@ public class AppApplication extends Application {
         OkGo.init(this);
         try {
             OkGo.getInstance()
+                    .setCertificates()
                     .debug("OkGo", Level.INFO, true)
                     .setCacheMode(CacheMode.NO_CACHE);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

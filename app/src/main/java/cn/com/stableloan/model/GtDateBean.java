@@ -31,4 +31,12 @@ public class GtDateBean implements Serializable{
     public void setGtcode(String gtcode) {
         this.gtcode = gtcode;
     }
+
+    @Override
+    public String toString() {
+        return "GtDateBean{" +
+                "message='" + message + '\'' +
+                ", gtcode='" + gtcode + '\'' +
+                '}';
+    }
 }

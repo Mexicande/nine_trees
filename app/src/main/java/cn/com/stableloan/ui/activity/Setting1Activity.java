@@ -3,7 +3,6 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -100,7 +99,7 @@ public class Setting1Activity extends BaseActivity {
                 SPUtils.clear(Setting1Activity.this);
                 TinyDB tinyDB = new TinyDB(Setting1Activity.this);
                 tinyDB.clear();
-                startActivity(new Intent(Setting1Activity.this, Login2Activity.class).putExtra("from", "user2"));
+                startActivity(new Intent(Setting1Activity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();
             }
         });

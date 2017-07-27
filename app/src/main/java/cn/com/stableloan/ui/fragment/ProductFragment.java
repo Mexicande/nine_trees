@@ -30,7 +30,9 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +49,7 @@ import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SmoothCheckBox;
+import cn.com.stableloan.view.SmoothCompoundButton;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
@@ -87,7 +90,6 @@ public class ProductFragment extends ImmersionFragment {
 
     private int MORE = 1;
 
-    private int[] s;
 
     public ProductFragment() {
         // Required empty public constructor
@@ -192,7 +194,6 @@ public class ProductFragment extends ImmersionFragment {
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        //   进入当前Fragment
         if (enter && !isGetData) {
             isGetData = true;
             int plat = (int) SPUtils.get(getActivity(), "plat", 0);
@@ -356,6 +357,52 @@ public class ProductFragment extends ImmersionFragment {
 
             }
         });
+/*
+
+        checkbox1.setOnCheckedChangeListener(new SmoothCompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SmoothCompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    checkbox2.setChecked(false);
+                    checkbox3.setChecked(false);
+                    checkbox4.setChecked(false);
+                }
+            }
+        });
+
+        checkbox2.setOnCheckedChangeListener(new SmoothCompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SmoothCompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    checkbox1.setChecked(false);
+                    checkbox3.setChecked(false);
+                    checkbox4.setChecked(false);
+                }
+            }
+        });
+
+        checkbox3.setOnCheckedChangeListener(new SmoothCompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SmoothCompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    checkbox1.setChecked(false);
+                    checkbox2.setChecked(false);
+                    checkbox4.setChecked(false);
+                }
+            }
+        });
+
+        checkbox4.setOnCheckedChangeListener(new SmoothCompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SmoothCompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    checkbox1.setChecked(false);
+                    checkbox2.setChecked(false);
+                    checkbox3.setChecked(false);
+                }
+            }
+        });*/
+
 
     }
 
@@ -407,7 +454,33 @@ public class ProductFragment extends ImmersionFragment {
     /**
      *
      */
+    private int s=0;
     private void selectProduct() {
+      /*  boolean checked = checkbox1.isChecked();
+        if(checked){
+            s=1;
+        }
+        boolean checked2 = checkbox2.isChecked();
+        if(checked2){
+            s=2;
+        }
+
+        boolean checked3= checkbox3.isChecked();
+        if(checked3){
+            s=3;
+        }
+        boolean checked4= checkbox4.isChecked();
+        if(checked4){
+            s=4;
+        }
+
+
+        List<Integer>list2=new ArrayList<>();
+
+        list2.add(s);
+        List<Integer>list=new ArrayList<>();
+
+        selectGetProduct(list2,list);*/
         int i1 = checkbox1.isChecked() ? 0 : 4;
         if (i1 == 0) {
             list.add(0);
@@ -426,6 +499,7 @@ public class ProductFragment extends ImmersionFragment {
 
     private void selectGetProduct(int[] arr, String stat) {
         stateLayout.showProgressView();
+
         SelectProduct selectProduct = new SelectProduct(arr, stat);
         Gson gson = new Gson();
         String json = gson.toJson(selectProduct);

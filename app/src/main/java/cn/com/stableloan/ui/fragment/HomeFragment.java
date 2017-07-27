@@ -420,7 +420,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 break;
             case R.id.iv_enterprise:
                 professional="qiyezhu";
-
                 SPUtils.put(getActivity(), "plat", 4);
                 MainActivity.navigationController.setSelect(1);
                 break;

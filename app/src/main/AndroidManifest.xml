@@ -51,9 +51,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -83,9 +80,15 @@
         <activity
             android:name=".ui.activity.ProductClassifyActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.NoticeActivity" />
-        <activity android:name=".ui.activity.StrateActivity" />
-        <activity android:name=".ui.activity.ForgetWordActivity" />
+        <activity
+            android:name=".ui.activity.NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.StrateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ForgetWordActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="ZHUGE_APPKEY"
@@ -117,19 +120,41 @@
         <activity
             android:name=".ui.activity.UserInformationActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ui.activity.IdentityinformationActivity" />
-        <activity android:name=".ui.activity.ImageActivity" />
-        <activity android:name=".ui.activity.IdentityUploadActivity" />
-        <activity android:name=".ui.activity.SafeSettingActivity" />
-        <activity android:name=".ui.activity.CreateGestureActivity" />
-        <activity android:name=".ui.activity.GestureLoginActivity" />
-        <activity android:name=".ui.activity.Verify_PasswordActivity" />
-        <activity android:name=".ui.activity.BankUploadActivity" />
-        <activity android:name=".ui.activity.CreditBankUploadActivity" />
-        <activity android:name=".ui.activity.BusinessUploadActivity" />
-        <activity android:name=".ui.activity.CardUploadActivity" />
         <activity
-            android:name=".ui.activity.Login2Activity"
+            android:name=".ui.activity.IdentityinformationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.IdentityUploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SafeSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CreateGestureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GestureLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.Verify_PasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BankUploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CreditBankUploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BusinessUploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CardUploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".ui.activity.SettingPassWordActivity" />
@@ -138,7 +163,11 @@
             android:name=".ui.activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.moxie.client.MainActivity"/>
+        <activity android:name="com.moxie.client.MainActivity" />
+        <activity android:name=".ui.activity.CameraActivity"
+            android:screenOrientation="landscape"
+            />
+        <activity android:name=".ui.activity.CarmeraResultActivity"/>
     </application>
 
 </manifest>

@@ -161,7 +161,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
 
                     String json = gson.toJson(bean);
 
-                    OkGo.<String>post("http://47.94.175.112:8081/v1/set/password")
+                    OkGo.<String>post(Urls.Ip_url+Urls.Login.SettingPassWord)
                             .tag(this)
                             .headers("sign", sign)
                             .upJson(json)
@@ -178,7 +178,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         userBean.setNickname(fromJson.getData().getNickname());
                                         userBean.setUserphone(fromJson.getData().getUserphone());
                                         userBean.setIdentity(fromJson.getData().getIdentity());
-                                        //EventBus.getDefault().post(new MessageEvent(userBean.getNickname(),userBean.getUserphone()));
+                                        EventBus.getDefault().post(new MessageEvent(userBean.getNickname(),userBean.getUserphone()));
                                         TinyDB tinyDB = new TinyDB(SettingPassWordActivity.this);
                                         tinyDB.putObject("user", userBean);
                                         AppApplication.destoryActivity("login");

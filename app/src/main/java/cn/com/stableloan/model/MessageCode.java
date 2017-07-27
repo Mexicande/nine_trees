@@ -62,5 +62,14 @@ public class MessageCode  implements Serializable{
         this.error_message = error_message;
     }
 
-
+    @Override
+    public String toString() {
+        return "MessageCode{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                ", error_code=" + error_code +
+                ", error_message='" + error_message + '\'' +
+                '}';
+    }
 }

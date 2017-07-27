@@ -2,109 +2,52 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.kaopiz.kprogresshud.KProgressHUD;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.MessageEvent;
-import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.utils.CaptchaTimeCount;
-import cn.com.stableloan.utils.Constants;
-import cn.com.stableloan.utils.EncryptUtils;
-import cn.com.stableloan.utils.RegexUtils;
-import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
-import cn.com.stableloan.utils.ToastUtils;
-import cxy.com.validate.IValidateResult;
-import cxy.com.validate.Validate;
-import cxy.com.validate.ValidateAnimation;
-import cxy.com.validate.annotation.Index;
-import cxy.com.validate.annotation.NotNull;
-import cxy.com.validate.annotation.RE;
-import ezy.boost.update.UpdateUtil;
-import okhttp3.Call;
-import okhttp3.Response;
+import cn.com.stableloan.ui.fragment.LoginFragment;
+import cn.com.stableloan.ui.fragment.MessageFragment;
+import cn.com.stableloan.utils.SwitchMultiButton;
 
-/**
- * 登录注册页
- */
+public class LoginActivity extends AppCompatActivity {
 
-public class LoginActivity extends AppCompatActivity implements IValidateResult {
-    /* @Bind(R.id.nts)
-     NavigationTabStrip nts;*/
 
-    @Bind(R.id.nts)
-    TabLayout nts;
+    public static SwitchMultiButton switchmultibutton;
 
-    @Index(1)
-    @NotNull(msg = "手机号不能为空！")
-    @RE(re = RE.phone, msg = "手机号格式不正确")
-    @Bind(R.id.et_phone)
-    EditText etPhone;
+    private static final String[] CHANNELS = new String[]{"短信快捷登录", "账号登录"};
+    @Bind(R.id.back)
+    ImageView back;
 
-    @Index(2)
-    @NotNull(msg = "不能为空！")
-    @Bind(R.id.et_lock)
-    EditText etLock;
+    private FragmentManager mFragmentManager;
 
-    @Bind(R.id.bt_getCode)
-    Button btGetCode;
-    @Bind(R.id.login_button)
-    Button loginButton;
-    @Bind(R.id.register_button)
-    Button registerButton;
-    @Bind(R.id.tv_forget)
-    TextView tvForget;
-    @Bind(R.id.iv_phone)
-    ImageView ivPhone;
-    @Bind(R.id.iv_lock)
-    ImageView ivLock;
+    private Fragment mCurrentFragment;
 
-    private String phone;
-
-    private String code;
 
     private boolean Flag = false;
     private final int Flag_User = 3000;
     private final int LOTTERY_CODE = 500;
 
-    private CaptchaTimeCount captchaTimeCount;
 
     private String MessageCode = null;
-
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -113,418 +56,129 @@ public class LoginActivity extends AppCompatActivity implements IValidateResult 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        setContentView(R.layout.activity_login2);
+        AppApplication.addDestoryActivity(this,"login");
+        transparentStatusBar();
+        switchmultibutton = (SwitchMultiButton) findViewById(R.id.switchmultibutton);
         ButterKnife.bind(this);
-        ZhugeSDK.getInstance().init(getApplicationContext());
-        Validate.reg(this);
         initView();
+    }
+    private void transparentStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+//            window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); // 新增滑动返回，舍弃过渡动效
 
-        captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
-
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS |
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     private void initView() {
+        mCurrentFragment = new MessageFragment();
+        mFragmentManager = getSupportFragmentManager();
 
-        etLock.addTextChangedListener(watcher);
-        etPhone.addTextChangedListener(watcher1);
+        mFragmentManager.beginTransaction().add(R.id.fragment, mCurrentFragment).commitAllowingStateLoss();
 
-        nts.addTab(nts.newTab().setText("密码登陆"));
-        nts.addTab(nts.newTab().setText("短信登陆"));
-        nts.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        /*changePhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        changePhone.getPaint().setAntiAlias(true);*/
+        assert switchmultibutton != null;
+        switchmultibutton.setText(CHANNELS).setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                getSwitch(tab.getPosition());
-            }
+            public void onSwitch(int position, String tabText) {
+                switchMenu(getFragmentName(position + 1));
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-       /* nts.setTitles("短信登陆","密码登陆");
-        nts.setTabIndex(0, true);*/
+
 
     }
 
-    private void getSwitch(int position) {
-        switch (position) {
-            case 0:
-                etLock.setTransformationMethod(PasswordTransformationMethod
-                        .getInstance());
-                ivPhone.setImageResource(R.mipmap.ic_phone);
-                ivLock.setImageResource(R.mipmap.ic_lock);
-                Flag = false;
-                etLock.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
-                etPhone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-                etPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
-                etLock.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
-                btGetCode.setVisibility(View.GONE);
-                tvForget.setVisibility(View.VISIBLE);
-                etLock.getText().clear();
-                etPhone.setHint("手机号");
-                etLock.setHint("密码");
-                break;
+    private String getFragmentName(int menuId) {
+        switch (menuId) {
             case 1:
-                etLock.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                ivPhone.setImageResource(R.mipmap.iv_messgephone);
-                ivLock.setImageResource(R.mipmap.iv_messagelock);
-                Flag = true;
-                etPhone.setHint("请输入手机号码");
-                etLock.setHint("验证码");
-                etLock.getText().clear();
-                etPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
-                etLock.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-                etLock.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-                etPhone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-                btGetCode.setVisibility(View.VISIBLE);
-                tvForget.setVisibility(View.GONE);
-                break;
+                return MessageFragment.class.getName();
+            case 2:
+                return LoginFragment.class.getName();
             default:
-                break;
-
-        }
-
-    }
-
-    /**
-     * 密码
-     */
-    private TextWatcher watcher = new TextWatcher() {
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
-            if (!etPhone.getText().toString().isEmpty()) {
-                loginButton.setEnabled(true);
-                loginButton.setBackgroundResource(R.drawable.corner_btn);
-                loginButton.setTextColor(getResources().getColor(R.color.white));
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (!etPhone.getText().toString().isEmpty() && !etLock.getText().toString().isEmpty()) {
-                loginButton.setEnabled(true);
-            } else {
-                loginButton.setEnabled(false);
-                loginButton.setBackgroundResource(R.drawable.login_button_start);
-
-            }
-        }
-    };
-    /**
-     * 手机号
-     */
-    private TextWatcher watcher1 = new TextWatcher() {
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
-            if (!etLock.getText().toString().isEmpty()) {
-                loginButton.setEnabled(true);
-                loginButton.setBackgroundResource(R.drawable.login_button_up);
-
-            } else {
-
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (!etPhone.getText().toString().isEmpty() && !etLock.getText().toString().isEmpty()) {
-                loginButton.setEnabled(true);
-                loginButton.setBackgroundResource(R.drawable.login_button_up);
-                loginButton.setTextColor(getResources().getColor(R.color.white));
-            } else {
-                loginButton.setEnabled(false);
-                loginButton.setBackgroundResource(R.drawable.login_button_start);
-            }
-
-        }
-    };
-
-
-    @OnClick({R.id.bt_getCode, R.id.login_button, R.id.register_button, R.id.tv_forget})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bt_getCode:
-                phone = etPhone.getText().toString();
-                if (etPhone.getText().toString().isEmpty()) {
-                    ToastUtils.showToast(this, "请填写手机号码");
-                } else if (!RegexUtils.isMobileExact(etPhone.getText().toString())) {
-                    ToastUtils.showToast(this, "手机号格式");
-                } else {
-                    getCodeMessage();
-                }
-                break;
-            case R.id.login_button:
-                Validate.check(LoginActivity.this, LoginActivity.this);
-                break;
-            case R.id.tv_forget:
-                ForgetWordActivity.launch(this);
-                break;
-            case R.id.register_button:
-                UpdateUtil.clean(this);
-                RegisterActivity.launch(this);
-                break;
-            default:
-                break;
+                return null;
         }
     }
 
-    /**
-     * 登陆
-     */
-    private void setLogin() {
+    private void switchMenu(String fragmentName) {
 
-        // 验证码登陆
-        if (Flag) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("userphone", etPhone.getText().toString());
-            params.put("status", "3");
-            JSONObject jsonObject = new JSONObject(params);
-            String tel = etPhone.getText().toString();
-            String cd = etLock.getText().toString();
-            if (phone.equals(tel)) {
-                if (MessageCode != null) {
-                    if (!cd.isEmpty() && cd.equals(MessageCode)) {
-                        Login(jsonObject.toString());
-                    } else {
-                        ToastUtils.showToast(this, "手机号或验证码错误");
-                    }
-                } else {
-                    ToastUtils.showToast(this, "手机号或验证码错误");
-                }
-            } else {
-                ToastUtils.showToast(this, "手机号或验证码错误");
-            }
+        Fragment fragment = mFragmentManager.findFragmentByTag(fragmentName);
+
+        if (fragment != null) {
+            if (fragment == mCurrentFragment) return;
+
+            mFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss();
         } else {
-            //账号密码登陆
-            //隐藏密码
-            String pass = etLock.getText().toString();
-            if (!pass.isEmpty()) {
-                String md5ToString = EncryptUtils.encryptMD5ToString(pass);
-                HashMap<String, String> params = new HashMap<>();
-                params.put("userphone", etPhone.getText().toString());
-                params.put("password", md5ToString);
-                params.put("status", "1");
-                JSONObject jsonObject = new JSONObject(params);
-                Login(jsonObject.toString());
-            }
-
+            fragment = Fragment.instantiate(this, fragmentName);
+            mFragmentManager.beginTransaction().add(R.id.fragment, fragment, fragmentName).commitAllowingStateLoss();
         }
 
-    }
-
-    private KProgressHUD hud;
-
-
-    private void Login(String json) {
-        hud = KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
-                .setCancellable(true)
-                .show();
-        OkGo.post(Urls.puk_URL + Urls.Login.LOGIN)
-                .tag(this)
-                .upJson(json)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
-                                    SPUtils.put(LoginActivity.this, "token", object.getString("token"));
-                                    SPUtils.put(LoginActivity.this, "login", true);
-                                    getUserInfo();
-                                } else {
-                                    String string = object.getString("msg");
-                                    ToastUtils.showToast(LoginActivity.this, string);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            ToastUtils.showToast(LoginActivity.this, "服务器异常,请稍后再试");
-                        }
-                        hud.dismiss();
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        hud.dismiss();
-                        ToastUtils.showToast(LoginActivity.this, "服务器异常,请稍后再试");
-
-                    }
-                });
-    }
-
-    private void getUserInfo() {
-        String token = (String) SPUtils.get(this, "token", "1");
-        if (!token.isEmpty()) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("token", token);
-            JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.puk_URL + Urls.user.USERT_INFO)
-                    .tag(this)
-                    .upJson(jsonObject.toString())
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
-                                    Gson gson = new Gson();
-                                    UserBean bean = gson.fromJson(s, UserBean.class);
-                                    EventBus.getDefault().post(new MessageEvent(bean.getNickname(),bean.getUserphone()));
-                                    TinyDB tinyDB = new TinyDB(LoginActivity.this);
-                                    tinyDB.putObject("user", bean);
-                                    String from = getIntent().getStringExtra("from");
-                                    if (from != null) {
-                                        Log.i("from------","from");
-                                        if(from.equals("user")){
-                                            setResult(Flag_User, new Intent().putExtra("user", bean));
-                                            finish();
-                                        }else if(from.equals("123")){
-                                            setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
-                                            finish();
-                                        }else if(from.equals("user1")){
-                                            setResult(4000, new Intent().putExtra("user", bean));
-                                            finish();
-                                        }else if(from.equals("user2")){
-                                            setResult(4000, new Intent().putExtra("user", bean));
-                                            finish();
-                                        }
-                                    } else {
-                                        Log.i("from------","null");
-                                        finish();
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+        if (mCurrentFragment != null) {
+            mFragmentManager.beginTransaction().hide(mCurrentFragment).commitAllowingStateLoss();
         }
-
+        mCurrentFragment = fragment;
     }
 
-    /**
-     * 获取验证码
-     */
-    private void getCodeMessage() {
-        captchaTimeCount.start();
-
-        HashMap<String, String> params = new HashMap<>();
-        params.put("userPhone", etPhone.getText().toString());
-        params.put("status", "1");
-        JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.Ip_url+Urls.times.MESSAGE_SEND)
-                .tag(this)
-                .upJson(jsonObject.toString())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String status = jsonObject.getString("isSuccess");
-                            if (status.equals("1")) {
-                                MessageCode = jsonObject.getString("check");
-                                ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
-                            } else {
-                                ToastUtils.showToast(LoginActivity.this, jsonObject.getString("msg"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //返回事件
-        String from = getIntent().getStringExtra("from");
-        if (from != null ) {
-            if(from.equals("user")){
-                UserBean userBean=new UserBean();
-                setResult(Flag_User,new Intent().putExtra("user",userBean));
-                finish();
-            }else if(from.equals("123")){
-                setResult(LOTTERY_CODE,new Intent().putExtra("Loffery","1"));
-                finish();
-            }else if(from.equals("user1")){
-                UserBean userBean=new UserBean();
-                setResult(4000,new Intent().putExtra("user",userBean));
-               // EventBus.getDefault().post(new InformationEvent("user1"));
-                finish();
-            }else if(from.equals("user2")){
-                /*UserBean userBean=new UserBean();
-                setResult(Flag_User,new Intent().putExtra("user",userBean));
-                finish();*/
-                 EventBus.getDefault().post(new InformationEvent("user2"));
-                finish();
-
-                //finish();
+            String from = getIntent().getStringExtra("from");
+            if (from != null) {
+                if (from.equals("user")) {
+                    UserBean userBean = new UserBean();
+                    setResult(Flag_User, new Intent().putExtra("user", userBean));
+                    finish();
+                } else if (from.equals("123")) {
+                    setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
+                    finish();
+                } else if (from.equals("user1")) {
+                    UserBean userBean = new UserBean();
+                    setResult(4000, new Intent().putExtra("user", userBean));
+                    // EventBus.getDefault().post(new InformationEvent("user1"));
+                    finish();
+                } else if (from.equals("user2")) {
+                    EventBus.getDefault().post(new InformationEvent("user2"));
+                    finish();
+                }
             }
         }
-
-    /*    UserBean user = (UserBean) SPUtils.get(this, "user", UserBean.class);
-            if(user!=null){
-                finish();
-            }else {
-                Main1Activity.launch(this);
-                finish();
-            }*/
-    }
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Validate.unreg(this);
-        ZhugeSDK.getInstance().flush(getApplicationContext());
-
-    }
-
-    @Override
-    public void onValidateSuccess() {
-        setLogin();
-    }
-
-
-    @Override
-    public void onValidateError(String msg, EditText editText) {
-        if (editText != null)
-            editText.setFocusable(true);
-        ToastUtils.showToast(this, msg);
-    }
-
-    @Override
-    public Animation onValidateErrorAnno() {
-        return ValidateAnimation.horizontalTranslate();
+    @OnClick(R.id.layout)
+    public void onViewClicked() {
+        String from = getIntent().getStringExtra("from");
+        if (from != null) {
+            if (from.equals("user")) {
+                UserBean userBean = new UserBean();
+                setResult(Flag_User, new Intent().putExtra("user", userBean));
+                finish();
+            } else if (from.equals("123")) {
+                setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
+                finish();
+            } else if (from.equals("user1")) {
+                UserBean userBean = new UserBean();
+                setResult(4000, new Intent().putExtra("user", userBean));
+                //EventBus.getDefault().post(new InformationEvent("user1"));
+                finish();
+            } else if (from.equals("user2")) {
+                EventBus.getDefault().post(new InformationEvent("user2"));
+                finish();
+            }
+        }
     }
 }

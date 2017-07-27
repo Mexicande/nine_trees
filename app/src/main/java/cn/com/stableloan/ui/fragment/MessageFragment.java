@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,10 +44,7 @@ import cn.com.stableloan.model.GtDateBean;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
-import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
@@ -67,9 +62,6 @@ import okhttp3.Response;
 public class MessageFragment extends Fragment {
 
     // 设置获取id，challenge，success的URL，需替换成自己的服务器URL
-    private static final String captchaURL = "http://47.94.175.112:8081/v1/geetes/captcha";
-    // 设置二次验证的URL，需替换成自己的服务器URL
-    private static final String validateURL = "http://47.94.175.112:8081/v1/geetes/verification";
     GT3GeetestUtils gt3GeetestUtils;
     @Bind(R.id.et_phone)
     PowerfulEditText etPhone;
@@ -114,6 +106,18 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
+        String unique = (String) SPUtils.get(getActivity(), "unique", null);
+        if(unique!=null){
+            times=unique;
+        }else {
+
+            Random random = new Random();
+            int i = random.nextInt(99999) + 10000;
+            long l = System.currentTimeMillis();
+
+            times = String.valueOf(i) + String.valueOf(l);
+
+        }
 
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL,btGetCode , getActivity());
         gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
@@ -194,22 +198,14 @@ public class MessageFragment extends Fragment {
 
 
     private void GT3GeetestListener() {
-        gt3GeetestUtils.getGeetest(captchaURL, validateURL, null);
-        gt3GeetestUtils.getGeetest(captchaURL, validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
         changePhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         changePhone.getPaint().setAntiAlias(true);
         AdressIp = getIpAddress();
 
         SPUtils.put(getActivity(), "ip", AdressIp);
         LogUtils.i("ipAddress", AdressIp);
-        Random random = new Random();
-        int i = random.nextInt(99999) + 10000;
-        long l = System.currentTimeMillis();
-
-        times = String.valueOf(i) + String.valueOf(l);
-
-        LogUtils.i("unique", times);
-
 
 
         gt3GeetestUtils.setGtListener(new GT3GeetestUtils.GT3Listener() {
@@ -283,29 +279,46 @@ public class MessageFragment extends Fragment {
                         e.printStackTrace();
                     }
                     JSONObject object = new JSONObject(params);
-                    OkGo.post("http://47.94.175.112:8081/v1/geetes/verification")
+                    OkGo.post(Urls.Ip_url+Urls.Login.validateURL)
                             .tag(this)
                             .upJson(object)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
-                                    Atest = true;
                                     LogUtils.i("自定义二次验证", s);
-                                    try {
+                                    Gson gson=new Gson();
+                                    MessageCode messageCode = gson.fromJson(s, MessageCode.class);
+                                    LogUtils.i("自定义二次验证", messageCode);
+
+                                    if(messageCode.getError_code()==0){
+                                        Atest = true;
+                                        btGetCodeLogin.setEnabled(true);
+                                        gt3GeetestUtils.gt3TestFinish();
+                                        gt3GeetestUtils.gt3TestFinish();
+                                        gtcode=messageCode.getData().getGtcode();
+                                    }else {
+                                        gt3DialogOnError("验证失败，请重新验证");
+
+                                    }
+
+                                   /* try {
                                         JSONObject jsonObject = new JSONObject(s);
-
-                                        String error_code = jsonObject.getString("error_code");
-
-                                        if ("0".equals(error_code)) {
+                                        String data = jsonObject.getString("data");
+                                        int error_code = jsonObject.getInt("error_code");
+                                        if (error_code==0) {
                                             btGetCodeLogin.setEnabled(true);
                                             gt3GeetestUtils.gt3TestFinish();
+                                            Gson gson=new Gson();
+                                            GtDateBean bean = gson.fromJson(data, GtDateBean.class);
+                                            gt3GeetestUtils.gt3TestFinish();
+                                            gtcode=bean.getGtcode();
                                         } else {
                                             gt3DialogOnError("验证失败，请重新验证");
                                         }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                    }
+                                    }*/
 
                                 }
                             });
@@ -461,10 +474,6 @@ public class MessageFragment extends Fragment {
                                     btGetCodeLogin.setEnabled(true);
                                     layoutPhoe.setVisibility(View.GONE);
                                     layoutCode.setVisibility(View.VISIBLE);
-                                    status="1";
-                                    gt3GeetestUtils.gt3TestFinish();
-
-                                    gtcode=body.getData().getGtcode();
 
                                 } else {
                                     ToastUtils.showToast(getActivity(), body.getError_message());

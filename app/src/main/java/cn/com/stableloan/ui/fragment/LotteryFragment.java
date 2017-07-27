@@ -2,23 +2,14 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,7 +17,6 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -42,12 +32,10 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
-import cn.com.stableloan.ui.activity.Login2Activity;
-import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.adapter.WelfareAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -116,7 +104,7 @@ public class LotteryFragment extends ImmersionFragment {
                 Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
                 if(login!=null){
                     if(!login){
-                        startActivity(new Intent(getActivity(), Login2Activity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
+                        startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
                     }else {
                         startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
                     }

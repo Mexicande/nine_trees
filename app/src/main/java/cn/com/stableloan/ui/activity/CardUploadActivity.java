@@ -17,6 +17,7 @@ import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.tools.PictureFileUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.qiniu.android.http.ResponseInfo;
@@ -198,7 +199,7 @@ public class CardUploadActivity extends BaseActivity {
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
                 .enableCrop(false)// 是否裁剪
-                .compress(false)// 是否压缩
+                .compress(true)// 是否压缩
                 .compressMode(PictureConfig.LUBAN_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
                 //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                 .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
@@ -237,7 +238,7 @@ public class CardUploadActivity extends BaseActivity {
                 .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
                 .isCamera(true)// 是否显示拍照按钮
                 //.enableCrop(true)// 是否裁剪
-                .compress(false)// 是否压缩
+                .compress(true)// 是否压缩
                 .compressMode(PictureConfig.LUBAN_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
                 .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                 .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
@@ -271,7 +272,7 @@ public class CardUploadActivity extends BaseActivity {
                 case 1:
                     // 图片选择结果回调
                     selectList = PictureSelector.obtainMultipleResult(data);
-                    final String path = selectList.get(selectList.size() - 1).getPath();
+                    final String path = selectList.get(selectList.size() - 1).getCompressPath();
 
                     UploadOptions uploadOptions = new UploadOptions(null, null, false,
                             new UpProgressHandler() {
@@ -290,6 +291,7 @@ public class CardUploadActivity extends BaseActivity {
                                 LogUtils.i("response", response.toString());
                                 String key1 = null;
                                 progress.setVisibility(View.GONE);
+
                                 try {
                                     key1 = response.getString("key");
                                     UpLoadImage(key1);

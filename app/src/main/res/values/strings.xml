@@ -84,4 +84,8 @@
     <string name="default_text">没有存档或已过期</string>
     <string name="storage1">为了保证您的信息安全,我们默认不会长期存储您的个人信息。过期后我们将安全删除您的全部图片信息。</string>
     <string name="storage2">有效期会根据您的托管时间设置,从您最后一次修改图片信息的当日起计算,过期自动删除。</string>
+
+
+    <color name="test">#0000ff</color>
+
 </resources>

@@ -2,12 +2,14 @@ package cn.com.stableloan.model;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by apple on 2017/6/13.
  */
 
 public class SelectProduct implements Serializable{
+
     private int var[] ;
     private String status;
 

@@ -8,7 +8,7 @@ public interface Urls{
 
     String STATUS_WordLogin                 =           "1";
     String STATUS_MessageLogin              =           "3";
-    String Ip_url="http://47.94.175.112:8081/v1/";
+    String Ip_url="http://test.api.anwenqianbao.com/v1/";
 
     String CardBack="http://www.shoujiweidai.com/Card/index.html";
     String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
@@ -41,15 +41,16 @@ public interface Urls{
         String MESSAGE_SEND="sms/getcode";
     }
     interface Login{
-
+        String SettingPassWord="set/password";
         //验证码发送
-        String SEND_MESSAGE="http://47.94.175.112:8081/v1/sms/getcode";
         String LOGIN="login/login";
         String USER_INFOMATION="Mine/Locking";
         String GET_SIGNATURE="Mine/GetSignature";
         String Immunity="Mine/Immunity";
         String QUICK_LOGIN="quick/login";
-
+        String captchaURL = "geetes/captcha";
+        // 设置二次验证的URL，需替换成自己的服务器URL
+        String validateURL = "geetes/verification";
 
     }
     interface CreditrePort{
@@ -121,12 +122,10 @@ public interface Urls{
         String USERT_INFO="Personal";
         String USER_STATUS="Status/GetStatus";
         String FEEDBACK="feedback/opinion";
-
     }
     interface  notice{
         String Announcement="Announcement";
     }
-
     interface  LOTTERY{
         String GetLottery="welfare/getwelfare";
 

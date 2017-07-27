@@ -34,7 +34,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this).transparentBar().init();
         setWelcome();
-
+      /*  CameraActivity.launch(this);
+        finish();*/
       /*  boolean flag = SPUtils.contains(this, "url");
 
         if(flag){

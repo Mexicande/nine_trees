@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity {
             if(index==3){
                 Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
                 if (!login) {
-                    startActivityForResult(new Intent(MainActivity.this, Login2Activity.class).putExtra("from", "user"), FLAG_LOGIN);
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
                 }else {
                     switchMenu(getFragmentName(4));
                 }

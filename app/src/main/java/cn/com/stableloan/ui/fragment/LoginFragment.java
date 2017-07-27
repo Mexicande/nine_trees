@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.gt3unbindsdk.GT3GeetestButton;
 import com.example.gt3unbindsdk.GT3GeetestUtils;
@@ -24,8 +23,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -36,15 +33,13 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.DesBean;
-import cn.com.stableloan.model.GtDateBean;
-import cn.com.stableloan.model.InformationEvent;
+import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
-import cn.com.stableloan.ui.activity.Login2Activity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -53,7 +48,6 @@ import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.aes.Des4;
-import cn.com.stableloan.utils.aes.Security;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.utils.ras.RSA;
 import cn.com.stableloan.view.RoundButton;
@@ -62,10 +56,6 @@ import okhttp3.Response;
 
 public class LoginFragment extends Fragment {
 
-    // 设置获取id，challenge，success的URL，需替换成自己的服务器URL
-    private static final String captchaURL = "http://47.94.175.112:8081/v1/geetes/captcha";
-    // 设置二次验证的URL，需替换成自己的服务器URL
-    private static final String validateURL = "http://47.94.175.112:8081/v1/geetes/verification";
     GT3GeetestUtils gt3GeetestUtils;
     @Bind(R.id.et_phone)
     PowerfulEditText etPhone;
@@ -81,11 +71,13 @@ public class LoginFragment extends Fragment {
     LinearLayout viewPassWord;
     @Bind(R.id.ll_btn_type)
     GT3GeetestButton llBtnType;
+    @Bind(R.id.bt_VisiableButton)
+    RoundButton btVisiableButton;
     private boolean Atest = false;
     private boolean PowerfulEditText = false;
 
-    private String gtcode="";
-    private String status="2";
+    private String gtcode = "";
+    private String status = "2";
     private String AdressIp = "";
 
     private String times = "";
@@ -105,14 +97,14 @@ public class LoginFragment extends Fragment {
         ButterKnife.bind(this, view);
         setGt3GeetestUtilsListener();
         long date = (long) SPUtils.get(getActivity(), "date", 1111111111111L);
-            boolean today = TimeUtils.isToday(date);
-            if(today){
-                llBtnType.setVisibility(View.VISIBLE);
-            }else {
-                Atest=true;
-                SPUtils.remove(getActivity(),"date");
-                llBtnType.setVisibility(View.GONE);
-            }
+        boolean today = TimeUtils.isToday(date);
+        if (today) {
+            llBtnType.setVisibility(View.VISIBLE);
+        } else {
+            Atest = true;
+            SPUtils.remove(getActivity(), "date");
+            llBtnType.setVisibility(View.GONE);
+        }
         setListener();
         return view;
 
@@ -133,19 +125,19 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (etPassWord.getText().toString().length() > 5) {
                     if (!PowerfulEditText) {
                         PowerfulEditText = true;
                     } else {
-                        btLogin.setEnabled(true);
-
+                        btVisiableButton.setVisibility(View.GONE);
+                        btLogin.setVisibility(View.VISIBLE);
                     }
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -157,27 +149,26 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (etPhone.getText().toString().length() == 11) {
                     if (!PowerfulEditText) {
                         PowerfulEditText = true;
                     } else {
-                        LogUtils.i("etphone", "111111");
-                        btLogin.setEnabled(true);
+                        btVisiableButton.setVisibility(View.GONE);
+                        btLogin.setVisibility(View.VISIBLE);
                     }
-
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
 
     private void setGt3GeetestUtilsListener() {
-        gt3GeetestUtils.getGeetest(captchaURL, validateURL, null);
-        gt3GeetestUtils.getGeetest(captchaURL, validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
         String ip = (String) SPUtils.get(getActivity(), "ip", "");
 
         if (ip != null) {
@@ -185,8 +176,7 @@ public class LoginFragment extends Fragment {
         }
         String unique = (String) SPUtils.get(getActivity(), "unique", "1212");
         LogUtils.i("ipAddress", AdressIp);
-
-        times =unique;
+        times = unique;
         gt3GeetestUtils.setGtListener(new GT3GeetestUtils.GT3Listener() {
             /**
              * Api1可以在这添加参数
@@ -205,8 +195,8 @@ public class LoginFragment extends Fragment {
              */
             @Override
             public void gt3DialogOnError(String error) {
-                    LogUtils.i("极验------",error);
-                gt3GeetestUtils.getGeetest(captchaURL, validateURL, null);
+                LogUtils.i("极验------", error);
+                gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
 
             }
 
@@ -258,33 +248,22 @@ public class LoginFragment extends Fragment {
                         e.printStackTrace();
                     }
                     JSONObject object = new JSONObject(params);
-                    OkGo.post(validateURL)
+                    OkGo.post(Urls.Ip_url+Urls.Login.validateURL)
                             .tag(this)
                             .upJson(object)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
-                                    LogUtils.i("自定义二次验证", s);
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(s);
+                                    Gson gson = new Gson();
+                                    MessageCode messageCode = gson.fromJson(s, MessageCode.class);
+                                    if (messageCode.getError_code() == 0) {
+                                        Atest = true;
+                                        status = "1";
+                                        gt3GeetestUtils.gt3TestFinish();
+                                        gtcode = messageCode.getData().getGtcode();
+                                    } else {
+                                        gt3DialogOnError("验证失败，请重新验证");
 
-                                        String code = jsonObject.getString("code");
-                                        String data = jsonObject.getString("data");
-                                        String error_code = jsonObject.getString("error_code");
-
-                                        if ("200".equals(code) || "0".equals(error_code)) {
-                                            Gson gson=new Gson();
-                                            GtDateBean bean = gson.fromJson(data, GtDateBean.class);
-                                            Atest = true;
-                                            status="1";
-                                            gt3GeetestUtils.gt3TestFinish();
-                                            gtcode=bean.getGtcode();
-                                        } else {
-                                            gt3DialogOnError("验证失败，请重新验证");
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
 
                                 }
@@ -390,6 +369,7 @@ public class LoginFragment extends Fragment {
      */
 
     private KProgressHUD hud;
+
     private void loginUser() {
 
         hud = KProgressHUD.create(getActivity())
@@ -402,32 +382,32 @@ public class LoginFragment extends Fragment {
         params.put("userphone", etPhone.getText().toString());
         params.put("password", md5ToString);
         params.put("gtcode", gtcode);
-        params.put("status",status);
-        params.put("unique",times);
+        params.put("status", status);
+        params.put("unique", times);
         JSONObject object = new JSONObject(params);
-        String Deskey=null;
-        String sign=null;
-        String deskey=null;
+        String Deskey = null;
+        String sign = null;
+        String deskey = null;
         try {
-            int random = new Random().nextInt(10000000)+89999999;
-            LogUtils.i("random",random);
-            Deskey = Des4.encode(object.toString(),String.valueOf(random));
-            deskey= RSA.encrypt(String.valueOf(random),Urls.PUCLIC_KEY);
+            int random = new Random().nextInt(10000000) + 89999999;
+            LogUtils.i("random", random);
+            Deskey = Des4.encode(object.toString(), String.valueOf(random));
+            deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY);
             sign = RSA.sign(deskey, Urls.PRIVATE_KEY);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        DesBean bean=new DesBean();
+        DesBean bean = new DesBean();
         bean.setData(Deskey);
         bean.setDeskey(deskey);
-        final Gson gson=new Gson();
+        final Gson gson = new Gson();
 
         String json = gson.toJson(bean);
 
-        OkGo.<String>post(Urls.Ip_url+Urls.Login.LOGIN)
+        OkGo.<String>post(Urls.Ip_url + Urls.Login.LOGIN)
                 .tag(this)
-                .headers("sign",sign)
+                .headers("sign", sign)
                 .upJson(json)
                 .execute(new StringCallback() {
                     @Override
@@ -436,49 +416,49 @@ public class LoginFragment extends Fragment {
                         hud.dismiss();
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
 
-                        if(infromBean.getError_code()==0){
+                        if (infromBean.getError_code() == 0) {
                             SPUtils.put(getActivity(), "token", infromBean.getData().getToken());
                             SPUtils.put(getActivity(), "login", true);
-                            UserBean userBean =new UserBean();
+                            UserBean userBean = new UserBean();
                             userBean.setNickname(infromBean.getData().getNickname());
                             userBean.setUserphone(infromBean.getData().getUserphone());
                             userBean.setIdentity(infromBean.getData().getIdentity());
 
-                            EventBus.getDefault().post(new MessageEvent(userBean.getNickname(),userBean.getUserphone()));
+                            EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
                             TinyDB tinyDB = new TinyDB(getActivity());
                             tinyDB.putObject("user", userBean);
                             String from = getActivity().getIntent().getStringExtra("from");
                             WelfareBean.DataBean welfare = (WelfareBean.DataBean) getActivity().getIntent().getSerializableExtra("welfare");
                             if (from != null) {
-                                Log.i("from------","from");
-                                if(from.equals("user")){
+                                Log.i("from------", "from");
+                                if (from.equals("user")) {
                                     getActivity().setResult(Flag_User, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
-                                }else if(from.equals("123")){
+                                } else if (from.equals("123")) {
                                     //EventBus.getDefault().post(new InformationEvent("user2"));
                                     getActivity().setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
-                                    getActivity(). finish();
-                                }else if(from.equals("user1")){
+                                    getActivity().finish();
+                                } else if (from.equals("user1")) {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
-                                }else if(from.equals("user2")){
+                                } else if (from.equals("user2")) {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
                                 }
-                            }else if(welfare!=null){
-                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
-                                    getActivity().finish();
+                            } else if (welfare != null) {
+                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));
+                                getActivity().finish();
 
                             } else {
                                 getActivity().finish();
                             }
-
-                        }else {
+                        } else {
                             long timeMillis = System.currentTimeMillis();
-                            SPUtils.put(getActivity(),"date",timeMillis);
+                            SPUtils.put(getActivity(), "date", timeMillis);
                             llBtnType.setVisibility(View.VISIBLE);
-                            Atest=false;
-                            ToastUtils.showToast(getActivity(),infromBean.getError_message());
+                            Atest = false;
+                            gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+                            ToastUtils.showToast(getActivity(), infromBean.getError_message());
                         }
                     }
 
@@ -504,19 +484,19 @@ public class LoginFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.tv_freeRegistered, R.id.tv_forgetPassWord,R.id.bt_login})
+    @OnClick({R.id.tv_freeRegistered, R.id.tv_forgetPassWord, R.id.bt_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_freeRegistered:
-                Login2Activity.switchmultibutton.setSelectedTab(0);
+                LoginActivity.switchmultibutton.setSelectedTab(0);
                 break;
             case R.id.tv_forgetPassWord:
                 ForgetWordActivity.launch(getActivity());
                 break;
             case R.id.bt_login:
-                if(Atest){
+                if (Atest) {
                     loginUser();
-                }else {
+                } else {
                     ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");
                 }
 

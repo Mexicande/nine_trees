@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.mancj.slideup.SlideUp;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
@@ -37,13 +39,12 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import cn.com.stableloan.view.likebutton.LikeButton;
+import cn.com.stableloan.view.likebutton.OnLikeListener;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -56,8 +57,6 @@ public class ProductDesc extends BaseActivity {
     ImageView ivBack;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
 
     @Bind(R.id.review)
     TextView review;
@@ -117,9 +116,26 @@ public class ProductDesc extends BaseActivity {
     Button apply;
     @Bind(R.id.layoutgo)
     RelativeLayout layoutgo;
+    @Bind(R.id.slideView)
+    RelativeLayout slideView;
+    @Bind(R.id.heart_button)
+    LikeButton heartButton;
+    @Bind(R.id.view_wx)
+    View viewWx;
+    @Bind(R.id.wx)
+    TextView wx;
+    @Bind(R.id.layout_wx)
+    LinearLayout layoutWx;
+    @Bind(R.id.layout_friend)
+    LinearLayout layoutFriend;
+    @Bind(R.id.top)
+    RelativeLayout top;
+    @Bind(R.id.layoutGo)
+    View layoutGo;
     private String pid;
     private Product_DescBean descBean;
 
+    private SlideUp slideUp;
 
     private KProgressHUD hud;
 
@@ -133,14 +149,28 @@ public class ProductDesc extends BaseActivity {
         setContentView(R.layout.activity_desc);
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
-
         initToolbar();
         pid = getIntent().getStringExtra("pid");
         if (pid != null) {
             LogUtils.i("ProductDesc", pid);
             getProductDate(pid);
         }
+        setListener();
+    }
 
+    private void setListener() {
+
+        heartButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                ToastUtils.showToast(ProductDesc.this,"收藏");
+            }
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                ToastUtils.showToast(ProductDesc.this,"取消");
+
+            }
+        });
     }
 
     private void getProductDate(String id) {
@@ -197,16 +227,15 @@ public class ProductDesc extends BaseActivity {
     private void dateInset(Product_DescBean descBean) {
         JSONObject eventObject = new JSONObject();
         try {
-            eventObject.put("产品", descBean.getProduct().getPname()+"detail");
+            eventObject.put("产品", descBean.getProduct().getPname() + "detail");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(this, "产品详情贷款",  eventObject);
-
+        ZhugeSDK.getInstance().track(this, "产品详情贷款", eventObject);
 
         List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
-        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
+        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL));
         superTextAdapter = new SuperTextAdapter(null);
         flowRecyclerView.setAdapter(superTextAdapter);
         superTextAdapter.addData(lables);
@@ -215,11 +244,10 @@ public class ProductDesc extends BaseActivity {
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                ;
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         Glide.with(this).load(product.getProduct_logo()).apply(options)
-              .into(productLogo);
+                .into(productLogo);
 
         averageTime.setText(product.getAverage_time());
 
@@ -243,7 +271,7 @@ public class ProductDesc extends BaseActivity {
             substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
             substringmin = substringmin + "万";
         } else {
-            substringmin = minimum_amount ;
+            substringmin = minimum_amount;
         }
         if (maximum_amount.length() > 4) {
             substringmax = maximum_amount.substring(0, maximum_amount.length() - 4);
@@ -251,10 +279,10 @@ public class ProductDesc extends BaseActivity {
         } else {
             substringmax = maximum_amount;
         }
-        if(product.getArrive()!=null){
+        if (product.getArrive() != null) {
             arrive.setVisibility(View.VISIBLE);
 
-            arrive.setText("到账方式: "+product.getArrive());
+            arrive.setText("到账方式: " + product.getArrive());
         }
 
 
@@ -306,9 +334,20 @@ public class ProductDesc extends BaseActivity {
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("产品详情");
+        slideUp = new SlideUp.Builder(slideView)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
     }
 
-    @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy})
+    @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy, R.id.bt_share
+            , R.id.layoutGo, R.id.layout_wx, R.id.layout_friend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -323,13 +362,38 @@ public class ProductDesc extends BaseActivity {
             case R.id.apply:
                 Boolean login = (Boolean) SPUtils.get(this, "login", false);
                 if (!login) {
-                    Login2Activity.launch(this);
+                    LoginActivity.launch(this);
                 } else {
 
                     sendIO();
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
+     /*       case R.id.heart_button:
+          *//*    //  heartButton.setLiked(true);
+                ToastUtils.showToast(this,"收藏");
+                boolean liked = heartButton.isLiked();
+                if(liked){
+                    heartButton.setLiked(false);
+                }else {
+                    heartButton.setAnimationScaleFactor(2);
+                    heartButton.setLiked(true);
+
+                }
+                break;*//*
+            case R.id.bt_share:
+                slideUp.show();
+                break;
+            case R.id.layoutGo:
+                slideUp.hide();
+                break;
+            case R.id.layout_wx:
+                ToastUtils.showToast(this, "微信分享");
+                break;
+            case R.id.layout_friend:
+                ToastUtils.showToast(this, "朋友圈分享");
+
+                break;*/
             default:
                 break;
         }
@@ -346,11 +410,13 @@ public class ProductDesc extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ZhugeSDK.getInstance().flush(getApplicationContext());
 
     }
+
 
 }
