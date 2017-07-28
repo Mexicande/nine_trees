@@ -18,6 +18,9 @@ import cn.com.stableloan.api.constant.RegexConstants;
  */
 public final class RegexUtils {
 
+    public static String number_letter_underline="^[\\w]{6,16}$";
+
+
     private RegexUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -172,6 +175,7 @@ public final class RegexUtils {
         return matches;
     }
 
+
     /**
      * 获取正则匹配分组
      *
@@ -209,4 +213,7 @@ public final class RegexUtils {
         if (input == null) return null;
         return Pattern.compile(regex).matcher(input).replaceAll(replacement);
     }
+
+
+
 }

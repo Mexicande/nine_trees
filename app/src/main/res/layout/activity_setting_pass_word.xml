@@ -49,7 +49,6 @@
         android:layout_marginLeft="@dimen/_50dp"
         android:layout_marginRight="@dimen/_50dp"
         android:hint="设置6-20位密码"
-
         android:maxLines="20"
         android:minLines="1"
         android:textSize="18sp"

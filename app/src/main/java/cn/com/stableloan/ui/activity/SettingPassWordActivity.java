@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -36,6 +37,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -130,13 +132,13 @@ public class SettingPassWordActivity extends AppCompatActivity {
                         .show();
 
                 String strPassWord = etSettingPassWord.getText().toString();
-                if (!strPassWord.isEmpty()) {
+                boolean match = RegexUtils.isMatch(RegexUtils.number_letter_underline, strPassWord);
 
+                if (!strPassWord.isEmpty()&&match) {
                     HashMap<String, String> params = new HashMap<>();
                     String md5ToString = EncryptUtils.encryptMD5ToString(strPassWord);
                     params.put("userphone", userPhone);
                     params.put("password", md5ToString);
-
                     JSONObject object = new JSONObject(params);
 
                     String Deskey = null;
@@ -201,6 +203,9 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                 });
                                 }
                             });
+                }else {
+                    hud.dismiss();
+                    ToastUtils.showToast(this,"格式不正确,请重新输入");
                 }
 
                 break;
