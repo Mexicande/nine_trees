@@ -164,10 +164,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name="com.moxie.client.MainActivity" />
-        <activity android:name=".ui.activity.CameraActivity"
-            android:screenOrientation="landscape"
-            />
-        <activity android:name=".ui.activity.CarmeraResultActivity"/>
+        <activity
+            android:name=".ui.activity.CameraActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".ui.activity.CarmeraResultActivity" />
+        <activity android:name=".ui.activity.PictureActivity"></activity>
     </application>
 
 </manifest>

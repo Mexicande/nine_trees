@@ -179,6 +179,8 @@ public class LoginActivity extends AppCompatActivity {
                 EventBus.getDefault().post(new InformationEvent("user2"));
                 finish();
             }
+        }else {
+            finish();
         }
     }
 }

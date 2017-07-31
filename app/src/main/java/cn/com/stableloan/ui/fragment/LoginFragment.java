@@ -48,7 +48,6 @@ import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.aes.Des4;
-import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.utils.ras.RSA;
 import cn.com.stableloan.view.RoundButton;
 import okhttp3.Call;
@@ -58,9 +57,9 @@ public class LoginFragment extends Fragment {
 
     GT3GeetestUtils gt3GeetestUtils;
     @Bind(R.id.et_phone)
-    PowerfulEditText etPhone;
+    cn.com.stableloan.utils.editext.PowerfulEditText etPhone;
     @Bind(R.id.et_passWord)
-    PowerfulEditText etPassWord;
+    cn.com.stableloan.utils.editext.PowerfulEditText etPassWord;
     @Bind(R.id.bt_login)
     RoundButton btLogin;
     @Bind(R.id.tv_freeRegistered)
@@ -125,19 +124,24 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (etPassWord.getText().toString().length() > 5) {
+                if (etPassWord.getText().toString().length() >= 6) {
                     if (!PowerfulEditText) {
                         PowerfulEditText = true;
                     } else {
                         btVisiableButton.setVisibility(View.GONE);
                         btLogin.setVisibility(View.VISIBLE);
                     }
+                }else {
+                    btVisiableButton.setVisibility(View.VISIBLE);
+                    btLogin.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-
+                    if(etPassWord.getText().toString().length() < 6){
+                        btVisiableButton.setVisibility(View.VISIBLE);
+                        btLogin.setVisibility(View.GONE);
+                    }
             }
         });
 
@@ -156,6 +160,9 @@ public class LoginFragment extends Fragment {
                         btVisiableButton.setVisibility(View.GONE);
                         btLogin.setVisibility(View.VISIBLE);
                     }
+                }else {
+                    btVisiableButton.setVisibility(View.VISIBLE);
+                    btLogin.setVisibility(View.GONE);
                 }
             }
 
@@ -167,8 +174,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void setGt3GeetestUtilsListener() {
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
         String ip = (String) SPUtils.get(getActivity(), "ip", "");
 
         if (ip != null) {
@@ -196,7 +203,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void gt3DialogOnError(String error) {
                 LogUtils.i("极验------", error);
-                gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+                gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
 
             }
 
@@ -248,7 +255,7 @@ public class LoginFragment extends Fragment {
                         e.printStackTrace();
                     }
                     JSONObject object = new JSONObject(params);
-                    OkGo.post(Urls.Ip_url+Urls.Login.validateURL)
+                    OkGo.post(Urls.Ip_url+ Urls.Login.validateURL)
                             .tag(this)
                             .upJson(object)
                             .execute(new StringCallback() {
@@ -457,7 +464,7 @@ public class LoginFragment extends Fragment {
                             SPUtils.put(getActivity(), "date", timeMillis);
                             llBtnType.setVisibility(View.VISIBLE);
                             Atest = false;
-                            gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+                            gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
                             ToastUtils.showToast(getActivity(), infromBean.getError_message());
                         }
                     }

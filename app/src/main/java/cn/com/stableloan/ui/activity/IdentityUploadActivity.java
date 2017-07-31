@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -138,29 +140,68 @@ public class IdentityUploadActivity extends BaseActivity {
                                 String status = jsonObject1.getString("status");
                                 if ("1".equals(status)) {
                                     getToken();
-                                    String photo1 = jsonObject1.getString(positive_photo);
-                                    String photo2 = jsonObject1.getString(negative_photo);
-                                    String photo3 = jsonObject1.getString(am_photo);
+                                    final String photo1 = jsonObject1.getString(positive_photo);
+                                    final String photo2 = jsonObject1.getString(negative_photo);
+                                    final String photo3 = jsonObject1.getString(am_photo);
                                     RequestOptions options = new RequestOptions()
                                             .centerInside()
                                             .placeholder(R.mipmap.ic_default)
-                                            .error(R.mipmap.ic_default)
+                                            .error(R.mipmap.ic_image_error)
                                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-                                    RequestOptions options1 = new RequestOptions()
-                                            .centerInside()
-                                            .placeholder(R.mipmap.ic_default_un)
+                                    if(!photo1.isEmpty()){
+                                        Glide.with(IdentityUploadActivity.this).load(photo1).apply(options).into(fiv);
+                                        fiv.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = PictureActivity.newIntent(IdentityUploadActivity.this, photo1, "身份证正面照片");
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                        IdentityUploadActivity.this, fiv, PictureActivity.TRANSIT_PIC);
+                                                try {
+                                                    ActivityCompat.startActivity(IdentityUploadActivity.this, intent, optionsCompat.toBundle());
+                                                } catch (IllegalArgumentException e) {
+                                                    e.printStackTrace();
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        });
+                                    }
 
-                                            .error(R.mipmap.ic_default_un)
+                                    if(!photo2.isEmpty()){
+                                        Glide.with(IdentityUploadActivity.this).load(photo2).apply(options).into(fivUn);
 
-                                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-                                    RequestOptions options2 = new RequestOptions()
-                                            .centerInside()
-                                            .placeholder(R.mipmap.ic_default_head)
-                                            .error(R.mipmap.ic_default_head)
-                                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-                                    Glide.with(IdentityUploadActivity.this).load(photo1).apply(options).into(fiv);
-                                    Glide.with(IdentityUploadActivity.this).load(photo2).apply(options1).into(fivUn);
-                                    Glide.with(IdentityUploadActivity.this).load(photo3).apply(options2).into(fivBack);
+                                        fivUn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = PictureActivity.newIntent(IdentityUploadActivity.this, photo2, "身份证反面照片");
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                        IdentityUploadActivity.this, fivUn, PictureActivity.TRANSIT_PIC);
+                                                try {
+                                                    ActivityCompat.startActivity(IdentityUploadActivity.this, intent, optionsCompat.toBundle());
+                                                } catch (IllegalArgumentException e) {
+                                                    e.printStackTrace();
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    if(!photo3.isEmpty()){
+                                        Glide.with(IdentityUploadActivity.this).load(photo3).apply(options).into(fivBack);
+                                        fivBack.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = PictureActivity.newIntent(IdentityUploadActivity.this, photo3, "手持身份证照片");
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                        IdentityUploadActivity.this, fivBack, PictureActivity.TRANSIT_PIC);
+                                                try {
+                                                    ActivityCompat.startActivity(IdentityUploadActivity.this, intent, optionsCompat.toBundle());
+                                                } catch (IllegalArgumentException e) {
+                                                    e.printStackTrace();
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        });
+                                    }
 
                                 } else {
                                     Intent intent = new Intent(IdentityUploadActivity.this, Verify_PasswordActivity.class).putExtra("from", "IdentityUpload");

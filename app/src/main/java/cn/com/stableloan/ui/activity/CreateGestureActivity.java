@@ -24,8 +24,6 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
-import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
@@ -179,7 +177,7 @@ public class CreateGestureActivity extends BaseActivity {
 
         aCache.put(Constant.GESTURE_PASSWORD, bytes);
     }
-    private  SelfDialog selfDialog;
+    private SelfDialog selfDialog;
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         selfDialog = new SelfDialog(this);

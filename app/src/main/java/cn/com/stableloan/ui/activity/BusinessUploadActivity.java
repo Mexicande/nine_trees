@@ -2,10 +2,11 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -109,17 +110,37 @@ public class BusinessUploadActivity extends BaseActivity {
                                 String status = jsonObject1.getString("status");
                                 if ("1".equals(status)) {
                                     getToken();
-                                    String photo1 = jsonObject1.getString("license_photo");
+                                    final String photo1 = jsonObject1.getString("license_photo");
                                     if (photo1 != null) {
                                         text.setVisibility(View.GONE);
                                     }
-                                    RequestOptions options = new RequestOptions()
-                                            .centerInside()
-                                            .placeholder(R.mipmap.ic_default_business)
-                                            .error(R.mipmap.ic_default_business)
-                                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                                    if (photo1 != null) {
+                                        text.setVisibility(View.GONE);
+                                    }
+                                    if(!photo1.isEmpty()){
 
-                                    Glide.with(BusinessUploadActivity.this).load(photo1).apply(options).into(fiv);
+                                        RequestOptions options = new RequestOptions()
+                                                .centerInside()
+                                                .placeholder(R.mipmap.ic_default_business)
+                                                .error(R.mipmap.ic_image_error)
+                                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+                                        Glide.with(BusinessUploadActivity.this).load(photo1).apply(options).into(fiv);
+                                        fiv.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = PictureActivity.newIntent(BusinessUploadActivity.this, photo1, "营业执照照片");
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                        BusinessUploadActivity.this, fiv, PictureActivity.TRANSIT_PIC);
+                                                try {
+                                                    ActivityCompat.startActivity(BusinessUploadActivity.this, intent, optionsCompat.toBundle());
+                                                } catch (IllegalArgumentException e) {
+                                                    e.printStackTrace();
+                                                    startActivity(intent);
+                                                }                                           }
+                                        });
+                                    }
+
                                 } else {
                                     Intent intent = new Intent(BusinessUploadActivity.this, Verify_PasswordActivity.class).putExtra("from", "BusinessUpload");
                                     startActivity(intent);

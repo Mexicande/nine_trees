@@ -2,10 +2,11 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -102,17 +103,36 @@ public class BankUploadActivity extends BaseActivity {
                                 String status = jsonObject1.getString("status");
                                 if ("1".equals(status)) {
                                     getToken();
-                                    String photo1 = jsonObject1.getString("debit_photo");
+                                    final String photo1 = jsonObject1.getString("debit_photo");
                                     if (photo1 != null) {
                                         text.setVisibility(View.GONE);
                                     }
-                                    RequestOptions options = new RequestOptions()
-                                            .centerInside()
-                                            .placeholder(R.mipmap.ic_default_bank)
-                                            .error(R.mipmap.ic_default_bank)
-                                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                                    if(!photo1.isEmpty()){
+                                        RequestOptions options = new RequestOptions()
+                                                .centerInside()
+                                                .placeholder(R.mipmap.ic_default_bank)
+                                                .error(R.mipmap.ic_image_error)
+                                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                                        Glide.with(BankUploadActivity.this).load(photo1).apply(options).into(fiv);
+                                        fiv.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = PictureActivity.newIntent(BankUploadActivity.this, photo1, "银行卡照片");
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                        BankUploadActivity.this, fiv, PictureActivity.TRANSIT_PIC);
+                                                try {
+                                                    ActivityCompat.startActivity(BankUploadActivity.this, intent, optionsCompat.toBundle());
+                                                } catch (IllegalArgumentException e) {
+                                                    e.printStackTrace();
+                                                    startActivity(intent);
+                                                }
 
-                                    Glide.with(BankUploadActivity.this).load(photo1).apply(options).into(fiv);
+                                            }
+                                        });
+                                    }
+
+
+
                                 } else {
                                     Intent intent = new Intent(BankUploadActivity.this, Verify_PasswordActivity.class).putExtra("from", "BankUpload");
                                     startActivity(intent);

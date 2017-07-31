@@ -40,7 +40,6 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.CodeMessage;
-import cn.com.stableloan.model.GtDateBean;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
@@ -198,8 +197,8 @@ public class MessageFragment extends Fragment {
 
 
     private void GT3GeetestListener() {
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+Urls.Login.captchaURL, Urls.Ip_url+Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
         changePhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         changePhone.getPaint().setAntiAlias(true);
         AdressIp = getIpAddress();
@@ -279,7 +278,7 @@ public class MessageFragment extends Fragment {
                         e.printStackTrace();
                     }
                     JSONObject object = new JSONObject(params);
-                    OkGo.post(Urls.Ip_url+Urls.Login.validateURL)
+                    OkGo.post(Urls.Ip_url+ Urls.Login.validateURL)
                             .tag(this)
                             .upJson(object)
                             .execute(new StringCallback() {
@@ -445,12 +444,12 @@ public class MessageFragment extends Fragment {
      * Get the verification code
      */
     private void getMessage() {
-        if (!etPhone.getText().toString().isEmpty()) {
+        if (etPhone.getText().toString().length()==11) {
 
             HashMap<String, String> params = new HashMap<>();
             params.put("userphone", etPhone.getText().toString());
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.<MessageCode>post(Urls.Ip_url+Urls.times.MESSAGE_SEND)
+            OkGo.<MessageCode>post(Urls.Ip_url+ Urls.times.MESSAGE_SEND)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
@@ -485,7 +484,7 @@ public class MessageFragment extends Fragment {
                         }
                     });
         } else {
-            ToastUtils.showToast(getActivity(), "请输入手机号");
+            ToastUtils.showToast(getActivity(), "手机号格式错误");
         }
 
     }
@@ -517,43 +516,43 @@ public class MessageFragment extends Fragment {
     @OnClick({R.id.bt_message_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
             case R.id.bt_message_login:
-                HashMap<String, String> params = new HashMap<>();
-                params.put("userphone", etPhone.getText().toString());
-                params.put("code", etCode.getText().toString());
-                params.put("gtcode", gtcode);
-                params.put("status",status);
-                params.put("unique",times);
-                JSONObject object=new JSONObject(params);
-                OkGo.<String>post(Urls.Ip_url+Urls.Login.QUICK_LOGIN)
-                        .tag(this)
-                        .upJson(object)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                Gson gson=new Gson();
-                                CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
-                                LogUtils.i("CodeMessage",codeMessage);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("userphone", etPhone.getText().toString());
+                    params.put("code", etCode.getText().toString());
+                    params.put("gtcode", gtcode);
+                    params.put("status",status);
+                    params.put("unique",times);
+                    JSONObject object=new JSONObject(params);
+                    OkGo.<String>post(Urls.Ip_url+ Urls.Login.QUICK_LOGIN)
+                            .tag(this)
+                            .upJson(object)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    Gson gson=new Gson();
+                                    CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
+                                    LogUtils.i("CodeMessage",codeMessage);
 
-                                if(codeMessage.getError_code()==0){
-                                    if("1".equals(codeMessage.getData().getStatus())){
-                                        SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
-                                        String from = getActivity().getIntent().getStringExtra("from");
-                                        Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
-                                        SPUtils.put(getActivity(), "login", true);
-                                        if (from != null) {
-                                            if(from.equals("user")){
-                                               // MainActivity.launch(getActivity());
-                                                EventBus.getDefault().post(new InformationEvent("user3"));
-                                                getActivity().finish();
-                                            }else if(from.equals("123")){
-                                                EventBus.getDefault().post(new InformationEvent("user3"));
-                                                getActivity().finish();
-                                            }else if(from.equals("user2")){
-                                                EventBus.getDefault().post(new InformationEvent("userinfor"));
-                                                getActivity().finish();
-                                            }
+                                    if(codeMessage.getError_code()==0){
+                                        if("1".equals(codeMessage.getData().getStatus())){
+                                            SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
+                                            String from = getActivity().getIntent().getStringExtra("from");
+                                            Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
+                                            SPUtils.put(getActivity(), "login", true);
+                                            if (from != null) {
+                                                if(from.equals("user")){
+                                                    // MainActivity.launch(getActivity());
+                                                    EventBus.getDefault().post(new InformationEvent("user3"));
+                                                    getActivity().finish();
+                                                }else if(from.equals("123")){
+                                                    EventBus.getDefault().post(new InformationEvent("user3"));
+                                                    getActivity().finish();
+                                                }else if(from.equals("user2")){
+                                                    EventBus.getDefault().post(new InformationEvent("userinfor"));
+                                                    EventBus.getDefault().post(new MessageEvent("","1"));
+                                                    getActivity().finish();
+                                                }
 
                                             /*else if(from.equals("user1")){
                                                                     setResult(4000, new Intent().putExtra("user", bean));
@@ -562,23 +561,22 @@ public class MessageFragment extends Fragment {
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();
                                                                 }*/
-                                        } else if(welfare!=null){
-                                            startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
-                                            getActivity().finish();
-
-                                        } else{
-                                            EventBus.getDefault().post(new MessageEvent("","1"));
-                                            getActivity().finish();
+                                            } else if(welfare!=null){
+                                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
+                                                getActivity().finish();
+                                            } else{
+                                                EventBus.getDefault().post(new MessageEvent("","1"));
+                                                getActivity().finish();
+                                            }
+                                        }else {
+                                            LogUtils.i("status",codeMessage.getData().getStatus());
+                                            startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
                                         }
                                     }else {
-                                        LogUtils.i("status",codeMessage.getData().getStatus());
-                                        startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
+                                        ToastUtils.showToast(getActivity(),codeMessage.getError_message());
                                     }
-                                }else {
-                                    ToastUtils.showToast(getActivity(),codeMessage.getError_message());
                                 }
-                            }
-                        });
+                            });
                 break;
         }
     }

@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.andreabaccega.widget.FormEditText;
@@ -21,6 +19,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,9 +34,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Bank;
+import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.BankUtils;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
@@ -71,7 +70,7 @@ public class BankInformationFragment extends Fragment {
     TextView etValidityTime1;
     private TimePickerView pvTime;
 
-    private  Bank bankBean;
+    private Bank bankBean;
 
     public BankInformationFragment() {
         // Required empty public constructor
@@ -318,11 +317,11 @@ public class BankInformationFragment extends Fragment {
                                     JSONObject object = new JSONObject(s);
                                     String isSuccess = object.getString("isSuccess");
                                     if ("1".equals(isSuccess)) {
+                                        EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                         String msg = object.getString("msg");
                                         ToastUtils.showToast(getActivity(), msg);
                                         bankBean.getBank().setDebit(debitBean);
                                         bankBean.getBank().setCredit(creditBean);
-
                                     } else {
                                         String msg = object.getString("msg");
                                         ToastUtils.showToast(getActivity(), msg);

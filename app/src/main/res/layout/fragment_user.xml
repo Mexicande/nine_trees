@@ -55,7 +55,7 @@
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="我的资料" />
-   <!-- <com.allen.library.SuperTextView
+    <com.allen.library.SuperTextView
         android:id="@+id/layout_collection"
         android:layout_marginTop="1dp"
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
-        stv:sLeftTextString="我的收藏" />-->
+        stv:sLeftTextString="我的收藏" />
     <com.allen.library.SuperTextView
         android:id="@+id/feedback"
         android:layout_marginTop="1dp"

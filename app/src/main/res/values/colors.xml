@@ -25,6 +25,8 @@
     <color name="kprogresshud_default_color">#b1000000</color>
     <color name="kprogresshud_grey_color">#449E9E9E</color>
 
+    <color name="md_black_1000">#000000</color>
+    <color name="md_grey_900">#50000000</color>
 
 
 

@@ -2,10 +2,11 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +18,6 @@ import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.tools.PictureFileUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.qiniu.android.http.ResponseInfo;
@@ -102,17 +102,35 @@ public class CardUploadActivity extends BaseActivity {
                                 String status = jsonObject1.getString("status");
                                 if ("1".equals(status)) {
                                     getToken();
-                                    String photo1 = jsonObject1.getString("brand_photo");
+                                    final String photo1 = jsonObject1.getString("brand_photo");
                                     if (photo1 != null) {
                                         text.setVisibility(View.GONE);
                                     }
-                                    RequestOptions options = new RequestOptions()
-                                            .centerInside()
-                                            .placeholder(R.mipmap.ic_default_bank)
-                                            .error(R.mipmap.ic_default_bank)
-                                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
-                                    Glide.with(CardUploadActivity.this).load(photo1).apply(options).into(fiv);
+                                    if(!photo1.isEmpty()){
+
+                                        RequestOptions options = new RequestOptions()
+                                                .centerInside()
+                                                .placeholder(R.mipmap.ic_default_bank)
+                                                .error(R.mipmap.ic_image_error)
+                                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                                        Glide.with(CardUploadActivity.this).load(photo1).apply(options).into(fiv);
+
+                                        fiv.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = PictureActivity.newIntent(CardUploadActivity.this, photo1, "名片或工牌照片");
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                        CardUploadActivity.this, fiv, PictureActivity.TRANSIT_PIC);
+                                                try {
+                                                    ActivityCompat.startActivity(CardUploadActivity.this, intent, optionsCompat.toBundle());
+                                                } catch (IllegalArgumentException e) {
+                                                    e.printStackTrace();
+                                                    startActivity(intent);
+                                                }                                           }
+                                        });
+                                    }
+
                                 } else {
                                     Intent intent = new Intent(CardUploadActivity.this, Verify_PasswordActivity.class).putExtra("from", "CardUpload");
                                     startActivity(intent);

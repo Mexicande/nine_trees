@@ -2,19 +2,15 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -22,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -129,7 +124,7 @@ public class UserInformationFragment extends Fragment {
     LinearLayout layout3;
 
 
-    private  UserBean user;
+    private UserBean user;
     private String[] list1;
 
     private String[] list;
@@ -274,9 +269,9 @@ public class UserInformationFragment extends Fragment {
                                     etName.setText(identityBean.getName());
                                     etIDCard.setText(identityBean.getIdcard());
                                     String sex = identityBean.getSex();
-                                    if ("0".equals(sex)) {
+                                    if (sex.equals("0")) {
                                         etSex.setText("女");
-                                    } else if ("1".equals(sex)) {
+                                    } else if (sex.equals("1")) {
                                         etSex.setText("男");
                                     }
                                     etAge.setText(identityBean.getAge());
@@ -297,8 +292,10 @@ public class UserInformationFragment extends Fragment {
                                     etContactName.setText(bean.getContact());
 
                                     String bet = bean.getRelation();
-                                    int i2 = Integer.parseInt(bet);
-                                    etBetween1.setText(list[i2]);
+                                    if(!bet.isEmpty()){
+                                        int i2 = Integer.parseInt(bet);
+                                        etBetween1.setText(list[i2]);
+                                    }
 
                                     Identity.IdentityBean.ContactBean bean1 = identityBean.getContact().get(1);
 
@@ -306,9 +303,11 @@ public class UserInformationFragment extends Fragment {
                                     etContactName2.setText(bean1.getContact());
 
                                     String bet2 = bean1.getRelation();
-                                    int i1 = Integer.parseInt(bet2);
-                                    etBetween2.setText(list[i1]);
 
+                                    if(!bet2.isEmpty()){
+                                        int i1 = Integer.parseInt(bet2);
+                                        etBetween2.setText(list[i1]);
+                                    }
 
                                 } else {
                                     Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
@@ -358,7 +357,6 @@ public class UserInformationFragment extends Fragment {
                 break;
             case R.id.getContact2:
                 getPermission(2);
-
                 break;
             case R.id.save:
                 saveDate();
@@ -404,9 +402,9 @@ public class UserInformationFragment extends Fragment {
             }
         }
         String s1 = etSex.getText().toString();
-        if (s1.equals("女")) {
+        if ("女".equals(s1)) {
             identity1.setSex("0");
-        } else if (s1.equals("男")) {
+        } else if ("男".equals(s1)) {
             identity1.setSex("1");
         } else {
             identity1.setSex("");
@@ -458,7 +456,7 @@ public class UserInformationFragment extends Fragment {
                     && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
                     && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
                     && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()
-                    && !userPhone.getText().toString().isEmpty()) {
+                    && !userPhone.getText().toString().isEmpty()&&!etName.getText().toString().isEmpty()) {
                 identity1.setIstatus("1");
             } else {
                 identity1.setIstatus("0");
@@ -495,6 +493,7 @@ public class UserInformationFragment extends Fragment {
                                 if ("1".equals(isSuccess)) {
                                     identityBean=identity1;
 
+                                    EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                     String msg = object.getString("msg");
                                     ToastUtils.showToast(getActivity(), msg);
                                 } else {

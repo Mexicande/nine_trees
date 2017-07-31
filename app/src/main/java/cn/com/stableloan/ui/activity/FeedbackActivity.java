@@ -3,7 +3,6 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -113,7 +111,7 @@ public class FeedbackActivity extends BaseActivity {
                 }
                 JSONObject jsonObject = new JSONObject(params);
 
-                OkGo.<String>post(Urls.Ip_url+Urls.user.FEEDBACK)
+                OkGo.<String>post(Urls.Ip_url+ Urls.user.FEEDBACK)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {

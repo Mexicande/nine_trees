@@ -78,6 +78,11 @@ public class UserInformationActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getStatus();
+    }
     private void getStatus() {
         Map<String,String> parms=new HashMap<>();
         String token = (String) SPUtils.get(this, "token", "1");

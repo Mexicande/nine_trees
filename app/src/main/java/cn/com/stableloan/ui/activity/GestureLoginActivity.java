@@ -121,7 +121,7 @@ public class GestureLoginActivity extends BaseActivity {
                 Map<String,String> parms=new HashMap<>();
                 parms.put("token",token);
                 JSONObject jsonObject=new JSONObject(parms);
-                OkGo.<String>post(Urls.NEW_URL+Urls.Login.GET_SIGNATURE)
+                OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {
@@ -148,7 +148,7 @@ public class GestureLoginActivity extends BaseActivity {
                 Map<String,String> parms=new HashMap<>();
                 parms.put("token",token);
                 JSONObject jsonObject=new JSONObject(parms);
-                OkGo.<String>post(Urls.NEW_URL+Urls.Login.GET_SIGNATURE)
+                OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {
@@ -176,7 +176,7 @@ public class GestureLoginActivity extends BaseActivity {
             Map<String,String> parms=new HashMap<>();
             parms.put("token",token);
             JSONObject jsonObject=new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL+Urls.Login.GET_SIGNATURE)
+            OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
@@ -211,9 +211,20 @@ public class GestureLoginActivity extends BaseActivity {
      */
     @OnClick(R.id.forgetGestureBtn)
     void forgetGesturePasswrod() {
-        Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class);
-        startActivity(intent);
-        this.finish();
+        String from = getIntent().getStringExtra("from");
+        if(from.equals("SettingSafe")){
+            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class).putExtra("from","safe");
+            startActivity(intent);
+            this.finish();
+        }else if(from.equals("userinformation")){
+            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class) .putExtra("from", "userinformation");
+            startActivity(intent);
+            this.finish();
+        }else {
+            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
     }
 
     @OnClick(R.id.layout_go)

@@ -4,16 +4,16 @@ package cn.com.stableloan.api;
  * Created by apple on 2017/5/20.
  */
 
-public interface Urls{
+public interface Urls {
 
-    String STATUS_WordLogin                 =           "1";
-    String STATUS_MessageLogin              =           "3";
-    String Ip_url="http://test.api.anwenqianbao.com/v1/";
+    String Ip_url="http://api.anwenqianbao.com/v1/";
 
     String CardBack="http://www.shoujiweidai.com/Card/index.html";
-    String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
 
-    String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
+    String puk_URL="http://api.shoujijiekuan.com/Home/ApiLogin/";
+
+    String NEW_URL="http://api.shoujijiekuan.com/Home/";
+
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
             "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4" +
@@ -37,9 +37,14 @@ public interface Urls{
     String Api_Id="3846f6f1e99e4f1b958111fda257c368";
 
     //
+    interface Update{
+        String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
+        String value="url=url_wandoujia";
+    }
     interface  times{
         String MESSAGE_SEND="sms/getcode";
     }
+
     interface Login{
         String SettingPassWord="set/password";
         //验证码发送
@@ -49,7 +54,6 @@ public interface Urls{
         String Immunity="Mine/Immunity";
         String QUICK_LOGIN="quick/login";
         String captchaURL = "geetes/captcha";
-        // 设置二次验证的URL，需替换成自己的服务器URL
         String validateURL = "geetes/verification";
 
     }

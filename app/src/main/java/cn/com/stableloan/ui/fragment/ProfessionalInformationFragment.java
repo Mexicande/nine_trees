@@ -15,11 +15,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,8 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.WorkBean;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.BetterSpinner;
@@ -306,7 +305,6 @@ public class ProfessionalInformationFragment extends Fragment {
         }
         businessBean.setLicense("");
 
-
         if (checkbox1.isChecked()) {
             businessBean.setLicense("0");
         }
@@ -363,9 +361,12 @@ public class ProfessionalInformationFragment extends Fragment {
 
 
                 if(school.isEmpty()||operations.isEmpty()||Cincome.isEmpty()||fixedline.isEmpty()||company.isEmpty()||email.isEmpty()
-                        ||loction.isEmpty()||teacher.isEmpty()||SchoolAddress.isEmpty()||yers.isEmpty()||ome.isEmpty()||!checkbox1.isChecked()
-                        ||!checkbox2.isChecked()||!checkbox3.isChecked()||!checkbox4.isChecked()){
-                    occupationBean.setStatus("0");
+                        ||loction.isEmpty()||teacher.isEmpty()||SchoolAddress.isEmpty()||yers.isEmpty()||ome.isEmpty()){
+                    if(!checkbox1.isChecked()&&!checkbox2.isChecked()){
+                        if(!checkbox3.isChecked()&&!checkbox4.isChecked()){
+                            occupationBean.setStatus("0");
+                        }
+                    }
                 }else {
                     occupationBean.setStatus("1");
                 }
@@ -386,6 +387,8 @@ public class ProfessionalInformationFragment extends Fragment {
                                     work=workBean;
 
                                     if ("1".equals(isSuccess)) {
+                                        EventBus.getDefault().post(new InformationEvent("informationStatus"));
+
                                         ToastUtils.showToast(getActivity(), msg);
                                     } else {
                                         ToastUtils.showToast(getActivity(), msg);
