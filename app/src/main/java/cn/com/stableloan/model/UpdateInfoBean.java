@@ -16,11 +16,13 @@
 
 package cn.com.stableloan.model;
 
-public class UpdateInfoBean {
+import java.io.Serializable;
+
+public class UpdateInfoBean implements Serializable {
     // 是否有新版本
     public boolean hasUpdate = false;
     // 是否静默下载：有新版本时不提示直接下载
-    public boolean isSilent = false;
+    public boolean issilent = false;
     // 是否强制安装：不安装无法使用app
     public boolean isForce = false;
     // 是否下载完成后自动安装
@@ -28,16 +30,16 @@ public class UpdateInfoBean {
     // 是否可忽略该版本
     public boolean isIgnorable = true;
     // 一天内最大提示次数，<1时不限
-    public int maxTimes = 0;
-    public int versionCode;
-    public String versionName;
-    public String updateContent;
-
+    public String maxtimes ;
+    public String versioncode;
+    public String versionname;
+    public String updatecontent;
     public String url;
     public String md5;
-    public long size;
+    public String size;
 
     public UpdateInfoBean() {
+
     }
 
     public boolean isHasUpdate() {
@@ -49,11 +51,11 @@ public class UpdateInfoBean {
     }
 
     public boolean isSilent() {
-        return isSilent;
+        return issilent;
     }
 
     public void setSilent(boolean silent) {
-        isSilent = silent;
+        issilent = silent;
     }
 
     public boolean isForce() {
@@ -80,36 +82,36 @@ public class UpdateInfoBean {
         isIgnorable = ignorable;
     }
 
-    public int getMaxTimes() {
-        return maxTimes;
+    public String getMaxTimes() {
+        return maxtimes;
     }
 
-    public void setMaxTimes(int maxTimes) {
-        this.maxTimes = maxTimes;
+    public void setMaxTimes(String maxTimes) {
+        this.maxtimes = maxTimes;
     }
 
-    public int getVersionCode() {
-        return versionCode;
+    public String getVersionCode() {
+        return versioncode;
     }
 
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
+    public void setVersionCode(String versionCode) {
+        this.versioncode = versionCode;
     }
 
     public String getVersionName() {
-        return versionName;
+        return versionname;
     }
 
     public void setVersionName(String versionName) {
-        this.versionName = versionName;
+        this.versionname = versionName;
     }
 
     public String getUpdateContent() {
-        return updateContent;
+        return updatecontent;
     }
 
     public void setUpdateContent(String updateContent) {
-        this.updateContent = updateContent;
+        this.updatecontent = updateContent;
     }
 
     public String getUrl() {
@@ -128,11 +130,11 @@ public class UpdateInfoBean {
         this.md5 = md5;
     }
 
-    public long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -140,14 +142,14 @@ public class UpdateInfoBean {
     public String toString() {
         return "UpdateInfoBean{" +
                 "hasUpdate=" + hasUpdate +
-                ", isSilent=" + isSilent +
+                ", isSilent=" + issilent +
                 ", isForce=" + isForce +
                 ", isAutoInstall=" + isAutoInstall +
                 ", isIgnorable=" + isIgnorable +
-                ", maxTimes=" + maxTimes +
-                ", versionCode=" + versionCode +
-                ", versionName='" + versionName + '\'' +
-                ", updateContent='" + updateContent + '\'' +
+                ", maxTimes=" + maxtimes +
+                ", versionCode=" + versioncode +
+                ", versionName='" + versionname + '\'' +
+                ", updateContent='" + updatecontent + '\'' +
                 ", url='" + url + '\'' +
                 ", md5='" + md5 + '\'' +
                 ", size=" + size +

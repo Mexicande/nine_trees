@@ -1,12 +1,13 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by apple on 2017/7/26.
  */
 
-public class InputBean {
+public class InputBean implements Serializable {
 
     private List<InputsBean> inputs;
 
@@ -18,7 +19,7 @@ public class InputBean {
         this.inputs = inputs;
     }
 
-    public static class InputsBean {
+    public static class InputsBean implements Serializable{
         /**
          * image : {"dataType":50,"dataValue":"图片二进制数据的base64编码"}
          * configure : {"dataType":50,"dataValue":{"side":"face"}}
@@ -69,7 +70,7 @@ public class InputBean {
             }
         }
 
-        public static class ConfigureBean {
+        public static class ConfigureBean implements Serializable{
             /**
              * dataType : 50
              * dataValue : {"side":"face"}
@@ -94,7 +95,7 @@ public class InputBean {
                 this.dataValue = dataValue;
             }
 
-            public static class DataValueBean {
+            public static class DataValueBean implements Serializable{
                 /**
                  * side : face
                  */

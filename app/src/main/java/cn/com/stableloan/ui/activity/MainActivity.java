@@ -2,6 +2,8 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -80,30 +82,30 @@ public class MainActivity extends BaseActivity {
         UpdateManager.create(this).setUrl(url).setParser(new IUpdateParser() {
             @Override
             public UpdateInfo parse(String source) throws Exception {
+
                 LogUtils.i("source",source);
                 UpdateInfo info = new UpdateInfo();
                 Gson gson=new Gson();
                 UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
-                int code = AppUtils.getAppVersionCode();
-                String versionName = AppUtils.getAppVersionName();
-                LogUtils.i("visoncode--",code+"---versionName=="+versionName);
-
-                LogUtils.i("info---"+infoBean.getVersionCode());
-                if(infoBean.getVersionCode()>code){
+                LogUtils.i("Update",infoBean.toString());
+                int code =Integer.parseInt(getVersionCode(MainActivity.this));
+                LogUtils.i("code",code);
+                if(Integer.parseInt(infoBean.getVersionCode())>code){
                     info.hasUpdate = true;
                 }else {
                     info.hasUpdate = false;
                 }
                 info.updateContent =infoBean.getUpdateContent();
-                info.versionCode = infoBean.getVersionCode();
+                info.versionCode = Integer.parseInt(infoBean.getVersionCode());
                 info.versionName = infoBean.getVersionName();
                 info.url = infoBean.getUrl();
                 info.md5 =infoBean.getMd5();
-                info.size = infoBean.getSize();
-                info.isForce = false;
-                info.isIgnorable = false;
-                info.isAutoInstall=true;
-                info.isSilent = false;
+                info.size = Long.parseLong(infoBean.getSize());
+                info.isForce = infoBean.isForce();
+                info.isIgnorable = infoBean.isIgnorable();
+                info.isAutoInstall=infoBean.isAutoInstall();
+                info.isSilent = infoBean.isSilent();
+                info.maxTimes=Integer.parseInt(infoBean.getMaxTimes());
                 return info;
             }
         }).setManual(true).setManual(true).setWifiOnly(false).setOnFailureListener(new OnFailureListener() {
@@ -113,7 +115,18 @@ public class MainActivity extends BaseActivity {
             }
         }).check();
     }
-
+    public String getVersionCode(Context context){
+        PackageManager packageManager=context.getPackageManager();
+        PackageInfo packageInfo;
+        String versionCode="";
+        try {
+            packageInfo=packageManager.getPackageInfo(context.getPackageName(),0);
+            versionCode=packageInfo.versionCode+"";
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
     private void initView() {
 
 

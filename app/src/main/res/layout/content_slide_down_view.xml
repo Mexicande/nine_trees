@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="50dp"
     android:orientation="vertical"
     android:background="@android:color/transparent"
@@ -19,124 +20,73 @@
             android:background="#ffffff"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/layoutcheck"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false">
-                <RelativeLayout
-                    android:layout_weight="1"
+                <TextView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="身份"
+                    android:textSize="17dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/tag_textcolor"/>
+                <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
+                    android:id="@+id/id_flowlayout"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_width="match_parent"
+                    zhy:max_select="1"
+                    app:gravity="center"
                     android:layout_height="wrap_content">
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox1"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:enabled="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/colorPrimary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/checkbox1"
-                        android:textSize="14sp"
-                        android:text="上班族"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_weight="1"
+                </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
+                <TextView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="标签"
+                    android:textSize="17dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/tag_textcolor"/>
+                <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
+                    android:id="@+id/tag_flowlayout"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_width="match_parent"
+                    zhy:max_select="-1"
+                    app:gravity="left"
+                    app:paddingStart="@dimen/_40dp"
                     android:layout_height="wrap_content">
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox2"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:enabled="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/colorPrimary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/checkbox2"
-                        android:textSize="14sp"
-                        android:text="学生党"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_weight="1"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox3"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:enabled="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/colorPrimary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/checkbox3"
-                        android:textSize="14sp"
-
-                        android:text="逍遥客"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox4"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:enabled="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/colorPrimary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/checkbox4"
-                        android:textSize="14sp"
-                        android:text="企业主"/>
-                </RelativeLayout>
-
+                </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
+                <com.coorchice.library.SuperTextView
+                    android:id="@+id/button"
+                    android:text="确认"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="120dp"
+                    app:solid="@color/gray_light"
+                    app:corner="25dp"
+                    android:gravity="center"
+                    app:isShowState="true"
+                    android:layout_height="30dp"
+                    />
+                <ImageView
+                    android:id="@+id/reset"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@mipmap/reset"
+                    android:layout_marginBottom="@dimen/_30dp"
+                    />
             </LinearLayout>
-
-            <com.coorchice.library.SuperTextView
-                android:id="@+id/button"
-                android:text="确认"
-                android:layout_below="@id/layoutcheck"
-                android:layout_marginTop="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="120dp"
-                app:solid="@color/gray_light"
-                app:corner="25dp"
-                android:gravity="center"
-                app:isShowState="true"
-                android:layout_height="30dp"
-                />
-            <ImageView
-                android:id="@+id/reset"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/layoutcheck"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@mipmap/reset"
-                />
         </RelativeLayout>
         <LinearLayout
           android:id="@+id/layoutGo"

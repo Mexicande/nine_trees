@@ -63,7 +63,7 @@ public class Identity implements Serializable {
         this.status = status;
     }
 
-    public static class IdentityBean {
+    public static class IdentityBean implements Serializable{
 
         /**
          * name :
@@ -197,7 +197,7 @@ public class Identity implements Serializable {
                     '}';
         }
 
-        public static class ContactBean {
+        public static class ContactBean implements Serializable{
 
             @Override
             public int hashCode() {

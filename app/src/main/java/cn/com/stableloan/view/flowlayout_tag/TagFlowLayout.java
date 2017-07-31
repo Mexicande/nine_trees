@@ -142,6 +142,7 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                         dip2px(getContext(), 10));
                 tagViewContainer.setLayoutParams(lp);
             }
+
             tagViewContainer.addView(tagView);
             addView(tagViewContainer);
 
