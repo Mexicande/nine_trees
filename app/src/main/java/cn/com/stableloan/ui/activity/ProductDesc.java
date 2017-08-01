@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,10 +38,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.likebutton.LikeButton;
@@ -138,6 +137,9 @@ public class ProductDesc extends BaseActivity {
     private SlideUp slideUp;
 
     private KProgressHUD hud;
+    private static final int COLLECTION = 2000;
+
+    private boolean login;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
@@ -152,43 +154,23 @@ public class ProductDesc extends BaseActivity {
         initToolbar();
         pid = getIntent().getStringExtra("pid");
         if (pid != null) {
-            LogUtils.i("ProductDesc", pid);
-            getProductDate(pid);
+            getProductDate();
         }
-        setListener();
     }
 
-    private void setListener() {
 
-        heartButton.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                ToastUtils.showToast(ProductDesc.this,"收藏");
-            }
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                ToastUtils.showToast(ProductDesc.this,"取消");
 
-            }
-        });
-    }
-
-    private void getProductDate(String id) {
+    private void getProductDate() {
         Boolean login = (Boolean) SPUtils.get(this, "login", false);
+        String token = (String) SPUtils.get(this, "token", "1");
+
         HashMap<String, String> params = new HashMap<>();
-        params.put("id", id);
-        if(login!=null){
-            if (!login) {
-
-            }else {
-
+        params.put("id", pid);
+        if (login != null) {
+            if (login) {
+                params.put("token", token);
             }
-        }else {
-            params.put("id", id);
         }
-
-
-
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
@@ -196,7 +178,7 @@ public class ProductDesc extends BaseActivity {
                 .show();
 
         final JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.puk_URL + Urls.product.Productdetail)
+        OkGo.post(Urls.Ip_url + Urls.product.Productdetail)
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(new StringCallback() {
@@ -205,15 +187,18 @@ public class ProductDesc extends BaseActivity {
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
+                                int error_code = object.getInt("error_code");
+                                if (error_code == 0) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
                                     if (descBean != null) {
                                         dateInset(descBean);
+
                                     }
+
                                 } else {
-                                    ToastUtils.showToast(ProductDesc.this, "网络异常,请检查网络连接");
+                                    String error_message = object.getString("error_message");
+                                    ToastUtils.showToast(ProductDesc.this, error_message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -238,23 +223,30 @@ public class ProductDesc extends BaseActivity {
 
     private SuperTextAdapter superTextAdapter;
 
-    private void dateInset(Product_DescBean descBean) {
+    private void dateInset(Product_DescBean date) {
+
+
+        Product_DescBean.DataBean product = date.getData();
+        int collectioStatus = product.getCollectioStatus();
+        if (collectioStatus == 1) {
+            heartButton.setLiked(true);
+        }
         JSONObject eventObject = new JSONObject();
         try {
-            eventObject.put("产品", descBean.getProduct().getPname() + "detail");
+            eventObject.put("产品", product.getPname() + "detail");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 //记录事件
         ZhugeSDK.getInstance().track(this, "产品详情贷款", eventObject);
 
-        List<Class_ListProductBean.ProductBean.LabelsBean> lables = descBean.getProduct().getLabels();
+        List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
+
         flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL));
         superTextAdapter = new SuperTextAdapter(null);
         flowRecyclerView.setAdapter(superTextAdapter);
-        superTextAdapter.addData(lables);
+        superTextAdapter.addData(labels);
 
-        Product_DescBean.ProductBean product = descBean.getProduct();
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()
@@ -293,10 +285,10 @@ public class ProductDesc extends BaseActivity {
         } else {
             substringmax = maximum_amount;
         }
-        if (product.getArrive() != null) {
+        if (product.getActual_account() != null) {
             arrive.setVisibility(View.VISIBLE);
 
-            arrive.setText("到账方式: " + product.getArrive());
+            arrive.setText("到账方式: " + product.getActual_account());
         }
 
 
@@ -361,40 +353,42 @@ public class ProductDesc extends BaseActivity {
     }
 
     @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy, R.id.bt_share
-            , R.id.layoutGo, R.id.layout_wx, R.id.layout_friend})
+            , R.id.layoutGo, R.id.layout_wx, R.id.layout_friend,R.id.heart_button})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.platform_desc:
-                startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", descBean.getProduct().getPl_id()));
+                startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
                 break;
             case R.id.ic_strategy:
-                startActivity(new Intent(this, HtmlActivity.class).putExtra("Strate", descBean));
+
+                if (!descBean.getData().getRaiders_connection().isEmpty()) {
+                    startActivity(new Intent(this, HtmlActivity.class).putExtra("Strate", descBean));
+                } else {
+                    ToastUtils.showToast(this, "此产品暂无攻略");
+                }
                 break;
             case R.id.apply:
                 Boolean login = (Boolean) SPUtils.get(this, "login", false);
                 if (!login) {
                     LoginActivity.launch(this);
                 } else {
-
                     sendIO();
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
-     /*       case R.id.heart_button:
-          *//*    //  heartButton.setLiked(true);
-                ToastUtils.showToast(this,"收藏");
-                boolean liked = heartButton.isLiked();
-                if(liked){
-                    heartButton.setLiked(false);
-                }else {
-                    heartButton.setAnimationScaleFactor(2);
-                    heartButton.setLiked(true);
+            case R.id.heart_button:
+                Boolean login1 = (Boolean) SPUtils.get(this, "login", false);
 
+               // CollectProduct();
+                if (!login1) {
+                    startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
+                } else {
+                    CollectProduct();
                 }
-                break;*//*
+                break;
             case R.id.bt_share:
                 slideUp.show();
                 break;
@@ -407,16 +401,84 @@ public class ProductDesc extends BaseActivity {
             case R.id.layout_friend:
                 ToastUtils.showToast(this, "朋友圈分享");
 
-                break;*/
+                break;
             default:
                 break;
         }
     }
 
+    private void CollectProduct() {
+        boolean liked = heartButton.isLiked();
+        if (liked) {
+            heartButton.setLiked(false);
+            CollectionProduct("2");
+        } else {
+            heartButton.setLiked(true);
+            CollectionProduct("1");
+        }
+    }
+
+    private void CollectionProduct(final String status) {
+
+        String token = (String) SPUtils.get(this, "token", "1");
+
+        Map<String, String> parms1 = new HashMap<>();
+        parms1.put("token", token);
+        parms1.put("status", status);
+        parms1.put("product_id", pid);
+        JSONObject jsonObject = new JSONObject(parms1);
+
+        OkGo.post(Urls.Ip_url + Urls.product.CollectionDesc)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                        if (s != null) {
+                            try {
+                                JSONObject json = new JSONObject(s);
+                                int error_code = json.getInt("error_code");
+                                if (error_code == 0) {
+                                    if (status.equals("1")) {
+                                        ToastUtils.showToast(ProductDesc.this, "收藏成功");
+                                        heartButton.setLiked(true);
+
+                                    } else {
+                                        ToastUtils.showToast(ProductDesc.this, "取消成功");
+                                        heartButton.setLiked(false);
+                                    }
+
+                                } else {
+                                    String error_message = json.getString("error_message");
+                                    ToastUtils.showToast(ProductDesc.this, error_message);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showToast(ProductDesc.this, "服务器异常");
+                            }
+                        });
+                    }
+                });
+
+    }
+
     private void sendIO() {
         JSONObject eventObject = new JSONObject();
         try {
-            eventObject.put("产品名称", descBean.getProduct().getPname());
+            eventObject.put("产品名称", descBean.getData().getPname());
             ZhugeSDK.getInstance().track(getApplicationContext(), "立即申请",
                     eventObject);
 
@@ -432,5 +494,30 @@ public class ProductDesc extends BaseActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case COLLECTION:
+                if (resultCode == 2000) {
+                    String ok = data.getStringExtra("ok");
+                    if (ok != null) {
+                        getProductDate();
+                        boolean liked = heartButton.isLiked();
+                        if (!liked) {
+                            heartButton.setLiked(true);
+                        } else {
+                            ToastUtils.showToast(this, "已经收藏过了");
+                        }
+                    }
+                }
+                break;
+
+
+        }
+
+
+    }
 
 }

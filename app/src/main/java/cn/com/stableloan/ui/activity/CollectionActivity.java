@@ -28,6 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
@@ -104,7 +105,7 @@ public class CollectionActivity extends BaseActivity {
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         JSONObject jsonObject = new JSONObject(parms1);
-        OkGo.<String>post("http://test.api.anwenqianbao.com/v1/product/getlist")
+        OkGo.<String>post(Urls.Ip_url+Urls.product.ProductCollectionList)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {

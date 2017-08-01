@@ -552,6 +552,12 @@ public class MessageFragment extends Fragment {
                                                     EventBus.getDefault().post(new InformationEvent("userinfor"));
                                                     EventBus.getDefault().post(new MessageEvent("","1"));
                                                     getActivity().finish();
+                                                }else if(from.equals("collection")){
+                                                    Intent intent = new Intent();
+                                                    intent.putExtra("ok", "ok");
+                                                    getActivity().setResult(2000, intent);
+                                                    getActivity().finish();
+
                                                 }
 
                                             /*else if(from.equals("user1")){

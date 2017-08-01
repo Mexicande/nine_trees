@@ -25,15 +25,15 @@
         android:layout_marginRight="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <cn.com.stableloan.view.likebutton.LikeButton
-            android:id="@+id/heart_button"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:icon_size="22dp"
-            android:layout_centerVertical="true"
-            app:anim_scale_factor="3"
-            app:icon_type="heart" />
+            <cn.com.stableloan.view.likebutton.LikeButton
+                android:id="@+id/heart_button"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon_size="22dp"
+                android:layout_centerVertical="true"
+                app:anim_scale_factor="3"
+                app:icon_type="heart" />
         <ImageView
             android:id="@+id/bt_share"
             android:layout_centerVertical="true"

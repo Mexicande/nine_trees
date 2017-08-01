@@ -61,7 +61,6 @@ public class PlatformInfoActivity extends BaseActivity {
         ivBack.setVisibility(View.VISIBLE);
         String pid = getIntent().getStringExtra("pid");
         if (pid != null) {
-
             LogUtils.i("PlatformInfoActivity", pid);
             HashMap<String, String> params = new HashMap<>();
             params.put("pl_id", pid);

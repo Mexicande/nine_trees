@@ -166,7 +166,6 @@ public class UserFragment extends ImmersionFragment {
         ButterKnife.unbind(this);
     }
 
-
    /* private void exit() {
         selfDialog = new SelfDialog(getActivity());
         selfDialog.setTitle("提示");

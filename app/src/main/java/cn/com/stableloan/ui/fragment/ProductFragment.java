@@ -28,6 +28,8 @@ import com.mancj.slideup.SlideUp;
 import com.qiniu.android.utils.Json;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +45,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IdentityProduct;
 import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.SelectProduct;
 import cn.com.stableloan.model.TagFlowBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
@@ -110,7 +114,7 @@ public class ProductFragment extends ImmersionFragment {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
                 .statusBarAlpha(0.3f)
-                .navigationBarColor(R.color.colorPrimary)
+                .navigationBarColor(R.color.colorStatus)
                 .init();
     }
 
@@ -121,6 +125,7 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
 
         stateLayout = (StateLayout) view.findViewById(R.id.stateLayout);
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
@@ -128,6 +133,7 @@ public class ProductFragment extends ImmersionFragment {
         getTagFlowData();
         initRecyclView();
         setListener();
+        getDate(1, ACTION_DOWN);
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("产品列表", "");
@@ -145,7 +151,7 @@ public class ProductFragment extends ImmersionFragment {
      *
      */
     private void getTagFlowData() {
-        OkGo.<String>post(Urls.TEST_URL+Urls.product.ProTagFlow)
+        OkGo.<String>post(Urls.Ip_url+Urls.product.ProTagFlow)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -236,6 +242,7 @@ public class ProductFragment extends ImmersionFragment {
                     }
                 });
     }
+/*
 
     private boolean isGetData = false;
 
@@ -308,13 +315,23 @@ public class ProductFragment extends ImmersionFragment {
             isGetData = true;
         }
     }
+*/
 
+    @Subscribe
+    public void onPicSatus(IdentityProduct event){
+        int msg = event.msg;
+        String[] s = new String[]{String.valueOf(msg)};
+        selectProduct(s);
+
+    }
+
+   /*
     @Override
     public void onPause() {
         super.onPause();
         isGetData = false;
     }
-
+*/
 
     private void initViewTitle() {
         titleName.setText("产品列表");
@@ -481,7 +498,7 @@ public class ProductFragment extends ImmersionFragment {
             params.put("labels",str1);
         }
          JSONObject jsonObject = new JSONObject(params);
-        OkGo.<String>post(Urls.TEST_URL+Urls.product.ProductSelect)
+        OkGo.<String>post(Urls.Ip_url+Urls.product.ProductSelect)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
@@ -590,4 +607,9 @@ public class ProductFragment extends ImmersionFragment {
     }
 */
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

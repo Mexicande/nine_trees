@@ -25,6 +25,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IdentityProduct;
 import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.News_ClassBean;
@@ -49,12 +51,10 @@ import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
 import cn.com.stableloan.view.SpacesItemDecoration;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -85,7 +85,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     protected void immersionInit() {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
-                .navigationBarColor(R.color.colorPrimary)
+                .navigationBarColor(R.color.md_grey_900)
                 .statusBarAlpha(0.3f)
                 .init();
     }
@@ -403,24 +403,22 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.iv_free:
                 professional="xiaoyaoke";
-                SPUtils.put(getActivity(), "plat", 3);
+                EventBus.getDefault().post(new IdentityProduct(3));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_student:
                 professional="xueshengdang";
-
-                SPUtils.put(getActivity(), "plat", 2);
+                EventBus.getDefault().post(new IdentityProduct(2));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_work:
                 professional="shangbanzu";
-
-                SPUtils.put(getActivity(), "plat", 1);
+                EventBus.getDefault().post(new IdentityProduct(1));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_enterprise:
                 professional="qiyezhu";
-                SPUtils.put(getActivity(), "plat", 4);
+                EventBus.getDefault().post(new IdentityProduct(4));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_notice:

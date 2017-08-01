@@ -6,7 +6,7 @@ package cn.com.stableloan.api;
 
 public interface Urls {
 
-    String Ip_url="http://api.anwenqianbao.com/v1/";
+    String Ip_url="http://test.api.anwenqianbao.com/v1/";
 
     String CardBack="http://www.shoujiweidai.com/Card/index.html";
 
@@ -111,13 +111,16 @@ public interface Urls {
 
     interface product{
         //产品详情
-        String Productdetail="GetProductDetail";
+        String Productdetail="product/productStatus";
         String GetSlotdetail ="GetSlotdetail";
         String ClassProduct="ClassificationList";
         String ProductList="ProductList";
-        String ProDuctScreening="Screening";
         String ProTagFlow="product/getlabels";
         String ProductSelect="product/screening";
+
+        String ProductCollectionList="product/getlist";
+
+        String CollectionDesc="product/collection";
     }
 
     interface update{

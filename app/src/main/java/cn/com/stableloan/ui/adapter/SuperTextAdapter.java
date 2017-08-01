@@ -19,14 +19,14 @@ import cn.com.stableloan.model.Product_Detail;
  * Created by apple on 2017/6/15.
  */
 
-public class SuperTextAdapter extends BaseQuickAdapter<Class_ListProductBean.ProductBean.LabelsBean,BaseViewHolder> {
+public class SuperTextAdapter extends BaseQuickAdapter<Product_DescBean.DataBean.LabelsBean,BaseViewHolder> {
 
-    public SuperTextAdapter(List<Class_ListProductBean.ProductBean.LabelsBean> data) {
+    public SuperTextAdapter(List<Product_DescBean.DataBean.LabelsBean> data) {
         super(R.layout.super_text_item, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Class_ListProductBean.ProductBean.LabelsBean item) {
+    protected void convert(BaseViewHolder helper,Product_DescBean.DataBean.LabelsBean item) {
         SuperTextView view4 =(SuperTextView)helper.getView(R.id.labels);
 
         view4.setStrokeColor(Color.parseColor(item.getFont()));

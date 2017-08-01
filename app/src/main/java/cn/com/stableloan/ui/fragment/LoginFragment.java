@@ -451,6 +451,11 @@ public class LoginFragment extends Fragment {
                                 } else if (from.equals("user2")) {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
+                                }else if(from.equals("collection")){
+                                    Intent intent = new Intent();
+                                    intent.putExtra("ok", "ok");
+                                    getActivity().setResult(2000, intent);
+                                    getActivity().finish();
                                 }
                             } else if (welfare != null) {
                                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));

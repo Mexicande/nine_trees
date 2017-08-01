@@ -84,9 +84,9 @@ public class HtmlActivity extends BaseActivity {
         if (available) {
             Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
             if (desc != null) {
-                titleName.setText(desc.getPlatformdetail().getPl_name());
+                titleName.setText(desc.getData().getPname());
                 ivBack.setVisibility(View.VISIBLE);
-                String link = desc.getProduct().getLink();
+                String link = desc.getData().getLink();
                 getDate(link);
             }
             Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
@@ -103,9 +103,11 @@ public class HtmlActivity extends BaseActivity {
             }
             Product_DescBean desc1 = (Product_DescBean) getIntent().getSerializableExtra("Strate");
             if (desc1 != null) {
-                titleName.setText(desc1.getPlatformdetail().getPl_name() + "攻略");
+                titleName.setText(desc1.getData().getPlatformdetail().getPl_name() + "攻略");
                 ivBack.setVisibility(View.VISIBLE);
-                String url = desc1.getProduct().getRaiders_connection();
+                String url = desc1.getData().getRaiders_connection();
+
+
                 getDate(url);
             }
             String bank = getIntent().getStringExtra("bank");
@@ -189,7 +191,6 @@ public class HtmlActivity extends BaseActivity {
                 }
             });
             mWebView.setWebChromeClient(new MyWebChromeClient());
-
 
         }
     }
