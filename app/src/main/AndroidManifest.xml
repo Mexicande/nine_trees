@@ -168,7 +168,8 @@
             android:name=".ui.activity.CameraActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.CarmeraResultActivity" />
-        <activity android:name=".ui.activity.PictureActivity"></activity>
+        <activity android:name=".ui.activity.PictureActivity" />
+        <activity android:name=".ui.activity.CollectionActivity"></activity>
     </application>
 
 </manifest>

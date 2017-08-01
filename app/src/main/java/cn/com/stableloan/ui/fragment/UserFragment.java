@@ -37,6 +37,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
@@ -221,7 +222,7 @@ public class UserFragment extends ImmersionFragment {
     }
 
 
-    @OnClick({R.id.layout_my, R.id.layout_setting,R.id.feedback})
+    @OnClick({R.id.layout_my, R.id.layout_setting,R.id.feedback,R.id.layout_collection})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
@@ -232,6 +233,9 @@ public class UserFragment extends ImmersionFragment {
                 break;
             case R.id.feedback:
                 FeedbackActivity.launch(getActivity());
+                break;
+            case R.id.layout_collection:
+                CollectionActivity.launch(getActivity());
                 break;
         }
     }

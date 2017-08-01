@@ -174,13 +174,27 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void getProductDate(String id) {
+        Boolean login = (Boolean) SPUtils.get(this, "login", false);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("id", id);
+        if(login!=null){
+            if (!login) {
+
+            }else {
+
+            }
+        }else {
+            params.put("id", id);
+        }
+
+
+
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
                 .setCancellable(true)
                 .show();
-        HashMap<String, String> params = new HashMap<>();
-        params.put("id", id);
+
         final JSONObject jsonObject = new JSONObject(params);
         OkGo.post(Urls.puk_URL + Urls.product.Productdetail)
                 .tag(this)

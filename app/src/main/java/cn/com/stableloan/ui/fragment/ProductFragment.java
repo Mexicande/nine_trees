@@ -134,7 +134,7 @@ public class ProductFragment extends ImmersionFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//记录事件
+            //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "loanpage", eventObject);
 
         return view;
@@ -144,7 +144,6 @@ public class ProductFragment extends ImmersionFragment {
      * Product TagFlow
      *
      */
-    private  TextView mTextView;
     private void getTagFlowData() {
         OkGo.<String>post(Urls.TEST_URL+Urls.product.ProTagFlow)
                 .execute(new StringCallback() {
@@ -421,7 +420,6 @@ public class ProductFragment extends ImmersionFragment {
                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("bank", Urls.CardBack));
                 break;
             case R.id.button:
-                list.clear();
                 slideUp.hide();
                 selectProduct(null);
                 break;
@@ -531,6 +529,7 @@ public class ProductFragment extends ImmersionFragment {
                     }
                 });
     }
+/*
 
     private void selectGetProduct(int[] arr, String stat) {
         SelectProduct selectProduct = new SelectProduct(arr, stat);
@@ -589,5 +588,6 @@ public class ProductFragment extends ImmersionFragment {
         }
 
     }
+*/
 
 }
