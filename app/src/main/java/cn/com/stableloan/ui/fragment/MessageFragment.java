@@ -109,7 +109,6 @@ public class MessageFragment extends Fragment {
         if(unique!=null){
             times=unique;
         }else {
-
             Random random = new Random();
             int i = random.nextInt(99999) + 10000;
             long l = System.currentTimeMillis();

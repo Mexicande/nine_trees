@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.support.multidex.MultiDex;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
@@ -42,7 +43,11 @@ public class AppApplication extends Application {
         return uploadManager;
     }
 
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this) ;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
@@ -65,12 +70,6 @@ public class AppApplication extends Application {
 
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
-
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
 
     }
 

@@ -67,9 +67,10 @@ public class LotteryFragment extends ImmersionFragment {
 
     @Override
     protected void immersionInit() {
-        ImmersionBar.with(getActivity()).statusBarColor(R.color.colorPrimary)
+        ImmersionBar.with(getActivity())
+                .statusBarDarkFont(false)
+                .navigationBarColor(R.color.md_grey_900)
                 .statusBarAlpha(0.3f)
-                .fitsSystemWindows(true)
                 .init();
     }
 

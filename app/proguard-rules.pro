@@ -353,8 +353,6 @@ public static java.lang.String TABLENAME;
     <init>(java.lang.Throwable);
 }
 
-
-
 -keep @com.proguard.annotation.NotProguard class * {*;}
 -keep class * {
     @com.proguard.annotation <fields>;
@@ -367,3 +365,9 @@ public static java.lang.String TABLENAME;
 -keep class org.apache.commons.codec.** { *; }
 -keep class com.adobe.fre.**{*;}
 -keep class test.com.**{*;}
+-keep class com.tencent.mm.sdk.** {
+   *;
+}
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions

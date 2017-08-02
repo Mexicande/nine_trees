@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/apple/Documents/anwenqianbao/library/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
+        "outputFile": "/Users/apple/Documents/Project/anwenqianbao/library/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
         "map": [
             {
                 "to": {
@@ -11,31 +11,7 @@
                     "endOffset": 1130
                 },
                 "from": {
-                    "file": "/Users/apple/Documents/anwenqianbao/library/build/intermediates/bundles/debug/res/values/values.xml",
-                    "position": {
-                        "startLine": 14,
-                        "startColumn": 4,
-                        "startOffset": 1092,
-                        "endColumn": 42,
-                        "endOffset": 1130
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "outputFile": "/Users/apple/Documents/Project/anwenqianbao1.3/library/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 14,
-                    "startColumn": 4,
-                    "startOffset": 1092,
-                    "endColumn": 42,
-                    "endOffset": 1130
-                },
-                "from": {
-                    "file": "/Users/apple/Documents/Project/anwenqianbao1.3/library/build/intermediates/bundles/debug/res/values/values.xml",
+                    "file": "/Users/apple/Documents/Project/anwenqianbao/library/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 14,
                         "startColumn": 4,

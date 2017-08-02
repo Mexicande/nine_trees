@@ -43,7 +43,10 @@ import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.likebutton.LikeButton;
-import cn.com.stableloan.view.likebutton.OnLikeListener;
+import cn.com.stableloan.view.share.StateListener;
+import cn.com.stableloan.view.share.TPManager;
+import cn.com.stableloan.view.share.WXManager;
+import cn.com.stableloan.view.share.WXShareContent;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -156,6 +159,25 @@ public class ProductDesc extends BaseActivity {
         if (pid != null) {
             getProductDate();
         }
+
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID,null);
+        wxManager = new WXManager(this);
+        StateListener<String> wxStateListener = new StateListener<String>() {
+            @Override
+            public void onComplete(String s) {
+                ToastUtils.showToast(ProductDesc.this,s);
+            }
+            @Override
+            public void onError(String err) {
+                ToastUtils.showToast(ProductDesc.this,err);
+            }
+            @Override
+            public void onCancel() {
+                ToastUtils.showToast(ProductDesc.this,"取消");
+            }
+        };
+
+        wxManager.setListener(wxStateListener);
     }
 
 
@@ -396,15 +418,31 @@ public class ProductDesc extends BaseActivity {
                 slideUp.hide();
                 break;
             case R.id.layout_wx:
-                ToastUtils.showToast(this, "微信分享");
+               shareWechat(WXShareContent.WXSession);
                 break;
             case R.id.layout_friend:
-                ToastUtils.showToast(this, "朋友圈分享");
+               shareWechat(WXShareContent.WXTimeline);
 
                 break;
             default:
                 break;
         }
+    }
+    private WXManager wxManager;
+
+    private void shareWechat( int scence) {
+
+
+        WXShareContent contentWX = new WXShareContent();
+
+        contentWX.setScene(scence)
+                .setType(WXShareContent.share_type.WebPage)
+                .setWeb_url(Urls.KEY.PageWeb+descBean.getData().getId())
+                .setTitle("欢迎安稳钱包")
+                .setDescription(descBean.getData().getProduct_introduction())
+                .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
+        wxManager.share(contentWX);
+
     }
 
     private void CollectProduct() {

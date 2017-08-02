@@ -1,1 +1,1 @@
-include ':app', ':pager-bottom-tab-strip', ':validate', ':lockpattern', ':library'
+include ':app', ':pager-bottom-tab-strip', ':validate', ':lockpattern'

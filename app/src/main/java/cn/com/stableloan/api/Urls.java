@@ -12,9 +12,8 @@ public interface Urls {
 
     String puk_URL="http://api.shoujijiekuan.com/Home/ApiLogin/";
 
-    String NEW_URL="http://api.shoujijiekuan.com/Home/";
+    String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
 
-    String TEST_URL="http://test.api.anwenqianbao.com/v1/";
 
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
@@ -148,5 +147,10 @@ public interface Urls {
         String UpLoadImage="Pictrue/AddIdcard";
 
         String Get_Pictrue="Pictrue/GetPictrue";
+    }
+    interface KEY{
+        String WEICHAT_APPID="wxd8a11cffdc98f84b";
+
+        String PageWeb="http://test.m.anwenqianbao.com/#/details?pId=";
     }
 }

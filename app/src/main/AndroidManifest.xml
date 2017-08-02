@@ -169,7 +169,15 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.CarmeraResultActivity" />
         <activity android:name=".ui.activity.PictureActivity" />
-        <activity android:name=".ui.activity.CollectionActivity"></activity>
+        <activity android:name=".ui.activity.CollectionActivity" />
+
+        <!-- Weixin -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoDisplay" />
+        <activity android:name=".ui.activity.NewCameraActivity"></activity>
     </application>
 
 </manifest>

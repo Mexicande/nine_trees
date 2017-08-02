@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.google.gson.Gson;
+import com.mancj.slideup.SlideUp;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -260,14 +261,27 @@ public class MainActivity extends BaseActivity {
     private long mLastBackTime = 0;
     @Override
     public void onBackPressed() {
-        // finish while click back key 2 times during 1s.
-        if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
-            finish();
-        } else {
-            mLastBackTime = System.currentTimeMillis();
-            ToastUtils.showToast(this,"再按一次退出");
+        SlideUp slideUp = ProductFragment.slideUp;
+        if(slideUp!=null){
+            boolean visible = ProductFragment.slideUp.isVisible();
+            if(visible){
+                ProductFragment.slideUp.hide();
+            }else {
+                if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                    finish();
+                } else {
+                    mLastBackTime = System.currentTimeMillis();
+                    ToastUtils.showToast(this, "再按一次退出");
+                }
+            }
+        }else {
+            if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                finish();
+            } else {
+                mLastBackTime = System.currentTimeMillis();
+                ToastUtils.showToast(this, "再按一次退出");
+            }
         }
-
     }
 
 

@@ -78,7 +78,7 @@ public class ProductFragment extends ImmersionFragment {
     @Bind(R.id.tag_flowlayout)
     TagFlowLayout tagFlowlayout;
 
-    private SlideUp slideUp;
+    public static SlideUp slideUp;
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -113,8 +113,8 @@ public class ProductFragment extends ImmersionFragment {
     protected void immersionInit() {
         ImmersionBar.with(getActivity())
                 .statusBarDarkFont(false)
+                .navigationBarColor(R.color.md_grey_900)
                 .statusBarAlpha(0.3f)
-                .navigationBarColor(R.color.colorStatus)
                 .init();
     }
 
@@ -242,86 +242,14 @@ public class ProductFragment extends ImmersionFragment {
                     }
                 });
     }
-/*
 
-    private boolean isGetData = false;
-
-    @Override
-    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (enter && !isGetData) {
-            isGetData = true;
-            int plat = (int) SPUtils.get(getActivity(), "plat", 0);
-            if (plat != 0) {
-                String[] s = {};
-                switch (plat) {
-                    case 1:
-                        s = new String[]{"1"};
-                        break;
-                    case 2:
-                        s = new String[]{"2"};
-                        break;
-                    case 3:
-                        s = new String[]{"3"};
-                        break;
-                    case 4:
-                        s = new String[]{"4"};
-                        break;
-                    default:
-                        break;
-                }
-                selectProduct(s);
-                SPUtils.remove(getActivity(), "plat");
-            } else {
-                getDate(1, ACTION_DOWN);
-            }
-            //   这里可以做网络请求或者需要的数据刷新操作
-        } else {
-            isGetData = false;
-        }
-        return super.onCreateAnimation(transit, enter, nextAnim);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!isGetData) {
-            //   这里可以做网络请求或者需要的数据刷新操作
-            int plat = (int) SPUtils.get(getActivity(), "plat", 0);
-            if (plat != 0) {
-                String[] s = {};
-                switch (plat) {
-                    case 1:
-                        s = new String[]{"1"};
-                        break;
-                    case 2:
-                        s = new String[]{"2"};
-                        break;
-                    case 3:
-                        s = new String[]{"3"};
-                        break;
-                    case 4:
-                        s = new String[]{"4"};
-                        break;
-                    default:
-                        break;
-                }
-
-                selectProduct(s);
-
-                SPUtils.remove(getActivity(), "plat");
-            } else {
-                getDate(1, ACTION_DOWN);
-            }
-            isGetData = true;
-        }
-    }
-*/
 
     @Subscribe
     public void onPicSatus(IdentityProduct event){
         int msg = event.msg;
         String[] s = new String[]{String.valueOf(msg)};
         selectProduct(s);
+        idFlowlayout.getAdapter().setSelectedList(msg);
 
     }
 
@@ -603,10 +531,8 @@ public class ProductFragment extends ImmersionFragment {
         if (s != 0) {
             list.add(s);
         }
-
     }
 */
-
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -15,6 +15,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/iv_camera"/>
+                    <TextView
+                        android:textColor="@color/textcolor_nine"
+                        android:textSize="@dimen/textsize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/_10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="扫描身份证快速录入"/>
+                    <ImageView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_arrow_right"/>
+                </LinearLayout>
+
+
                 <RelativeLayout
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
