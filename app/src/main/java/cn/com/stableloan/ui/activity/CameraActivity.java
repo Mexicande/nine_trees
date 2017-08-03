@@ -36,7 +36,6 @@ import cn.com.stableloan.manager.CameraManager;
 import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.InputBean;
 import cn.com.stableloan.view.PreviewBorderView;
-import cn.com.stableloan.view.hdprogress.KProgressHUD;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -293,7 +292,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
                 baos.flush();
                 baos.close();
-
                 byte[] bitmapBytes = baos.toByteArray();
                 result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
             }
@@ -312,16 +310,12 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         return result;
     }
 
-    private KProgressHUD hud;
     private void uploadAndRecognize(String base64) {
       /*  hud = KProgressHUD.create(CameraActivity.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("识别中,请稍后.....")
                 .setCancellable(true)
                 .show();*/
-        hud = KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setDimAmount(0.5f);
         InputBean.InputsBean.ImageBean imageBean = new InputBean.InputsBean.ImageBean();
         imageBean.setDataType(50);
         imageBean.setDataValue(base64);
@@ -350,7 +344,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                         String s1 = s.replace("\"{", "{");
                         String s2 = s1.replace("\\", "");
                         int face = s2.indexOf("side");
-                        hud.dismiss();
                         String substring = s2.substring(0, face + 13);
                         String substring1 = s2.substring(face + 14, s2.length());
                         String s3 = substring + substring1;
@@ -394,7 +387,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                hud.dismiss();
                             }
                         });
                     }

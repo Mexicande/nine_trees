@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhuge.analysis.stat.ZhugeSDK;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -34,11 +35,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.base.BasePhotoActivity;
 import cn.com.stableloan.ui.fragment.BankInformationFragment;
 import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;
 import cn.com.stableloan.ui.fragment.UserInformationFragment;
 
-public class IdentityinformationActivity extends BaseActivity {
+public class IdentityinformationActivity extends AutoLayoutActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -64,11 +66,9 @@ public class IdentityinformationActivity extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_identityinformation);
         ButterKnife.bind(this);
-
         initToolbar();
         initMagicIndicator();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
-
 
 
     }

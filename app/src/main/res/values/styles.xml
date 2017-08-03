@@ -20,6 +20,10 @@
     <!--  <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
           <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
       </style>-->
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <style name="WrapWrap">
         <item name="android:layout_width">wrap_content</item>
@@ -232,7 +236,6 @@
 
 
     <style name="information_style">
-        <item name="android:maxLines">1</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginRight">@dimen/_30dp</item>
         <item name="android:layout_alignParentRight">true</item>

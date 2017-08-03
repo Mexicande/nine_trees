@@ -16,6 +16,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:id="@+id/layout_camera"
                     android:layout_marginTop="@dimen/_20dp"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
@@ -23,21 +24,22 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@mipmap/iv_camera"/>
                     <TextView
                         android:textColor="@color/textcolor_nine"
-                        android:textSize="@dimen/textsize"
+                        android:textSize="20sp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/_10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="扫描身份证快速录入"/>
                     <ImageView
+                        android:layout_marginLeft="@dimen/_10dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@mipmap/ic_arrow_right"/>
                 </LinearLayout>
 
@@ -49,6 +51,7 @@
                     <com.andreabaccega.widget.FormEditText
                         android:id="@+id/et_name"
                         style="@style/information_style"
+                        android:maxLines="1"
                         whatever:testType="regexp"
                         android:imeOptions="actionNext"
                         whatever:emptyAllowed="true"
@@ -91,6 +94,7 @@
                     <com.andreabaccega.widget.FormEditText
                         android:id="@+id/et_IDCard"
                         style="@style/information_style"
+                        android:maxLines="1"
                         android:imeOptions="actionNext"
                         whatever:testType="regexp"
                         whatever:emptyAllowed="true"
@@ -113,12 +117,13 @@
                         android:id="@+id/et_Sex"
                         style="@style/information_style"
                         whatever:testType="regexp"
+                        android:maxLines="1"
                         whatever:emptyAllowed="true"
-
                         whatever:customRegexp="[\u4e00-\u9fa5]"
                         whatever:testErrorString="格式不正确"
                         />
                     <TextView
+
                         style="@style/information_text_style"
                         android:layout_toLeftOf="@id/et_Sex"
                         android:text="性别 : "
@@ -133,8 +138,8 @@
                         style="@style/information_style"
                         android:inputType="number"
                         whatever:emptyAllowed="true"
-
                         android:maxLength="3"
+                        android:maxLines="1"
                         />
                     <TextView
                         style="@style/information_text_style"
@@ -149,7 +154,8 @@
                     <com.andreabaccega.widget.FormEditText
                         android:id="@+id/et_Address"
                         whatever:emptyAllowed="true"
-
+                        android:maxLines="1"
+                        android:singleLine="true"
                         style="@style/information_style"
                         android:imeOptions="actionNext"
                         />

@@ -6,15 +6,101 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.activity.CarmeraResultActivity">
-    <ImageView
-        android:id="@+id/photoView"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/image_back_layout"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_height="50dp">
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="20dp"
+                android:src="@mipmap/image_back"/>
+            <TextView
+                android:id="@+id/text_goBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="返回"
+                android:textSize="15sp"
+                android:textColor="@color/gay"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
     <TextView
-        android:id="@+id/Card"
-        android:layout_marginTop="@dimen/_50dp"
-        android:layout_marginLeft="@dimen/_20dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:layout_gravity="center_horizontal"
+        android:text="身份证扫描 "
+        android:textSize="25sp"
+        android:textColor="@color/blacktext"/>
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_30dp"
+        android:layout_width="wrap_content"
+        android:background="@drawable/image_box"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:padding="@dimen/_10dp"
+            android:id="@+id/photoView"
+            android:layout_centerInParent="true"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@mipmap/image_default"/>
+    </RelativeLayout>
+        <TextView
+            android:id="@+id/Card"
+            android:layout_marginTop="@dimen/_30dp"
+            android:layout_marginLeft="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            />
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <cn.com.stableloan.view.RoundButton
+                android:id="@+id/bt_backButton"
+                android:layout_marginLeft="@dimen/_40dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:text="保存图片"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="#ffffff"
+                app:btnStrokeWidth="1dp"
+                app:btnStrokeColor="@color/frame_color"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textColor="#05DC2E"
+                />
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+            <cn.com.stableloan.view.RoundButton
+                android:id="@+id/bt_saveButton"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/_40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                app:btnCornerRadius="10dp"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="#ffffff"
+                app:btnStrokeWidth="1dp"
+                app:btnStrokeColor="@color/frame_color"
+                android:gravity="center_horizontal"
+                android:textSize="17sp"
+                android:textColor="#05DC2E"
+                />
+        </LinearLayout>
 </LinearLayout>

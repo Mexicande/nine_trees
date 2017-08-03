@@ -1,8 +1,10 @@
 package cn.com.stableloan.ui.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,7 +80,7 @@ public class ProductFragment extends ImmersionFragment {
     @Bind(R.id.tag_flowlayout)
     TagFlowLayout tagFlowlayout;
 
-    public static SlideUp slideUp;
+    public  static SlideUp slideUp;
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -211,7 +213,7 @@ public class ProductFragment extends ImmersionFragment {
                                             stateLayout.showContentView();
                                             classify_recycler_adapter.setNewData(json.getProduct());
                                             break;
-                                        default:
+                                        case ACTION_UP :
                                             stateLayout.showContentView();
                                             classify_recycler_adapter.addData(json.getProduct());
                                             classify_recycler_adapter.loadMoreComplete();
@@ -243,13 +245,12 @@ public class ProductFragment extends ImmersionFragment {
                 });
     }
 
-
     @Subscribe
     public void onPicSatus(IdentityProduct event){
         int msg = event.msg;
         String[] s = new String[]{String.valueOf(msg)};
+        idFlowlayout.getAdapter().setSelectedList(msg-1);
         selectProduct(s);
-        idFlowlayout.getAdapter().setSelectedList(msg);
 
     }
 
@@ -314,11 +315,12 @@ public class ProductFragment extends ImmersionFragment {
                     public void run() {
                         getDate(1, ACTION_DOWN);
                         SwipeRefreshLayout.setRefreshing(false);
+                        MORE=1;
+
                     }
                 }, 1000);
             }
         });
-
         classify_recycler_adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -336,6 +338,7 @@ public class ProductFragment extends ImmersionFragment {
         stateLayout.setErrorAction(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 getDate(1, ACTION_DOWN);
 
             }
@@ -349,7 +352,7 @@ public class ProductFragment extends ImmersionFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.layout_select, R.id.button, R.id.layoutGo, R.id.reset, R.id.cardBank})
+    @OnClick({R.id.layout_select, R.id.button, R.id.layoutGo, R.id.reset})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_select:
@@ -361,12 +364,13 @@ public class ProductFragment extends ImmersionFragment {
                 }
 
                 break;
-            case R.id.cardBank:
-                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("bank", Urls.CardBack));
-                break;
             case R.id.button:
                 slideUp.hide();
-                selectProduct(null);
+                Set<Integer> selectedList = idFlowlayout.getSelectedList();
+                Set<Integer> selectedList1 = tagFlowlayout.getSelectedList();
+                if(selectedList.size()>0||selectedList1.size()>0){
+                    selectProduct(null);
+                }
                 break;
             case R.id.layoutGo:
                 slideUp.hide();
@@ -374,6 +378,8 @@ public class ProductFragment extends ImmersionFragment {
             case R.id.reset:
                 getDate(1, ACTION_DOWN);
                 slideUp.hide();
+                idFlowlayout.onChanged();
+                tagFlowlayout.onChanged();
                 break;
             default:
                 break;
@@ -537,5 +543,42 @@ public class ProductFragment extends ImmersionFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            backHandlerInterface = (BackHandlerInterface) getActivity();
+        }catch (Exception e){
+            throw new ClassCastException("Hosting activity must implement BackHandlerInterface");
+        }
+    }
+
+    protected BackHandlerInterface backHandlerInterface;
+    public interface BackHandlerInterface {
+        public void setSelectedFragment(ProductFragment backHandledFragment);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!(getActivity() instanceof BackHandlerInterface)) {
+            throw new ClassCastException("Hosting activity must implement BackHandlerInterface");
+        } else {
+            backHandlerInterface = (BackHandlerInterface) getActivity();
+        }
+    }
+    public void onStart() {
+        super.onStart();
+        backHandlerInterface.setSelectedFragment(this);
+    }
+
+    private boolean mHandledPress = false;
+    public boolean onBackPressed(){
+        if (!mHandledPress){
+                mHandledPress = true;
+                return true;
+        }
+        return false;
     }
 }

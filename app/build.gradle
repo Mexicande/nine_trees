@@ -1,5 +1,7 @@
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
 
 android {
     compileSdkVersion 25
@@ -38,6 +40,14 @@ android {
             dirs 'libs'
         }
     }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -119,5 +129,8 @@ dependencies {
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.zhy:autolayout:+'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
+
     testCompile 'junit:junit:4.12'
 }

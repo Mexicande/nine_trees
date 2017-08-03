@@ -1,10 +1,12 @@
 package cn.com.stableloan.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 2017/5/23.
  */
 
-public class CodeMessage {
+public class CodeMessage implements Serializable{
     private int status;
     private String msg;
     private String check;

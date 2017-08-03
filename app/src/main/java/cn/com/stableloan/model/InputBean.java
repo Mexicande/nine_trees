@@ -44,7 +44,7 @@ public class InputBean implements Serializable {
             this.configure = configure;
         }
 
-        public static class ImageBean {
+        public static class ImageBean implements Serializable{
             /**
              * dataType : 50
              * dataValue : 图片二进制数据的base64编码

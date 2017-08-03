@@ -137,7 +137,6 @@ public class ProfessionalInformationFragment extends Fragment {
                                     et_location.setText(company.getLocation());
                                     et_etEmail.setText(company.getEmail());
                                     String years = company.getYears();
-
                                     if(!years.isEmpty()){
                                         int year = Integer.parseInt(company.getYears());
                                         etYears.setText(list2[year]);

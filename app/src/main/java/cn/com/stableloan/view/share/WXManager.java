@@ -211,11 +211,11 @@ public class WXManager {
                 if (bitmap != null){
                     if (isNeedScale){
                         req.message.thumbData = WXUtil.bmpToByteArray(
-                                WXUtil.scaleCenterCrop(bitmap, THUMB_SIZE, THUMB_SIZE), true);
+                                bitmap, true);
                     }else {
                         req.message.mediaObject = new WXImageObject(bitmap);
                         req.message.thumbData = WXUtil.bmpToByteArray(
-                                WXUtil.scaleCenterCrop(bitmap, THUMB_SIZE, THUMB_SIZE), true);
+                                bitmap, true);
                     }
                     bitmap.recycle();
                 }

@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +32,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -65,6 +69,7 @@ public class CollectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         initToolber();
         initData();
         setListener();
@@ -96,9 +101,14 @@ public class CollectionActivity extends BaseActivity {
         });
 
     }
+    @Subscribe
+    public void onCollection(ProcuctCollectionEvent event){
+        if("ok".equals(event.msg)){
+            initData();
+        }
 
+    }
     private void initData() {
-        stateLayout.showProgressView();
 
         String token = (String) SPUtils.get(this, "token", "1");
 
@@ -144,14 +154,12 @@ public class CollectionActivity extends BaseActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                stateLayout.showContentView();
                                 classify_recycler_adapter.setEmptyView(errorView);
                                 ToastUtils.showToast(CollectionActivity.this, "服务器异常");
                             }
                         });
                     }
                 });
-
 
     }
 
@@ -173,5 +181,11 @@ public class CollectionActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -110,12 +110,6 @@ public class HtmlActivity extends BaseActivity {
 
                 getDate(url);
             }
-            String bank = getIntent().getStringExtra("bank");
-            if (bank != null) {
-                titleName.setText("信用卡分类");
-                ivBack.setVisibility(View.VISIBLE);
-                getDate(bank);
-            }
             welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
             if (welfare != null) {
                 titleName.setText(welfare.getName());

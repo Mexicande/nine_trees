@@ -37,7 +37,7 @@ public class ProductListBean implements Serializable{
         }
     }
 
-    public static class ProductBean {
+    public static class ProductBean implements Serializable{
 
         /**
          * pname : 安稳贷

@@ -95,7 +95,7 @@ public class Bank implements Serializable {
             this.blass_time = blass_time;
         }
 
-        public static class DebitBean {
+        public static class DebitBean implements Serializable{
 
             @Override
             public boolean equals(Object o) {
@@ -177,7 +177,7 @@ public class Bank implements Serializable {
             }
         }
 
-        public static class CreditBean {
+        public static class CreditBean implements Serializable{
 
             @Override
             public boolean equals(Object o) {

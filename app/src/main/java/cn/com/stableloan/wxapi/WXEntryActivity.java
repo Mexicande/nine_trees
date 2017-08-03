@@ -56,7 +56,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 if (baseResp.getType() == 1){//授权登录获取用户信息
                     getAccessToken(((SendAuth.Resp) baseResp).code);
                 }else if (baseResp.getType() == 2){// 分享
-                    mListener.onComplete("share success!");
+                    mListener.onComplete("分享成功");
                 }else {
                     mListener.onError("operation type is invalid!");
                 }
@@ -65,7 +65,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 mListener.onCancel();
                 break;
             case BaseResp.ErrCode.ERR_SENT_FAILED:
-                mListener.onError("sent failed!");
+                mListener.onError("分享失败");
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 mListener.onError("auth denied!");

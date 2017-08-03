@@ -27,6 +27,7 @@ import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
+import cn.com.stableloan.ui.fragment.UserInformationFragment;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -42,7 +43,7 @@ import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ProductFragment.BackHandlerInterface{
 
     @Bind(R.id.tab)
     PageBottomTabLayout tab;
@@ -261,8 +262,11 @@ public class MainActivity extends BaseActivity {
     private long mLastBackTime = 0;
     @Override
     public void onBackPressed() {
-        SlideUp slideUp = ProductFragment.slideUp;
-        if(slideUp!=null){
+      /*  ProductFragment productFragment=new ProductFragment();
+        if(productFragment!=null){
+            SlideUp slideUp = productFragment.slideUp;
+            if(slideUp!=null){
+            }
             boolean visible = ProductFragment.slideUp.isVisible();
             if(visible){
                 ProductFragment.slideUp.hide();
@@ -281,7 +285,29 @@ public class MainActivity extends BaseActivity {
                 mLastBackTime = System.currentTimeMillis();
                 ToastUtils.showToast(this, "再按一次退出");
             }
+        }*/
+        if(selectedFragment!=null ) {
+            boolean visible = ProductFragment.slideUp.isVisible();
+                if(visible){
+                    ProductFragment.slideUp.hide();
+                }else {
+                    if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                        finish();
+                    } else {
+                        mLastBackTime = System.currentTimeMillis();
+                        ToastUtils.showToast(this, "再按一次退出");
+                    }
+                }
+        }else {
+            if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                finish();
+            } else {
+                mLastBackTime = System.currentTimeMillis();
+                ToastUtils.showToast(this, "再按一次退出");
+            }
         }
+
+
     }
 
 
@@ -293,6 +319,15 @@ public class MainActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
 
     }
+
+    private ProductFragment selectedFragment;
+
+    @Override
+    public void setSelectedFragment(ProductFragment backHandledFragment) {
+        this.selectedFragment = backHandledFragment;
+
+    }
+
 }
 
 

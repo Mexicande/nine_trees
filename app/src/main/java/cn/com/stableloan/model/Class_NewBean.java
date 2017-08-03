@@ -44,7 +44,7 @@ public class Class_NewBean implements Serializable {
         this.classX = classX;
     }
 
-    public static class ProductBean {
+    public static class ProductBean implements Serializable{
         /**
          * pname : 111
          * product_introduction : 321312312
@@ -99,7 +99,7 @@ public class Class_NewBean implements Serializable {
             this.labels = labels;
         }
 
-        public static class LabelsBean {
+        public static class LabelsBean implements Serializable{
             /**
              * id : 3
              * name : 22
@@ -186,7 +186,7 @@ public class Class_NewBean implements Serializable {
         }
     }
 
-    public static class ClassBean {
+    public static class ClassBean implements Serializable{
         /**
          * home_image : http://or2eh71ll.bkt.clouddn.com/149673705917725.jpg?e=1496740659&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:v9FZhjj2lo_-uhjYv865ZxYzBww=
          * name : 11

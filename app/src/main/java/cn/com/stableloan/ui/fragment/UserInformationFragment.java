@@ -2,6 +2,7 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,6 +43,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,12 +54,19 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.CameraEvent;
+import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.Camera2Activity;
+import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
+import cn.com.stableloan.utils.BitmapUtils;
+import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -64,6 +74,9 @@ import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.BetterSpinner;
 import cn.com.stableloan.view.RoundButton;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -129,6 +142,9 @@ public class UserInformationFragment extends Fragment {
 
     private String[] list;
 
+    File mFile;
+
+
     private Identity.IdentityBean identityBean;
 
     public UserInformationFragment() {
@@ -166,7 +182,7 @@ public class UserInformationFragment extends Fragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息",  eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
 
         etCity.setFocusableInTouchMode(false);
         etCity.setOnClickListener(new View.OnClickListener() {
@@ -236,6 +252,25 @@ public class UserInformationFragment extends Fragment {
             getDate();
         }
     }
+    @Subscribe
+    public void onCameraEvent(CameraEvent event) {
+        CardBean.OutputsBean.OutputValueBean.DataValueBean value = event.value;
+        if (value!=null) {
+            LogUtils.i("111111",value.toString());
+            if(value.getName()!=null){
+                etName.setText(value.getName());
+            }
+            if(value.getNum()!=null){
+                etIDCard.setText(value.getNum());
+            }
+            if(value.getSex()!=null){
+                etSex.setText(value.getSex());
+            }
+            if(value.getAddress()!=null){
+                etAddress.setText(value.getAddress());
+            }
+        }
+    }
 
     private void getDate() {
 
@@ -292,7 +327,7 @@ public class UserInformationFragment extends Fragment {
                                     etContactName.setText(bean.getContact());
 
                                     String bet = bean.getRelation();
-                                    if(!bet.isEmpty()){
+                                    if (!bet.isEmpty()) {
                                         int i2 = Integer.parseInt(bet);
                                         etBetween1.setText(list[i2]);
                                     }
@@ -304,7 +339,7 @@ public class UserInformationFragment extends Fragment {
 
                                     String bet2 = bean1.getRelation();
 
-                                    if(!bet2.isEmpty()){
+                                    if (!bet2.isEmpty()) {
                                         int i1 = Integer.parseInt(bet2);
                                         etBetween2.setText(list[i1]);
                                     }
@@ -346,7 +381,7 @@ public class UserInformationFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.getCity, R.id.getContact1, R.id.getContact2, R.id.save})
+    @OnClick({R.id.getCity, R.id.getContact1, R.id.getContact2, R.id.save,R.id.layout_camera})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.getCity:
@@ -361,11 +396,54 @@ public class UserInformationFragment extends Fragment {
             case R.id.save:
                 saveDate();
                 break;
+            case R.id.layout_camera:
+                getCameraPermission();
+                break;
         }
     }
 
+    private void getCameraPermission() {
+        AndPermission.with(getActivity())
+                .requestCode(500)
+                .permission(Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                .callback(listener)
+                .start();
+
+    }
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+            // 这里的requestCode就是申请时设置的requestCode。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if(requestCode == 500) {
+                Intent intent = new Intent(getActivity(), Camera2Activity.class);
+                mFile = CommonUtils.createImageFile("mFile");
+                //文件保存的路径和名称
+                intent.putExtra("file", mFile.toString());
+                //拍照时的提示文本
+                intent.putExtra("hint", "请将证件放入框内。将裁剪图片，只保留框内区域的图像");
+                //是否使用整个画面作为取景区域(全部为亮色区域)
+                intent.putExtra("hideBounds", false);
+                //最大允许的拍照尺寸（像素数）
+                intent.putExtra("maxPicturePixels", 3840 * 2160);
+                //startActivityForResult(intent, AppApplication.TAKE_PHOTO_CUSTOM);
+                startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            if(requestCode == 500) {
+                // TODO ...
+            }
+        }
+    };
+
     private void saveDate() {
-        final Identity.IdentityBean identity1=new Identity.IdentityBean();
+        final Identity.IdentityBean identity1 = new Identity.IdentityBean();
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
@@ -419,7 +497,7 @@ public class UserInformationFragment extends Fragment {
             }
         }
 
-        Identity.IdentityBean bean=new Identity.IdentityBean();
+        Identity.IdentityBean bean = new Identity.IdentityBean();
         bean.setSex(identity1.getSex());
         bean.setMarriage(identity1.getMarriage());
         bean.setAge(age);
@@ -428,24 +506,25 @@ public class UserInformationFragment extends Fragment {
         bean.setIdcard(IdCard);
         bean.setName(userName);
 
-        if(!changeTest()){
-            commitChange(identity1,identity2,identity3);
-        }else {
-            ToastUtils.showToast(getActivity(),"无修改内容");
+        if (!changeTest()) {
+            commitChange(identity1, identity2, identity3);
+        } else {
+            ToastUtils.showToast(getActivity(), "无修改内容");
         }
 
     }
 
     /**
      * 修改提交
+     *
      * @param identity1
      * @param identity2
      * @param identity3
      */
-    private  void commitChange(final Identity.IdentityBean identity1, Identity.IdentityBean.ContactBean identity2,
-                               Identity.IdentityBean.ContactBean identity3){
+    private void commitChange(final Identity.IdentityBean identity1, Identity.IdentityBean.ContactBean identity2,
+                              Identity.IdentityBean.ContactBean identity3) {
 
-        FormEditText[] allFields = {etName, etIDCard,  etContact, etContact1};
+        FormEditText[] allFields = {etName, etIDCard, etContact, etContact1};
         boolean allValid = true;
         for (FormEditText field : allFields) {
             allValid = field.testValidity() && allValid;
@@ -456,7 +535,7 @@ public class UserInformationFragment extends Fragment {
                     && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
                     && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
                     && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()
-                    && !userPhone.getText().toString().isEmpty()&&!etName.getText().toString().isEmpty()) {
+                    && !userPhone.getText().toString().isEmpty() && !etName.getText().toString().isEmpty()) {
                 identity1.setIstatus("1");
             } else {
                 identity1.setIstatus("0");
@@ -491,8 +570,7 @@ public class UserInformationFragment extends Fragment {
                                 JSONObject object = new JSONObject(s);
                                 String isSuccess = object.getString("isSuccess");
                                 if ("1".equals(isSuccess)) {
-                                    identityBean=identity1;
-
+                                    identityBean = identity1;
                                     EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                     String msg = object.getString("msg");
                                     ToastUtils.showToast(getActivity(), msg);
@@ -517,10 +595,10 @@ public class UserInformationFragment extends Fragment {
      *
      * @return
      */
-    private  boolean changeTest(){
+    private boolean changeTest() {
         boolean flag;
 
-        final Identity.IdentityBean identity1=new Identity.IdentityBean();
+        final Identity.IdentityBean identity1 = new Identity.IdentityBean();
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
@@ -558,23 +636,23 @@ public class UserInformationFragment extends Fragment {
             }
         }
 
-        if(identityBean.getMarriage().equals(identity1.getMarriage())
-                &&identityBean.getName().equals(userName)
-                &&identityBean.getIdcard().equals(IdCard)
-                &&identityBean.getIdaddress().equals(address)
-                &&identityBean.getAge().equals(age)
-                &&identityBean.getSex().equals(identity1.getSex())
-                &&identityBean.getCity().equals(city)
-                &&identityBean.getContact().get(0).getRelation().equals(identity2.getRelation())
-                &&identityBean.getContact().get(0).getUserphone().equals(contact1)
-                &&identityBean.getContact().get(0).getContact().equals(contactName1)
-                &&identityBean.getContact().get(1).getRelation().equals(identity3.getRelation())
-                &&identityBean.getContact().get(1).getUserphone().equals(contact2)
-                &&identityBean.getContact().get(1).getContact().equals(contactName2)) {
+        if (identityBean.getMarriage().equals(identity1.getMarriage())
+                && identityBean.getName().equals(userName)
+                && identityBean.getIdcard().equals(IdCard)
+                && identityBean.getIdaddress().equals(address)
+                && identityBean.getAge().equals(age)
+                && identityBean.getSex().equals(identity1.getSex())
+                && identityBean.getCity().equals(city)
+                && identityBean.getContact().get(0).getRelation().equals(identity2.getRelation())
+                && identityBean.getContact().get(0).getUserphone().equals(contact1)
+                && identityBean.getContact().get(0).getContact().equals(contactName1)
+                && identityBean.getContact().get(1).getRelation().equals(identity3.getRelation())
+                && identityBean.getContact().get(1).getUserphone().equals(contact2)
+                && identityBean.getContact().get(1).getContact().equals(contactName2)) {
 
-            flag=true;
-        }else {
-            flag=false;
+            flag = true;
+        } else {
+            flag = false;
         }
         return flag;
     }
@@ -622,7 +700,6 @@ public class UserInformationFragment extends Fragment {
 
     /**
      * 城市定位
-     *
      */
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
@@ -671,6 +748,7 @@ public class UserInformationFragment extends Fragment {
     }
 
 
+
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
@@ -714,13 +792,13 @@ public class UserInformationFragment extends Fragment {
                         String[] contacts = getPhoneContacts(uri);
                         if (contacts != null && contacts.length > 1) {
                             etContact1.setText(contacts[1]);
-                        }else {
-                            ToastUtils.showToast(getActivity(),"获取号码失败，请手动添加");
+                        } else {
+                            ToastUtils.showToast(getActivity(), "获取号码失败，请手动添加");
                         }
                         if (contacts != null) {
                             etContactName.setText(contacts[0]);
-                        }else {
-                            ToastUtils.showToast(getActivity(),"获取联系人失败，请手动添加");
+                        } else {
+                            ToastUtils.showToast(getActivity(), "获取联系人失败，请手动添加");
                         }
                     }
                 }
@@ -735,25 +813,50 @@ public class UserInformationFragment extends Fragment {
                         String[] contacts = getPhoneContacts(uri);
                         if (contacts != null && contacts.length > 1) {
                             etContact.setText(contacts[1]);
-                        }else {
-                            ToastUtils.showToast(getActivity(),"获取号码失败，请手动添加");
+                        } else {
+                            ToastUtils.showToast(getActivity(), "获取号码失败，请手动添加");
                         }
                         if (contacts != null) {
                             etContactName2.setText(contacts[0]);
-                        }else {
-                            ToastUtils.showToast(getActivity(),"获取联系人失败，请手动添加");
+                        } else {
+                            ToastUtils.showToast(getActivity(), "获取联系人失败，请手动添加");
 
                         }
                     }
                 }
                 break;
             case REQUEST_CODE_PICK_CITY:
-                if(resultCode == RESULT_OK){
-                    if (data != null){
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
                         String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
                         etCity.setText(city);
                     }
                 }
+                break;
+        /*    case AppApplication.TAKE_PHOTO_CUSTOM:
+                mFile = new File(data.getStringExtra("file"));
+                Flowable.just(mFile)
+                        //将File解码为Bitmap
+                        .map(file -> BitmapUtils.compressToResolution(file, 1920 * 1080))
+                        //裁剪Bitmap
+                        .map(BitmapUtils::crop)
+                        //将Bitmap写入文件
+                        .map(bitmap -> BitmapUtils.writeBitmapToFile(bitmap, "mFile"))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(file -> {
+                            mFile = file;
+                            Uri uri = Uri.parse("file://" + mFile.toString());
+                            *//*ImagePipeline imagePipeline = Fresco.getImagePipeline();
+                            //清除该Uri的Fresco缓存. 若不清除，对于相同文件名的图片，Fresco会直接使用缓存而使得Drawee得不到更新.
+                            imagePipeline.evictFromMemoryCache(uri);
+                            imagePipeline.evictFromDiskCache(uri);
+                            FrescoUtils.load("file://" + mFile.toString()).resize(240, 164).into(mImageView);
+                            mBtnTakePicture.setText("重新拍照");
+                            mHasSelectedOnce = true;*//*
+                        });
+                break;*/
+
         }
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -806,11 +909,12 @@ public class UserInformationFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        LogUtils.i("1-onDestroy()","11111");
+        LogUtils.i("1-onDestroy()", "11111");
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
 
     }
+
 
 }

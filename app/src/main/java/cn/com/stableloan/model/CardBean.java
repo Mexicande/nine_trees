@@ -125,16 +125,7 @@ public class CardBean implements Serializable{
                 }
 
                 /**
-                 * address : 西安市周至县终南镇豆村北一街131号
-                 * birth : 19921228
-                 * config_str : {"side":"face"}
-                 * face_rect : {"angle":-84.94274139404297,"center":{"x":462.06103515625,"y":233.46119689941406},"size":{"height":113.44154357910156,"width":103.48052978515625}}
-                 * name : 尚朋
-                 * nationality : 汉
-                 * num : 61012419921228393X
-                 * request_id : 20170727013627_a8854af4613d20888453c4f0cb906b0f
-                 * sex : 男
-                 * success : true
+
                  */
 
                 private String address;

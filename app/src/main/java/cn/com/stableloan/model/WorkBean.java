@@ -129,7 +129,7 @@ public class WorkBean implements Serializable{
             this.olass_time = olass_time;
         }
 
-        public static class StudentBean {
+        public static class StudentBean implements Serializable{
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
@@ -191,7 +191,7 @@ public class WorkBean implements Serializable{
             }
         }
 
-        public static class CompanyBean {
+        public static class CompanyBean implements Serializable{
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
@@ -296,7 +296,7 @@ public class WorkBean implements Serializable{
             }
         }
 
-        public static class BusinessBean {
+        public static class BusinessBean implements Serializable{
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
@@ -357,7 +357,7 @@ public class WorkBean implements Serializable{
 
         }
 
-        public static class FreelancerBean {
+        public static class FreelancerBean  implements Serializable {
 
             @Override
             public boolean equals(Object o) {

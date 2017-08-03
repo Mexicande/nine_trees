@@ -25,6 +25,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +39,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.SPUtils;
@@ -142,7 +145,7 @@ public class ProductDesc extends BaseActivity {
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
 
-    private boolean login;
+    private boolean flag=false;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
@@ -379,7 +382,7 @@ public class ProductDesc extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                    finish();
                 break;
             case R.id.platform_desc:
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
@@ -434,11 +437,10 @@ public class ProductDesc extends BaseActivity {
 
 
         WXShareContent contentWX = new WXShareContent();
-
         contentWX.setScene(scence)
                 .setType(WXShareContent.share_type.WebPage)
                 .setWeb_url(Urls.KEY.PageWeb+descBean.getData().getId())
-                .setTitle("欢迎安稳钱包")
+                .setTitle("安稳钱包")
                 .setDescription(descBean.getData().getProduct_introduction())
                 .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
         wxManager.share(contentWX);
@@ -472,12 +474,13 @@ public class ProductDesc extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         if (s != null) {
                             try {
                                 JSONObject json = new JSONObject(s);
                                 int error_code = json.getInt("error_code");
                                 if (error_code == 0) {
+                                    flag=true;
+                                    EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     if (status.equals("1")) {
                                         ToastUtils.showToast(ProductDesc.this, "收藏成功");
                                         heartButton.setLiked(true);
@@ -529,7 +532,18 @@ public class ProductDesc extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ZhugeSDK.getInstance().flush(getApplicationContext());
+        if(flag){
+            EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        if(slideUp.isVisible()){
+            slideUp.hide();
+        }else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -552,9 +566,7 @@ public class ProductDesc extends BaseActivity {
                 }
                 break;
 
-
         }
-
 
     }
 

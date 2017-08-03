@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.multidex.MultiDex;
 
 import com.lzy.okgo.OkGo;
@@ -43,6 +44,20 @@ public class AppApplication extends Application {
         return uploadManager;
     }
 
+    /**
+     * 启动照相Intent的RequestCode.自定义相机.
+     */
+    public static final int TAKE_PHOTO_CUSTOM = 100;
+    /**
+     * 启动照相Intent的RequestCode.系统相机.
+     */
+    public static final int TAKE_PHOTO_SYSTEM = 200;
+    /**
+     * 主线程Handler.
+     */
+    public static Handler mHandler;
+    public static AppApplication sApp;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -51,6 +66,8 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        sApp = this;
+        mHandler = new Handler();
 
         initTypeface();
 
@@ -72,7 +89,6 @@ public class AppApplication extends Application {
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
 
     }
-
     private void initTypeface(){
         try {
             Field field = Typeface.class.getDeclaredField("SERIF");
@@ -109,7 +125,9 @@ public class AppApplication extends Application {
     public static void destoryActivity(String activityName) {
         Set<String> keySet=destoryMap.keySet();
         for (String key:keySet){
-            destoryMap.get(key).finish();
+            if(destoryMap.get(key)!=null){
+                destoryMap.get(key).finish();
+            }
         }
     }
 
