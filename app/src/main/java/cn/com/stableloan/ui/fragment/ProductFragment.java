@@ -215,7 +215,10 @@ public class ProductFragment extends ImmersionFragment {
                                             break;
                                         case ACTION_UP :
                                             stateLayout.showContentView();
-                                            classify_recycler_adapter.addData(json.getProduct());
+
+                                            if(json.getProduct().size()>0){
+                                                classify_recycler_adapter.addData(json.getProduct());
+                                            }
                                             classify_recycler_adapter.loadMoreComplete();
                                             break;
                                     }
@@ -265,13 +268,9 @@ public class ProductFragment extends ImmersionFragment {
     private void initViewTitle() {
         titleName.setText("产品列表");
         slideUp = new SlideUp.Builder(slideView)
-                .withListeners(new SlideUp.Listener.Slide() {
-                    @Override
-                    public void onSlide(float percent) {
-                    }
-                })
                 .withStartGravity(Gravity.TOP)
                 .withLoggingEnabled(true)
+                .withAutoSlideDuration(1)
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
         idFlowlayout.setAdapter(new TagAdapter<String>(mVals) {
@@ -356,13 +355,16 @@ public class ProductFragment extends ImmersionFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_select:
+
                 boolean visible = slideUp.isVisible();
                 if (visible) {
                     slideUp.hide();
                 } else {
                     slideUp.show();
                 }
-
+                if(tagData.size()==0){
+                    getTagFlowData();
+                }
                 break;
             case R.id.button:
                 slideUp.hide();
@@ -414,7 +416,7 @@ public class ProductFragment extends ImmersionFragment {
         Set<Integer> taglist = tagFlowlayout.getSelectedList();
         List<String> strlist=new ArrayList<>();
         for(Integer s:taglist){
-            strlist.add(String.valueOf(s));
+            strlist.add(String.valueOf(s+1));
         }
         String []strs=new String[strlist.size()];
 
@@ -464,7 +466,6 @@ public class ProductFragment extends ImmersionFragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override

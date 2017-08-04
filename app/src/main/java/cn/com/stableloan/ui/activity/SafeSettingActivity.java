@@ -264,7 +264,10 @@ public class SafeSettingActivity extends BaseActivity {
 
     private void settingTime() {
      int position=0;
-        long l = dateToStamp(saveBean.getLass_time());
+        long l=0;
+        if(saveBean.getLass_time()!=null){
+            l = dateToStamp(saveBean.getLass_time());
+        }
         String string = etTimes.getText().toString();
         for(int i=0;i<list1.length;i++){
             if(list1[i].equals(string)){

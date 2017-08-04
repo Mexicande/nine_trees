@@ -327,6 +327,7 @@ public class UserInformationFragment extends Fragment {
                                     etContactName.setText(bean.getContact());
 
                                     String bet = bean.getRelation();
+
                                     if (!bet.isEmpty()) {
                                         int i2 = Integer.parseInt(bet);
                                         etBetween1.setText(list[i2]);

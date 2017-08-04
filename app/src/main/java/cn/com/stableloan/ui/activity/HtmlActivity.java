@@ -35,6 +35,7 @@ import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.WelfareShutBean;
+import cn.com.stableloan.ui.js.JsInteration;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -184,7 +185,9 @@ public class HtmlActivity extends BaseActivity {
                     return false;
                 }
             });
+
             mWebView.setWebChromeClient(new MyWebChromeClient());
+            mWebView.addJavascriptInterface(new JsInteration(), "android");
 
         }
     }

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import cn.com.stableloan.utils.SPUtils;
 import okhttp3.OkHttpClient;
 
 
@@ -32,7 +33,7 @@ import okhttp3.OkHttpClient;
 public class AppApplication extends Application {
     //dao
 
-    public static String today_date = "";
+    public static String today ;
 
     private static AppApplication instance;
 
@@ -105,7 +106,13 @@ public class AppApplication extends Application {
         return instance;
     }
 
+    public static String getToken(){
 
+        String token = (String) SPUtils.get(instance, "token", "1");
+
+        return token;
+
+    }
 
 
     private static List<Activity> myActivity = new ArrayList<>();

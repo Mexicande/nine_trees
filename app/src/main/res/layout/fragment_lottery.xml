@@ -13,9 +13,9 @@
         <include layout="@layout/toolbar_layout"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/welfare_recycler"
+            android:layout_marginTop="3dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
 </cn.com.stableloan.view.statuslayout.StateLayout>

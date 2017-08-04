@@ -3,4 +3,10 @@
     <cache-path name="portrait" path="images/"/>
     <cache-path name="idCard" path="images/"/>
     <cache-path name="license" path="images/"/>
+    <paths>
+        <external-path
+            name="camera_photos"
+            path="" />
+    </paths>
+
 </paths>

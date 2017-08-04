@@ -59,9 +59,8 @@
                     android:id="@+id/tag_flowlayout"
                     android:layout_marginTop="@dimen/_5dp"
                     android:layout_width="match_parent"
+                    android:layout_marginLeft="12dp"
                     zhy:max_select="-1"
-                    app:gravity="left"
-                    app:paddingStart="@dimen/_40dp"
                     android:layout_height="wrap_content">
                 </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
                 <cn.com.stableloan.view.RoundButton
