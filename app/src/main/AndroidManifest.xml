@@ -99,7 +99,7 @@
             android:value="24520d39b750437b97f026353aa80aea" />
         <meta-data
             android:name="ZHUGE_CHANNEL"
-            android:value="wandoujia" />
+            android:value="360" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="5KizzImryGritdSFV3nNNGPYpm6AAFDB" />
@@ -110,7 +110,7 @@
             android:process=":remote" />
 
         <!-- 高德城市选择 -->
-        <meta-data
+        <meta-data 
             android:name="com.amap.api.v2.apikey"
             android:value="41551e9365727dbf1b539c5c8e36557a" />
 

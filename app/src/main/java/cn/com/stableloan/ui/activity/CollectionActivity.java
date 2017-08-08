@@ -34,7 +34,6 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Class_ListProductBean;
-import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -47,14 +46,14 @@ public class CollectionActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
-    @Bind(R.id.SwipeLayout)
-    SwipeRefreshLayout SwipeLayout;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.stateLayout)
     StateLayout stateLayout;
+    @Bind(R.id.SwipeLayout)
+    SwipeRefreshLayout SwipeLayout;
     private Recycler_Classify_Adapter classify_recycler_adapter;
 
     private View errorView;
@@ -101,13 +100,15 @@ public class CollectionActivity extends BaseActivity {
         });
 
     }
+
     @Subscribe
-    public void onCollection(ProcuctCollectionEvent event){
-        if("ok".equals(event.msg)){
+    public void onCollection(ProcuctCollectionEvent event) {
+        if ("ok".equals(event.msg)) {
             initData();
         }
 
     }
+
     private void initData() {
 
         String token = (String) SPUtils.get(this, "token", "1");
@@ -115,7 +116,7 @@ public class CollectionActivity extends BaseActivity {
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         JSONObject jsonObject = new JSONObject(parms1);
-        OkGo.<String>post(Urls.Ip_url+Urls.product.ProductCollectionList)
+        OkGo.<String>post(Urls.Ip_url + Urls.product.ProductCollectionList)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {

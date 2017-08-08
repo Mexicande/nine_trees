@@ -4,6 +4,7 @@ package cn.com.stableloan.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -54,6 +55,8 @@ public class LotteryFragment extends ImmersionFragment {
     StateLayout stateLayout;
     @Bind(R.id.welfare_recycler)
     RecyclerView welfareRecycler;
+    @Bind(R.id.swip)
+    SwipeRefreshLayout swip;
 
     private WelfareAdapter welfareAdapter;
 
@@ -95,37 +98,48 @@ public class LotteryFragment extends ImmersionFragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "popuppage",  eventObject);
-
+        ZhugeSDK.getInstance().track(getActivity(), "popuppage", eventObject);
 
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
                 Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
-                if(login!=null){
-                    if(!login){
-                        startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
-                    }else {
-                        startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfareAdapter.getData().get(position)));
+                if (login != null) {
+                    if (!login) {
+                        startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
+                    } else {
+                        startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
                     }
 
                 }
-
             }
         });
 
+        swip.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
+        swip.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swip.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        CheckInternet();
+                        swip.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
     }
 
 
     private void CheckInternet() {
         stateLayout.showProgressView();
         String token = (String) SPUtils.get(getActivity(), "token", "1");
-
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         final JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.Ip_url+Urls.LOTTERY.GetLottery)
+        OkGo.post(Urls.Ip_url + Urls.LOTTERY.GetLottery)
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(new StringCallback() {
@@ -139,6 +153,7 @@ public class LotteryFragment extends ImmersionFragment {
                         welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
                         welfareRecycler.setAdapter(welfareAdapter);
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

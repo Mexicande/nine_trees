@@ -1,21 +1,25 @@
-<cn.com.stableloan.view.statuslayout.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/stateLayout"
-
     tools:context="cn.com.stableloan.ui.fragment.LotteryFragment">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <include layout="@layout/toolbar_layout"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/welfare_recycler"
-            android:layout_marginTop="3dp"
+        <cn.com.stableloan.view.statuslayout.StateLayout
+            android:id="@+id/stateLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
-</cn.com.stableloan.view.statuslayout.StateLayout>
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/welfare_recycler"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </cn.com.stableloan.view.statuslayout.StateLayout>
+
+</LinearLayout>

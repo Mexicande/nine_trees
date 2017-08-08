@@ -38,7 +38,7 @@ public interface Urls {
     //
     interface Update{
         String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
-        String value="url=url_wandoujia";
+        String value="url=url_360";
     }
     interface  times{
         String MESSAGE_SEND="sms/getcode";
