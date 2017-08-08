@@ -99,7 +99,7 @@
             android:value="24520d39b750437b97f026353aa80aea" />
         <meta-data
             android:name="ZHUGE_CHANNEL"
-            android:value="小米" />
+            android:value="wandoujia" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="5KizzImryGritdSFV3nNNGPYpm6AAFDB" />

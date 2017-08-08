@@ -3,6 +3,7 @@ package cn.com.stableloan.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class Class_ListProductBean implements Serializable{
      */
     private String image;
     private boolean isSuccess;
-    private List<ProductBean> product;
+    private ArrayList<ProductBean> product;
 
     public String getImage() {
         return image;
@@ -36,11 +37,11 @@ public class Class_ListProductBean implements Serializable{
         this.isSuccess = isSuccess;
     }
 
-    public List<ProductBean> getProduct() {
+    public ArrayList<ProductBean> getProduct() {
         return product;
     }
 
-    public void setProduct(List<ProductBean> product) {
+    public void setProduct(ArrayList<ProductBean> product) {
         this.product = product;
     }
 
@@ -71,7 +72,7 @@ public class Class_ListProductBean implements Serializable{
             this.link = link;
         }
 
-        private List<LabelsBean> labels;
+        private ArrayList<LabelsBean> labels;
 
         public String getFastest_time() {
             return fastest_time;
@@ -129,11 +130,11 @@ public class Class_ListProductBean implements Serializable{
             this.min_algorithm = min_algorithm;
         }
 
-        public List<LabelsBean> getLabels() {
+        public ArrayList<LabelsBean> getLabels() {
             return labels;
         }
 
-        public void setLabels(List<LabelsBean> labels) {
+        public void setLabels(ArrayList<LabelsBean> labels) {
             this.labels = labels;
         }
 

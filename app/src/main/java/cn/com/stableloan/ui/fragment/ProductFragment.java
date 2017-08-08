@@ -127,6 +127,7 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
+
         EventBus.getDefault().register(this);
 
         stateLayout = (StateLayout) view.findViewById(R.id.stateLayout);
@@ -215,7 +216,6 @@ public class ProductFragment extends ImmersionFragment {
                                             break;
                                         case ACTION_UP :
                                             stateLayout.showContentView();
-
                                             if(json.getProduct().size()>0){
                                                 classify_recycler_adapter.addData(json.getProduct());
                                             }
@@ -304,6 +304,7 @@ public class ProductFragment extends ImmersionFragment {
 
 
     private void setListener() {
+
         SwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
 
         SwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -315,7 +316,6 @@ public class ProductFragment extends ImmersionFragment {
                         getDate(1, ACTION_DOWN);
                         SwipeRefreshLayout.setRefreshing(false);
                         MORE=1;
-
                     }
                 }, 1000);
             }
@@ -326,6 +326,7 @@ public class ProductFragment extends ImmersionFragment {
                 classifyRecycl.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+
                         MORE++;
                         getDate(MORE, ACTION_UP);
 
@@ -453,7 +454,10 @@ public class ProductFragment extends ImmersionFragment {
                                     classify_recycler_adapter.setNewData(null);
                                     classify_recycler_adapter.setEmptyView(notDataView);
                                 }else {
-                                    classify_recycler_adapter.setNewData(Arrays.asList(productBeen));
+                                    List<Class_ListProductBean.ProductBean> been = Arrays.asList(productBeen);
+                                    List<Class_ListProductBean.ProductBean> arrayList = new ArrayList<Class_ListProductBean.ProductBean>(been);
+                                    classify_recycler_adapter.setNewData(arrayList);
+                                    classify_recycler_adapter.disableLoadMoreIfNotFullPage();
                                     classifyRecycl.smoothScrollToPosition(0);
                                 }
                             }else {

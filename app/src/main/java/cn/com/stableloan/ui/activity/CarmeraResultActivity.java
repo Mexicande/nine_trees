@@ -93,7 +93,7 @@ public class CarmeraResultActivity extends AppCompatActivity {
 
         path = bundle.getString("path");
 
-          btSaveButton.setText("保存" + "\n" + "图片+文字");
+          //btSaveButton.setText("保存" + "\n" + "图片+文字");
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .skipMemoryCache(true)

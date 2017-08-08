@@ -451,17 +451,17 @@
                     android:layout_marginTop="40dp"
                     android:layout_gravity="center"
                     android:layout_width="180dp"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:text="保 存"
                     app:btnCornerRadius="10dp"
                     app:btnPressedRatio="0.9"
                     app:btnSolidColor="@color/colorPrimary"
                     android:gravity="center"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#ccffffff"
+                    style="?android:attr/borderlessButtonStyle"
                     />
-
             </LinearLayout>
         </ScrollView>
 </LinearLayout>

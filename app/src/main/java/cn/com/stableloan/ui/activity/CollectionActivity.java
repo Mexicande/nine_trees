@@ -167,7 +167,7 @@ public class CollectionActivity extends BaseActivity {
         titleName.setText("我的收藏");
         ivBack.setVisibility(View.VISIBLE);
 
-        notDataView = getLayoutInflater().inflate(R.layout.view_empty, (ViewGroup) recyclerView.getParent(), false);
+        notDataView = getLayoutInflater().inflate(R.layout.view_no_product_empty, (ViewGroup) recyclerView.getParent(), false);
         errorView = getLayoutInflater().inflate(R.layout.view_error, (ViewGroup) recyclerView.getParent(), false);
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
 

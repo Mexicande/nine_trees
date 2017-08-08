@@ -759,7 +759,18 @@ public class LockPatternView extends View {
 		public void setStatus(int status){
 			this.status = status;
 		}
-		
+
+		@Override
+		public String toString() {
+			return "Cell{" +
+					"x=" + x +
+					", y=" + y +
+					", row=" + row +
+					", column=" + column +
+					", index=" + index +
+					", status=" + status +
+					'}';
+		}
 	}
 	
 }

@@ -650,12 +650,9 @@ public class UserInformationFragment extends Fragment {
                 && identityBean.getContact().get(1).getRelation().equals(identity3.getRelation())
                 && identityBean.getContact().get(1).getUserphone().equals(contact2)
                 && identityBean.getContact().get(1).getContact().equals(contactName2)) {
-
-            flag = true;
-        } else {
-            flag = false;
+            return true;
         }
-        return flag;
+        return false;
     }
 
     private void getLocationPermission() {

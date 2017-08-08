@@ -16,6 +16,7 @@ import com.star.lock.widget.LockPatternView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -24,6 +25,7 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
@@ -88,6 +90,7 @@ public class CreateGestureActivity extends BaseActivity {
 
         @Override
         public void onPatternComplete(List<LockPatternView.Cell> pattern) {
+            LogUtils.i("手势创建===", pattern.toString());
             //Log.e(TAG, "--onPatternDetected--");
             if (mChosenPattern == null && pattern.size() >= 4) {
                 mChosenPattern = new ArrayList<LockPatternView.Cell>(pattern);
@@ -173,8 +176,9 @@ public class CreateGestureActivity extends BaseActivity {
      * 保存手势密码
      */
     private void saveChosenPattern(List<LockPatternView.Cell> cells) {
-        byte[] bytes = LockPatternUtil.patternToHash(cells);
 
+        LogUtils.i("SavePattern===",cells.toArray());
+        byte[] bytes = LockPatternUtil.patternToHash(cells);
         aCache.put(Constant.GESTURE_PASSWORD, bytes);
     }
     private SelfDialog selfDialog;

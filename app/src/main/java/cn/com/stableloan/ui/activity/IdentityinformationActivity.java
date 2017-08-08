@@ -69,8 +69,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         initToolbar();
         initMagicIndicator();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
-
-
     }
 
 

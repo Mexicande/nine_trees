@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UpdateInfoBean;
@@ -79,9 +80,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
     private void VisionTest() {
 
-        String url="http://www.shoujiweidai.com/update/versions.json";
-
-        UpdateManager.create(this).setUrl(url).setParser(new IUpdateParser() {
+        UpdateManager.create(this).setUrl(Urls.Update.APP_UPDATA).setPostData(Urls.Update.value).setParser(new IUpdateParser() {
             @Override
             public UpdateInfo parse(String source) throws Exception {
 
@@ -116,6 +115,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                 LogUtils.i("update",error.getMessage());
             }
         }).check();
+
     }
     public String getVersionCode(Context context){
         PackageManager packageManager=context.getPackageManager();

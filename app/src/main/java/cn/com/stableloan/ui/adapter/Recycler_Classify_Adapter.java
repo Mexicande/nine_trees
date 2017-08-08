@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.coorchice.library.SuperTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.stableloan.R;
@@ -25,7 +26,7 @@ import cn.com.stableloan.model.Class_ListProductBean;
 public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProductBean.ProductBean,BaseViewHolder> {
 
 
-    public Recycler_Classify_Adapter(List<Class_ListProductBean.ProductBean> data) {
+    public Recycler_Classify_Adapter(ArrayList<Class_ListProductBean.ProductBean> data) {
         super(R.layout.product_trem, data);
 
     }
@@ -54,7 +55,7 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
 
         if(item.getLabels()!=null&&item.getLabels().size()>0){
             int size = item.getLabels().size();
-            List<Class_ListProductBean.ProductBean.LabelsBean> lables = item.getLabels();
+            ArrayList<Class_ListProductBean.ProductBean.LabelsBean> lables = item.getLabels();
             switch (size){
                 case 0:
                     break;
@@ -167,7 +168,6 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-
 
         Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.ic_product_logo));
 
