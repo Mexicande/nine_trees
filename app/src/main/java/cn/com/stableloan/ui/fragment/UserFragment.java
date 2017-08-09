@@ -40,6 +40,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
+import cn.com.stableloan.ui.activity.IntegralActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
@@ -113,47 +114,46 @@ public class UserFragment extends ImmersionFragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "minepage",  eventObject);
-
+        ZhugeSDK.getInstance().track(getActivity(), "minepage", eventObject);
 
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {
-                HashMap<String, String> params = new HashMap<>();
-                params.put("token", token);
-                JSONObject jsonObject = new JSONObject(params);
-                OkGo.post(Urls.puk_URL + Urls.user.USERT_INFO)
-                        .tag(this)
-                        .upJson(jsonObject.toString())
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                LogUtils.i("用户信息", s);
-                                try {
-                                    JSONObject object = new JSONObject(s);
-                                    String success = object.getString("isSuccess");
-                                    if (success.equals("1")) {
-                                        Gson gson = new Gson();
-                                        UserBean bean = gson.fromJson(s, UserBean.class);
-                                        tinyDB.putObject("user",bean);
-                                        tvNick.setText(bean.getNickname());
-                                        tvUserPhone.setText(bean.getUserphone());
+            HashMap<String, String> params = new HashMap<>();
+            params.put("token", token);
+            JSONObject jsonObject = new JSONObject(params);
+            OkGo.post(Urls.puk_URL + Urls.user.USERT_INFO)
+                    .tag(this)
+                    .upJson(jsonObject.toString())
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtils.i("用户信息", s);
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                String success = object.getString("isSuccess");
+                                if (success.equals("1")) {
+                                    Gson gson = new Gson();
+                                    UserBean bean = gson.fromJson(s, UserBean.class);
+                                    tinyDB.putObject("user", bean);
+                                    tvNick.setText(bean.getNickname());
+                                    tvUserPhone.setText(bean.getUserphone());
+                                } else {
+                                    final UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                    if (user != null) {
+                                        tvNick.setText(user.getNickname());
+                                        tvUserPhone.setText(user.getUserphone());
                                     } else {
-                                        final UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                                        if (user != null) {
-                                            tvNick.setText(user.getNickname());
-                                            tvUserPhone.setText(user.getUserphone());
-                                        }else {
-                                            String string = object.getString("msg");
-                                            ToastUtils.showToast(getActivity(), string);
-                                        }
+                                        String string = object.getString("msg");
+                                        ToastUtils.showToast(getActivity(), string);
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        });
+                        }
+                    });
         }
 
 
@@ -209,19 +209,20 @@ public class UserFragment extends ImmersionFragment {
     @Subscribe
     public void onMessageEvent(MessageEvent event) {
 
-        if(!event.userNick.isEmpty()){
+        if (!event.userNick.isEmpty()) {
             tvNick.setText(event.userNick);
         }
         if (event.phone != null) {
             tvUserPhone.setText(event.phone);
         }
-        if(event.phone.equals("1")){
+        if (event.phone.equals("1")) {
             TextUser();
         }
     }
 
 
-    @OnClick({R.id.layout_my, R.id.layout_setting,R.id.feedback,R.id.layout_collection})
+    @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
+            R.id.layout_Integral, R.id.laout_Money})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
@@ -235,6 +236,11 @@ public class UserFragment extends ImmersionFragment {
                 break;
             case R.id.layout_collection:
                 CollectionActivity.launch(getActivity());
+                break;
+            case R.id.layout_Integral:
+                IntegralActivity.launch(getActivity());
+                break;
+            case R.id.laout_Money:
                 break;
         }
     }

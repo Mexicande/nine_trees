@@ -39,9 +39,94 @@
             />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+        <View
+            android:id="@+id/view"
+            android:background="#f2f3f5"
+            android:layout_width="@dimen/_1dp"
+            android:layout_centerInParent="true"
+            android:layout_height="match_parent"/>
+        <RelativeLayout
+            android:id="@+id/layout_Integral"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_toLeftOf="@id/view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="38dp"
+                    android:src="@mipmap/integral"/>
+                <TextView
+                    android:textSize="15sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的积分:"
+                    />
+                <TextView
+                    android:id="@+id/tv_Integral"
+                    android:textSize="15sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginLeft="@dimen/_5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5000"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/laout_Money"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_toRightOf="@id/view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="33dp"
+                    android:src="@mipmap/money"/>
+                <TextView
+                    android:textSize="15sp"
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的现金:"
+                    android:textColor="#4D4D4D"
+                    />
+                <TextView
+                    android:id="@+id/bt_Money"
+                    android:textSize="15sp"
+                    android:textColor="#4D4D4D"
+                    android:layout_marginLeft="@dimen/_5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20元"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
     <com.allen.library.SuperTextView
         android:id="@+id/layout_my"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         stv:sLeftIconRes="@mipmap/ic_my"

@@ -39,6 +39,8 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
+ *
+ * 职业信息
  * A simple {@link Fragment} subclass.
  */
 public class ProfessionalInformationFragment extends Fragment {
@@ -72,8 +74,6 @@ public class ProfessionalInformationFragment extends Fragment {
     FormEditText etCincome;
     @Bind(R.id.et_operations)
     BetterSpinner etOperations;
-    @Bind(R.id.bincome)
-    BetterSpinner bincome;
 
     private String[] lists;
     private WorkBean work;
@@ -161,10 +161,6 @@ public class ProfessionalInformationFragment extends Fragment {
                                         checkbox2.setChecked(true);
                                     }
                                     String bome = business.getBincome();
-                                    if(!bome.isEmpty()){
-                                        int s1 = Integer.parseInt(bome);
-                                        bincome.setText(lists[s1]);
-                                    }
 
                                     WorkBean.OccupationBean.FreelancerBean freelancer = occupation.getFreelancer();
                                     String source = freelancer.getSource();
@@ -190,10 +186,6 @@ public class ProfessionalInformationFragment extends Fragment {
     private void initBetter() {
 
 
-        lists = getResources().getStringArray(R.array.income);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, lists);
-        bincome.setAdapter(adapter);
 
         list2 = getResources().getStringArray(R.array.years);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),
@@ -310,14 +302,14 @@ public class ProfessionalInformationFragment extends Fragment {
         if (checkbox2.isChecked()) {
             businessBean.setLicense("1");
         }
-        String string1 = bincome.getText().toString();
+     /*   String string1 = bincome.getText().toString();
         businessBean.setBincome("");
         for (int i = 0; i < lists.length; i++) {
             if (lists[i].equals(string1)) {
                 String s = String.valueOf(i);
                 businessBean.setBincome(s);
             }
-        }
+        }*/
 
         WorkBean.OccupationBean.FreelancerBean freelancerBean = new WorkBean.OccupationBean.FreelancerBean();
         freelancerBean.setSource("");
@@ -356,11 +348,11 @@ public class ProfessionalInformationFragment extends Fragment {
                 String teacher = etTeacher.getText().toString();
                 String SchoolAddress = etSchoolAddress.getText().toString();
                 String yers = etYears.getText().toString();
-                String ome = bincome.getText().toString();
+                //String ome = bincome.getText().toString();
 
 
                 if(school.isEmpty()||operations.isEmpty()||Cincome.isEmpty()||fixedline.isEmpty()||company.isEmpty()||email.isEmpty()
-                        ||loction.isEmpty()||teacher.isEmpty()||SchoolAddress.isEmpty()||yers.isEmpty()||ome.isEmpty()){
+                        ||loction.isEmpty()||teacher.isEmpty()||SchoolAddress.isEmpty()||yers.isEmpty()){
                     if(!checkbox1.isChecked()&&!checkbox2.isChecked()){
                         if(!checkbox3.isChecked()&&!checkbox4.isChecked()){
                             occupationBean.setStatus("0");

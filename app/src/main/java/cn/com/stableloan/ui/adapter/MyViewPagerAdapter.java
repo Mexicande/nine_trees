@@ -6,16 +6,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment;
+import cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment;
 
 
 public class MyViewPagerAdapter extends FragmentPagerAdapter {
-
-    private ArrayList<Fragment>list;
-
-    public MyViewPagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
+    private List<Fragment> list = new ArrayList<>();
+    public MyViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.list=list;
+        this.list.add(new IntegarlTaskFragment());
+        this.list.add(new IntegarlExchangeFragment());
     }
+
 
     @Override
     public Fragment getItem(int position) {

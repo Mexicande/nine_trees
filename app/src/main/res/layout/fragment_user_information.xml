@@ -113,17 +113,20 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <com.andreabaccega.widget.FormEditText
+
+                    <TextView
+                        android:layout_width="220dp"
+                        android:textColor="@dimen/layout_height"
+                        android:layout_alignParentRight="true"
                         android:id="@+id/et_Sex"
-                        style="@style/information_style"
-                        whatever:testType="regexp"
-                        android:maxLines="1"
-                        whatever:emptyAllowed="true"
-                        whatever:customRegexp="[\u4e00-\u9fa5]"
-                        whatever:testErrorString="格式不正确"
+                        android:paddingLeft="@dimen/_10dp"
+                        android:text="112"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_height="@dimen/layout_height"
                         />
                     <TextView
-
+                        android:layout_marginLeft="250dp"
                         style="@style/information_text_style"
                         android:layout_toLeftOf="@id/et_Sex"
                         android:text="性别 : "
@@ -133,13 +136,17 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <com.andreabaccega.widget.FormEditText
+
+                    <TextView
+                        android:layout_width="220dp"
+                        android:textColor="@dimen/layout_height"
+                        android:layout_alignParentRight="true"
                         android:id="@+id/et_Age1"
-                        style="@style/information_style"
-                        android:inputType="number"
-                        whatever:emptyAllowed="true"
-                        android:maxLength="3"
-                        android:maxLines="1"
+                        android:paddingLeft="@dimen/_10dp"
+                        android:text="112"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_height="@dimen/layout_height"
                         />
                     <TextView
                         style="@style/information_text_style"

@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,7 +52,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.CameraEvent;
@@ -63,9 +60,7 @@ import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
-import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
-import cn.com.stableloan.utils.BitmapUtils;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
@@ -74,9 +69,6 @@ import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.BetterSpinner;
 import cn.com.stableloan.view.RoundButton;
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -100,23 +92,18 @@ public class UserInformationFragment extends Fragment {
     FormEditText etContact1;
     @Bind(R.id.et_Contact)
     FormEditText etContact;
-    Context context;
     @Bind(R.id.et_name)
     FormEditText etName;
     @Bind(R.id.user_phone)
     TextView userPhone;
     @Bind(R.id.et_IDCard)
     FormEditText etIDCard;
-    @Bind(R.id.et_Sex)
-    FormEditText etSex;
     @Bind(R.id.et_Address)
     FormEditText etAddress;
     @Bind(R.id.et_Contact_name)
     FormEditText etContactName;
     @Bind(R.id.et_Contact_name2)
     FormEditText etContactName2;
-    @Bind(R.id.et_Age1)
-    FormEditText etAge;
     @Bind(R.id.textView3)
     TextView textView3;
     @Bind(R.id.getCity)
@@ -135,6 +122,12 @@ public class UserInformationFragment extends Fragment {
     LinearLayout layout5;
     @Bind(R.id.layout3)
     LinearLayout layout3;
+    @Bind(R.id.et_Sex)
+    TextView etSex;
+    @Bind(R.id.et_Age1)
+    TextView etAge1;
+    @Bind(R.id.save)
+    RoundButton save;
 
 
     private UserBean user;
@@ -170,6 +163,7 @@ public class UserInformationFragment extends Fragment {
         setListenter();
         return view;
     }
+
     private static final int REQUEST_CODE_PICK_CITY = 0;
 
 
@@ -194,7 +188,7 @@ public class UserInformationFragment extends Fragment {
         });
 
         etSex.setKeyListener(null);
-        etAge.setKeyListener(null);
+        etAge1.setKeyListener(null);
         etIDCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -221,7 +215,7 @@ public class UserInformationFragment extends Fragment {
                             etSex.setText("男");
                         }
                         int age = IdNOToAge(idCard);
-                        etAge.setText(String.valueOf(age));
+                        etAge1.setText(String.valueOf(age));
                     }
                 }
             }
@@ -252,21 +246,22 @@ public class UserInformationFragment extends Fragment {
             getDate();
         }
     }
+
     @Subscribe
     public void onCameraEvent(CameraEvent event) {
         CardBean.OutputsBean.OutputValueBean.DataValueBean value = event.value;
-        if (value!=null) {
-            LogUtils.i("111111",value.toString());
-            if(value.getName()!=null){
+        if (value != null) {
+            LogUtils.i("111111", value.toString());
+            if (value.getName() != null) {
                 etName.setText(value.getName());
             }
-            if(value.getNum()!=null){
+            if (value.getNum() != null) {
                 etIDCard.setText(value.getNum());
             }
-            if(value.getSex()!=null){
+            if (value.getSex() != null) {
                 etSex.setText(value.getSex());
             }
-            if(value.getAddress()!=null){
+            if (value.getAddress() != null) {
                 etAddress.setText(value.getAddress());
             }
         }
@@ -309,7 +304,7 @@ public class UserInformationFragment extends Fragment {
                                     } else if (sex.equals("1")) {
                                         etSex.setText("男");
                                     }
-                                    etAge.setText(identityBean.getAge());
+                                    etAge1.setText(identityBean.getAge());
 
                                     etAddress.setText(identityBean.getIdaddress());
 
@@ -382,7 +377,7 @@ public class UserInformationFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.getCity, R.id.getContact1, R.id.getContact2, R.id.save,R.id.layout_camera})
+    @OnClick({R.id.getCity, R.id.getContact1, R.id.getContact2, R.id.save, R.id.layout_camera})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.getCity:
@@ -407,18 +402,19 @@ public class UserInformationFragment extends Fragment {
         AndPermission.with(getActivity())
                 .requestCode(500)
                 .permission(Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .callback(listener)
                 .start();
 
     }
+
     private PermissionListener listener = new PermissionListener() {
         @Override
         public void onSucceed(int requestCode, List<String> grantedPermissions) {
             // 权限申请成功回调。
             // 这里的requestCode就是申请时设置的requestCode。
             // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
-            if(requestCode == 500) {
+            if (requestCode == 500) {
                 Intent intent = new Intent(getActivity(), Camera2Activity.class);
                 mFile = CommonUtils.createImageFile("mFile");
                 //文件保存的路径和名称
@@ -437,7 +433,7 @@ public class UserInformationFragment extends Fragment {
         @Override
         public void onFailed(int requestCode, List<String> deniedPermissions) {
             // 权限申请失败回调。
-            if(requestCode == 500) {
+            if (requestCode == 500) {
                 // TODO ...
             }
         }
@@ -448,7 +444,7 @@ public class UserInformationFragment extends Fragment {
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
-        String age = etAge.getText().toString();
+        String age = etAge1.getText().toString();
         String city = etCity.getText().toString();
         String between1 = etBetween1.getText().toString();
         String between2 = etBetween2.getText().toString();
@@ -533,7 +529,7 @@ public class UserInformationFragment extends Fragment {
         if (allValid) {
             final Identity identity = new Identity();
             if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
-                    && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge.getText().toString().isEmpty()
+                    && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge1.getText().toString().isEmpty()
                     && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
                     && !etSex.getText().toString().isEmpty() && !etBetween1.getText().toString().isEmpty() && !etBetween2.getText().toString().isEmpty()
                     && !userPhone.getText().toString().isEmpty() && !etName.getText().toString().isEmpty()) {
@@ -542,7 +538,7 @@ public class UserInformationFragment extends Fragment {
                 identity1.setIstatus("0");
             }
             identity1.setName(etName.getText().toString());
-            identity1.setAge(etAge.getText().toString());
+            identity1.setAge(etAge1.getText().toString());
             identity1.setCity(etCity.getText().toString());
             identity1.setIdcard(etIDCard.getText().toString());
             identity1.setIdaddress(etAddress.getText().toString());
@@ -603,7 +599,7 @@ public class UserInformationFragment extends Fragment {
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
-        String age = etAge.getText().toString();
+        String age = etAge1.getText().toString();
         String city = etCity.getText().toString();
         String between1 = etBetween1.getText().toString();
         String between2 = etBetween2.getText().toString();
@@ -744,7 +740,6 @@ public class UserInformationFragment extends Fragment {
 
 
     }
-
 
 
     public class MyLocationListener implements BDLocationListener {

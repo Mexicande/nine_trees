@@ -94,7 +94,7 @@ public class AppApplication extends Application {
         try {
             Field field = Typeface.class.getDeclaredField("SERIF");
             field.setAccessible(true);
-            field.set(null, Typeface.createFromAsset(getAssets(), "fonts/msyh.ttf"));
+            field.set(null, Typeface.createFromAsset(getAssets(), "fonts/pingfang.ttf"));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

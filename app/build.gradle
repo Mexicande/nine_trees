@@ -88,6 +88,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'wq
     compile 'io.reactivex:rxjava:1.0.14'*/
 
+
+
+
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.contrarywind:Android-PickerView:3.2.5'
@@ -129,6 +132,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zhy:autolayout:+'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
-
     testCompile 'junit:junit:4.12'
 }
