@@ -37,6 +37,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
@@ -241,6 +242,7 @@ public class UserFragment extends ImmersionFragment {
                 IntegralActivity.launch(getActivity());
                 break;
             case R.id.laout_Money:
+                CashActivity.launch(getActivity());
                 break;
         }
     }

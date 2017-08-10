@@ -42,6 +42,7 @@ public class Setting1Activity extends BaseActivity {
     private ACache aCache;
 
     public static void launch(Context context) {
+
         context.startActivity(new Intent(context, Setting1Activity.class));
     }
 

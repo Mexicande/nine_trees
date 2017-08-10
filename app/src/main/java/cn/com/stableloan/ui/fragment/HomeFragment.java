@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,6 +24,11 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.uuch.adlibrary.AdConstant;
+import com.uuch.adlibrary.AdManager;
+import com.uuch.adlibrary.bean.AdInfo;
+import com.uuch.adlibrary.transformer.DepthPageTransformer;
+import com.uuch.adlibrary.transformer.RotateDownPageTransformer;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -95,6 +101,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        initDialog();
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("首页", "");
@@ -103,10 +110,26 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         }
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "homepage",  eventObject);
-
         getDate();
         setListener();
         return view;
+    }
+
+    private void initDialog() {
+        advList = new ArrayList<>();
+        AdInfo adInfo = new AdInfo();
+        adInfo.setActivityImg("https://raw.githubusercontent.com/yipianfengye/android-adDialog/master/images/testImage1.png");
+        advList.add(adInfo);
+        AdManager adManager = new AdManager(getActivity(), advList);
+        adManager.setOverScreen(true)
+                .setPageTransformer(new DepthPageTransformer());
+        adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
+        adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
+            @Override
+            public void onImageClick(View view, AdInfo advInfo) {
+                Toast.makeText(getActivity(), "您点击了ViewPagerItem...", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -167,7 +190,10 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     /**
      * 首页新品
      */
+    private List<AdInfo> advList = null;
+
     private void getDate() {
+
         ivNotice.setOnClickListener(this);
         View view = setHeaderView();
         productAdapter = new ListProductAdapter(null);

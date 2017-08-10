@@ -91,6 +91,12 @@ dependencies {
 
 
 
+    
+
+
+
+
+
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.contrarywind:Android-PickerView:3.2.5'
@@ -132,5 +138,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zhy:autolayout:+'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
+    compile 'cn.yipianfengye.android:ad-library:1.0'
     testCompile 'junit:junit:4.12'
 }

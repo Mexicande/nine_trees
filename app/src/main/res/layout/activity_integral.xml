@@ -24,6 +24,7 @@
           android:textColor="@color/white"/>
       <LinearLayout
           android:id="@+id/layout"
+          android:layout_marginTop="@dimen/_5dp"
           android:layout_centerHorizontal="true"
           android:layout_below="@id/tv_inte"
           android:layout_width="wrap_content"
@@ -43,6 +44,7 @@
               android:textColor="@color/white"/>
       </LinearLayout>
       <Button
+          android:layout_marginTop="7dp"
           android:layout_below="@id/layout"
           android:layout_width="wrap_content"
           android:paddingLeft="10dp"

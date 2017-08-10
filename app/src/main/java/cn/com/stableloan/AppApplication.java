@@ -7,12 +7,14 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
+import android.util.DisplayMetrics;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.https.HttpsUtils;
 import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.uuch.adlibrary.utils.DisplayUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,7 +25,6 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import cn.com.stableloan.utils.SPUtils;
-import okhttp3.OkHttpClient;
 
 
 /**
@@ -68,6 +69,8 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sApp = this;
+
+
         mHandler = new Handler();
 
         initTypeface();
@@ -88,8 +91,24 @@ public class AppApplication extends Application {
 
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
+        initDisplayOpinion();
+
+        Fresco.initialize(this);
 
     }
+
+    private void initDisplayOpinion() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        DisplayUtil.density = dm.density;
+        DisplayUtil.densityDPI = dm.densityDpi;
+        DisplayUtil.screenWidthPx = dm.widthPixels;
+        DisplayUtil.screenhightPx = dm.heightPixels;
+        DisplayUtil.screenWidthDip = DisplayUtil.px2dip(getApplicationContext(), dm.widthPixels);
+        DisplayUtil.screenHightDip = DisplayUtil.px2dip(getApplicationContext(), dm.heightPixels);
+
+
+    }
+
     private void initTypeface(){
         try {
             Field field = Typeface.class.getDeclaredField("SERIF");

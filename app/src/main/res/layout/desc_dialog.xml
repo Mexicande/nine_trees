@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/free_dialog_bg"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="您正在离开安稳钱包...."
+            android:textColor="@color/blacktext"
+            android:textStyle="bold"
+            android:textSize="17sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/blacktext"
+            android:text="您将前往的页面属于如下产品"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/blacktext"
+            android:text="如需咨询请联系该产品客服"
+            android:textSize="16sp" />
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@mipmap/logo"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="17sp"
+            android:textColor="@color/blacktext"
+            android:text="安稳钱包"/>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <cn.com.stableloan.view.SmoothCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:tint="@color/gay" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#686868"
+                android:text="不再提示"/>
+        </LinearLayout>
+
+        <cn.com.stableloan.view.RoundButton
+            android:id="@+id/bt_know"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="我知道了"
+            app:btnCornerRadius="5dp"
+            app:btnPressedRatio="0.9"
+            app:btnSolidColor="@color/colorPrimary"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#ccffffff"
+            style="?android:attr/borderlessButtonStyle"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

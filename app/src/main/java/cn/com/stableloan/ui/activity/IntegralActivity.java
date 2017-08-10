@@ -100,7 +100,10 @@ public class IntegralActivity extends BaseActivity {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
+                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
                 indicator.setColors(Color.parseColor("#FFAE2D"));
+                indicator.setLineWidth(UIUtil.dip2px(context, 100));
+
                 return indicator;
             }
 

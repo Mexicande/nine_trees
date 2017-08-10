@@ -44,7 +44,10 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.DescDialog;
+import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.likebutton.LikeButton;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
@@ -376,13 +379,13 @@ public class ProductDesc extends BaseActivity {
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
     }
-
+    private DescDialog descDialog;
     @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy, R.id.bt_share
             , R.id.layoutGo, R.id.layout_wx, R.id.layout_friend,R.id.heart_button})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                    finish();
+                finish();
                 break;
             case R.id.platform_desc:
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
@@ -400,14 +403,29 @@ public class ProductDesc extends BaseActivity {
                 if (!login) {
                     LoginActivity.launch(this);
                 } else {
-                    sendIO();
-                    startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
+                    Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
+                    if(dialog){
+                        sendIO();
+                        startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
+                    }else {
+                        descDialog = new DescDialog(this);
+                        descDialog.setTitle("提示");
+                        descDialog.setMessage("确定退出登陆?");
+                        descDialog.setYesOnclickListener("确定", new DescDialog.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                descDialog.dismiss();
+                                sendIO();
+                                startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                            }
+                        });
+
+                        descDialog.show();
+                    }
                 }
                 break;
             case R.id.heart_button:
                 Boolean login1 = (Boolean) SPUtils.get(this, "login", false);
-
-               // CollectProduct();
                 if (!login1) {
                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
                 } else {

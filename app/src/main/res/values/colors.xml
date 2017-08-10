@@ -17,6 +17,7 @@
 
     <color name="mask">#88000000</color>
 
+    <color name="diver">#F3F2F8</color>
     <color name="background">#f2f3f5</color>
 
     <color name="gray_light">#dcdcdc</color>
@@ -43,8 +44,9 @@
     <color name="text_setting">#666666</color>
 
     <color name="login_button">#4e80c2</color>
+    <color name="mc">#c8ccd1</color>
 
     <color name="tag_backgroud">#7ECEF4</color>
     <color name="tag_textcolor">#666666</color>
-
+    <color name="integral">#F3F2F8</color>
 </resources>

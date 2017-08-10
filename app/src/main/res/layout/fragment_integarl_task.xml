@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="78dp">
         <ImageView
-            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginLeft="15dp"
             android:layout_gravity="center_vertical"
             android:layout_width="48dp"
             android:layout_height="35dp"
@@ -46,12 +46,14 @@
                 android:layout_height="wrap_content"
                 android:text="个人信息完善至100%"/>
         </LinearLayout>
-        <LinearLayout
+
+        <RelativeLayout
             android:gravity="right"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.coorchice.library.SuperTextView
+                android:id="@+id/integar"
                 android:layout_marginRight="@dimen/_10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_width="80dp"
@@ -59,10 +61,226 @@
                 android:gravity="center"
                 android:text="+500"
                 app:solid="@color/white"
-                app:stroke_width="2dp"
+                app:stroke_width="1.5dp"
                 android:layout_height="35dp"
-                app:stroke_color="@color/gay"
+                app:stroke_color="@color/diver"
                 />
-        </LinearLayout>
+            <ImageView
+                android:layout_marginRight="@dimen/_20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/integar"
+                android:layout_width="28dp"
+                android:layout_height="27dp"
+                android:src="@mipmap/editor"/>
+        </RelativeLayout>
     </LinearLayout>
+    <View
+        android:layout_marginLeft="15dp"
+        android:background="#F3F2F8"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp">
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="48dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/add_image"/>
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="完善个人信息"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/blacktext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="积分+100"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/blacktext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请第1名好友可得150积分"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/integar1"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                app:corner="25dp"
+                android:gravity="center"
+                android:text="+500"
+                app:solid="@color/white"
+                app:stroke_width="1.5dp"
+                android:layout_height="35dp"
+                app:stroke_color="@color/diver"
+                />
+            <ImageView
+                android:layout_marginRight="@dimen/_20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/integar1"
+                android:layout_width="28dp"
+                android:layout_height="27dp"
+                android:src="@mipmap/invitation"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="15dp"
+        android:background="#F3F2F8"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp">
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="48dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/add_image_02"/>
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="完善个人信息"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/blacktext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="积分+150"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/blacktext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请第1名好友可得150积分"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/integar2"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                app:corner="25dp"
+                android:gravity="center"
+                android:text="+500"
+                app:solid="@color/white"
+                app:stroke_width="1.5dp"
+                android:layout_height="35dp"
+                app:stroke_color="@color/diver"
+                />
+            <ImageView
+                android:layout_marginRight="@dimen/_20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/integar2"
+                android:layout_width="28dp"
+                android:layout_height="27dp"
+                android:src="@mipmap/invitation"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="15dp"
+        android:background="#F3F2F8"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp">
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="48dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/add_image_03"/>
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="完善个人信息"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/blacktext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="积分+200"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/blacktext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请第3名好友可得200积分"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/integar3"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                app:corner="25dp"
+                android:gravity="center"
+                android:text="+500"
+                app:solid="@color/white"
+                app:stroke_width="1.5dp"
+                android:layout_height="35dp"
+                app:stroke_color="@color/diver"
+                />
+            <ImageView
+                android:layout_marginRight="@dimen/_20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/integar3"
+                android:layout_width="28dp"
+                android:layout_height="27dp"
+                android:src="@mipmap/invitation"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="15dp"
+        android:background="#F3F2F8"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"/>
 </LinearLayout>
