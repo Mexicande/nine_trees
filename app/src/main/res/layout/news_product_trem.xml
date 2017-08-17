@@ -76,7 +76,6 @@
                         />
                     <com.coorchice.library.SuperTextView
                         android:visibility="gone"
-
                         android:id="@+id/label2"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"

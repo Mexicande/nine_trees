@@ -366,7 +366,6 @@
                             android:maxLength="10"
                             android:maxLines="1"
                             whatever:emptyAllowed="true"
-
                             android:imeOptions="actionNext"
                             android:textColor="@color/gay"
                             whatever:customRegexp="[\u4e00-\u9fa5]"

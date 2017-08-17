@@ -62,6 +62,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.CommonUtils;
+import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -138,7 +139,7 @@ public class UserInformationFragment extends Fragment {
     File mFile;
 
 
-    private Identity.IdentityBean identityBean;
+    private Identity.DataBean.IdentityBean identityBean;
 
     public UserInformationFragment() {
         // Required empty public constructor
@@ -279,77 +280,73 @@ public class UserInformationFragment extends Fragment {
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         parms.put("token", token);
         parms.put("signature", signature);
-
         JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.GetIdentity)
+        OkGo.<String>post(Urls.Ip_url + Urls.Identity.GetIdentity)
                 .tag(getActivity())
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject json = new JSONObject(s);
-                            String isSuccess = json.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String status = json.getString("status");
-                                if ("1".equals(status)) {
-                                    String string = json.getString("identity");
-                                    Gson gson = new Gson();
-                                    identityBean = gson.fromJson(string, Identity.IdentityBean.class);
-                                    etName.setText(identityBean.getName());
-                                    etIDCard.setText(identityBean.getIdcard());
-                                    String sex = identityBean.getSex();
-                                    if (sex.equals("0")) {
-                                        etSex.setText("女");
-                                    } else if (sex.equals("1")) {
-                                        etSex.setText("男");
+
+                        if(s!=null){
+                            Gson gson=new Gson();
+                            Identity identity = gson.fromJson(s, Identity.class);
+                            if(identity.getError_code()==0){
+                                if(identity.getData().getIsSuccess().equals("1")){
+                                    if(identity.getData().getStatus().equals("1")){
+                                        identityBean = identity.getData().getIdentity();
+                                        etName.setText(identityBean.getName());
+                                        etIDCard.setText(identityBean.getIdcard());
+                                        String sex = identityBean.getSex();
+                                        if (sex.equals("0")) {
+                                            etSex.setText("女");
+                                        } else if (sex.equals("1")) {
+                                            etSex.setText("男");
+                                        }
+                                        etAge1.setText(identityBean.getAge());
+
+                                        etAddress.setText(identityBean.getIdaddress());
+
+                                        String marriage = identityBean.getMarriage();
+
+                                        if (marriage.equals("0")) {
+                                            etMarriage.setText("未婚");
+                                        } else if (marriage.equals("1")) {
+                                            etMarriage.setText("已婚");
+                                        }
+                                        etCity.setText(identityBean.getCity());
+                                        Identity.DataBean.IdentityBean.ContactBean bean = identityBean.getContact().get(0);
+                                        etContact.setText(bean.getUserphone());
+
+                                        etContactName.setText(bean.getContact());
+
+                                        String bet = bean.getRelation();
+
+                                        if (!bet.isEmpty()) {
+                                            int i2 = Integer.parseInt(bet);
+                                            etBetween1.setText(list[i2]);
+                                        }
+
+                                        Identity.DataBean.IdentityBean.ContactBean bean1 = identityBean.getContact().get(1);
+
+                                        etContact1.setText(bean1.getUserphone());
+                                        etContactName2.setText(bean1.getContact());
+
+                                        String bet2 = bean1.getRelation();
+
+                                        if (!bet2.isEmpty()) {
+                                            int i1 = Integer.parseInt(bet2);
+                                            etBetween2.setText(list[i1]);
+                                        }
+
+                                    }else {
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                        startActivity(intent);
                                     }
-                                    etAge1.setText(identityBean.getAge());
-
-                                    etAddress.setText(identityBean.getIdaddress());
-
-                                    String marriage = identityBean.getMarriage();
-
-                                    if (marriage.equals("0")) {
-                                        etMarriage.setText("未婚");
-                                    } else if (marriage.equals("1")) {
-                                        etMarriage.setText("已婚");
-                                    }
-                                    etCity.setText(identityBean.getCity());
-                                    Identity.IdentityBean.ContactBean bean = identityBean.getContact().get(0);
-                                    etContact.setText(bean.getUserphone());
-
-                                    etContactName.setText(bean.getContact());
-
-                                    String bet = bean.getRelation();
-
-                                    if (!bet.isEmpty()) {
-                                        int i2 = Integer.parseInt(bet);
-                                        etBetween1.setText(list[i2]);
-                                    }
-
-                                    Identity.IdentityBean.ContactBean bean1 = identityBean.getContact().get(1);
-
-                                    etContact1.setText(bean1.getUserphone());
-                                    etContactName2.setText(bean1.getContact());
-
-                                    String bet2 = bean1.getRelation();
-
-                                    if (!bet2.isEmpty()) {
-                                        int i1 = Integer.parseInt(bet2);
-                                        etBetween2.setText(list[i1]);
-                                    }
-
-                                } else {
-                                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                    startActivity(intent);
                                 }
-
+                            }else {
+                                ToastUtils.showToast(getActivity(),identity.getError_message());
                             }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
 
                     }
@@ -440,7 +437,7 @@ public class UserInformationFragment extends Fragment {
     };
 
     private void saveDate() {
-        final Identity.IdentityBean identity1 = new Identity.IdentityBean();
+        final Identity.DataBean.IdentityBean identity1 = new Identity.DataBean.IdentityBean();
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
@@ -453,7 +450,7 @@ public class UserInformationFragment extends Fragment {
         String contactName1 = etContactName.getText().toString();
         String contactName2 = etContactName2.getText().toString();
 
-        Identity.IdentityBean.ContactBean identity2 = new Identity.IdentityBean.ContactBean();
+        Identity.DataBean.IdentityBean.ContactBean identity2 = new Identity.DataBean.IdentityBean.ContactBean();
         identity2.setUserphone(contact1);
         identity2.setContact(contactName1);
         identity2.setRelation("");
@@ -465,7 +462,7 @@ public class UserInformationFragment extends Fragment {
             }
         }
 
-        Identity.IdentityBean.ContactBean identity3 = new Identity.IdentityBean.ContactBean();
+        Identity.DataBean.IdentityBean.ContactBean identity3 = new Identity.DataBean.IdentityBean.ContactBean();
         identity3.setUserphone(contact2);
         identity3.setContact(contactName2);
         identity3.setRelation("");
@@ -494,7 +491,7 @@ public class UserInformationFragment extends Fragment {
             }
         }
 
-        Identity.IdentityBean bean = new Identity.IdentityBean();
+        Identity.DataBean.IdentityBean bean = new Identity.DataBean.IdentityBean();
         bean.setSex(identity1.getSex());
         bean.setMarriage(identity1.getMarriage());
         bean.setAge(age);
@@ -514,12 +511,11 @@ public class UserInformationFragment extends Fragment {
     /**
      * 修改提交
      *
-     * @param identity1
      * @param identity2
      * @param identity3
      */
-    private void commitChange(final Identity.IdentityBean identity1, Identity.IdentityBean.ContactBean identity2,
-                              Identity.IdentityBean.ContactBean identity3) {
+    private void commitChange(final Identity.DataBean.IdentityBean identity1, Identity.DataBean.IdentityBean.ContactBean identity2,
+                              Identity.DataBean.IdentityBean.ContactBean identity3) {
 
         FormEditText[] allFields = {etName, etIDCard, etContact, etContact1};
         boolean allValid = true;
@@ -527,7 +523,6 @@ public class UserInformationFragment extends Fragment {
             allValid = field.testValidity() && allValid;
         }
         if (allValid) {
-            final Identity identity = new Identity();
             if (!etContact.getText().toString().isEmpty() && !etMarriage.getText().toString().isEmpty() && !etContactName.getText().toString().isEmpty()
                     && !etCity.getText().toString().isEmpty() && !etAddress.getText().toString().isEmpty() && !etAge1.getText().toString().isEmpty()
                     && !etContact1.getText().toString().isEmpty() && !etContactName2.getText().toString().isEmpty() && !etIDCard.getText().toString().isEmpty()
@@ -544,35 +539,53 @@ public class UserInformationFragment extends Fragment {
             identity1.setIdaddress(etAddress.getText().toString());
             identity1.setUserphone(userPhone.getText().toString());
 
-            ArrayList<Identity.IdentityBean.ContactBean> list = new ArrayList<>();
+            ArrayList<Identity.DataBean.IdentityBean.ContactBean> list = new ArrayList<>();
             list.add(identity2);
             list.add(identity3);
             identity1.setContact(list);
-            identity.setIdentity(identity1);
-
-
             String token = (String) SPUtils.get(getActivity(), "token", "1");
-            identity.setToken(token);
-            identity.setUserphone(user.getUserphone());
-            Gson gson = new Gson();
-            String json = gson.toJson(identity);
+            Identity.DataBean date=new Identity.DataBean();
+            date.setIdentity(identity1);
+            date.setToken(token);
+           // identity.setData(date);
+            /*identity.getData().getIdentity().setToken(token);*/
+            identity1.setUserphone(user.getUserphone());
 
-            OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddIdentity)
+            JSONObject object=new JSONObject();
+            try {
+                object.put("identity",identity1);
+                object.put("token",token);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+/*
+            HashMap<String, String> params = new HashMap<>();
+            params.put("identity", identity1.toString());
+            params.put("token", token);
+            JSONObject jsonObject=new JSONObject(params);*/
+            Gson gson=new Gson();
+            String json = gson.toJson(date);
+
+            OkGo.<String>post(Urls.Ip_url + Urls.Identity.AddIdentity)
                     .tag(this)
                     .upJson(json)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+
+
                             try {
                                 JSONObject object = new JSONObject(s);
-                                String isSuccess = object.getString("isSuccess");
-                                if ("1".equals(isSuccess)) {
+                                int isSuccess = object.getInt("error_code");
+                                if (isSuccess==0) {
                                     identityBean = identity1;
                                     EventBus.getDefault().post(new InformationEvent("informationStatus"));
-                                    String msg = object.getString("msg");
+                                    String data = object.getString("data");
+                                    JSONObject object1 = new JSONObject(data);
+                                    String msg = object1.getString("msg");
                                     ToastUtils.showToast(getActivity(), msg);
                                 } else {
-                                    String msg = object.getString("msg");
+                                    String msg = object.getString("error_message");
                                     ToastUtils.showToast(getActivity(), msg);
 
                                 }
@@ -595,7 +608,7 @@ public class UserInformationFragment extends Fragment {
     private boolean changeTest() {
         boolean flag;
 
-        final Identity.IdentityBean identity1 = new Identity.IdentityBean();
+        final Identity.DataBean.IdentityBean identity1 = new Identity.DataBean.IdentityBean();
         String userName = etName.getText().toString();
         String IdCard = etIDCard.getText().toString();
         String address = etAddress.getText().toString();
@@ -609,7 +622,7 @@ public class UserInformationFragment extends Fragment {
         String contactName2 = etContactName2.getText().toString();
 
 
-        Identity.IdentityBean.ContactBean identity2 = new Identity.IdentityBean.ContactBean();
+        Identity.DataBean.IdentityBean.ContactBean identity2 = new Identity.DataBean.IdentityBean.ContactBean();
         identity2.setUserphone(contact1);
         identity2.setContact(contactName1);
         identity2.setRelation("");
@@ -621,7 +634,7 @@ public class UserInformationFragment extends Fragment {
             }
         }
 
-        Identity.IdentityBean.ContactBean identity3 = new Identity.IdentityBean.ContactBean();
+        Identity.DataBean.IdentityBean.ContactBean identity3 = new Identity.DataBean.IdentityBean.ContactBean();
         identity3.setUserphone(contact2);
         identity3.setContact(contactName2);
         identity3.setRelation("");

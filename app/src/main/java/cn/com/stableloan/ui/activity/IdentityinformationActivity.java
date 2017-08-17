@@ -11,6 +11,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -28,17 +31,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.base.BasePhotoActivity;
+import cn.com.stableloan.model.Identity;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.BankInformationFragment;
 import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;
 import cn.com.stableloan.ui.fragment.UserInformationFragment;
+import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class IdentityinformationActivity extends AutoLayoutActivity {
 
@@ -55,11 +68,9 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     private Fragment mCurrentFragment;
     private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
 
-
     public static void launch(Context context) {
         context.startActivity(new Intent(context, IdentityinformationActivity.class));
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +80,55 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         initToolbar();
         initMagicIndicator();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
-    }
+       /* AppApplication.addDestoryActivity(this,"integarl");
+        String integarl = getIntent().getStringExtra("integarl");
+        if(integarl!=null){
+            getDate();
+        }else {
 
+        }*/
+    }
+    private void getDate() {
+        Map<String, String> parms = new HashMap<>();
+        String token = (String) SPUtils.get(this, "token", "1");
+        String signature = (String) SPUtils.get(this, "signature", "1");
+        parms.put("token", token);
+        parms.put("signature", signature);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.GetIdentity)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject json = new JSONObject(s);
+                            String isSuccess = json.getString("isSuccess");
+                            if ("1".equals(isSuccess)) {
+                                String status = json.getString("status");
+                                if ("1".equals(status)) {
+
+                                    initToolbar();
+                                    initMagicIndicator();
+                                    mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+
+                                } else {
+                                    Intent intent = new Intent(IdentityinformationActivity.this,Verify_PasswordActivity.class)
+                                            .putExtra("from","integarl");
+                                    startActivityForResult(intent,200);
+                                }
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+    }
 
 
     private void initMagicIndicator() {
@@ -172,5 +230,15 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         finish();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==200){
+            if(resultCode==100){
+                initToolbar();
+                initMagicIndicator();
+                mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+            }
+        }
+    }
 }

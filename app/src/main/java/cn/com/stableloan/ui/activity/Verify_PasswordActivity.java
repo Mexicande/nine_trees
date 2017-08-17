@@ -1,7 +1,9 @@
 package cn.com.stableloan.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
@@ -137,6 +140,9 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                     else if("informationStatus".equals(from)) {
                                                         EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                                         finish();
+                                                    }else if("integarl".equals(from)){
+                                                       IdentityinformationActivity.launch(Verify_PasswordActivity.this);
+                                                        finish();
                                                     }
                                                 }
 
@@ -165,4 +171,6 @@ public class Verify_PasswordActivity extends BaseActivity {
 
         }
     }
+
+
 }

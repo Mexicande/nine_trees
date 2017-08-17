@@ -36,4 +36,8 @@
         <item>6个月</item>
         <item>永久</item>
     </string-array>
+
+    <string-array name="cash_way">
+        <item>转至支付宝/n15600575837@163.com</item>
+    </string-array>
 </resources>

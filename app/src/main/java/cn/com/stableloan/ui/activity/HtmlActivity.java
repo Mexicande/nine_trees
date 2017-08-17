@@ -111,6 +111,10 @@ public class HtmlActivity extends BaseActivity {
 
                 getDate(url);
             }
+            String advertising = getIntent().getStringExtra("advertising");
+            if(advertising!=null){
+                getDate(advertising);
+            }
             welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
             if (welfare != null) {
                 titleName.setText(welfare.getName());
@@ -191,7 +195,6 @@ public class HtmlActivity extends BaseActivity {
 
         }
     }
-
     public boolean parseScheme(String url) {
         if (url.contains("platformapi/startapp")) {
             try {

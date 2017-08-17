@@ -87,6 +87,25 @@ public class UserInfromBean implements Serializable{
         private int identity;
         private String token;
 
+        private String credits;  //integral
+        private String total;   //amount
+
+        public String getCredits() {
+            return credits;
+        }
+
+        public void setCredits(String credits) {
+            this.credits = credits;
+        }
+
+        public String getTotal() {
+            return total;
+        }
+
+        public void setTotal(String total) {
+            this.total = total;
+        }
+
         public String getNickname() {
             return nickname;
         }

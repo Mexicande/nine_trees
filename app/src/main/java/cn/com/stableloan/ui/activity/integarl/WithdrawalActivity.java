@@ -1,12 +1,16 @@
 package cn.com.stableloan.ui.activity.integarl;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.com.stableloan.R;
 
 public class WithdrawalActivity extends AppCompatActivity {
-
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, WithdrawalActivity.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

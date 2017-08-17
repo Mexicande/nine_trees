@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -48,6 +49,7 @@ import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.News_ClassBean;
 import cn.com.stableloan.model.NoticeBean;
+import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.NoticeActivity;
@@ -57,6 +59,8 @@ import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
@@ -116,22 +120,57 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     }
 
     private void initDialog() {
-        advList = new ArrayList<>();
-        AdInfo adInfo = new AdInfo();
-        adInfo.setActivityImg("https://raw.githubusercontent.com/yipianfengye/android-adDialog/master/images/testImage1.png");
-        advList.add(adInfo);
-        AdManager adManager = new AdManager(getActivity(), advList);
-        adManager.setOverScreen(true)
-                .setPageTransformer(new DepthPageTransformer());
-        adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
-        adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
-            @Override
-            public void onImageClick(View view, AdInfo advInfo) {
-                Toast.makeText(getActivity(), "您点击了ViewPagerItem...", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("position", "1");
+        params.put("type", "1");
+        JSONObject object=new JSONObject(params);
+
+        OkGo.post(Urls.Ip_url+Urls.Dialog.advertising)
+                .tag(this)
+                .upJson(object)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if(s!=null){
+                            Gson gson=new Gson();
+                            AdvertisingBean bean = gson.fromJson(s, AdvertisingBean.class);
+                            if(bean.getError_code()==0){
+                                showAdvertising(bean.getData().getImg(),bean.getData().getUrl());
+                            }else {
+                                ToastUtils.showToast(getActivity(),bean.getError_message());
+                            }
+                        }
+                    }
+                });
+
     }
 
+    private void showAdvertising(String img,String url){
+        AdInfo adInfo = new AdInfo();
+        long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
+        boolean today = TimeUtils.isToday(date);
+        if(!today){
+            adInfo.setActivityImg(img);
+            advList = new ArrayList<>();
+            advList.add(adInfo);
+            AdManager adManager = new AdManager(getActivity(), advList);
+            adManager.setOverScreen(true)
+                    .setPageTransformer(new DepthPageTransformer());
+            adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
+            adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
+                @Override
+                public void onImageClick(View view, AdInfo advInfo) {
+                    startActivity(new Intent(getActivity(),HtmlActivity.class).putExtra("advertising",url));
+                    // Toast.makeText(getActivity(), "您点击了ViewPagerItem...", Toast.LENGTH_SHORT).show();
+                    adManager.dismissAdDialog();
+                }
+            });
+            long timeMillis = System.currentTimeMillis();
+            SPUtils.put(getActivity(), "AdvertTime", timeMillis);
+        }
+    }
 
     /**
      * 下拉刷新
@@ -157,7 +196,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 re_View.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
                         if(!rc_adapter.getData().isEmpty()){
                             if (rc_adapter.getData().size() > 2) {
                                 re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);

@@ -34,9 +34,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.model.UserInfromBean;
+import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
@@ -69,6 +72,10 @@ public class UserFragment extends ImmersionFragment {
     TextView tvUserPhone;
     @Bind(R.id.feedback)
     SuperTextView feedback;
+    @Bind(R.id.tv_Integral)
+    TextView tvIntegral;
+    @Bind(R.id.bt_Money)
+    TextView btMoney;
 
     private ACache aCache;
     private Bitmap splashBitmap;
@@ -105,7 +112,16 @@ public class UserFragment extends ImmersionFragment {
         getUserInfo();
         return view;
     }
-
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            //相当于Fragment的onPause
+            System.out.println("界面不可见");
+        } else {
+            // 相当于Fragment的onResume
+            System.out.println("界面可见");
+        }
+    }
 
     private void getUserInfo() {
         JSONObject eventObject = new JSONObject();
@@ -116,43 +132,32 @@ public class UserFragment extends ImmersionFragment {
         }
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "minepage", eventObject);
-
-
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {
             HashMap<String, String> params = new HashMap<>();
             params.put("token", token);
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.puk_URL + Urls.user.USERT_INFO)
+            OkGo.post(Urls.Ip_url + Urls.user.USERT_INFO)
                     .tag(this)
                     .upJson(jsonObject.toString())
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtils.i("用户信息", s);
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
-                                    Gson gson = new Gson();
-                                    UserBean bean = gson.fromJson(s, UserBean.class);
-                                    tinyDB.putObject("user", bean);
-                                    tvNick.setText(bean.getNickname());
-                                    tvUserPhone.setText(bean.getUserphone());
-                                } else {
-                                    final UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                                    if (user != null) {
-                                        tvNick.setText(user.getNickname());
-                                        tvUserPhone.setText(user.getUserphone());
-                                    } else {
-                                        String string = object.getString("msg");
-                                        ToastUtils.showToast(getActivity(), string);
-                                    }
+                            if(s!=null){
+                                Gson gson=new Gson();
+                                Personal personal = gson.fromJson(s, Personal.class);
+                                if(personal.getError_code()==0){
+                                    tinyDB.putObject("user", personal.getData());
+                                    tvNick.setText(personal.getData().getNickname());
+                                    tvUserPhone.setText(personal.getData().getUserphone());
+                                    tvIntegral.setText(personal.getData().getCredits());
+                                    btMoney.setText(personal.getData().getTotal());
+                                }else {
+                                    ToastUtils.showToast(getActivity(),personal.getError_message());
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+
                         }
                     });
         }
@@ -167,29 +172,6 @@ public class UserFragment extends ImmersionFragment {
         ButterKnife.unbind(this);
     }
 
-   /* private void exit() {
-        selfDialog = new SelfDialog(getActivity());
-        selfDialog.setTitle("提示");
-        selfDialog.setMessage("确定退出登陆?");
-        selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
-            @Override
-            public void onYesClick() {
-                selfDialog.dismiss();
-                SPUtils.clear(getActivity());
-                TinyDB tinyDB = new TinyDB(getActivity());
-                tinyDB.clear();
-                startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("from", "user1"), FLAG_LOGIN);
-            }
-        });
-        selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-            @Override
-            public void onNoClick() {
-                selfDialog.dismiss();
-            }
-        });
-        selfDialog.show();
-    }*/
-
 
     @Override
     protected void immersionInit() {
@@ -200,16 +182,9 @@ public class UserFragment extends ImmersionFragment {
                 .init();
     }
 
-  /*  @Override
-    public void onResume() {
-        super.onResume();
-        TextUser();
-    }
-*/
 
     @Subscribe
     public void onMessageEvent(MessageEvent event) {
-
         if (!event.userNick.isEmpty()) {
             tvNick.setText(event.userNick);
         }
@@ -221,6 +196,16 @@ public class UserFragment extends ImmersionFragment {
         }
     }
 
+    @Subscribe
+    public void onUserEvent(UserEvent event) {
+        UserInfromBean userNick = event.userNick;
+        if (userNick != null) {
+            tvNick.setText(userNick.getData().getNickname());
+            tvUserPhone.setText(userNick.getData().getUserphone());
+            tvIntegral.setText(userNick.getData().getCredits());
+            btMoney.setText(userNick.getData().getTotal());
+        }
+    }
 
     @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
             R.id.layout_Integral, R.id.laout_Money})
@@ -251,7 +236,6 @@ public class UserFragment extends ImmersionFragment {
     private KProgressHUD hud;
 
     private void TextUser() {
-
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");

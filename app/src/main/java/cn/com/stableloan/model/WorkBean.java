@@ -34,6 +34,15 @@ public class WorkBean implements Serializable{
 
     private String isSuccess;
     private OccupationBean occupation;
+    private String status ;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getIsSuccess() {
         return isSuccess;
@@ -54,17 +63,6 @@ public class WorkBean implements Serializable{
 
 
     public static class OccupationBean implements Serializable{
-        @Override
-        public String toString() {
-            return "OccupationBean{" +
-                    "status='" + status + '\'' +
-                    ", student=" + student +
-                    ", company=" + company +
-                    ", business=" + business +
-                    ", freelancer=" + freelancer +
-                    ", olass_time='" + olass_time + '\'' +
-                    '}';
-        }
 
         /**
          * student : {"school":"家里蹲","address":"北京市","information":"四年制","freelancer":"0","teacherphone":"15849275060"}
@@ -73,16 +71,8 @@ public class WorkBean implements Serializable{
          * freelancer : {"source":"1"}
          * olass_time : 08:00:00
          */
-        private String status ;
         private StudentBean student;
 
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
 
         private CompanyBean company;
         private BusinessBean business;
@@ -158,6 +148,15 @@ public class WorkBean implements Serializable{
              * freelancer : 0
              * teacherphone : 15849275060
              */
+            private String preTeacherphone;
+
+            public String getPreTeacherphone() {
+                return preTeacherphone;
+            }
+
+            public void setPreTeacherphone(String preTeacherphone) {
+                this.preTeacherphone = preTeacherphone;
+            }
 
             private String school;
             private String address;
@@ -234,6 +233,15 @@ public class WorkBean implements Serializable{
             private String email;
             private String cincome;
             private String fixedline;
+            private String preFixedline;
+
+            public String getPreFixedline() {
+                return preFixedline;
+            }
+
+            public void setPreFixedline(String preFixedline) {
+                this.preFixedline = preFixedline;
+            }
 
             public String getCompany() {
                 return company;

@@ -556,9 +556,7 @@ public class MessageFragment extends Fragment {
                                                     intent.putExtra("ok", "ok");
                                                     getActivity().setResult(2000, intent);
                                                     getActivity().finish();
-
                                                 }
-
                                             /*else if(from.equals("user1")){
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();

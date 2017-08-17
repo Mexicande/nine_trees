@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.allen.library.SuperTextView;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -28,6 +29,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.integarl.StatusBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -88,9 +90,8 @@ public class UserInformationActivity extends BaseActivity {
         String token = (String) SPUtils.get(this, "token", "1");
         String signature = (String) SPUtils.get(this, "signature", "1");
         parms.put("token",token);
-        parms.put("signature",signature);
         JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL+Urls.user.USER_STATUS)
+        OkGo.<String>post(Urls.Ip_url+Urls.user.USER_STATUS)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
@@ -98,35 +99,22 @@ public class UserInformationActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtils.i("Status--",s);
                             if(s!=null){
-                                try {
-                                    JSONObject json = new JSONObject(s);
-                                    String isSuccess = json.getString("isSuccess");
-                                    if("1".equals(isSuccess)){
-                                        String status = json.getString("status");
-                                        if("1".equals(status)){
-                                            String step1 = json.getString("step1");
-                                            String step2 = json.getString("step2");
-                                            String step3 = json.getString("step3");
-                                            if("1".equals(step1)){
-                                                UserInformation.setRightString("已完成");
-                                            }
-                                            if("1".equals(step2)){
-                                                UserAuthorization.setRightString("已完成");
-                                            }
-                                            if("1".equals(step3)){
-                                                UserPic.setRightString("已完成");
-                                            }
-
-                                        }else {
-                                            Intent intent = new Intent(UserInformationActivity.this, Verify_PasswordActivity.class).putExtra("from","informationStatus");
-                                            startActivity(intent);
-                                        }
-                                    }else {
-
+                                Gson gson=new Gson();
+                                StatusBean statusBean = gson.fromJson(s, StatusBean.class);
+                                if(statusBean.getError_code()==0) {
+                                    StatusBean.DataBean data = statusBean.getData();
+                                    if("1".equals(data.getStep1())){
+                                        UserInformation.setRightString("已完成");
+                                    }
+                                    if("1".equals(data.getStep2())){
+                                        UserAuthorization.setRightString("已完成");
+                                    }
+                                    if("1".equals(data.getStep3())){
+                                        UserPic.setRightString("已完成");
                                     }
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                }else {
+                                    ToastUtils.showToast(UserInformationActivity.this,statusBean.getError_message());
                                 }
 
                             }

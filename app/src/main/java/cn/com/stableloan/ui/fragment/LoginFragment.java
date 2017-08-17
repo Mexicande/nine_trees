@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.DesBean;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
@@ -378,7 +379,6 @@ public class LoginFragment extends Fragment {
     private KProgressHUD hud;
 
     private void loginUser() {
-
         hud = KProgressHUD.create(getActivity())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
@@ -419,10 +419,8 @@ public class LoginFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         hud.dismiss();
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
-
                         if (infromBean.getError_code() == 0) {
                             SPUtils.put(getActivity(), "token", infromBean.getData().getToken());
                             SPUtils.put(getActivity(), "login", true);
@@ -430,8 +428,8 @@ public class LoginFragment extends Fragment {
                             userBean.setNickname(infromBean.getData().getNickname());
                             userBean.setUserphone(infromBean.getData().getUserphone());
                             userBean.setIdentity(infromBean.getData().getIdentity());
-
-                            EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
+                            EventBus.getDefault().post(new UserEvent(infromBean));
+                          //  EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
                             TinyDB tinyDB = new TinyDB(getActivity());
                             tinyDB.putObject("user", userBean);
                             String from = getActivity().getIntent().getStringExtra("from");

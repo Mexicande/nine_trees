@@ -124,7 +124,7 @@ public class ProductDesc extends BaseActivity {
     Button apply;
     @Bind(R.id.layoutgo)
     RelativeLayout layoutgo;
-    @Bind(R.id.slideView)
+    @Bind(R.id.cash_slideView)
     RelativeLayout slideView;
     @Bind(R.id.heart_button)
     LikeButton heartButton;

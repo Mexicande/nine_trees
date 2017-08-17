@@ -1,20 +1,59 @@
 package cn.com.stableloan.ui.fragment.integral;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.coorchice.library.SuperTextView;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IntregarlEvent;
+import cn.com.stableloan.bean.ShareEvent;
+import cn.com.stableloan.model.Identity;
+import cn.com.stableloan.model.integarl.IntegarlBean;
+import cn.com.stableloan.ui.activity.IdentityinformationActivity;
+import cn.com.stableloan.ui.activity.IntegralActivity;
+import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
+import cn.com.stableloan.ui.adapter.Integarl_taskAdapter;
+import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.ToastUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 积分任务
- *
  */
 public class IntegarlTaskFragment extends Fragment {
+
+    @Bind(R.id.integar)
+    SuperTextView integar;
+    @Bind(R.id.task_recycler)
+    RecyclerView taskRecycler;
+
+
+    private Integarl_taskAdapter adapter;
+    private String shareUrl = "";
 
     public IntegarlTaskFragment() {
         // Required empty public constructor
@@ -24,7 +63,108 @@ public class IntegarlTaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_integarl_task, container, false);
+        View view = inflater.inflate(R.layout.fragment_integarl_task, container, false);
+        ButterKnife.bind(this, view);
+        initRecyclerView();
+        setListener();
+        return view;
     }
 
+    private void setListener() {
+
+
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                IntegarlBean.DataBean.CodeBean o = (IntegarlBean.DataBean.CodeBean) adapter.getData().get(position);
+                LogUtils.i("Share==", o.getUrl());
+                shareUrl = o.getUrl();
+                EventBus.getDefault().post(new ShareEvent(1, o.getUrl()));
+
+            }
+        });
+
+    }
+
+
+    private void initRecyclerView() {
+
+
+        adapter = new Integarl_taskAdapter(null);
+        taskRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        taskRecycler.setAdapter(adapter);
+
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token", token);
+        JSONObject object = new JSONObject(params);
+        OkGo.<String>post(Urls.Ip_url + Urls.Integarl.getAccumulatePoints)
+                .upJson(object)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s != null) {
+                            Gson gson = new Gson();
+                            IntegarlBean bean = gson.fromJson(s, IntegarlBean.class);
+                            if (bean.getCode() == 200) {
+                                adapter.addData(bean.getData().getCode());
+                                integar.setText(bean.getData().getStatus());
+                                EventBus.getDefault().post(new IntregarlEvent(bean.getData().getOffical(), bean.getData().getCredits()));
+                            } else {
+                                ToastUtils.showToast(getActivity(), bean.getError_message());
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+
+    @OnClick({R.id.user_information})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.user_information:
+                getDate();
+                break;
+        }
+    }
+
+    private void getDate() {
+        Map<String, String> parms = new HashMap<>();
+        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        String signature = (String) SPUtils.get(getActivity(), "signature", "1");
+        parms.put("token", token);
+        parms.put("signature", signature);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.Ip_url + Urls.Identity.GetIdentity)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s != null) {
+                            Gson gson = new Gson();
+                            Identity identity = gson.fromJson(s, Identity.class);
+                            if (identity.getError_code() == 0) {
+                                if (identity.getData().getIsSuccess().equals("1")) {
+                                    if (identity.getData().getStatus().equals("1")) {
+                                        startActivity(new Intent(getActivity(), IdentityinformationActivity.class).putExtra("integarl", "integarl"));
+                                    } else {
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class)
+                                                .putExtra("from", "integarl");
+                                        startActivity(intent);
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                });
+    }
 }

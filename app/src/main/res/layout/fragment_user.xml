@@ -66,7 +66,7 @@
                 <TextView
                     android:textSize="15sp"
                     android:textColor="#4D4D4D"
-                    android:layout_marginLeft="@dimen/_10dp"
+                    android:layout_marginLeft="6dp"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                     android:src="@mipmap/money"/>
                 <TextView
                     android:textSize="15sp"
-                    android:layout_marginLeft="@dimen/_10dp"
+                    android:layout_marginLeft="6dp"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -6,18 +6,17 @@ package cn.com.stableloan.api;
 
 public interface Urls {
 
-    String Ip_url="http://api.anwenqianbao.com/v1/";
+    String Ip_url="http://test.api.anwenqianbao.com/v1/";
 
-    String puk_URL="http://api.shoujijiekuan.com/Home/ApiLogin/";
+    String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
 
-    String NEW_URL="http://api.shoujijiekuan.com/Home/";
-
+    String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
 
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
             "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4" +
             "DkeI2HZ45KR+7qkSXQIDAQAB";
-
+    
     String PRIVATE_KEY = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANSzGmJ7eD51Oc+/" +
             "q+NG4I5UHqFzRXqoVcBvONISzUdkcKj8lGBQEcr58LJz4spSFyxh7TRpOfMNE25b" +
             "QwCEbWVci74mjQSffKIUHhriNwxROFXHWzun8KaqT4pQCYz0UsGtPpSgrNss0qL3" +
@@ -34,7 +33,6 @@ public interface Urls {
             "BI1hNZWOmpTyld2F";
 
     String Api_Id="3846f6f1e99e4f1b958111fda257c368";
-
     //
     interface Update{
         String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
@@ -43,7 +41,6 @@ public interface Urls {
     interface  times{
         String MESSAGE_SEND="sms/getcode";
     }
-
     interface Login{
         String SettingPassWord="set/password";
         //验证码发送
@@ -75,16 +72,16 @@ public interface Urls {
     }
 
     interface  Identity{
-        String GetIdentity="Identity/GetIdentity";
-        String Getbank="Identity/Getbank ";
+        String GetIdentity="person/getIdentity";
+        String Getbank="person/getBank ";
 
-        String GetOccupation="Identity/GetOccupation";
+        String GetOccupation="person/getOccupation";
 
-        String AddIdentity="Identity/AddIdentity";
+        String AddIdentity="person/addIdentity";
 
-        String Addbank="Identity/Addbank";
+        String Addbank="person/addBank";
 
-        String AddOccupation="Identity/AddOccupation";
+        String AddOccupation="person/addOccupation";
     }
     interface STATUS{
         String GetCerftication="accredit/status";
@@ -126,8 +123,8 @@ public interface Urls {
         String UPDATE_PROFRSSION="Modify";
     }
     interface user{
-        String USERT_INFO="Personal";
-        String USER_STATUS="Status/GetStatus";
+        String USERT_INFO="person/getPerson";
+        String USER_STATUS="status/getStatus";
         String FEEDBACK="feedback/opinion";
     }
     interface  notice{
@@ -150,5 +147,14 @@ public interface Urls {
         String WEICHAT_APPID="wxd8a11cffdc98f84b";
 
         String PageWeb="http://test.m.anwenqianbao.com/#/details?pId=";
+    }
+    interface  Integarl{
+        String getAccumulatePoints="point/getAccumulatePoints";
+        String GETCASH="cash/getCash";
+        String OUTCASH="cash/getCashOut";
+    }
+    interface Dialog{
+        String advertising="popup/getPopup";
+        String GETUSERPOPUP="popup/getUserPopup";
     }
 }

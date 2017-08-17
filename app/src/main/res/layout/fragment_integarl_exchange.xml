@@ -1,13 +1,75 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="@dimen/_20dp"
+        android:layout_marginLeft="15dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_width="43dp"
+            android:layout_height="33dp"
+            android:src="@mipmap/integar_dollar"/>
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="积分兑现金"
+                android:textSize="12sp"
+                android:textColor="@color/gay"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已拥有0张  有效期: 无限期 "
+                android:textSize="12sp"
+                android:textColor="@color/gay"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/integar3"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                app:corner="25dp"
+                android:gravity="center"
+                android:text="敬请期待"
+                android:textColor="#E1DFE0"
+                app:solid="@color/white"
+                app:stroke_width="1.5dp"
+                android:layout_height="35dp"
+                app:stroke_color="@color/diver"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:textSize="15dp"
+        android:text="现金,红包,速审卡,通过率卡等各种兑换即将登场,我们将在近期陆续释放,敬请期待"
+        />
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="15dp"
+        android:background="#F3F2F8"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"/>
 
-</FrameLayout>
+</LinearLayout>

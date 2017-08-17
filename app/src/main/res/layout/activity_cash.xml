@@ -46,7 +46,8 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
                 <TextView
-                    android:id="@+id/money"
+                    android:id="@+id/total"
+                    android:layout_marginTop="@dimen/_5dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:text="提现至支付宝 : "/>
             <TextView
-                android:id="@+id/alipay_name"
+
+                android:id="@+id/account"
                 android:textColor="@color/gay"
                 android:textSize="16sp"
                 android:layout_marginLeft="@dimen/_10dp"
@@ -119,10 +121,10 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="我知道了"
+        android:text="我要提现"
         app:btnCornerRadius="5dp"
         app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/colorPrimary"
+        app:btnSolidColor="#fea423"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18sp"
@@ -134,10 +136,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="我知道了"
-        app:btnCornerRadius="5dp"
+        android:text="我要提现"
         app:btnPressedRatio="0.9"
         app:btnSolidColor="@color/colorPrimary"
         android:gravity="center"

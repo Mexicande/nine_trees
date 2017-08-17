@@ -197,7 +197,8 @@
         <activity android:name=".ui.activity.IntegralActivity" />
         <activity android:name=".ui.activity.CashActivity" />
         <activity android:name=".ui.activity.integarl.WithdrawalActivity" />
-        <activity android:name=".ui.activity.integarl.RuleDescActivity"></activity>
+        <activity android:name=".ui.activity.integarl.RuleDescActivity" />
+        <activity android:name=".ui.activity.integarl.WithdrawalCashActivity"></activity>
     </application>
 
 </manifest>

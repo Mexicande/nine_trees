@@ -49,4 +49,5 @@
     <color name="tag_backgroud">#7ECEF4</color>
     <color name="tag_textcolor">#666666</color>
     <color name="integral">#F3F2F8</color>
+    <color name="cash_toolbar">#F9C039</color>
 </resources>

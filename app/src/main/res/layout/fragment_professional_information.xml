@@ -62,19 +62,44 @@
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_Teacher"
-                    style="@style/information_style"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:layout_width="130dp"
+                    android:textSize="@dimen/textsize"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    android:tint="@color/gay"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:layout_marginRight="30dp"
                     android:inputType="phone"
-                    whatever:testType="regexp"
                     whatever:emptyAllowed="true"
-
-                    whatever:customRegexp="^[1]\\d{10}$"
-                    whatever:testErrorString="号码格式不正确"
+                    />
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/et_preTeacherphone"
+                    android:layout_toLeftOf="@id/et_Teacher"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:layout_width="80dp"
+                    android:textSize="@dimen/textsize"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    android:tint="@color/gay"
+                    android:maxLength="10"
+                    android:inputType="phone"
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:maxLines="1"
+                    whatever:emptyAllowed="true"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/gay"
                     />
                 <TextView
                     style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_Teacher"
+                    android:layout_toLeftOf="@id/et_preTeacherphone"
                     android:text="班主任电话 : "
                     />
             </RelativeLayout>
@@ -193,17 +218,45 @@
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.andreabaccega.widget.FormEditText
                     android:id="@+id/et_fixedline"
-                    style="@style/information_style"
-                    whatever:testType="regexp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:layout_width="130dp"
+                    android:textSize="@dimen/textsize"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    android:tint="@color/gay"
+                    android:maxLength="10"
+                    android:maxLines="1"
+
+                    android:layout_marginRight="30dp"
+                    android:inputType="phone"
                     whatever:emptyAllowed="true"
-                    whatever:customRegexp="^(0\\d{2,3}[-| ]?)?(\\d{7,8})([-| ]?\\d{3,5})?$"
-                    whatever:testErrorString="号码格式不正确"
+                    />
+                <com.andreabaccega.widget.FormEditText
+                    android:id="@+id/preFixedline"
+                    android:layout_toLeftOf="@id/et_fixedline"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:layout_width="80dp"
+                    android:textSize="@dimen/textsize"
+                    android:layout_height="@dimen/layout_height"
+                    android:background="@drawable/editext_normal"
+                    android:tint="@color/gay"
+                    android:maxLength="10"
+                    android:inputType="phone"
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:maxLines="1"
+                    whatever:emptyAllowed="true"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/gay"
                     />
                 <TextView
                     style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_fixedline"
+                    android:layout_toLeftOf="@id/preFixedline"
                     android:text="单位固话 : "
                     />
             </RelativeLayout>

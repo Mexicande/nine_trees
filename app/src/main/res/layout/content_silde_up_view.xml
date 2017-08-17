@@ -5,9 +5,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:showIn="@layout/activity_desc">
+    tools:showIn="@layout/activity_integral">
     <RelativeLayout
-        android:id="@+id/slideView"
+        android:id="@+id/cash_slideView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >

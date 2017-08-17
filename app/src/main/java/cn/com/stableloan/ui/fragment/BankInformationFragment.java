@@ -34,6 +34,7 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Bank;
+import cn.com.stableloan.model.BankInformation;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.BankUtils;
@@ -127,42 +128,41 @@ public class BankInformationFragment extends Fragment {
         parms.put("token", token);
         parms.put("signature", signature);
         JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.Getbank)
+        OkGo.<String>post(Urls.Ip_url + Urls.Identity.Getbank)
                 .tag(getActivity())
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject json = new JSONObject(s);
-                            String isSuccess = json.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                Gson gson = new Gson();
-                                bankBean = gson.fromJson(s, Bank.class);
 
-                                etBankCard1.setText(bankBean.getBank().getDebit().getDnumber());
-                                etBankPersonName1.setText(bankBean.getBank().getDebit().getDname());
-                                etBankPhone1.setText(bankBean.getBank().getDebit().getDphone());
-                                etSelectBank1.setText(bankBean.getBank().getDebit().getDbank());
-                                etValidityTime1.setText(bankBean.getBank().getDebit().getDperiod());
-
-
-                                etBankCard2.setText(bankBean.getBank().getCredit().getCnumber());
-                                etBankPersonName2.setText(bankBean.getBank().getCredit().getCname());
-                                etBankPhone2.setText(bankBean.getBank().getCredit().getCphone());
-                                etSelectBank2.setText(bankBean.getBank().getCredit().getCbank());
-                                etValidityTime2.setText(bankBean.getBank().getCredit().getCperiod());
+                        if(s!=null){
+                            Gson gson=new Gson();
+                            BankInformation information = gson.fromJson(s, BankInformation.class);
+                            if(information.getError_code()==0){
+                                    if(information.getData().getStatus().equals("1")){
+                                        bankBean=   information.getData();
+                                        etBankCard1.setText(bankBean.getBank().getDebit().getDnumber());
+                                        etBankPersonName1.setText(bankBean.getBank().getDebit().getDname());
+                                        etBankPhone1.setText(bankBean.getBank().getDebit().getDphone());
+                                        etSelectBank1.setText(bankBean.getBank().getDebit().getDbank());
+                                        etValidityTime1.setText(bankBean.getBank().getDebit().getDperiod());
 
 
-                            } else {
-                                Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                startActivity(intent);
+                                        etBankCard2.setText(bankBean.getBank().getCredit().getCnumber());
+                                        etBankPersonName2.setText(bankBean.getBank().getCredit().getCname());
+                                        etBankPhone2.setText(bankBean.getBank().getCredit().getCphone());
+                                        etSelectBank2.setText(bankBean.getBank().getCredit().getCbank());
+                                        etValidityTime2.setText(bankBean.getBank().getCredit().getCperiod());
 
+                                    }else {
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                        startActivity(intent);
+                                    }
+
+
+                            }else {
+                                ToastUtils.showToast(getActivity(),information.getError_message());
                             }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
 
                     }
@@ -288,7 +288,7 @@ public class BankInformationFragment extends Fragment {
             }
             if (allValid) {
                 String token = (String) SPUtils.get(getActivity(), "token", "1");
-                 Bank bank = new Bank();
+                Bank bank = new Bank();
                 bank.setToken(token);
                 Bank.BankBean bean = new Bank.BankBean();
                 if(!etBankPhone2.getText().toString().isEmpty()&&!etBankPhone1.getText().toString().isEmpty()
@@ -307,7 +307,7 @@ public class BankInformationFragment extends Fragment {
                 bank.setBank(bean);
                 Gson gson = new Gson();
                 String json = gson.toJson(bank);
-                OkGo.<String>post(Urls.NEW_URL + Urls.Identity.Addbank)
+                OkGo.<String>post(Urls.Ip_url + Urls.Identity.Addbank)
                         .tag(this)
                         .upJson(json)
                         .execute(new StringCallback() {
@@ -315,18 +315,20 @@ public class BankInformationFragment extends Fragment {
                             public void onSuccess(String s, Call call, Response response) {
                                 try {
                                     JSONObject object = new JSONObject(s);
-                                    String isSuccess = object.getString("isSuccess");
-                                    if ("1".equals(isSuccess)) {
+                                    int isSuccess = object.getInt("error_code");
+                                    if (isSuccess==0) {
                                         EventBus.getDefault().post(new InformationEvent("informationStatus"));
-                                        String msg = object.getString("msg");
+                                        String data = object.getString("data");
+                                        JSONObject object1 = new JSONObject(data);
+                                        String msg = object1.getString("msg");
                                         ToastUtils.showToast(getActivity(), msg);
                                         bankBean.getBank().setDebit(debitBean);
                                         bankBean.getBank().setCredit(creditBean);
                                     } else {
-                                        String msg = object.getString("msg");
+                                        String msg = object.getString("error_message");
                                         ToastUtils.showToast(getActivity(), msg);
-
                                     }
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

@@ -29,17 +29,19 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.WorkBean;
+import cn.com.stableloan.model.WorkInformation;
+import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.BetterSpinner;
 import cn.com.stableloan.view.EmailAutoCompleteTextView;
+import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.SmoothCheckBox;
 import cn.com.stableloan.view.SmoothCompoundButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- *
  * 职业信息
  * A simple {@link Fragment} subclass.
  */
@@ -74,9 +76,15 @@ public class ProfessionalInformationFragment extends Fragment {
     FormEditText etCincome;
     @Bind(R.id.et_operations)
     BetterSpinner etOperations;
+    @Bind(R.id.et_preTeacherphone)
+    FormEditText etPreTeacherphone;
+    @Bind(R.id.preFixedline)
+    FormEditText preFixedline;
+    @Bind(R.id.save)
+    RoundButton save;
 
     private String[] lists;
-    private WorkBean work;
+    WorkInformation.DataBean work;
     private String[] list2;
 
 
@@ -96,6 +104,7 @@ public class ProfessionalInformationFragment extends Fragment {
         initBetter();
         return view;
     }
+
     private void getDate() {
 
         JSONObject eventObject = new JSONObject();
@@ -104,8 +113,8 @@ public class ProfessionalInformationFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息",  eventObject);
+                //记录事件
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
@@ -113,70 +122,71 @@ public class ProfessionalInformationFragment extends Fragment {
         parms.put("token", token);
         parms.put("signature", signature);
         JSONObject object = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.GetOccupation)
+        OkGo.<String>post(Urls.Ip_url + Urls.Identity.GetOccupation)
                 .tag(this)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String isSuccess = jsonObject.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String status = jsonObject.getString("status");
-                                if ("1".equals(status)) {
-                                    Gson gson = new Gson();
-                                    work= gson.fromJson(s, WorkBean.class);
-                                    WorkBean.OccupationBean occupation = work.getOccupation();
-                                    WorkBean.OccupationBean.StudentBean student = occupation.getStudent();
-                                    etSchool.setText(student.getSchool());
-                                    etSchoolAddress.setText(student.getAddress());
-                                    etTeacher.setText(student.getTeacherphone());
-                                    WorkBean.OccupationBean.CompanyBean company = occupation.getCompany();
-                                    et_company.setText(company.getCompany());
-                                    et_location.setText(company.getLocation());
-                                    et_etEmail.setText(company.getEmail());
-                                    String years = company.getYears();
-                                    if(!years.isEmpty()){
-                                        int year = Integer.parseInt(company.getYears());
-                                        etYears.setText(list2[year]);
-                                    }
-                                    String cincome = company.getCincome();
-                                    etCincome.setText(cincome);
-                                    etFixedline.setText(company.getFixedline());
-                                    WorkBean.OccupationBean.BusinessBean business = occupation.getBusiness();
+                        if (s != null) {
+                            Gson gson = new Gson();
+                            WorkInformation information = gson.fromJson(s, WorkInformation.class);
+                            if (information.getError_code() == 0) {
+                                if (information.getData().getIsSuccess().equals("1")) {
+                                    if (information.getData().getStatus().equals("1")) {
+                                        work = information.getData();
+                                        WorkInformation.DataBean.OccupationBean occupation = work.getOccupation();
 
-                                    String operations = business.getOperations();
-                                    if(!operations.isEmpty()){
-                                        int tions = Integer.parseInt(business.getOperations());
-                                        etOperations.setText(list2[tions]);
-                                    }
+                                        WorkInformation.DataBean.OccupationBean.StudentBean student = occupation.getStudent();
+                                        etSchool.setText(student.getSchool());
+                                        etSchoolAddress.setText(student.getAddress());
+                                        etTeacher.setText(student.getTeacherphone());
+                                        etPreTeacherphone.setText(student.getPreTeacherphone());
+                                        WorkInformation.DataBean.OccupationBean.CompanyBean company = occupation.getCompany();
+                                        et_company.setText(company.getCompany());
+                                        et_location.setText(company.getLocation());
+                                        et_etEmail.setText(company.getEmail());
+                                        preFixedline.setText(company.getPreFixedline());
+                                        String years = company.getYears();
+                                        if (!years.isEmpty()) {
+                                            int year = Integer.parseInt(company.getYears());
+                                            etYears.setText(list2[year]);
+                                        }
+                                        String cincome = company.getCincome();
+                                        etCincome.setText(cincome);
+                                        etFixedline.setText(company.getFixedline());
+                                        WorkInformation.DataBean.OccupationBean.BusinessBean business = occupation.getBusiness();
 
-                                    String license = business.getLicense();
-                                    if ("0".equals(license)) {
-                                        checkbox2.setChecked(false);
-                                        checkbox1.setChecked(true);
-                                    } else {
-                                        checkbox1.setChecked(false);
-                                        checkbox2.setChecked(true);
-                                    }
-                                    String bome = business.getBincome();
+                                        String operations = business.getOperations();
+                                        if (!operations.isEmpty()) {
+                                            int tions = Integer.parseInt(business.getOperations());
+                                            etOperations.setText(list2[tions]);
+                                        }
 
-                                    WorkBean.OccupationBean.FreelancerBean freelancer = occupation.getFreelancer();
-                                    String source = freelancer.getSource();
-                                    if ("0".equals(source)) {
-                                        checkbox4.setChecked(false);
-                                        checkbox3.setChecked(true);
-                                    } else {
-                                        checkbox3.setChecked(false);
-                                        checkbox4.setChecked(true);
+                                        String license = business.getLicense();
+                                        if ("0".equals(license)) {
+                                            checkbox2.setChecked(false);
+                                            checkbox1.setChecked(true);
+                                        } else {
+                                            checkbox1.setChecked(false);
+                                            checkbox2.setChecked(true);
+                                        }
+
+                                        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancer =occupation.getFreelancer();
+                                        String source = freelancer.getSource();
+                                        if ("0".equals(source)) {
+                                            checkbox4.setChecked(false);
+                                            checkbox3.setChecked(true);
+                                        } else {
+                                            checkbox3.setChecked(false);
+                                            checkbox4.setChecked(true);
+                                        }
+
                                     }
                                 }
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+
                     }
                 });
 
@@ -184,7 +194,6 @@ public class ProfessionalInformationFragment extends Fragment {
 
 
     private void initBetter() {
-
 
 
         list2 = getResources().getStringArray(R.array.years);
@@ -255,20 +264,22 @@ public class ProfessionalInformationFragment extends Fragment {
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
 
-        final WorkBean workBean = new WorkBean();
+        final  WorkInformation.DataBean workBean = new  WorkInformation.DataBean();
         workBean.setToken(token);
-        WorkBean.OccupationBean occupationBean = new WorkBean.OccupationBean();
+        WorkInformation.DataBean.OccupationBean occupationBean=new WorkInformation.DataBean.OccupationBean();
 
-        WorkBean.OccupationBean.StudentBean studentBean = new WorkBean.OccupationBean.StudentBean();
+        WorkInformation.DataBean.OccupationBean.StudentBean studentBean = new  WorkInformation.DataBean.OccupationBean.StudentBean();
         studentBean.setSchool(etSchool.getText().toString());
         studentBean.setTeacherphone(etTeacher.getText().toString());
         studentBean.setAddress(etSchoolAddress.getText().toString());
+        studentBean.setPreTeacherphone(etPreTeacherphone.getText().toString());
 
-        WorkBean.OccupationBean.CompanyBean companyBean = new WorkBean.OccupationBean.CompanyBean();
+        WorkInformation.DataBean.OccupationBean.CompanyBean companyBean = new  WorkInformation.DataBean.OccupationBean.CompanyBean();
 
         companyBean.setCompany(et_company.getText().toString());
         companyBean.setLocation(et_location.getText().toString());
         companyBean.setEmail(et_etEmail.getText().toString());
+        companyBean.setPreFixedline(preFixedline.getText().toString());
         String string = etYears.getText().toString();
         companyBean.setYears("");
         for (int i = 0; i < list2.length; i++) {
@@ -280,10 +291,7 @@ public class ProfessionalInformationFragment extends Fragment {
         companyBean.setCincome(etCincome.getText().toString());
         companyBean.setFixedline(etFixedline.getText().toString());
 
-
-
-
-        WorkBean.OccupationBean.BusinessBean businessBean = new WorkBean.OccupationBean.BusinessBean();
+        WorkInformation.DataBean.OccupationBean.BusinessBean businessBean = new  WorkInformation.DataBean.OccupationBean.BusinessBean();
 
         String toString = etOperations.getText().toString();
 
@@ -302,16 +310,8 @@ public class ProfessionalInformationFragment extends Fragment {
         if (checkbox2.isChecked()) {
             businessBean.setLicense("1");
         }
-     /*   String string1 = bincome.getText().toString();
-        businessBean.setBincome("");
-        for (int i = 0; i < lists.length; i++) {
-            if (lists[i].equals(string1)) {
-                String s = String.valueOf(i);
-                businessBean.setBincome(s);
-            }
-        }*/
 
-        WorkBean.OccupationBean.FreelancerBean freelancerBean = new WorkBean.OccupationBean.FreelancerBean();
+        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancerBean = new  WorkInformation.DataBean.OccupationBean.FreelancerBean();
         freelancerBean.setSource("");
         if (checkbox3.isChecked()) {
             freelancerBean.setSource("0");
@@ -320,18 +320,16 @@ public class ProfessionalInformationFragment extends Fragment {
             freelancerBean.setSource("1");
         }
 
-        if(work.getOccupation().getStudent().equals(studentBean)&&work.getOccupation().getBusiness().equals(businessBean)
-                &&work.getOccupation().getCompany().equals(companyBean)&&work.getOccupation().getFreelancer().equals(freelancerBean)){
-            ToastUtils.showToast(getActivity(),"无修改内容");
-        }else {
+        if (work.getOccupation().getStudent().equals(studentBean) && work.getOccupation().getBusiness().equals(businessBean)
+                && work.getOccupation().getCompany().equals(companyBean) && work.getOccupation().getFreelancer().equals(freelancerBean)) {
+            ToastUtils.showToast(getActivity(), "无修改内容");
+        } else {
+            boolean tel = RegexUtils.isTel(etPreTeacherphone.getText().toString() + etTeacher.getText().toString());
+            boolean tel1 = RegexUtils.isTel(preFixedline.getText().toString() + etFixedline.getText().toString());
+            if(!tel&&tel1){
+                ToastUtils.showToast(getActivity(),"固定电话格式错误");
 
-            FormEditText[] allFields = {etTeacher,  etFixedline};
-            boolean allValid = true;
-            for (FormEditText field : allFields) {
-                allValid = field.testValidity() && allValid;
-            }
-            if (allValid) {
-
+            }else {
                 occupationBean.setStudent(studentBean);
                 occupationBean.setBusiness(businessBean);
                 occupationBean.setCompany(companyBean);
@@ -348,57 +346,55 @@ public class ProfessionalInformationFragment extends Fragment {
                 String teacher = etTeacher.getText().toString();
                 String SchoolAddress = etSchoolAddress.getText().toString();
                 String yers = etYears.getText().toString();
-                //String ome = bincome.getText().toString();
 
 
-                if(school.isEmpty()||operations.isEmpty()||Cincome.isEmpty()||fixedline.isEmpty()||company.isEmpty()||email.isEmpty()
-                        ||loction.isEmpty()||teacher.isEmpty()||SchoolAddress.isEmpty()||yers.isEmpty()){
-                    if(!checkbox1.isChecked()&&!checkbox2.isChecked()){
-                        if(!checkbox3.isChecked()&&!checkbox4.isChecked()){
+                if (school.isEmpty() || operations.isEmpty() || Cincome.isEmpty() || fixedline.isEmpty() || company.isEmpty() || email.isEmpty()
+                        || loction.isEmpty() || teacher.isEmpty() || SchoolAddress.isEmpty() || yers.isEmpty()) {
+                    if (!checkbox1.isChecked() && !checkbox2.isChecked()) {
+                        if (!checkbox3.isChecked() && !checkbox4.isChecked()) {
                             occupationBean.setStatus("0");
+
                         }
                     }
-                }else {
+                } else {
                     occupationBean.setStatus("1");
                 }
                 workBean.setOccupation(occupationBean);
                 Gson gson = new Gson();
                 String json = gson.toJson(workBean);
-                OkGo.<String>post(Urls.NEW_URL + Urls.Identity.AddOccupation)
+                OkGo.<String>post(Urls.Ip_url + Urls.Identity.AddOccupation)
                         .tag(getActivity())
                         .upJson(json)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
+
                                 try {
                                     JSONObject object = new JSONObject(s);
-
-                                    String isSuccess = object.getString("isSuccess");
-                                    String msg = object.getString("msg");
-                                    work=workBean;
-
-                                    if ("1".equals(isSuccess)) {
+                                    int isSuccess = object.getInt("error_code");
+                                    if (isSuccess==0) {
+                                        work = workBean;
                                         EventBus.getDefault().post(new InformationEvent("informationStatus"));
-
+                                        String data = object.getString("data");
+                                        JSONObject object1 = new JSONObject(data);
+                                        String msg = object1.getString("msg");
                                         ToastUtils.showToast(getActivity(), msg);
                                     } else {
+                                        String msg = object.getString("error_message");
                                         ToastUtils.showToast(getActivity(), msg);
+
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-
                                 }
-
-
                             }
                         });
-
             }
 
         }
 
 
-        }
+    }
 
 
 }

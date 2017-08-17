@@ -354,6 +354,7 @@ public static java.lang.String TABLENAME;
 }
 
 -keep @com.proguard.annotation.NotProguard class * {*;}
+
 -keep class * {
     @com.proguard.annotation <fields>;
     @android.webkit.JavascriptInterface <fields>;
@@ -363,11 +364,16 @@ public static java.lang.String TABLENAME;
     @android.webkit.JavascriptInterface <fields>;
 }
 -keep class org.apache.commons.codec.** { *; }
+
 -keep class com.adobe.fre.**{*;}
+
 -keep class test.com.**{*;}
+
 -keep class com.tencent.mm.sdk.** {
    *;
 }
+ -keep class com.gyf.barlibrary.* {*;}
+
 -keep class retrofit.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions

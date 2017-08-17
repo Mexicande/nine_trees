@@ -9,230 +9,169 @@ import java.util.List;
 
 public class Identity implements Serializable {
 
-
     /**
-     * userphone : 18500634223
-     * isSuccess : 1
-     * identity : {"name":"","userphone":"","idcard":"","sex":"","age":"","idaddress":"","city":"","contact":[{"contact":"","relation":"","userphone":""},{"contact":"","relation":"","userphone":""}],"ilass_time":""}
-     * status : 1
+     * code : 200
+     * message : 200
+     * data : {"identity":{"name":"命苦","userphone":"15600575837","idcard":"61012419921228393X","sex":"1","age":"25","idaddress":"beijing","marriage":"0","city":"beijing","contact":[{"contact":"第一","relation":"1","userphone":"15600575837"},{"contact":"第二","relation":"1","userphone":"18500634223"}],"ilass_time":"2017-08-15 05:27:34"},"isSuccess":"1","status":"1"}
+     * error_code : 0
+     * error_message :
+     * time : 2017-08-16 12:30:03
      */
 
-    private String userphone;
-    private String isSuccess;
-    private IdentityBean identity;
-    private String status;
-    private String token;
+    private int code;
+    private int message;
+    private DataBean data;
+    private int error_code;
+    private String error_message;
+    private String time;
 
-    public String getToken() {
-        return token;
+    public int getCode() {
+        return code;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getUserphone() {
-        return userphone;
+    public int getMessage() {
+        return message;
     }
 
-    public void setUserphone(String userphone) {
-        this.userphone = userphone;
+    public void setMessage(int message) {
+        this.message = message;
     }
 
-    public String getIsSuccess() {
-        return isSuccess;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setIsSuccess(String isSuccess) {
-        this.isSuccess = isSuccess;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public IdentityBean getIdentity() {
-        return identity;
+    public int getError_code() {
+        return error_code;
     }
 
-    public void setIdentity(IdentityBean identity) {
-        this.identity = identity;
+    public void setError_code(int error_code) {
+        this.error_code = error_code;
     }
 
-    public String getStatus() {
-        return status;
+    public String getError_message() {
+        return error_message;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setError_message(String error_message) {
+        this.error_message = error_message;
     }
 
-    public static class IdentityBean implements Serializable{
+    public String getTime() {
+        return time;
+    }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public static class DataBean implements Serializable{
         /**
-         * name :
-         * userphone :
-         * idcard :
-         * sex :
-         * age :
-         * idaddress :
-         * city :
-         * contact : [{"contact":"","relation":"","userphone":""},{"contact":"","relation":"","userphone":""}]
-         * ilass_time :
+         * identity : {"name":"命苦","userphone":"15600575837","idcard":"61012419921228393X","sex":"1","age":"25","idaddress":"beijing","marriage":"0","city":"beijing","contact":[{"contact":"第一","relation":"1","userphone":"15600575837"},{"contact":"第二","relation":"1","userphone":"18500634223"}],"ilass_time":"2017-08-15 05:27:34"}
+         * isSuccess : 1
+         * status : 1
          */
 
-        private String name;
-        private String userphone;
-        private String idcard;
-        private String sex;
-        private String age;
+        private IdentityBean identity;
 
+        private String isSuccess;
+        private String status;
+        private String token;
 
-
-        public String getMarriage() {
-            return marriage;
+        public String getToken() {
+            return token;
         }
 
-        public void setMarriage(String marriage) {
-            this.marriage = marriage;
+        public void setToken(String token) {
+            this.token = token;
         }
 
-        private String marriage;
-        private String idaddress;
-        private String city;
-        private String ilass_time;
-        private List<ContactBean> contact;
-        private String istatus;
-
-        public String getIstatus() {
-            return istatus;
+        public IdentityBean getIdentity() {
+            return identity;
         }
 
-        public void setIstatus(String istatus) {
-            this.istatus = istatus;
+        public void setIdentity(IdentityBean identity) {
+            this.identity = identity;
         }
 
-        public String getName() {
-            return name;
+        public String getIsSuccess() {
+            return isSuccess;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setIsSuccess(String isSuccess) {
+            this.isSuccess = isSuccess;
         }
 
-        public String getUserphone() {
-            return userphone;
+        public String getStatus() {
+            return status;
         }
 
-        public void setUserphone(String userphone) {
-            this.userphone = userphone;
+        public void setStatus(String status) {
+            this.status = status;
         }
 
-        public String getIdcard() {
-            return idcard;
-        }
-
-        public void setIdcard(String idcard) {
-            this.idcard = idcard;
-        }
-
-        public String getSex() {
-            return sex;
-        }
-
-        public void setSex(String sex) {
-            this.sex = sex;
-        }
-
-        public String getAge() {
-            return age;
-        }
-
-        public void setAge(String age) {
-            this.age = age;
-        }
-
-        public String getIdaddress() {
-            return idaddress;
-        }
-
-        public void setIdaddress(String idaddress) {
-            this.idaddress = idaddress;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getIlass_time() {
-            return ilass_time;
-        }
-
-        public void setIlass_time(String ilass_time) {
-            this.ilass_time = ilass_time;
-        }
-
-        public List<ContactBean> getContact() {
-            return contact;
-        }
-
-        public void setContact(List<ContactBean> contact) {
-            this.contact = contact;
-        }
-
-        @Override
-        public String toString() {
-            return "IdentityBean{" +
-                    "name='" + name + '\'' +
-                    ", userphone='" + userphone + '\'' +
-                    ", idcard='" + idcard + '\'' +
-                    ", sex='" + sex + '\'' +
-                    ", age='" + age + '\'' +
-                    ", marriage='" + marriage + '\'' +
-                    ", idaddress='" + idaddress + '\'' +
-                    ", city='" + city + '\'' +
-                    ", ilass_time='" + ilass_time + '\'' +
-                    ", contact=" + contact +
-                    ", istatus='" + istatus + '\'' +
-                    '}';
-        }
-
-        public static class ContactBean implements Serializable{
-
+        public static class IdentityBean implements Serializable {
             @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
+            public String toString() {
+                return "{" +
+                        "istatus='" + istatus + '\'' +
+                        ", name='" + name + '\'' +
+                        ", userphone='" + userphone + '\'' +
+                        ", idcard='" + idcard + '\'' +
+                        ", sex='" + sex + '\'' +
+                        ", age='" + age + '\'' +
+                        ", idaddress='" + idaddress + '\'' +
+                        ", marriage='" + marriage + '\'' +
+                        ", city='" + city + '\'' +
+                        ", ilass_time='" + ilass_time + '\'' +
+                        ", contact=" + contact +
+                        '}';
             }
 
             /**
-             * contact :
-             * relation :
-             * userphone :
-             */
-
-            private String contact;
-            private String relation;
+                     * name : 命苦
+                     * userphone : 15600575837
+                     * idcard : 61012419921228393X
+                     * sex : 1
+                     * age : 25
+                     * idaddress : beijing
+                     * marriage : 0
+                     * city : beijing
+                     * contact : [{"contact":"第一","relation":"1","userphone":"15600575837"},{"contact":"第二","relation":"1","userphone":"18500634223"}]
+                     * ilass_time : 2017-08-15 05:27:34
+                     */
+            private String istatus;
+            public String getIstatus() {
+                return istatus;
+            }
+            public void setIstatus(String istatus) {
+                this.istatus = istatus;
+            }
+            private String name;
             private String userphone;
+            private String idcard;
+            private String sex;
+            private String age;
+            private String idaddress;
+            private String marriage;
+            private String city;
+            private String ilass_time;
+            private List<ContactBean> contact;
 
-            public String getContact() {
-                return contact;
+            public String getName() {
+                return name;
             }
 
-            public void setContact(String contact) {
-                this.contact = contact;
-            }
-
-            public String getRelation() {
-                return relation;
-            }
-
-            public void setRelation(String relation) {
-                this.relation = relation;
+            public void setName(String name) {
+                this.name = name;
             }
 
             public String getUserphone() {
@@ -243,13 +182,113 @@ public class Identity implements Serializable {
                 this.userphone = userphone;
             }
 
-            @Override
-            public String toString() {
-                return "ContactBean{" +
-                        "contact='" + contact + '\'' +
-                        ", relation='" + relation + '\'' +
-                        ", userphone='" + userphone + '\'' +
-                        '}';
+            public String getIdcard() {
+                return idcard;
+            }
+
+            public void setIdcard(String idcard) {
+                this.idcard = idcard;
+            }
+
+            public String getSex() {
+                return sex;
+            }
+
+            public void setSex(String sex) {
+                this.sex = sex;
+            }
+
+            public String getAge() {
+                return age;
+            }
+
+            public void setAge(String age) {
+                this.age = age;
+            }
+
+            public String getIdaddress() {
+                return idaddress;
+            }
+
+            public void setIdaddress(String idaddress) {
+                this.idaddress = idaddress;
+            }
+
+            public String getMarriage() {
+                return marriage;
+            }
+
+            public void setMarriage(String marriage) {
+                this.marriage = marriage;
+            }
+
+            public String getCity() {
+                return city;
+            }
+
+            public void setCity(String city) {
+                this.city = city;
+            }
+
+            public String getIlass_time() {
+                return ilass_time;
+            }
+
+            public void setIlass_time(String ilass_time) {
+                this.ilass_time = ilass_time;
+            }
+
+            public List<ContactBean> getContact() {
+                return contact;
+            }
+
+            public void setContact(List<ContactBean> contact) {
+                this.contact = contact;
+            }
+
+            public static class ContactBean implements Serializable {
+                /**
+                 * contact : 第一
+                 * relation : 1
+                 * userphone : 15600575837
+                 */
+
+                private String contact;
+                private String relation;
+                private String userphone;
+
+                public String getContact() {
+                    return contact;
+                }
+
+                public void setContact(String contact) {
+                    this.contact = contact;
+                }
+
+                public String getRelation() {
+                    return relation;
+                }
+
+                public void setRelation(String relation) {
+                    this.relation = relation;
+                }
+
+                public String getUserphone() {
+                    return userphone;
+                }
+
+                public void setUserphone(String userphone) {
+                    this.userphone = userphone;
+                }
+
+                @Override
+                public String toString() {
+                    return "ContactBean{" +
+                            "contact='" + contact + '\'' +
+                            ", relation='" + relation + '\'' +
+                            ", userphone='" + userphone + '\'' +
+                            '}';
+                }
             }
         }
     }
