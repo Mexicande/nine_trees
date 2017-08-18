@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UpdateInfoBean;
 import cn.com.stableloan.model.UserBean;
@@ -227,9 +228,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                 if (SEND_LOGIN == resultCode) {
                     UserBean user = (UserBean) data.getSerializableExtra("user");
                     if(user!=null&&user.getNickname()!=null){
-
                         switchMenu(getFragmentName(4));
-
                     }else {
                         navigationController.setSelect(0);
                     }
@@ -325,7 +324,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     @Override
     public void setSelectedFragment(ProductFragment backHandledFragment) {
         this.selectedFragment = backHandledFragment;
-
     }
 
 }

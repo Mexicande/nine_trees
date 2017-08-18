@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
@@ -116,12 +117,15 @@ public class UserFragment extends ImmersionFragment {
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             //相当于Fragment的onPause
+
             System.out.println("界面不可见");
         } else {
             // 相当于Fragment的onResume
             System.out.println("界面可见");
         }
     }
+
+
 
     private void getUserInfo() {
         JSONObject eventObject = new JSONObject();
@@ -194,8 +198,18 @@ public class UserFragment extends ImmersionFragment {
         if (event.phone.equals("1")) {
             TextUser();
         }
+
     }
 
+    @Subscribe
+    public  void updateEvent(UpdateEvent msg){
+        if(msg!=null){
+            if("user".equals(msg.msg)){
+                getUserInfo();
+            }
+        }
+
+    }
     @Subscribe
     public void onUserEvent(UserEvent event) {
         UserInfromBean userNick = event.userNick;
@@ -290,7 +304,6 @@ public class UserFragment extends ImmersionFragment {
 
 
     }
-
     private SaveBean saveBean;
 
     private void getDate() {
@@ -345,7 +358,12 @@ public class UserFragment extends ImmersionFragment {
 
     }
 
-
+  /*  @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getUserInfo();
+    }
+*/
     @Override
     public void onDestroy() {
         super.onDestroy();

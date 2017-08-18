@@ -26,13 +26,13 @@ import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.RoundButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
  * 我的现金
- *
  */
 public class CashActivity extends BaseActivity {
 
@@ -44,9 +44,12 @@ public class CashActivity extends BaseActivity {
     TextView total;
     @Bind(R.id.account)
     TextView account;
+    @Bind(R.id.bt_visiable)
+    RoundButton btVisiable;
 
     private CashAdapter cashAdapter;
 
+    private CashBean cashBean;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, CashActivity.class));
     }
@@ -58,6 +61,12 @@ public class CashActivity extends BaseActivity {
         ButterKnife.bind(this);
         initRecyclerView();
         getDate();
+        setListener();
+    }
+
+    private void setListener() {
+
+
     }
 
     private void initRecyclerView() {
@@ -79,16 +88,20 @@ public class CashActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         if (s != null) {
                             Gson gson = new Gson();
-                            CashBean cashBean = gson.fromJson(s, CashBean.class);
+                            cashBean = gson.fromJson(s, CashBean.class);
                             account.setText(cashBean.getData().getAccount());
-                            total.setText("$" + cashBean.getData().getTotal());
+                            total.setText(cashBean.getData().getTotal());
                             cashAdapter.addData(cashBean.getData().getCashRecord());
+                            if (cashBean.getData().getAccount().length()>1) {
+                                btVisiable.setVisibility(View.GONE);
+                                btWithdrawal.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 });
     }
 
-    @OnClick({R.id.cash_back, R.id.cash_data, R.id.bt_visiable})
+    @OnClick({R.id.cash_back, R.id.cash_data, R.id.bt_visiable, R.id.bt_withdrawal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cash_back:
@@ -98,7 +111,11 @@ public class CashActivity extends BaseActivity {
                 CertificationActivity.launch(this);
                 break;
             case R.id.bt_visiable:
-                WithdrawalCashActivity.launch(this);
+                ToastUtils.showToast(this, "请先完善资料");
+                break;
+            case R.id.bt_withdrawal:
+                //WithdrawalCashActivity.launch(this);
+                startActivity(new Intent(this,WithdrawalCashActivity.class).putExtra("cash",cashBean));
                 break;
         }
     }

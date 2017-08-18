@@ -151,7 +151,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         AdInfo adInfo = new AdInfo();
         long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
-        if(!today){
+        if(today){
+
+        }else {
             adInfo.setActivityImg(img);
             advList = new ArrayList<>();
             advList.add(adInfo);
@@ -170,6 +172,10 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             long timeMillis = System.currentTimeMillis();
             SPUtils.put(getActivity(), "AdvertTime", timeMillis);
         }
+      /*
+        if(!today){
+
+        }*/
     }
 
     /**

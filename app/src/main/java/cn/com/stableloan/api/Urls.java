@@ -85,7 +85,7 @@ public interface Urls {
     }
     interface STATUS{
         String GetCerftication="accredit/status";
-        String GetPictrueStatus="Status/GetPictrueStatus";
+        String GetPictrueStatus="status/getImageStatus";
         String Getsetting="SaveSetting/Getsetting";
         String Save_Setting="SaveSetting/setting";
 

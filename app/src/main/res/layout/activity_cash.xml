@@ -17,13 +17,20 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
+                <RelativeLayout
+                    android:layout_centerVertical="true"
                     android:id="@+id/cash_back"
-                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="40dp"
                     android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_width="16dp"
-                    android:layout_height="19dp"
-                    android:src="@drawable/back"/>
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_10dp"
+                        android:layout_marginLeft="@dimen/_10dp"
+                        android:layout_width="16dp"
+                        android:layout_height="19dp"
+                        android:src="@drawable/back"/>
+                </RelativeLayout>
                 <TextView
                     android:layout_marginTop="@dimen/_10dp"
                     android:layout_width="wrap_content"
@@ -64,17 +71,16 @@
                 android:id="@+id/tv_ali"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:textColor="@color/gay"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="提现至支付宝 : "/>
             <TextView
-
                 android:id="@+id/account"
                 android:textColor="@color/gay"
-                android:textSize="16sp"
-                android:layout_marginLeft="@dimen/_10dp"
+                android:textSize="15sp"
+                android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@id/tv_ali"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
@@ -90,7 +96,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:textColor="@color/gay"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,8 +129,8 @@
         android:layout_height="wrap_content"
         android:text="我要提现"
         app:btnCornerRadius="5dp"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="#fea423"
+        app:btnPressedRatio="1"
+        app:btnSolidColor="#FFCC80"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18sp"

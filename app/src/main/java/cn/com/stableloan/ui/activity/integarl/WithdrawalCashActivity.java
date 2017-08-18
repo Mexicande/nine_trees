@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -14,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
@@ -35,12 +38,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.model.integarl.CashBean;
-import cn.com.stableloan.model.integarl.CashOutBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.dialog.CashDialog;
 import cn.com.stableloan.view.keyboard.VirtualKeyboardView;
 import okhttp3.Call;
@@ -60,6 +62,14 @@ public class WithdrawalCashActivity extends BaseActivity {
     RelativeLayout open;
     @Bind(R.id.layout_no)
     RelativeLayout layoutNo;
+    @Bind(R.id.tv_balance)
+    TextView tvBalance;
+    @Bind(R.id.bt_withdrawal)
+    RoundButton btWithdrawal;
+    @Bind(R.id.bt_visiableDrawal)
+    RoundButton btVisiableDrawal;
+    @Bind(R.id.arrow)
+    ImageView arrow;
     private VirtualKeyboardView virtualKeyboardView;
     private CashDialog cashDialog;
     private GridView gridView;
@@ -71,6 +81,7 @@ public class WithdrawalCashActivity extends BaseActivity {
     private Animation enterAnim;
 
     private Animation exitAnim;
+    private CashBean cashBean;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, WithdrawalCashActivity.class));
@@ -99,6 +110,38 @@ public class WithdrawalCashActivity extends BaseActivity {
         initAnim();
         initView();
         valueList = virtualKeyboardView.getValueList();
+        cashBean = (CashBean) getIntent().getSerializableExtra("cash");
+        address.setText(cashBean.getData().getAccount());
+        tvBalance.setText(cashBean.getData().getTotal());
+        setListener();
+
+    }
+
+    private void setListener() {
+
+        textAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() >= 1) {
+                    btWithdrawal.setVisibility(View.GONE);
+                    btVisiableDrawal.setVisibility(View.VISIBLE);
+                } else {
+                    btWithdrawal.setVisibility(View.VISIBLE);
+                    btVisiableDrawal.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     private void getUserPopo() {
@@ -106,8 +149,8 @@ public class WithdrawalCashActivity extends BaseActivity {
         String token = (String) SPUtils.get(this, "token", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
-        params.put("position","1");
-        params.put("type","1");
+        params.put("position", "2");
+        params.put("type", "1");
         JSONObject object = new JSONObject(params);
         OkGo.<String>post(Urls.Ip_url + Urls.Dialog.GETUSERPOPUP)
                 .upJson(object)
@@ -117,28 +160,29 @@ public class WithdrawalCashActivity extends BaseActivity {
                         if (s != null) {
                             Gson gson = new Gson();
                             AdvertisingBean outBean = gson.fromJson(s, AdvertisingBean.class);
-                            if(outBean.getError_code()==0){
-                                RuleDialog(outBean.getData().getName(),outBean.getData().getDescription());
-
-                            }else {
-                                ToastUtils.showToast(WithdrawalCashActivity.this,outBean.getError_message());
+                            if (outBean.getError_code() == 0) {
+                                if (outBean.getData().getStatus().equals("1")) {
+                                    RuleDialog(outBean.getData().getName(), outBean.getData().getDescription());
+                                }
+                            } else {
+                                ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
 
                         }
                     }
                 });
-
-
     }
 
     /**
      * 提现
-     *
      */
     private void getDate() {
+        double anInt = Double.parseDouble(textAmount.getText().toString());
+        int i = (int) anInt;
         String token = (String) SPUtils.get(this, "token", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
+        params.put("number", String.valueOf(i));
         JSONObject object = new JSONObject(params);
         OkGo.<String>post(Urls.Ip_url + Urls.Integarl.OUTCASH)
                 .upJson(object)
@@ -148,12 +192,26 @@ public class WithdrawalCashActivity extends BaseActivity {
                         if (s != null) {
                             Gson gson = new Gson();
                             AdvertisingBean outBean = gson.fromJson(s, AdvertisingBean.class);
-                            if(outBean.getError_code()==0){
+                            if (outBean.getError_code() == 0) {
+                                try {
+                                    JSONObject jsonObject=new JSONObject(s);
+                                    String data = jsonObject.getString("data");
+                                    JSONObject object1=new JSONObject(data);
+                                    String isSucess = object1.getString("isSucess");
+                                    if("1".equals(isSucess)){
+                                        ToastUtils.showToast(WithdrawalCashActivity.this,"提现成功,稍后请查看结果");
+                                    }else {
+                                        String error_message = jsonObject.getString("error_message");
+                                        ToastUtils.showToast(WithdrawalCashActivity.this,error_message);
 
-                            }else {
-                                ToastUtils.showToast(WithdrawalCashActivity.this,outBean.getError_message());
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            } else {
+                                ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
-
                         }
                     }
                 });
@@ -237,7 +295,6 @@ public class WithdrawalCashActivity extends BaseActivity {
                         textAmount.setSelection(ea.length());
                     }
                 }
-
                 if (position == 11) {      //点击退格键
                     String amount = textAmount.getText().toString().trim();
                     if (amount.length() > 0) {
@@ -252,21 +309,15 @@ public class WithdrawalCashActivity extends BaseActivity {
         }
     };
 
-    private void RuleDialog(String title,String desc) {
+    private void RuleDialog(String title, String desc) {
         cashDialog = new CashDialog(this);
         cashDialog.setTitle(title);
         cashDialog.setMessage(desc);
         cashDialog.setYesOnclickListener("知道了", new CashDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-
                 cashDialog.dismiss();
-               /* SPUtils.clear(WithdrawalCashActivity.this);
-                TinyDB tinyDB = new TinyDB(WithdrawalCashActivity.this);
-                tinyDB.clear();
-                startActivity(new Intent(WithdrawalCashActivity.this, LoginActivity.class).putExtra("from", "user2"));
-                finish();*/
-               userKnow();
+                userKnow();
             }
         });
         cashDialog.setNoOnclickListener("查看规则", new CashDialog.onNoOnclickListener() {
@@ -280,11 +331,38 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     private void userKnow() {
 
+        String token = (String) SPUtils.get(this, "token", "1");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("position", "2");
+        params.put("type", "1");
+        params.put("userStatus", "1");
+
+        JSONObject object = new JSONObject(params);
+        OkGo.<String>post(Urls.Ip_url + Urls.Dialog.GETUSERPOPUP)
+                .upJson(object)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s != null) {
+                            Gson gson = new Gson();
+                            AdvertisingBean outBean = gson.fromJson(s, AdvertisingBean.class);
+                            if (outBean.getError_code() == 0) {
+
+                            } else {
+
+                                ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
+                            }
+
+                        }
+                    }
+                });
+
 
     }
 
 
-    @OnClick({R.id.close, R.id.iv_rule, R.id.open,R.id.bt_withdrawal})
+    @OnClick({R.id.close, R.id.iv_rule, R.id.open, R.id.tv_AllWithdrawal, R.id.bt_visiableDrawal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.close:
@@ -297,17 +375,40 @@ public class WithdrawalCashActivity extends BaseActivity {
                 int visibility = layoutNo.getVisibility();
                 if (visibility == View.VISIBLE) {
                     layoutNo.setVisibility(View.GONE);
+                    arrow.setImageResource(R.drawable.cash_open);
                 } else {
-
                     layoutNo.setVisibility(View.VISIBLE);
-
+                    arrow.setImageResource(R.drawable.cash_close);
                 }
                 break;
-            case R.id.bt_withdrawal:
-                getDate();
+            case R.id.tv_AllWithdrawal:
+                String toString = tvBalance.getText().toString();
+                double anInt = Double.parseDouble(toString);
+                int i = (int) anInt;
+                if (i != 0) {
+                    textAmount.setText(i + "");
+                } else if (i == 0) {
+                    ToastUtils.showToast(this, "账户余额不足");
+                }
                 break;
+            case R.id.bt_visiableDrawal:
+                String toString1 = tvBalance.getText().toString();
+                double anInt1 = Double.parseDouble(toString1);
+                String string = textAmount.getText().toString();
+                double anInt2 = Double.parseDouble(string);
+                if (anInt2 <= anInt1) {
+                    int parseInt = Integer.parseInt(string);
+                    if(parseInt!=0){
+                        getDate();
+                    }else {
+                        ToastUtils.showToast(this,"请输入有效金额");
+                    }
+                } else {
+                    ToastUtils.showToast(this, "请输入有效金额");
+                }
+                break;
+
         }
     }
-
 
 }

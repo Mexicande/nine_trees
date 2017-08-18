@@ -18,7 +18,7 @@ public class AdvertisingBean implements Serializable{
      */
 
     private int code;
-    private int message;
+    private String message;
     private DataBean data;
     private int error_code;
     private String error_message;
@@ -32,11 +32,11 @@ public class AdvertisingBean implements Serializable{
         this.code = code;
     }
 
-    public int getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(int message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -95,7 +95,7 @@ public class AdvertisingBean implements Serializable{
         private int do_count;
         private String url;
         private int position;
-        private int status;
+        private String status;
         private String create_time;
         private String update_time;
         private String img;
@@ -157,11 +157,11 @@ public class AdvertisingBean implements Serializable{
             this.position = position;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 

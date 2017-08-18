@@ -61,12 +61,12 @@ public class IntegralActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_credits)
-    TextView tvCredits;
-    @Bind(R.id.bt_offical)
-    Button btOffical;
     @Bind(R.id.cash_slideView)
     RelativeLayout cashSlideView;
+    @Bind(R.id.tv_Credits)
+    TextView tvCredits;
+    @Bind(R.id.bt_Offical)
+    Button btOffical;
     private SlideUp slideUp;
     private List<String> mDataList = Arrays.asList(CHANNELS);
 
@@ -196,10 +196,11 @@ public class IntegralActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(IntregarlEvent event) {
         if (event != null) {
-            tvCredits.setText(event.credit);
+            tvCredits.setText(String.valueOf(event.credit));
             btOffical.setText(event.offica);
         }
     }
+
     @Subscribe
     public void onMessageEvent(ShareEvent event) {
         if (event != null) {
@@ -239,7 +240,7 @@ public class IntegralActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back, R.id.layoutGo,R.id.layout_wx, R.id.layout_friend})
+    @OnClick({R.id.iv_back, R.id.layoutGo, R.id.layout_wx, R.id.layout_friend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:

@@ -91,7 +91,7 @@ public class ImageActivity extends BaseActivity {
         parms.put("signature", signature);
         JSONObject jsonObject = new JSONObject(parms);
 
-        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.GetPictrueStatus)
+        OkGo.<String>post(Urls.Ip_url + Urls.STATUS.GetPictrueStatus)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {
@@ -99,39 +99,37 @@ public class ImageActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String status = object.getString("status");
-                                if ("1".equals(status)) {
-
-                                    String step1 = object.getString("step1");
+                            int error_code = object.getInt("error_code");
+                            if (error_code==0) {
+                                String data = object.getString("data");
+                                JSONObject jsonObject1=new JSONObject(data);
+                                    String step1 = jsonObject1.getString("step1");
                                         if("1".equals(step1)){
                                             identity.setRightString("已完成");
                                         }else {
                                             identity.setRightString("未完成");
                                         }
-                                    String step2 = object.getString("step2");
-
+                                    String step2 = jsonObject1.getString("step2");
                                     if("1".equals(step2)){
                                         bank.setRightString("已完成");
                                         }else {
                                         bank.setRightString("未完成");
                                         }
-                                    String step3 = object.getString("step3");
+                                    String step3 = jsonObject1.getString("step3");
 
                                     if("1".equals(step3)){
                                         CreditBank.setRightString("已完成");
                                         }else {
                                         CreditBank.setRightString("未完成");
                                         }
-                                    String step4 = object.getString("step4");
+                                    String step4 = jsonObject1.getString("step4");
 
                                     if("1".equals(step4)){
                                         camp.setRightString("已完成");
                                         }else {
                                         camp.setRightString("未完成");
                                         }
-                                    String step5 = object.getString("step5");
+                                    String step5 = jsonObject1.getString("step5");
 
                                     if("1".equals(step5)){
                                         userCard.setRightString("已完成");
@@ -139,25 +137,8 @@ public class ImageActivity extends BaseActivity {
                                         userCard.setRightString("未完成");
                                         }
 
-                                }else {
-                                    String lock1 = aCache.getAsString("lock");
-                                    if(lock1!=null){
-                                        if("on".equals(lock1)){
-                                            Intent intent = new Intent(ImageActivity.this, GestureLoginActivity.class).putExtra("from","PicStatus");
-                                            startActivity(intent);
-                                        }else {
-                                            Intent intent = new Intent(ImageActivity.this, Verify_PasswordActivity.class).putExtra("from","PicStatus");
-                                            startActivity(intent);
-                                        }
-
-                                    }else {
-
-                                        Intent intent = new Intent(ImageActivity.this, Verify_PasswordActivity.class).putExtra("from","PicStatus");
-                                        startActivity(intent);
-                                    }
                                 }
 
-                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
