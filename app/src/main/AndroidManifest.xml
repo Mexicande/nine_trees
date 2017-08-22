@@ -198,7 +198,8 @@
         <activity android:name=".ui.activity.CashActivity" />
         <activity android:name=".ui.activity.integarl.WithdrawalActivity" />
         <activity android:name=".ui.activity.integarl.RuleDescActivity" />
-        <activity android:name=".ui.activity.integarl.WithdrawalCashActivity"></activity>
+        <activity android:name=".ui.activity.integarl.WithdrawalCashActivity" />
+        <activity android:name=".ui.activity.integarl.InviteFriendsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:topLeftRadius="@dimen/invite_radio"
+        android:topRightRadius="@dimen/invite_radio"
+        />
+    <solid
+        android:color="#FBD895" />
+
+</shape>

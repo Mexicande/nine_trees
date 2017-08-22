@@ -74,6 +74,8 @@ public static java.lang.String TABLENAME;
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
+-keep class android.support.**{*;}
+
 #指定压缩级别
 -optimizationpasses 5
 
@@ -377,3 +379,9 @@ public static java.lang.String TABLENAME;
 -keep class retrofit.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}

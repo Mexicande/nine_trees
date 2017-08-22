@@ -7,7 +7,7 @@
     <string name="header_pull_over">释放立即刷新</string>
     <string name="header_refreshing">加载中…</string>
     <string name="header_completed">加载中…</string>
-
+    <string name="back">返回</string>
 
     <string name="captcha_btn_resend">重发验证码</string>
     <string name="validate_btn_hint">获取验证码</string>
@@ -84,10 +84,19 @@
     <string name="default_text">没有存档或已过期</string>
     <string name="storage1">为了保证您的信息安全,我们默认不会长期存储您的个人信息。过期后我们将安全删除您的全部图片信息。</string>
     <string name="storage2">有效期会根据您的托管时间设置,从您最后一次修改图片信息的当日起计算,过期自动删除。</string>
-
-
+    <!--  userFragment-->
+    <string name="inivte">邀请好友得现金</string>
+    <string name="information">我的资料</string>
+    <string name="collection">我的收藏</string>
+    <string name="feedback">意见反馈</string>
+    <string name="setting">设置</string>
+    <!--inivte_friend-->
+    <string name="invite_text">赚钱多多无上限，快来一起薅!</string>
+    <string name="invite_text1"></string>
+    
+    
     <color name="test">#0000ff</color>
-
+    <string name="inivte_friendstitle">邀请好友得现金</string>
     <string name="errcode_success">发送成功</string>
     <string name="errcode_cancel">发送取消</string>
     <string name="errcode_deny">发送被拒绝</string>

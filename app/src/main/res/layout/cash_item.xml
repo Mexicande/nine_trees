@@ -1,37 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
-    <TextView
-        android:id="@+id/type"
-        android:layout_marginLeft="21dp"
+    android:layout_height="60dp">
+    <RelativeLayout
         android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="邀请好友并申请"
-        android:textColor="@color/gay"/>
-    <TextView
-        android:id="@+id/create_at"
-        android:layout_marginRight="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2007/07/07 15:55"
-        android:textColor="@color/gay"/>
-    <TextView
-        android:id="@+id/number"
-        android:layout_marginRight="@dimen/_30dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/create_at"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+1.00元"
-        android:textColor="#FEB324"/>
-    <View
-        android:layout_marginLeft="19dp"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:background="#F3F2F8"
-        android:layout_height="2dp"/>
+        android:layout_height="50dp">
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/type"
+                android:layout_marginLeft="21dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请好友并申请"
+                android:textColor="@color/gay"/>
+            <TextView
+                android:id="@+id/create_at"
+                android:layout_marginLeft="21dp"
+                android:layout_below="@id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2007/07/07 15:55"
+                android:textColor="@color/gay"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/number"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_30dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+1.00元"
+            android:textColor="#FEB324"/>
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_20dp"
+            android:layout_toLeftOf="@id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="处理中"/>
+        <View
+            android:layout_marginLeft="19dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:background="#F3F2F8"
+            android:layout_height="2dp"/>
+    </RelativeLayout>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply from: 'tinker-support.gradle'
 
 
 android {
@@ -82,21 +83,12 @@ dependencies {
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     compile files('libs/BaiduLBS_Android.jar')
     //compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+
     //极验验证
     compile files('libs/commons-codec-1.5.jar')
     /* compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'io.reactivex:rxandroid:1.0.1'wq
-    compile 'io.reactivex:rxjava:1.0.14'*/
-
-
-
-
-
-
-
-
-
-
+        compile 'io.reactivex:rxandroid:1.0.1'wq
+        compile 'io.reactivex:rxjava:1.0.14'*/
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.contrarywind:Android-PickerView:3.2.5'
@@ -120,7 +112,7 @@ dependencies {
     compile 'com.github.mancj:SlideUp-Android:2.2.5'
     compile 'com.github.czy1121:update:1.1.1'
     compile 'com.kaopiz:kprogresshud:1.0.5'
-    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
@@ -140,4 +132,6 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
     compile 'cn.yipianfengye.android:ad-library:1.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/mta-sdk-1.6.2.jar')
+    compile files('libs/open_sdk_r5509.jar')
 }

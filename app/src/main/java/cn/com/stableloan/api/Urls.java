@@ -82,6 +82,7 @@ public interface Urls {
         String Addbank="person/addBank";
 
         String AddOccupation="person/addOccupation";
+
     }
     interface STATUS{
         String GetCerftication="accredit/status";
@@ -111,9 +112,7 @@ public interface Urls {
         String ProductList="ProductList";
         String ProTagFlow="product/getlabels";
         String ProductSelect="product/screening";
-
         String ProductCollectionList="product/getlist";
-
         String CollectionDesc="product/collection";
     }
 
@@ -152,6 +151,9 @@ public interface Urls {
         String getAccumulatePoints="point/getAccumulatePoints";
         String GETCASH="cash/getCash";
         String OUTCASH="cash/getCashOut";
+        String INVITE="invite/smsInvite";
+        String INVITELIIST="invite/inviteList";
+        String EXCHANGEPOINTS="point/exchangePoints";
     }
     interface Dialog{
         String advertising="popup/getPopup";

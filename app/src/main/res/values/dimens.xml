@@ -43,5 +43,6 @@
 
     <dimen name="textsize">15sp</dimen>
     <dimen name="layout_height">34dp</dimen>
-
+  <!--  invite-->
+    <dimen name="invite_radio">10dp</dimen>
     </resources>

@@ -447,6 +447,8 @@ public class MessageFragment extends Fragment {
 
             HashMap<String, String> params = new HashMap<>();
             params.put("userphone", etPhone.getText().toString());
+            params.put("terminal","1");
+
             JSONObject jsonObject = new JSONObject(params);
             OkGo.<MessageCode>post(Urls.Ip_url+ Urls.times.MESSAGE_SEND)
                     .tag(this)

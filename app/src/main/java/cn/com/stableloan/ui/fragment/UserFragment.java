@@ -222,7 +222,7 @@ public class UserFragment extends ImmersionFragment {
     }
 
     @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
-            R.id.layout_Integral, R.id.laout_Money})
+            R.id.layout_Integral, R.id.laout_Money,R.id.invite})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
@@ -243,6 +243,8 @@ public class UserFragment extends ImmersionFragment {
             case R.id.laout_Money:
                 CashActivity.launch(getActivity());
                 break;
+            case R.id.invite:
+                
         }
     }
 
