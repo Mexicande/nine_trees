@@ -95,12 +95,12 @@
             android:name=".ui.activity.ForgetWordActivity"
             android:screenOrientation="portrait" />
 
-        <meta-data
+     <!--   <meta-data
             android:name="ZHUGE_APPKEY"
             android:value="24520d39b750437b97f026353aa80aea" />
         <meta-data
             android:name="ZHUGE_CHANNEL"
-            android:value="vivo" />
+            android:value="vivo" />-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="5KizzImryGritdSFV3nNNGPYpm6AAFDB" />

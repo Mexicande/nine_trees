@@ -412,7 +412,6 @@
                             android:maxLength="11"
                             whatever:testType="regexp"
                             whatever:emptyAllowed="true"
-
                             whatever:customRegexp="^[1]\\d{10}$"
                             whatever:testErrorString="号码格式不正确"
                             />

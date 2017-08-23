@@ -6,15 +6,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
+import com.mancj.slideup.SlideUp;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
@@ -27,6 +29,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,18 +42,14 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.base.BasePhotoActivity;
-import cn.com.stableloan.model.Identity;
-import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.bean.UpdateEvent;
+import cn.com.stableloan.model.event.ProfessionalSelectEvent;
 import cn.com.stableloan.ui.fragment.BankInformationFragment;
 import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;
 import cn.com.stableloan.ui.fragment.UserInformationFragment;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -62,8 +62,11 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     @Bind(R.id.magic_indicator)
     MagicIndicator magicIndicator;
     private static final String[] CHANNELS = new String[]{"个人信息", "银行信息", "职业信息"};
+    @Bind(R.id.slide_View)
+    RelativeLayout slideView;
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private FragmentManager mFragmentManager;
+    private SlideUp slideUp;
 
     private Fragment mCurrentFragment;
     private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
@@ -71,12 +74,15 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     public static void launch(Context context) {
         context.startActivity(new Intent(context, IdentityinformationActivity.class));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_identityinformation);
+        ImmersionBar.with(this).init();
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         initToolbar();
         initMagicIndicator();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
@@ -88,6 +94,7 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
 
         }*/
     }
+
     private void getDate() {
         Map<String, String> parms = new HashMap<>();
         String token = (String) SPUtils.get(this, "token", "1");
@@ -113,9 +120,9 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                                     mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
 
                                 } else {
-                                    Intent intent = new Intent(IdentityinformationActivity.this,Verify_PasswordActivity.class)
-                                            .putExtra("from","integarl");
-                                    startActivityForResult(intent,200);
+                                    Intent intent = new Intent(IdentityinformationActivity.this, Verify_PasswordActivity.class)
+                                            .putExtra("from", "integarl");
+                                    startActivityForResult(intent, 200);
                                 }
 
                             }
@@ -181,16 +188,32 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     }
 
     private void initToolbar() {
-
         titleName.setText("身份信息");
-
+        slideUp = new SlideUp.Builder(slideView)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
     }
-
+    @Subscribe
+    public  void updateEvent(ProfessionalSelectEvent msg){
+        if(msg.message==0){
+            slideUp.show();
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
 
     }
+    @Subscribe
+
 
     private String getFragmentName(int menuId) {
         switch (menuId) {
@@ -225,20 +248,48 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     }
 
 
-    @OnClick(R.id.layout_go)
-    public void onViewClicked() {
-        finish();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==200){
-            if(resultCode==100){
+        if (requestCode == 200) {
+            if (resultCode == 100) {
                 initToolbar();
                 initMagicIndicator();
                 mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
             }
         }
     }
+
+    @OnClick({R.id.layoutGo, R.id.tv_Company, R.id.tv_Business,
+            R.id.tv_Student, R.id.tv_Freelancer, R.id.bt_cancel,R.id.layout_go})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.layoutGo:
+                break;
+            case R.id.tv_Company:
+                EventBus.getDefault().post(new ProfessionalSelectEvent(2));
+                slideUp.hide();
+                break;
+            case R.id.tv_Business:
+                EventBus.getDefault().post(new ProfessionalSelectEvent(3));
+                slideUp.hide();
+                break;
+            case R.id.tv_Student:
+                EventBus.getDefault().post(new ProfessionalSelectEvent(1));
+                slideUp.hide();
+                break;
+            case R.id.tv_Freelancer:
+                EventBus.getDefault().post(new ProfessionalSelectEvent(4));
+                slideUp.hide();
+                break;
+            case R.id.bt_cancel:
+                slideUp.hide();
+                break;
+            case R.id.layout_go:
+                finish();
+                break;
+        }
+    }
+
+
 }

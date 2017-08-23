@@ -185,6 +185,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         tinyDB.putObject("user", userBean);
                                         AppApplication.destoryActivity("login");
                                         EventBus.getDefault().post(new InformationEvent("user3"));
+                                        UpdataProfessionActivity.launch(SettingPassWordActivity.this);
                                         finish();
                                     } else {
                                         ToastUtils.showToast(SettingPassWordActivity.this, fromJson.getError_message());

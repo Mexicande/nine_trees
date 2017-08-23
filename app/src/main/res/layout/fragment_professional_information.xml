@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,398 +6,443 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.ProfessionalInformationFragment">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="学历信息认证"
-                android:maxLines="1"
-                android:layout_marginLeft="@dimen/_20dp"
-                android:textSize="17sp"/>
             <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginTop="@dimen/_5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_School"
-                    style="@style/information_style"
-                    whatever:testType="alpha"
-                    whatever:emptyAllowed="true"
-
-                    android:imeOptions="actionNext"
-                    />
                 <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_School"
-                    android:text="学校名称 : "
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_SchoolAddress"
-                    style="@style/information_style"
-                    whatever:emptyAllowed="true"
-
-                    whatever:testType="alpha"
-                    android:imeOptions="actionNext"
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_SchoolAddress"
-                    android:text="学校地址 : "
-                    android:id="@+id/textView" />
-
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_Teacher"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:layout_width="130dp"
-                    android:textSize="@dimen/textsize"
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
-                    android:tint="@color/gay"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:layout_marginRight="30dp"
-                    android:inputType="phone"
-                    whatever:emptyAllowed="true"
-                    />
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_preTeacherphone"
-                    android:layout_toLeftOf="@id/et_Teacher"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:layout_width="80dp"
-                    android:textSize="@dimen/textsize"
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
-                    android:tint="@color/gay"
-                    android:maxLength="10"
-                    android:inputType="phone"
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:maxLines="1"
-                    whatever:emptyAllowed="true"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/gay"
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_preTeacherphone"
-                    android:text="班主任电话 : "
-                    />
-            </RelativeLayout>
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="公司信息认证"
-                android:layout_marginLeft="@dimen/_20dp"
-                android:textSize="17sp"/>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/company"
-                    style="@style/information_style"
-                    whatever:testType="alpha"
-                    whatever:emptyAllowed="true"
-
-                    android:imeOptions="actionNext"
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/company"
-                    android:text="单位名称 : "
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/location"
-                    style="@style/information_style"
-                    whatever:testType="alpha"
-                    whatever:emptyAllowed="true"
-
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/location"
-                    android:text="单位地址 : "
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <cn.com.stableloan.view.BetterSpinner
-                    android:id="@+id/et_years"
-                    android:layout_width="220dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:textSize="@dimen/textsize"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/gay"
-
-                    android:maxLines="1"
-
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_years"
-                    android:text="工作年限 : "
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <cn.com.stableloan.view.EmailAutoCompleteTextView
-                    android:id="@+id/et_email"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="5dp"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:textSize="@dimen/textsize"
-                    android:maxLines="1"
-                    android:imeOptions="actionNext"
-                    android:tint="@color/gay"
-                    android:textColor="@color/gay"
-                    android:background="@drawable/editext_normal"/>
-
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_email"
-                    android:text="邮箱地址 : "
-                   />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_Cincome"
-                    style="@style/information_style"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    whatever:emptyAllowed="true"
-
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_Cincome"
-                    android:text="月收入 : "
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_fixedline"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:layout_width="130dp"
-                    android:textSize="@dimen/textsize"
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
-                    android:tint="@color/gay"
-                    android:maxLength="10"
-                    android:maxLines="1"
-
-                    android:layout_marginRight="30dp"
-                    android:inputType="phone"
-                    whatever:emptyAllowed="true"
-                    />
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/preFixedline"
-                    android:layout_toLeftOf="@id/et_fixedline"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/_5dp"
-                    android:layout_width="80dp"
-                    android:textSize="@dimen/textsize"
-                    android:layout_height="@dimen/layout_height"
-                    android:background="@drawable/editext_normal"
-                    android:tint="@color/gay"
-                    android:maxLength="10"
-                    android:inputType="phone"
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:maxLines="1"
-                    whatever:emptyAllowed="true"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/gay"
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/preFixedline"
-                    android:text="单位固话 : "
-                    />
-            </RelativeLayout>
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="企业主信息"
-                android:layout_marginLeft="@dimen/_20dp"
-                android:textSize="17sp"/>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <cn.com.stableloan.view.BetterSpinner
-                    android:id="@+id/et_operations"
-                    android:layout_width="220dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:textSize="@dimen/textsize"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/gay"
-                    android:layout_height="@dimen/layout_height"
-                    android:maxLines="1"
-                    android:background="@drawable/editext_normal"
-                    />
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/et_operations"
-                    android:text="经营年限 : "
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/layout4"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:orientation="horizontal"
-                    >
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox1"
-                        android:layout_marginLeft="@dimen/_20dp"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:enabled="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/gay" />
-                    <TextView
-                        android:textColor="@color/gay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="有"/>
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox2"
-                        android:layout_marginLeft="80dp"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:enabled="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/gay" />
-                    <TextView
-                        android:textColor="@color/gay"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="没有"/>
-                </LinearLayout>
-                <TextView
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/layout4"
+                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="经营执照 : "
-                    android:textSize="@dimen/textsize"/>
+                    android:text="学生党(填写得红包)"
+                    android:textColor="@color/text_setting"
+                    android:maxLines="1"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:textSize="17sp"/>
+                <Button
+                    android:id="@+id/bt_SelectProfession"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="82dp"
+                    android:layout_height="24dp"
+                    android:text="点击切换身份"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="#FFAE2D"/>
             </RelativeLayout>
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="自由职业者信息"
-                android:layout_marginLeft="@dimen/_20dp"
-                android:textSize="17sp"/>
-
-            <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
+            <LinearLayout
+                android:id="@+id/layout_Student"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/layout5"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="220dp"
-                    android:layout_height="35dp"
-                    android:orientation="horizontal"
-                    >
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox3"
-                        android:layout_marginLeft="@dimen/_20dp"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:enabled="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/gay" />
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_School"
+                        style="@style/information_style"
+                        whatever:testType="alpha"
+                        whatever:emptyAllowed="true"
+
+                        android:imeOptions="actionNext"
+                        />
                     <TextView
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_School"
+                        android:textColor="@color/text_setting"
+                        android:text="学校名称 : "
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_SchoolAddress"
+                        style="@style/information_style"
+                        whatever:emptyAllowed="true"
+
+                        whatever:testType="alpha"
+                        android:imeOptions="actionNext"
+                        />
+                    <TextView
+                        android:textColor="@color/text_setting"
+
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_SchoolAddress"
+                        android:text="学校地址 : "
+                        android:id="@+id/textView" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_Teacher"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5dp"
+                        android:layout_width="130dp"
+                        android:textSize="@dimen/textsize"
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        android:tint="@color/gay"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:layout_marginRight="30dp"
+                        android:inputType="phone"
+                        whatever:emptyAllowed="true"
+                        />
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_preTeacherphone"
+                        android:layout_toLeftOf="@id/et_Teacher"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5dp"
+                        android:layout_width="80dp"
+                        android:textSize="@dimen/textsize"
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        android:tint="@color/gay"
+                        android:maxLength="10"
+                        android:inputType="phone"
+                        android:layout_marginRight="@dimen/_10dp"
+                        android:maxLines="1"
+                        whatever:emptyAllowed="true"
+                        android:imeOptions="actionNext"
                         android:textColor="@color/gay"
+                        />
+                    <TextView
+                        android:textColor="@color/text_setting"
+
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_preTeacherphone"
+                        android:text="班主任座机 : "
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+
+                android:id="@+id/layout_Company"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/company"
+                        style="@style/information_style"
+                        whatever:testType="alpha"
+                        whatever:emptyAllowed="true"
+
+                        android:imeOptions="actionNext"
+                        />
+                    <TextView
+                        android:textColor="@color/text_setting"
+
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/company"
+                        android:text="单位名称 : "
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/location"
+                        style="@style/information_style"
+                        whatever:testType="alpha"
+                        whatever:emptyAllowed="true"
+
+                        />
+                    <TextView
+                        android:textColor="@color/text_setting"
+
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/location"
+                        android:text="单位地址 : "
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <cn.com.stableloan.view.BetterSpinner
+                        android:id="@+id/et_years"
+                        android:layout_width="220dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_alignParentRight="true"
+                        android:textSize="@dimen/textsize"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/gay"
+
+                        android:maxLines="1"
+
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        />
+                    <TextView
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_years"
+                        android:text="工作年限 : "
+                        android:textColor="@color/text_setting"
+
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <cn.com.stableloan.view.EmailAutoCompleteTextView
+                        android:id="@+id/et_email"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="5dp"
+                        android:layout_width="220dp"
+                        android:layout_height="35dp"
+                        android:textSize="@dimen/textsize"
+                        android:maxLines="1"
+                        android:imeOptions="actionNext"
+                        android:tint="@color/gay"
+                        android:textColor="@color/gay"
+                        android:background="@drawable/editext_normal"/>
+
+                    <TextView
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_email"
+                        android:text="邮箱地址 : "
+                        android:textColor="@color/text_setting"
+
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_Cincome"
+                        style="@style/information_style"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        whatever:emptyAllowed="true"
+
+                        />
+                    <TextView
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_Cincome"
+                        android:text="月收入 : "
+                        android:textColor="@color/text_setting"
+
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/et_fixedline"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5dp"
+                        android:layout_width="130dp"
+                        android:textSize="@dimen/textsize"
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        android:tint="@color/gay"
+                        android:maxLength="10"
+                        android:maxLines="1"
+
+                        android:layout_marginRight="30dp"
+                        android:inputType="phone"
+                        whatever:emptyAllowed="true"
+                        />
+                    <com.andreabaccega.widget.FormEditText
+                        android:id="@+id/preFixedline"
+                        android:layout_toLeftOf="@id/et_fixedline"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_5dp"
+                        android:layout_width="80dp"
+                        android:textSize="@dimen/textsize"
+                        android:layout_height="@dimen/layout_height"
+                        android:background="@drawable/editext_normal"
+                        android:tint="@color/gay"
+                        android:maxLength="10"
+                        android:inputType="phone"
+                        android:layout_marginRight="@dimen/_10dp"
+                        android:maxLines="1"
+                        whatever:emptyAllowed="true"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/gay"
+                        />
+                    <TextView
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/preFixedline"
+                        android:text="单位固话 : "
+                        android:textColor="@color/text_setting"
+
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_Business"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <cn.com.stableloan.view.BetterSpinner
+                        android:id="@+id/et_operations"
+                        android:layout_width="220dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_alignParentRight="true"
+                        android:textSize="@dimen/textsize"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/gay"
+                        android:layout_height="@dimen/layout_height"
+                        android:maxLines="1"
+                        android:background="@drawable/editext_normal"
+                        />
+                    <TextView
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/et_operations"
+                        android:text="经营年限 : "
+                        android:textColor="@color/text_setting"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/layout4"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="220dp"
+                        android:layout_height="35dp"
+                        android:orientation="horizontal"
+                        >
+                        <cn.com.stableloan.view.SmoothCheckBox
+                            android:id="@+id/checkbox1"
+                            android:layout_marginLeft="@dimen/_20dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:enabled="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:tint="@color/gay" />
+                        <TextView
+                            android:textColor="@color/text_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="有"
+                            />
+                        <cn.com.stableloan.view.SmoothCheckBox
+                            android:id="@+id/checkbox2"
+                            android:layout_marginLeft="80dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:enabled="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:tint="@color/gay" />
+                        <TextView
+                            android:textColor="@color/text_setting"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="没有"/>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_marginRight="@dimen/_10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/layout4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="有"/>
-                    <cn.com.stableloan.view.SmoothCheckBox
-                        android:id="@+id/checkbox4"
-                        android:layout_marginLeft="80dp"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:enabled="true"
+                        android:text="经营执照 : "
+                        android:textSize="@dimen/textsize"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+
+                android:id="@+id/layout_Freelancer"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/layout5"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:tint="@color/gay" />
+                        android:layout_marginRight="@dimen/_30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="220dp"
+                        android:layout_height="35dp"
+                        android:orientation="horizontal"
+                        >
+                        <cn.com.stableloan.view.SmoothCheckBox
+                            android:id="@+id/checkbox3"
+                            android:layout_marginLeft="@dimen/_20dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:enabled="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:tint="@color/gay" />
+                        <TextView
+                            android:textColor="@color/text_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="有"/>
+                        <cn.com.stableloan.view.SmoothCheckBox
+                            android:id="@+id/checkbox4"
+                            android:layout_marginLeft="80dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:enabled="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:tint="@color/gay" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_setting"
+                            android:text="没有"/>
+                    </LinearLayout>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gay"
-                        android:text="没有"/>
-                </LinearLayout>
-                <TextView
-                    style="@style/information_text_style"
-                    android:layout_toLeftOf="@id/layout5"
-                    android:text="收入来源 : "
-                    />
-            </RelativeLayout>
+                        style="@style/information_text_style"
+                        android:layout_toLeftOf="@id/layout5"
+                        android:textColor="@color/text_setting"
+                        android:text="收入来源 : "
+                        />
+                </RelativeLayout>
+            </LinearLayout>
             <cn.com.stableloan.view.RoundButton
                 android:id="@+id/save"
                 android:layout_marginBottom="50dp"
@@ -416,6 +461,5 @@
                 style="?android:attr/borderlessButtonStyle"
                 />
         </LinearLayout>
-    </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

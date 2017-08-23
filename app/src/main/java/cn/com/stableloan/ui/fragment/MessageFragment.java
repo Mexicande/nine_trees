@@ -543,7 +543,6 @@ public class MessageFragment extends Fragment {
                                             SPUtils.put(getActivity(), "login", true);
                                             if (from != null) {
                                                 if(from.equals("user")){
-                                                    // MainActivity.launch(getActivity());
                                                     EventBus.getDefault().post(new InformationEvent("user3"));
                                                     getActivity().finish();
                                                 }else if(from.equals("123")){

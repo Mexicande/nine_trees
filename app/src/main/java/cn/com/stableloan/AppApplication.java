@@ -12,9 +12,11 @@ import android.util.DisplayMetrics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
+import com.meituan.android.walle.WalleChannelReader;
 import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.uuch.adlibrary.utils.DisplayUtil;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -88,6 +90,10 @@ public class AppApplication extends Application {
         }
         uploadManager=new UploadManager();
         instance = this;
+
+        String channel = WalleChannelReader.getChannel(this.getApplicationContext());
+
+        ZhugeSDK.getInstance().init(getApplicationContext(),"24520d39b750437b97f026353aa80aea",channel);
 
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问

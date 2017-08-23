@@ -34,6 +34,10 @@ import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * 用户身份选择
+ *
+ */
 public class UpdataProfessionActivity extends BaseActivity {
 
 
@@ -106,10 +110,6 @@ public class UpdataProfessionActivity extends BaseActivity {
             case 4:
                 ivCompany.setColorFilter(getResources().getColor(R.color.mask));
                 tickCompany.setVisibility(View.VISIBLE);
-                break;
-            default:
-                ivWork.setColorFilter(getResources().getColor(R.color.mask));
-                tick.setVisibility(View.VISIBLE);
                 break;
         }
 

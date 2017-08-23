@@ -3,19 +3,24 @@ package cn.com.stableloan.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.andreabaccega.widget.FormEditText;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.mancj.slideup.SlideUp;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,8 +33,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.WorkBean;
 import cn.com.stableloan.model.WorkInformation;
+import cn.com.stableloan.model.event.ProfessionalSelectEvent;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -82,11 +87,21 @@ public class ProfessionalInformationFragment extends Fragment {
     FormEditText preFixedline;
     @Bind(R.id.save)
     RoundButton save;
+    @Bind(R.id.layout_Student)
+    LinearLayout layoutStudent;
+    @Bind(R.id.layout_Company)
+    LinearLayout layoutCompany;
+    @Bind(R.id.layout_Business)
+    LinearLayout layoutBusiness;
+    @Bind(R.id.layout_Freelancer)
+    LinearLayout layoutFreelancer;
 
-    private String[] lists;
     WorkInformation.DataBean work;
     private String[] list2;
-
+    private static final int STUDENT=1;
+    private static final int COMPANY=2;
+    private static final int BUSINESS=3;
+    private static final int FREE=4;
 
     public ProfessionalInformationFragment() {
         // Required empty public constructor
@@ -100,6 +115,7 @@ public class ProfessionalInformationFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.fragment_professional_information, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         getDate();
         initBetter();
         return view;
@@ -113,7 +129,7 @@ public class ProfessionalInformationFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-                //记录事件
+        //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
@@ -172,7 +188,7 @@ public class ProfessionalInformationFragment extends Fragment {
                                             checkbox2.setChecked(true);
                                         }
 
-                                        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancer =occupation.getFreelancer();
+                                        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancer = occupation.getFreelancer();
                                         String source = freelancer.getSource();
                                         if ("0".equals(source)) {
                                             checkbox4.setChecked(false);
@@ -194,7 +210,16 @@ public class ProfessionalInformationFragment extends Fragment {
 
 
     private void initBetter() {
-
+        slideUp = new SlideUp.Builder(slideView)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
 
         list2 = getResources().getStringArray(R.array.years);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),
@@ -251,30 +276,47 @@ public class ProfessionalInformationFragment extends Fragment {
 
     }
 
+    @Subscribe
+    public  void updateEvent(ProfessionalSelectEvent msg){
+        int message = msg.message;
+        switch (message){
+            case STUDENT:
+                setVisibilityProfession(layoutStudent);
+                break;
+            case COMPANY:
+                setVisibilityProfession(layoutCompany);
+                break;
+            case BUSINESS:
+                setVisibilityProfession(layoutBusiness);
+
+                break;
+            case FREE:
+                setVisibilityProfession(layoutFreelancer);
+                break;
+        }
+
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
-
-    @OnClick(R.id.save)
-    public void onViewClicked() {
-
-
+    private void saveInformation() {
         String token = (String) SPUtils.get(getActivity(), "token", "1");
 
-        final  WorkInformation.DataBean workBean = new  WorkInformation.DataBean();
+        final WorkInformation.DataBean workBean = new WorkInformation.DataBean();
         workBean.setToken(token);
-        WorkInformation.DataBean.OccupationBean occupationBean=new WorkInformation.DataBean.OccupationBean();
+        WorkInformation.DataBean.OccupationBean occupationBean = new WorkInformation.DataBean.OccupationBean();
 
-        WorkInformation.DataBean.OccupationBean.StudentBean studentBean = new  WorkInformation.DataBean.OccupationBean.StudentBean();
+        WorkInformation.DataBean.OccupationBean.StudentBean studentBean = new WorkInformation.DataBean.OccupationBean.StudentBean();
         studentBean.setSchool(etSchool.getText().toString());
         studentBean.setTeacherphone(etTeacher.getText().toString());
         studentBean.setAddress(etSchoolAddress.getText().toString());
         studentBean.setPreTeacherphone(etPreTeacherphone.getText().toString());
 
-        WorkInformation.DataBean.OccupationBean.CompanyBean companyBean = new  WorkInformation.DataBean.OccupationBean.CompanyBean();
+        WorkInformation.DataBean.OccupationBean.CompanyBean companyBean = new WorkInformation.DataBean.OccupationBean.CompanyBean();
 
         companyBean.setCompany(et_company.getText().toString());
         companyBean.setLocation(et_location.getText().toString());
@@ -291,7 +333,7 @@ public class ProfessionalInformationFragment extends Fragment {
         companyBean.setCincome(etCincome.getText().toString());
         companyBean.setFixedline(etFixedline.getText().toString());
 
-        WorkInformation.DataBean.OccupationBean.BusinessBean businessBean = new  WorkInformation.DataBean.OccupationBean.BusinessBean();
+        WorkInformation.DataBean.OccupationBean.BusinessBean businessBean = new WorkInformation.DataBean.OccupationBean.BusinessBean();
 
         String toString = etOperations.getText().toString();
 
@@ -311,7 +353,7 @@ public class ProfessionalInformationFragment extends Fragment {
             businessBean.setLicense("1");
         }
 
-        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancerBean = new  WorkInformation.DataBean.OccupationBean.FreelancerBean();
+        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancerBean = new WorkInformation.DataBean.OccupationBean.FreelancerBean();
         freelancerBean.setSource("");
         if (checkbox3.isChecked()) {
             freelancerBean.setSource("0");
@@ -326,10 +368,10 @@ public class ProfessionalInformationFragment extends Fragment {
         } else {
             boolean tel = RegexUtils.isTel(etPreTeacherphone.getText().toString() + etTeacher.getText().toString());
             boolean tel1 = RegexUtils.isTel(preFixedline.getText().toString() + etFixedline.getText().toString());
-            if(!tel&&tel1){
-                ToastUtils.showToast(getActivity(),"固定电话格式错误");
+            if (!tel && tel1) {
+                ToastUtils.showToast(getActivity(), "固定电话格式错误");
 
-            }else {
+            } else {
                 occupationBean.setStudent(studentBean);
                 occupationBean.setBusiness(businessBean);
                 occupationBean.setCompany(companyBean);
@@ -372,7 +414,7 @@ public class ProfessionalInformationFragment extends Fragment {
                                 try {
                                     JSONObject object = new JSONObject(s);
                                     int isSuccess = object.getInt("error_code");
-                                    if (isSuccess==0) {
+                                    if (isSuccess == 0) {
                                         work = workBean;
                                         EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                         String data = object.getString("data");
@@ -393,7 +435,38 @@ public class ProfessionalInformationFragment extends Fragment {
 
         }
 
+    }
 
+    private SlideUp slideUp;
+
+
+    @OnClick({R.id.bt_SelectProfession, R.id.layoutGo, R.id.tv_Company, R.id.tv_Business,
+            R.id.tv_Student, R.id.tv_Freelancer, R.id.bt_cancel, R.id.save})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_SelectProfession:
+                EventBus.getDefault().post(new ProfessionalSelectEvent(0));
+                break;
+          /*  case R.id.layoutGo:
+                break;
+            case R.id.bt_cancel:
+                slideUp.hide();
+                break;*/
+            case R.id.save:
+                saveInformation();
+                break;
+        }
+    }
+
+    private void setVisibilityProfession(View view) {
+        layoutCompany.setVisibility(View.GONE);
+        layoutBusiness.setVisibility(View.GONE);
+        layoutFreelancer.setVisibility(View.GONE);
+        layoutStudent.setVisibility(View.GONE);
+        int visibility = view.getVisibility();
+        if(visibility==View.GONE){
+            view.setVisibility(View.VISIBLE);
+        }
     }
 
 
