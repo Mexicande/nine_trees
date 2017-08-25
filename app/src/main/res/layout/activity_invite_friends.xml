@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:id="@+id/goback"
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
@@ -114,7 +115,50 @@
                 android:layout_marginBottom="30dp"/>
         </LinearLayout>
         <include layout="@layout/invite_layout_share"/>
-        <include layout="@layout/invite_layout_friend"/>
+        <LinearLayout
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="@drawable/invite_top_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"
+            android:paddingRight="@dimen/_50dp"
+            android:paddingLeft="@dimen/_50dp"
+            >
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请人"
+                android:layout_weight="1"
+                android:textSize="18dp"
+                android:textColor="@color/blacktext"/>
+            <TextView
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="状态"
+                android:textSize="18dp"
+                android:textColor="@color/blacktext"/>
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="奖金"
+                android:textSize="18dp"
+                android:textColor="@color/blacktext"/>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/contact_RecyclerView"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"
+            android:background="@drawable/invite_bottom_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_20dp"
+            >
+        </android.support.v7.widget.RecyclerView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

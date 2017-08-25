@@ -151,12 +151,14 @@ public interface Urls {
         String getAccumulatePoints="point/getAccumulatePoints";
         String GETCASH="cash/getCash";
         String OUTCASH="cash/getCashOut";
-        String INVITE="invite/smsInvite";
-        String INVITELIIST="invite/inviteList";
         String EXCHANGEPOINTS="point/exchangePoints";
     }
     interface Dialog{
         String advertising="popup/getPopup";
         String GETUSERPOPUP="popup/getUserPopup";
+    }
+    interface Invite{
+        String INVITE_FRIENDS="invite/smsInvite";
+        String INVITE_LIST="invite/inviteList";
     }
 }

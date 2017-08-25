@@ -49,6 +49,7 @@ import cn.com.stableloan.ui.activity.IntegralActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
+import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -244,6 +245,8 @@ public class UserFragment extends ImmersionFragment {
                 CashActivity.launch(getActivity());
                 break;
             case R.id.invite:
+                InviteFriendsActivity.launch(getActivity());
+                break;
                 
         }
     }

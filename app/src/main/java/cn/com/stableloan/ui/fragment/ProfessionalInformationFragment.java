@@ -3,14 +3,13 @@ package cn.com.stableloan.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.andreabaccega.widget.FormEditText;
 import com.google.gson.Gson;
@@ -97,11 +96,17 @@ public class ProfessionalInformationFragment extends Fragment {
     LinearLayout layoutFreelancer;
 
     WorkInformation.DataBean work;
+    @Bind(R.id.title)
+    TextView title;
+    @Bind(R.id.layout4)
+    LinearLayout layout4;
+    @Bind(R.id.layout5)
+    LinearLayout layout5;
     private String[] list2;
-    private static final int STUDENT=1;
-    private static final int COMPANY=2;
-    private static final int BUSINESS=3;
-    private static final int FREE=4;
+    private static final int STUDENT = 1;
+    private static final int COMPANY = 2;
+    private static final int BUSINESS = 3;
+    private static final int FREE = 4;
 
     public ProfessionalInformationFragment() {
         // Required empty public constructor
@@ -210,16 +215,6 @@ public class ProfessionalInformationFragment extends Fragment {
 
 
     private void initBetter() {
-        slideUp = new SlideUp.Builder(slideView)
-                .withListeners(new SlideUp.Listener.Slide() {
-                    @Override
-                    public void onSlide(float percent) {
-                    }
-                })
-                .withStartGravity(Gravity.BOTTOM)
-                .withLoggingEnabled(true)
-                .withStartState(SlideUp.State.HIDDEN)
-                .build();
 
         list2 = getResources().getStringArray(R.array.years);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),
@@ -277,25 +272,29 @@ public class ProfessionalInformationFragment extends Fragment {
     }
 
     @Subscribe
-    public  void updateEvent(ProfessionalSelectEvent msg){
+    public void updateEvent(ProfessionalSelectEvent msg) {
         int message = msg.message;
-        switch (message){
+        switch (message) {
             case STUDENT:
+                title.setText("学生党");
                 setVisibilityProfession(layoutStudent);
                 break;
             case COMPANY:
+                title.setText("上班族");
                 setVisibilityProfession(layoutCompany);
                 break;
             case BUSINESS:
+                title.setText("企业主");
                 setVisibilityProfession(layoutBusiness);
-
                 break;
             case FREE:
+                title.setText("自由职业");
                 setVisibilityProfession(layoutFreelancer);
                 break;
         }
 
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -440,8 +439,7 @@ public class ProfessionalInformationFragment extends Fragment {
     private SlideUp slideUp;
 
 
-    @OnClick({R.id.bt_SelectProfession, R.id.layoutGo, R.id.tv_Company, R.id.tv_Business,
-            R.id.tv_Student, R.id.tv_Freelancer, R.id.bt_cancel, R.id.save})
+    @OnClick({R.id.bt_SelectProfession, R.id.save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_SelectProfession:
@@ -464,7 +462,7 @@ public class ProfessionalInformationFragment extends Fragment {
         layoutFreelancer.setVisibility(View.GONE);
         layoutStudent.setVisibility(View.GONE);
         int visibility = view.getVisibility();
-        if(visibility==View.GONE){
+        if (visibility == View.GONE) {
             view.setVisibility(View.VISIBLE);
         }
     }

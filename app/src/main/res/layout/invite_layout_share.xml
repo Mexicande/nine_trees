@@ -125,7 +125,6 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:src="@mipmap/rqcode"/>
-
         </RelativeLayout>
         <View
             android:layout_width="match_parent"

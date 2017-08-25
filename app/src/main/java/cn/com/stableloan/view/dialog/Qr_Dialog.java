@@ -2,9 +2,13 @@ package cn.com.stableloan.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.com.stableloan.R;
@@ -13,13 +17,14 @@ import cn.com.stableloan.R;
  * Created by apple on 2017/5/25.
  */
 
-public class CashDialog extends Dialog {
+public class Qr_Dialog extends Dialog {
     private Button yes;//确定按钮
     private Button no;//取消按钮
     private TextView titleTv;//消息标题文本
     private TextView messageTv;//消息提示文本
     private String titleStr;//从外界设置的title文本
-    private String messageStr;//从外界设置的消息文本
+    private String  base_image;//base串
+    private ImageView qr_imagr;
     //确定文本和取消文本的显示内容
     private String yesStr, noStr;
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
@@ -51,17 +56,17 @@ public class CashDialog extends Dialog {
         this.yesOnclickListener = onYesOnclickListener;
     }
 
-    public CashDialog(Context context) {
-        super(context, R.style.MyDialog);
+    public Qr_Dialog(Context context,String bas64) {
+        super(context, R.style.EtsyBlurAlertDialogTheme);
+        base_image=bas64;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cash_dialog);
-
+        setContentView(R.layout.qr_code_dialog);
         //按空白处不能取消动画
-        setCanceledOnTouchOutside(false);
+        setCanceledOnTouchOutside(true);
         //初始化界面控件
         initView();
         //初始化界面数据
@@ -99,7 +104,7 @@ public class CashDialog extends Dialog {
      * 初始化界面控件的显示数据
      */
     private void initData() {
-        //如果用户自定了title和message
+       /* //如果用户自定了title和message
         if (titleStr != null) {
             titleTv.setText(titleStr);
         }
@@ -112,18 +117,24 @@ public class CashDialog extends Dialog {
         }
         if (noStr != null) {
             no.setText(noStr);
-        }
+        }*/
+
+
     }
 
     /**
      * 初始化界面控件
      */
     private void initView() {
-        yes = (Button) findViewById(R.id.yes);
+   /*    yes = (Button) findViewById(R.id.yes);
         no = (Button) findViewById(R.id.no);
         titleTv = (TextView) findViewById(R.id.name);
-        messageTv = (TextView) findViewById(R.id.description);
-
+        messageTv = (TextView) findViewById(R.id.description);*/
+        qr_imagr= (ImageView) findViewById(R.id.qr_image);
+        byte[] decode = Base64.decode(base_image,Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.length);
+        //save to image on sdcard
+        qr_imagr.setImageBitmap(bitmap);
     }
 
     /**
@@ -131,18 +142,18 @@ public class CashDialog extends Dialog {
      *
      * @param title
      */
-    public void setTitle(String title) {
+  /*  public void setTitle(String title) {
         titleStr = title;
     }
 
-    /**
+    *//**
      * 从外界Activity为Dialog设置dialog的message
      *
      * @param message
-     */
+     *//*
     public void setMessage(String message) {
         messageStr = message;
-    }
+    }*/
 
     /**
      * 设置确定按钮和取消被点击的接口
