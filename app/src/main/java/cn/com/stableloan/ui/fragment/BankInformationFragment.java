@@ -278,9 +278,7 @@ public class BankInformationFragment extends Fragment {
         if(bankBean.getBank().getCredit().equals(creditBean)&&bankBean.getBank().getDebit().equals(debitBean)){
             ToastUtils.showToast(getActivity(),"无修改内容");
 
-
         }else {
-
             FormEditText[] allFields = {etBankCard1, etBankCard2,  etBankPersonName1, etBankPersonName1,etBankPhone1,etBankPhone2};
             boolean allValid = true;
             for (FormEditText field : allFields) {
@@ -291,16 +289,14 @@ public class BankInformationFragment extends Fragment {
                 Bank bank = new Bank();
                 bank.setToken(token);
                 Bank.BankBean bean = new Bank.BankBean();
-                if(!etBankPhone2.getText().toString().isEmpty()&&!etBankPhone1.getText().toString().isEmpty()
-                        &&!etBankPersonName1.getText().toString().isEmpty()&&!etBankPersonName2.getText().toString().isEmpty()
-                        &&!etBankCard1.getText().toString().isEmpty()&&!etBankCard2.getText().toString().isEmpty()
-                        &&!etSelectBank1.getText().toString().isEmpty()&&!etSelectBank2.getText().toString().isEmpty()
-                        &&!etValidityTime1.getText().toString().isEmpty()&&!etValidityTime2.getText().toString().isEmpty()){
+                if(!etBankPhone1.getText().toString().isEmpty()
+                        &&!etBankPersonName1.getText().toString().isEmpty()
+                        &&!etBankCard1.getText().toString().isEmpty()
+                        &&!etSelectBank1.getText().toString().isEmpty()
+                        &&!etValidityTime1.getText().toString().isEmpty()){
                     bean.setBstatus("1");
-
                 }else {
                     bean.setBstatus("0");
-
                 }
                 bean.setCredit(creditBean);
                 bean.setDebit(debitBean);
@@ -339,15 +335,5 @@ public class BankInformationFragment extends Fragment {
         }
 
     }
-   /* @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (hidden) {
-            //相当于Fragment的onPause
-            LogUtils.i("22222","不可见");
-        } else {
-            // 相当于Fragment的onResume
-            System.out.println("界面可见");
-        }
-    }*/
 
 }

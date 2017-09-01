@@ -1,5 +1,6 @@
 package cn.com.stableloan.ui.adapter;
 
+import android.graphics.Color;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +39,7 @@ public class Integarl_taskAdapter extends BaseQuickAdapter<IntegarlBean.DataBean
         //helper.setText(R.id.status,item.getStatus());
         SuperTextView view = (SuperTextView) helper.getView(R.id.st_TextView);
         view.setText(item.getStatus());
-
+        view.setSolid(Color.parseColor("#"+item.getBg()));
         Glide.with(mContext).load(item.getImg())
                 .apply(options).into((ImageView) helper.getView(R.id.img));
 

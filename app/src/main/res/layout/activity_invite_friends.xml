@@ -69,7 +69,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textColor="@color/inivte_textcolor"
                 android:text="您作为安稳钱包的种子用户，拥有兑换现金的权利"/>
             <TextView
@@ -78,31 +78,44 @@
                 android:layout_marginRight="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textColor="@color/inivte_textcolor"
                 android:text="1.您的好友注册并填写申请资料"/>
             <ImageView
+                android:id="@+id/textImage"
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_marginRight="@dimen/_20dp"
-                android:layout_marginLeft="@dimen/_20dp"
-                android:layout_height="50dp"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_height="60dp"
                 android:adjustViewBounds="true"
                 android:src="@mipmap/invite_step"/>
-            <TextView
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/inivte_textcolor"
-                android:text="2.每位好友填写申请资料，您获得1元现金。"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/inivte_textcolor"
+                    android:text="2."/>
+                <TextView
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/inivte_textcolor"
+                    android:text="每位好友填写申请资料，您获得1元现金。"/>
+            </LinearLayout>
             <ImageView
                 android:layout_gravity="center_horizontal"
                 android:layout_width="41dp"
-                android:layout_height="58dp"
+                android:layout_height="56dp"
                 android:src="@mipmap/inivte_friend"
                 />
             <TextView
@@ -131,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:text="邀请人"
                 android:layout_weight="1"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:textColor="@color/blacktext"/>
             <TextView
                 android:layout_weight="1"
@@ -139,14 +152,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="状态"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:textColor="@color/blacktext"/>
             <TextView
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="奖金"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:textColor="@color/blacktext"/>
         </LinearLayout>
         <android.support.v7.widget.RecyclerView

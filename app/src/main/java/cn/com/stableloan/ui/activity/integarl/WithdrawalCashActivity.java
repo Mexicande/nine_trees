@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -73,7 +74,6 @@ public class WithdrawalCashActivity extends BaseActivity {
     private VirtualKeyboardView virtualKeyboardView;
     private CashDialog cashDialog;
     private GridView gridView;
-
     private ArrayList<Map<String, String>> valueList;
 
     private EditText textAmount;
@@ -83,6 +83,7 @@ public class WithdrawalCashActivity extends BaseActivity {
     private Animation exitAnim;
     private CashBean cashBean;
 
+    private static final int RESULT_CODE=200;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, WithdrawalCashActivity.class));
     }
@@ -127,6 +128,11 @@ public class WithdrawalCashActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String s1 = s + "";
+                if(s1.startsWith(".")){
+                    String s2 = s1.replaceFirst(".", "0.");
+                    textAmount.setText(s2);
+                }
                 if (s.length() >= 1) {
                     btWithdrawal.setVisibility(View.GONE);
                     btVisiableDrawal.setVisibility(View.VISIBLE);
@@ -361,11 +367,21 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Intent intent=new Intent();
+        setResult(RESULT_CODE,intent);
+        finish();
+        return super.onKeyDown(keyCode, event);
+
+    }
 
     @OnClick({R.id.close, R.id.iv_rule, R.id.open, R.id.tv_AllWithdrawal, R.id.bt_visiableDrawal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.close:
+                Intent intent=new Intent();
+                setResult(RESULT_CODE,intent);
                 finish();
                 break;
             case R.id.iv_rule:
@@ -383,7 +399,12 @@ public class WithdrawalCashActivity extends BaseActivity {
                 break;
             case R.id.tv_AllWithdrawal:
                 String toString = tvBalance.getText().toString();
-                double anInt = Double.parseDouble(toString);
+
+                int indexOf1 = toString.lastIndexOf(".");
+                String substring1 = toString.substring(0, indexOf1);
+                String replace1 = substring1.replace(",", "");
+
+                double anInt = Double.parseDouble(replace1);
                 int i = (int) anInt;
                 if (i != 0) {
                     textAmount.setText(i + "");
@@ -393,11 +414,14 @@ public class WithdrawalCashActivity extends BaseActivity {
                 break;
             case R.id.bt_visiableDrawal:
                 String toString1 = tvBalance.getText().toString();
-                double anInt1 = Double.parseDouble(toString1);
+                int indexOf = toString1.lastIndexOf(".");
+                String substring = toString1.substring(0, indexOf);
+                String replace = substring.replace(",", "");
+                int anInt1 = Integer.parseInt(replace);
                 String string = textAmount.getText().toString();
                 double anInt2 = Double.parseDouble(string);
                 if (anInt2 <= anInt1) {
-                    int parseInt = Integer.parseInt(string);
+                    double parseInt = Double.parseDouble(string);
                     if(parseInt!=0){
                         getDate();
                     }else {
@@ -410,5 +434,6 @@ public class WithdrawalCashActivity extends BaseActivity {
 
         }
     }
+
 
 }

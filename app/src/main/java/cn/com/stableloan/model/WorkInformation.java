@@ -92,6 +92,15 @@ public class WorkInformation implements Serializable{
         private String isSuccess;
         private OccupationBean occupation;
         private String status;
+        private String identity;
+
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
+        }
 
         public String getIsSuccess() {
             return isSuccess;
@@ -132,6 +141,8 @@ public class WorkInformation implements Serializable{
             private FreelancerBean freelancer;
             private String olass_time;
 
+            private String  status;
+
             public String getStatus() {
                 return status;
             }
@@ -139,8 +150,6 @@ public class WorkInformation implements Serializable{
             public void setStatus(String status) {
                 this.status = status;
             }
-
-            private String  status;
             public StudentBean getStudent() {
                 return student;
             }
@@ -356,6 +365,7 @@ public class WorkInformation implements Serializable{
             }
 
             public static class BusinessBean implements Serializable{
+
                 @Override
                 public boolean equals(Object o) {
                     if (this == o) return true;
@@ -363,6 +373,13 @@ public class WorkInformation implements Serializable{
 
                     BusinessBean that = (BusinessBean) o;
 
+                    if (!getBcompany().equals(that.getBcompany())) return false;
+                    if (!getBlocation().equals(that.getBlocation())) return false;
+                    if (!getByears().equals(that.getByears())) return false;
+                    if (!getBemail().equals(that.getBemail())) return false;
+                    if (!getBcincome().equals(that.getBcincome())) return false;
+                    if (!getBpreFixedline().equals(that.getBpreFixedline())) return false;
+                    if (!getBfixedline().equals(that.getBfixedline())) return false;
                     if (!getOperations().equals(that.getOperations())) return false;
                     return getLicense().equals(that.getLicense());
 
@@ -370,7 +387,14 @@ public class WorkInformation implements Serializable{
 
                 @Override
                 public int hashCode() {
-                    int result = getOperations().hashCode();
+                    int result = getBcompany().hashCode();
+                    result = 31 * result + getBlocation().hashCode();
+                    result = 31 * result + getByears().hashCode();
+                    result = 31 * result + getBemail().hashCode();
+                    result = 31 * result + getBcincome().hashCode();
+                    result = 31 * result + getBpreFixedline().hashCode();
+                    result = 31 * result + getBfixedline().hashCode();
+                    result = 31 * result + getOperations().hashCode();
                     result = 31 * result + getLicense().hashCode();
                     return result;
                 }
@@ -380,8 +404,71 @@ public class WorkInformation implements Serializable{
                  * license : 0
                  * bincome : 2
                  */
-
+                private String bcompany;
+                private String blocation;
+                private String byears;
+                private String bemail;
+                private String bcincome;
+                private String bpreFixedline;
+                private String bfixedline;
                 private String operations;
+
+                public String getBcompany() {
+                    return bcompany;
+                }
+
+                public void setBcompany(String bcompany) {
+                    this.bcompany = bcompany;
+                }
+
+                public String getBlocation() {
+                    return blocation;
+                }
+
+                public void setBlocation(String blocation) {
+                    this.blocation = blocation;
+                }
+
+                public String getByears() {
+                    return byears;
+                }
+
+                public void setByears(String byears) {
+                    this.byears = byears;
+                }
+
+                public String getBemail() {
+                    return bemail;
+                }
+
+                public void setBemail(String bemail) {
+                    this.bemail = bemail;
+                }
+
+                public String getBcincome() {
+                    return bcincome;
+                }
+
+                public void setBcincome(String bcincome) {
+                    this.bcincome = bcincome;
+                }
+
+                public String getBpreFixedline() {
+                    return bpreFixedline;
+                }
+
+                public void setBpreFixedline(String bpreFixedline) {
+                    this.bpreFixedline = bpreFixedline;
+                }
+
+                public String getBfixedline() {
+                    return bfixedline;
+                }
+
+                public void setBfixedline(String bfixedline) {
+                    this.bfixedline = bfixedline;
+                }
+
                 private String license;
 
                 public String getOperations() {

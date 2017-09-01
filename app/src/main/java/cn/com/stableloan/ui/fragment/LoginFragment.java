@@ -409,7 +409,6 @@ public class LoginFragment extends Fragment {
         bean.setData(Deskey);
         bean.setDeskey(deskey);
         final Gson gson = new Gson();
-
         String json = gson.toJson(bean);
 
         OkGo.<String>post(Urls.Ip_url + Urls.Login.LOGIN)
@@ -458,7 +457,6 @@ public class LoginFragment extends Fragment {
                             } else if (welfare != null) {
                                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));
                                 getActivity().finish();
-
                             } else {
                                 getActivity().finish();
                             }

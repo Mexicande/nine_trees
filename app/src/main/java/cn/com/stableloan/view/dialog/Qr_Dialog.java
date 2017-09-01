@@ -27,15 +27,15 @@ public class Qr_Dialog extends Dialog {
     private ImageView qr_imagr;
     //确定文本和取消文本的显示内容
     private String yesStr, noStr;
-    private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
+ /*   private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
-
-    /**
+*/
+  /*  *//**
      * 设置取消按钮的显示内容和监听
      *
      * @param str
      * @param onNoOnclickListener
-     */
+     *//*
     public void setNoOnclickListener(String str, onNoOnclickListener onNoOnclickListener) {
         if (str != null) {
             noStr = str;
@@ -43,21 +43,15 @@ public class Qr_Dialog extends Dialog {
         this.noOnclickListener = onNoOnclickListener;
     }
 
-    /**
-     * 设置确定按钮的显示内容和监听
-     *
-     * @param str
-     * @param onYesOnclickListener
-     */
     public void setYesOnclickListener(String str, onYesOnclickListener onYesOnclickListener) {
         if (str != null) {
             yesStr = str;
         }
         this.yesOnclickListener = onYesOnclickListener;
-    }
+    }*/
 
     public Qr_Dialog(Context context,String bas64) {
-        super(context, R.style.EtsyBlurAlertDialogTheme);
+        super(context, R.style.DialogSlideAnimation);
         base_image=bas64;
     }
 
@@ -81,7 +75,7 @@ public class Qr_Dialog extends Dialog {
      */
     private void initEvent() {
         //设置确定按钮被点击后，向外界提供监听
-        yes.setOnClickListener(new View.OnClickListener() {
+       /* yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (yesOnclickListener != null) {
@@ -97,7 +91,7 @@ public class Qr_Dialog extends Dialog {
                     noOnclickListener.onNoClick();
                 }
             }
-        });
+        });*/
     }
 
     /**
@@ -155,14 +149,14 @@ public class Qr_Dialog extends Dialog {
         messageStr = message;
     }*/
 
-    /**
+   /* *//**
      * 设置确定按钮和取消被点击的接口
-     */
+     *//*
     public interface onYesOnclickListener {
         public void onYesClick();
     }
 
     public interface onNoOnclickListener {
         public void onNoClick();
-    }
+    }*/
 }

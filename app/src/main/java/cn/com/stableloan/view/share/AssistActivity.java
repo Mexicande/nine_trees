@@ -51,7 +51,7 @@ public class AssistActivity extends Activity {
                     //
                     if (o == null) {
                         Log.e(TAG, "get auth info error!");
-                        mIntent.putExtra(Config.KEY_OF_QQ_BCR, "get auth info error!");
+                        mIntent.putExtra(Config.KEY_OF_QQ_BCR, "信息错误");
                         onSendBroadCast();
                     }
                     JSONObject jsonObject = (JSONObject) o;
@@ -66,7 +66,7 @@ public class AssistActivity extends Activity {
                                 || TextUtils.isEmpty(expires_in)
                                 || TextUtils.isEmpty(openId)) {
                             Log.e(TAG, "get auth info error!");
-                            mIntent.putExtra(Config.KEY_OF_QQ_BCR, "get auth info error!");
+                            mIntent.putExtra(Config.KEY_OF_QQ_BCR, "信息错误");
                             onSendBroadCast();
                         }
                     } catch (JSONException e) {
@@ -79,7 +79,7 @@ public class AssistActivity extends Activity {
                     mIntent.putExtra(Config.KEY_OF_OPEN_ID, openId);
                     mIntent.putExtra(Config.KEY_OF_VERIFY_DATA, o.toString());
                 } else {
-                    mIntent.putExtra(Config.KEY_OF_QQ_BCR, "share success!");
+                    mIntent.putExtra(Config.KEY_OF_QQ_BCR, "分享成功");
                 }
                 onSendBroadCast();
             }
@@ -92,7 +92,7 @@ public class AssistActivity extends Activity {
 
             @Override
             public void onCancel() {
-                mIntent.putExtra(Config.KEY_OF_QQ_BCR, "onCancel()");
+                mIntent.putExtra(Config.KEY_OF_QQ_BCR, "取消");
                 onSendBroadCast();
             }
         });
@@ -121,7 +121,7 @@ public class AssistActivity extends Activity {
             if (mTencent != null){
                 mTencent.onActivityResult(requestCode, resultCode, data);
             }
-            mIntent.putExtra(Config.KEY_OF_QQ_BCR, "have send!");
+            mIntent.putExtra(Config.KEY_OF_QQ_BCR, "发送成功!");
             onSendBroadCast();
         }else {
             Tencent.onActivityResultData(requestCode, resultCode, data, mListener);

@@ -166,7 +166,7 @@ public class ProductDesc extends BaseActivity {
             getProductDate();
         }
 
-        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID,null);
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID,null,null,null);
         wxManager = new WXManager(this);
         StateListener<String> wxStateListener = new StateListener<String>() {
             @Override

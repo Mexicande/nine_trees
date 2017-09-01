@@ -117,6 +117,15 @@ public class CashBean implements Serializable {
              * number : -6元
              * income : 6.000000
              */
+            private String remark;
+
+            public String getRemark() {
+                return remark;
+            }
+
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
 
             private String type;
             private String expend;
@@ -125,6 +134,15 @@ public class CashBean implements Serializable {
             private String number;
             private String income;
 
+            private String status;
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
             public String getType() {
                 return type;
             }

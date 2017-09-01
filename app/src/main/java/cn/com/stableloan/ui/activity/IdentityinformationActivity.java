@@ -80,8 +80,11 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_identityinformation);
-        ImmersionBar.with(this).init();
         ButterKnife.bind(this);
+        ImmersionBar.with(this).statusBarColor(R.color.colorPrimary)
+                .statusBarAlpha(0.3f)
+                .fitsSystemWindows(true)
+                .init();
         EventBus.getDefault().register(this);
         initToolbar();
         initMagicIndicator();

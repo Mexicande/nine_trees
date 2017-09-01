@@ -1,14 +1,8 @@
 package cn.com.stableloan.ui.adapter;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -24,17 +18,19 @@ import cn.com.stableloan.model.integarl.CashBean;
 public class CashAdapter extends BaseQuickAdapter<CashBean.DataBean.CashRecordBean,BaseViewHolder> {
 
 
-
     public CashAdapter(List<CashBean.DataBean.CashRecordBean> data) {
         super(R.layout.cash_item, data);
-
     }
-
     @Override
     protected void convert(BaseViewHolder helper, CashBean.DataBean.CashRecordBean item) {
 
-        helper.setText(R.id.type,item.getType())
-                .setText(R.id.create_at,item.getCreate_at());
+        helper.setText(R.id.type,item.getRemark())
+                .setText(R.id.create_at,item.getCreate_at())
+        .setText(R.id.status,item.getStatus());
+        TextView status = helper.getView(R.id.status);
+        status.setText(item.getStatus());
+        status.setTextColor(Color.parseColor(item.getFont()));
+
         TextView view = helper.getView(R.id.number);
             view.setText(item.getNumber());
         view.setTextColor(Color.parseColor(item.getFont()));

@@ -55,6 +55,7 @@
                     android:layout_width="80dp"
                     app:corner="25dp"
                     android:gravity="center"
+                    android:textColor="#ffae2d"
                     app:solid="@color/white"
                     app:stroke_width="1.5dp"
                     android:layout_height="35dp"

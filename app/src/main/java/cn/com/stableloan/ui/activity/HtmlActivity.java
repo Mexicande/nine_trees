@@ -157,6 +157,7 @@ public class HtmlActivity extends BaseActivity {
 
 
     }
+
     private void getDate(String url) {
         if (url != null) {
             WebSettings webSettings = mWebView.getSettings();

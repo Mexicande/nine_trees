@@ -118,15 +118,21 @@ public class UserFragment extends ImmersionFragment {
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             //相当于Fragment的onPause
+            getUserInfo();
 
-            System.out.println("界面不可见");
         } else {
             // 相当于Fragment的onResume
-            System.out.println("界面可见");
         }
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
+
+
+    }
 
     private void getUserInfo() {
         JSONObject eventObject = new JSONObject();
@@ -363,12 +369,8 @@ public class UserFragment extends ImmersionFragment {
 
     }
 
-  /*  @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        getUserInfo();
-    }
-*/
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -144,8 +144,10 @@ public interface Urls {
     }
     interface KEY{
         String WEICHAT_APPID="wxd8a11cffdc98f84b";
+        String QQ_APPID="1106239350";
 
         String PageWeb="http://test.m.anwenqianbao.com/#/details?pId=";
+        String SHARE_INCODE="http://test.m.anwenqianbao.com/#/login?inviteCode=";
     }
     interface  Integarl{
         String getAccumulatePoints="point/getAccumulatePoints";
@@ -161,4 +163,9 @@ public interface Urls {
         String INVITE_FRIENDS="invite/smsInvite";
         String INVITE_LIST="invite/inviteList";
     }
+
+    String  TOKEN=                                                                                  "token";
+    String NUMBER_ZERO=                                                                             "0";
+    String NUMBER_ONE=                                                                              "1";
+    String NUMBER_TWO=                                                                              "2";
 }

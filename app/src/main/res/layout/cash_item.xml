@@ -16,7 +16,6 @@
                 android:layout_marginLeft="21dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="邀请好友并申请"
                 android:textColor="@color/gay"/>
             <TextView
                 android:id="@+id/create_at"
@@ -24,7 +23,6 @@
                 android:layout_below="@id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2007/07/07 15:55"
                 android:textColor="@color/gay"/>
         </LinearLayout>
         <TextView
@@ -34,15 +32,17 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+1.00元"
-            android:textColor="#FEB324"/>
+            android:textColor="#FEB324"
+            />
         <TextView
+            android:id="@+id/status"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/_20dp"
             android:layout_toLeftOf="@id/number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="处理中"/>
+            android:text="123"
+            />
         <View
             android:layout_marginLeft="19dp"
             android:layout_alignParentBottom="true"

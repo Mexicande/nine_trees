@@ -41,14 +41,15 @@
                     android:textSize="14sp"
                     android:textColor="@color/gay"/>
                 <Button
+                    android:id="@+id/exchange_two"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="end"
                     android:layout_width="73dp"
                     android:layout_height="25dp"
                     android:text="马上兑换"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     style="?android:attr/borderlessButtonStyle"
                     android:textColor="#FD6A32"
                     android:background="@drawable/invite_origin_bt"/>
@@ -106,14 +107,15 @@
                     android:textSize="14sp"
                     android:textColor="@color/gay"/>
                 <Button
+                    android:id="@+id/exchange_five"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="end"
                     android:layout_width="73dp"
                     android:layout_height="25dp"
                     android:text="马上兑换"
-                    android:textSize="10sp"
+                    android:textSize="13sp"
                     style="?android:attr/borderlessButtonStyle"
                     android:textColor="#7A34D0"
                     android:background="@drawable/invite_purple_bt"/>

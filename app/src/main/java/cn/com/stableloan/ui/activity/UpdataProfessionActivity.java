@@ -99,15 +99,15 @@ public class UpdataProfessionActivity extends BaseActivity {
                 ivWork.setColorFilter(getResources().getColor(R.color.mask));
                 tick.setVisibility(View.VISIBLE);
                 break;
-            case 2:
+            case 4:
                 ivFree.setColorFilter(getResources().getColor(R.color.mask));
                 tickFree.setVisibility(View.VISIBLE);
                 break;
-            case 3:
+            case 2:
                 ivStudent.setColorFilter(getResources().getColor(R.color.mask));
                 tickStudent.setVisibility(View.VISIBLE);
                 break;
-            case 4:
+            case 3:
                 ivCompany.setColorFilter(getResources().getColor(R.color.mask));
                 tickCompany.setVisibility(View.VISIBLE);
                 break;
@@ -129,17 +129,17 @@ public class UpdataProfessionActivity extends BaseActivity {
             case R.id.iv_free:
                 ivFree.setColorFilter(getResources().getColor(R.color.mask));
                 tickFree.setVisibility(View.VISIBLE);
-                Flge=2;
+                Flge=4;
                 break;
             case R.id.iv_student:
                 ivStudent.setColorFilter(getResources().getColor(R.color.mask));
                 tickStudent.setVisibility(View.VISIBLE);
-                Flge=3;
+                Flge=2;
                 break;
             case R.id.iv_company:
                 ivCompany.setColorFilter(getResources().getColor(R.color.mask));
                 tickCompany.setVisibility(View.VISIBLE);
-                Flge=4;
+                Flge=3;
                 break;
             case R.id.iv_back:
                 finish();
@@ -183,9 +183,19 @@ public class UpdataProfessionActivity extends BaseActivity {
                                 if(success.equals("1")){
                                     hud.dismiss();
                                     LogUtils.i("-----",identity);
+
                                     SPUtils.put(UpdataProfessionActivity.this,"identity",identity);
-                                    setResult(1000,new Intent().putExtra("HeadPhoto",identity));
-                                    finish();
+                                    ToastUtils.showToast(UpdataProfessionActivity.this,"保存成功");
+                                    TinyDB tinyDB=new TinyDB(UpdataProfessionActivity.this);
+                                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                    user.setIdentity(Integer.parseInt(identity));
+                                    if(getIntent().getStringExtra("from")!=null){
+                                        IdentityinformationActivity.launch(UpdataProfessionActivity.this);
+                                        finish();
+                                    }else {
+                                        setResult(1000,new Intent().putExtra("HeadPhoto",identity));
+                                        finish();
+                                    }
                                 }else {
                                     hud.dismiss();
                                     String string = object.getString("msg");

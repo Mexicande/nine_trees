@@ -16,6 +16,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IntegarUpEvent;
 import cn.com.stableloan.bean.IntregarlEvent;
 import cn.com.stableloan.bean.ShareEvent;
 import cn.com.stableloan.model.Identity;
@@ -65,35 +67,15 @@ public class IntegarlTaskFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_integarl_task, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
+
         initRecyclerView();
+        getInDate();
         setListener();
         return view;
     }
 
-    private void setListener() {
-
-
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                IntegarlBean.DataBean.CodeBean o = (IntegarlBean.DataBean.CodeBean) adapter.getData().get(position);
-                LogUtils.i("Share==", o.getUrl());
-                shareUrl = o.getUrl();
-                EventBus.getDefault().post(new ShareEvent(1, o.getUrl()));
-
-            }
-        });
-
-    }
-
-
-    private void initRecyclerView() {
-
-
-        adapter = new Integarl_taskAdapter(null);
-        taskRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        taskRecycler.setAdapter(adapter);
-
+    private void getInDate() {
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
@@ -116,6 +98,35 @@ public class IntegarlTaskFragment extends Fragment {
                         }
                     }
                 });
+
+
+    }
+
+    private void setListener() {
+
+
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                IntegarlBean.DataBean.CodeBean o = (IntegarlBean.DataBean.CodeBean) adapter.getData().get(position);
+                LogUtils.i("Share==", o.getUrl());
+                shareUrl = o.getUrl();
+                EventBus.getDefault().post(new ShareEvent(1, o.getUrl()));
+
+            }
+        });
+
+    }
+
+
+    private void initRecyclerView() {
+
+        adapter = new Integarl_taskAdapter(null);
+        taskRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        taskRecycler.setAdapter(adapter);
+
+
+
     }
 
     @Override
@@ -123,7 +134,14 @@ public class IntegarlTaskFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
+    @Subscribe
+    public void onMessageEvent(IntegarUpEvent event) {
+        if (event != null) {
+            if(event.up.equals("integar")) {
+                initRecyclerView();
+            }
+        }
+    }
 
     @OnClick({R.id.user_information})
     public void onViewClicked(View view) {
@@ -167,4 +185,13 @@ public class IntegarlTaskFragment extends Fragment {
                     }
                 });
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
+
+
 }

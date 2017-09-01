@@ -133,6 +133,16 @@ public class IntegarlBean implements Serializable{
              */
 
             private int id;
+            private String bg;
+
+            public String getBg() {
+                return bg;
+            }
+
+            public void setBg(String bg) {
+                this.bg = bg;
+            }
+
             private String title;
             private String desc;
             private String code;

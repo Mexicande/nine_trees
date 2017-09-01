@@ -24,22 +24,14 @@ public class TPManager {
      * @param wxAppSecret 微信 AppSecret
      */
     public void initAppConfig(
-                              String wxAppId, String wxAppSecret){
+                              String wxAppId, String wxAppSecret,String qqAppId, String qqAppSecret){
         WXAppId = wxAppId;
         WXAppSecret = wxAppSecret;
+        QQAppId = qqAppId;
+        QQAppSecret = qqAppSecret;
     }
 
-    public String getWBAppId() {
-        return WBAppId;
-    }
 
-    public String getWBAppSecret() {
-        return WBAppSecret;
-    }
-
-    public String getWBRedirectUrl() {
-        return WBRedirectUrl;
-    }
 
     public String getQQAppId() {
         return QQAppId;
@@ -57,9 +49,6 @@ public class TPManager {
         return WXAppSecret;
     }
 
-    private String WBAppId = "";
-    private String WBAppSecret = "";
-    private String WBRedirectUrl = "";
     private String QQAppId = "";
     private String QQAppSecret = "";
     private String WXAppId = "";

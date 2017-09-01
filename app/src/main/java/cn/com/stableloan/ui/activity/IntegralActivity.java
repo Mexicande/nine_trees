@@ -94,7 +94,7 @@ public class IntegralActivity extends BaseActivity {
     }
 
     private void setListener() {
-        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null);
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null,null,null);
         wxManager = new WXManager(this);
         wxManager.setListener(wxStateListener);
 
@@ -197,7 +197,9 @@ public class IntegralActivity extends BaseActivity {
     public void onMessageEvent(IntregarlEvent event) {
         if (event != null) {
             tvCredits.setText(String.valueOf(event.credit));
-            btOffical.setText(event.offica);
+            if(event.offica!=null){
+                btOffical.setText(event.offica);
+            }
         }
     }
 

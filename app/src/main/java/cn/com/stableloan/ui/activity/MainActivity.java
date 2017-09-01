@@ -208,7 +208,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
         if (fragment != null) {
             if (fragment == mCurrentFragment) return;
-
             mFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss();
         } else {
             fragment = Fragment.instantiate(this, fragmentName);

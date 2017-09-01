@@ -85,7 +85,6 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
-
     </style>
 
 
@@ -259,7 +258,7 @@
     </style>
 
 
-    <style name="DialogSlideAnimation">
+    <style name="DialogSlideAnimation" parent="android:style/Theme.Dialog">
         <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
         <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
         <item name="android:windowNoTitle">true</item>
@@ -267,5 +266,6 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
+
     </style>
 </resources>

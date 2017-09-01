@@ -5,18 +5,25 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.tencent.connect.share.QQShare;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
@@ -36,14 +43,13 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.integarl.InviteFriendList;
 import cn.com.stableloan.model.integarl.InviteFriendsBean;
-import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.adapter.InviteListAdapter;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.dialog.Qr_Dialog;
+import cn.com.stableloan.view.share.QQManager;
+import cn.com.stableloan.view.share.QQShareContent;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXManager;
@@ -54,7 +60,24 @@ import okhttp3.Response;
 public class InviteFriendsActivity extends BaseActivity {
     @Bind(R.id.contact_RecyclerView)
     RecyclerView contactRecyclerView;
+    @Bind(R.id.goback)
+    LinearLayout goback;
+    @Bind(R.id.textImage)
+    ImageView textImage;
+    @Bind(R.id.layout_Share_WeChat)
+    LinearLayout layoutShareWeChat;
+    @Bind(R.id.layout_Share_WeChatFriend)
+    LinearLayout layoutShareWeChatFriend;
+    @Bind(R.id.layout_Share_QQ)
+    LinearLayout layoutShareQQ;
+    @Bind(R.id.layout_RQCODE)
+    RelativeLayout layoutRQCODE;
+    @Bind(R.id.layout_Send_Contacts)
+    RelativeLayout layoutSendContacts;
+    private InviteFriendList friendList;
     private WXManager wxManager;
+    private QQManager qqManager;
+
     private InviteListAdapter listAdapter;
     private String base_str;
     private Qr_Dialog qr_dialog;
@@ -74,13 +97,14 @@ public class InviteFriendsActivity extends BaseActivity {
     }
 
     private void initView() {
-        listAdapter=new InviteListAdapter(null);
+        listAdapter = new InviteListAdapter(null);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactRecyclerView.setAdapter(listAdapter);
       /*  View view = getLayoutInflater().inflate(R.layout.invite_layout_friend, null);
         listAdapter.addHeaderView(view,0);*/
 
     }
+
     /**
      * 邀请好友列表
      */
@@ -97,12 +121,12 @@ public class InviteFriendsActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         if (s != null) {
                             Gson gson = new Gson();
-                            InviteFriendList friendList = gson.fromJson(s, InviteFriendList.class);
-                            if(friendList.getError_code()==0){
+                             friendList = gson.fromJson(s, InviteFriendList.class);
+                            if (friendList.getError_code() == 0) {
                                 listAdapter.addData(friendList.getData().getInviteLog());
-                                base_str=friendList.getData().getQrCode();
-                            }else {
-                                ToastUtils.showToast(InviteFriendsActivity.this,friendList.getError_message());
+                                base_str = friendList.getData().getQrCode();
+                            } else {
+                                ToastUtils.showToast(InviteFriendsActivity.this, friendList.getError_message());
                             }
 
                         }
@@ -113,8 +137,10 @@ public class InviteFriendsActivity extends BaseActivity {
 
     private void setListener() {
 
-        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null);
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null,Urls.KEY.QQ_APPID,null);
         wxManager = new WXManager(this);
+        qqManager = new QQManager(this);
+
         StateListener<String> wxStateListener = new StateListener<String>() {
             @Override
             public void onComplete(String s) {
@@ -128,11 +154,33 @@ public class InviteFriendsActivity extends BaseActivity {
 
             @Override
             public void onCancel() {
-                ToastUtils.showToast(InviteFriendsActivity.this, "取消");
+                ToastUtils.showToast(InviteFriendsActivity.this, "取消分享");
             }
         };
 
         wxManager.setListener(wxStateListener);
+
+        StateListener<String> qqStateListener = new StateListener<String>() {
+
+            @Override
+            public void onComplete(String s) {
+                ToastUtils.showToast(InviteFriendsActivity.this, s);
+
+            }
+
+            @Override
+            public void onError(String err) {
+                ToastUtils.showToast(InviteFriendsActivity.this, err);
+
+            }
+
+            @Override
+            public void onCancel() {
+                ToastUtils.showToast(InviteFriendsActivity.this, "取消分享");
+            }
+        };
+        qqManager.setListener(qqStateListener);
+
     }
 
     @OnClick({R.id.goback, R.id.layout_Share_WeChat, R.id.layout_Share_WeChatFriend, R.id.layout_Share_QQ, R.id.layout_RQCODE, R.id.layout_Send_Contacts})
@@ -150,11 +198,19 @@ public class InviteFriendsActivity extends BaseActivity {
 
                 break;
             case R.id.layout_Share_QQ:
-
+                QQShareContent contentQQ = new QQShareContent();
+                contentQQ.setShareType(QQShare.SHARE_TO_QQ_TYPE_DEFAULT)
+                        .setTitle("安稳钱包")
+                        .setTarget_url(Urls.KEY.SHARE_INCODE+friendList.getData().getInviteCode())
+                        .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png")
+                        .setSummary("只需身份证,无需抵押无需面审急速放款!");
+                qqManager.share(contentQQ);
                 break;
             case R.id.layout_RQCODE:
-                qr_dialog = new Qr_Dialog(this,base_str);
+                String replace = base_str.replace("data:image/png;base64,", "");
+                qr_dialog = new Qr_Dialog(this,replace);
                 qr_dialog.show();
+
                 break;
             case R.id.layout_Send_Contacts:
                 getPermission(1);
@@ -170,7 +226,7 @@ public class InviteFriendsActivity extends BaseActivity {
     private void getPermission(final int i) {
         AndPermission.with(this)
                 .requestCode(100)
-                .permission(Manifest.permission.READ_CONTACTS)
+                .permission(Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE)
                 .rationale(new RationaleListener() {
                     @Override
                     public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
@@ -183,8 +239,9 @@ public class InviteFriendsActivity extends BaseActivity {
                     @Override
                     public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
                         if (requestCode == 100) {
-                            Uri uri = Uri.parse("content://contacts/people");
-                            Intent intent = new Intent(Intent.ACTION_PICK, uri);
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.PICK");
+                            intent.setType("vnd.android.cursor.dir/phone_v2");
                             startActivityForResult(intent, i);
                         }
                     }
@@ -203,9 +260,9 @@ public class InviteFriendsActivity extends BaseActivity {
         WXShareContent contentWX = new WXShareContent();
         contentWX.setScene(scence)
                 .setType(WXShareContent.share_type.WebPage)
-                .setWeb_url("url")
+                .setWeb_url(Urls.KEY.SHARE_INCODE+friendList.getData().getInviteCode())
                 .setTitle("安稳钱包")
-                .setDescription("  ")
+                .setDescription("只需身份证,无需抵押无需面审急速放款!")
                 .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
         wxManager.share(contentWX);
 
@@ -215,28 +272,37 @@ public class InviteFriendsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
+        switch (requestCode){
             case 1:
-                if (resultCode == RESULT_OK) {
-                    if (data == null) {
-                        return;
-                    } else {
-                        //处理返回的data,获取选择的联系人信息
-                        Uri uri = data.getData();
-                        String[] contacts = getPhoneContacts(uri);
-                        if (contacts != null && contacts.length > 1) {
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Log.i("uri", "联系人："+ uri+"" );
+                    String num = null;
+                    String name=null;
+                    // 创建内容解析者
+                    ContentResolver contentResolver = getContentResolver();
+                    Cursor cursor = contentResolver.query(uri,
+                            null, null, null, null);
+                    while (cursor.moveToNext()) {
 
-                            inviteFriends(contacts[1]);
-/*
+                        num = cursor.getString(cursor.getColumnIndex("data1"));
+                        Log.i("num", "phone："+ num+"" );
 
-                            etContact1.setText(contacts[1]);
-*/
-                        } else {
-                            ToastUtils.showToast(this, "获取号码失败，请手动添加");
-                        }
+                        int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                        name  = cursor.getString(nameFieldColumnIndex);
+
+                        Log.i("num", "name："+ name+"" );
+
                     }
-                }
+                    cursor.close();
+                    if(num!=null){
+                        num = num.replaceAll("-", "");//替换的操作,555-6 -> 5556
+                        Log.i("num", "联系人："+ num+"---"+name);
+                        inviteFriends(num);
+                    }
                 break;
+        }
+
         }
     }
 
@@ -244,6 +310,8 @@ public class InviteFriendsActivity extends BaseActivity {
      * 邀请好友
      */
     private void inviteFriends(String phone) {
+
+        LogUtils.i("invite--phone",phone);
         String token = (String) SPUtils.get(this, "token", "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);

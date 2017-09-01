@@ -29,9 +29,11 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.integarl.StatusBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -88,7 +90,6 @@ public class UserInformationActivity extends BaseActivity {
     private void getStatus() {
         Map<String,String> parms=new HashMap<>();
         String token = (String) SPUtils.get(this, "token", "1");
-        String signature = (String) SPUtils.get(this, "signature", "1");
         parms.put("token",token);
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.Ip_url+Urls.user.USER_STATUS)
@@ -137,7 +138,15 @@ public class UserInformationActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.User_information:
-                IdentityinformationActivity.launch(this);
+                TinyDB tinyDB=new TinyDB(this);
+                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                int identity = user.getIdentity();
+                    if(identity==0){
+                        startActivity(new Intent(this,UpdataProfessionActivity.class).putExtra("from","identity"));
+                       //UpdataProfessionActivity.launch(this);
+                    }else {
+                        IdentityinformationActivity.launch(this);
+                    }
                 break;
             case R.id.User_Authorization:
                 CertificationActivity.launch(this);

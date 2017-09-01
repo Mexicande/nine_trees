@@ -50,6 +50,7 @@
                     android:src="@mipmap/share_wechat"
                     />
                 <TextView
+                    android:layout_marginTop="@dimen/_2dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -71,6 +72,7 @@
                     android:src="@mipmap/share_wx_friend"
                     />
                 <TextView
+                    android:layout_marginTop="@dimen/_2dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -92,6 +94,7 @@
                     android:src="@mipmap/share_qq"
                     />
                 <TextView
+                    android:layout_marginTop="@dimen/_2dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,7 +117,7 @@
                 android:layout_marginLeft="22dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/inivte_textcolor"
                 android:layout_centerVertical="true"
                 android:text="给身边的好友扫一扫二维码拿现金"/>
@@ -139,7 +142,7 @@
                 android:layout_marginLeft="22dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/inivte_textcolor"
                 android:layout_centerVertical="true"
                 android:text="给朋友发短信"/>

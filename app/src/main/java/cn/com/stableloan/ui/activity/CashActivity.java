@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -50,6 +51,10 @@ public class CashActivity extends BaseActivity {
     private CashAdapter cashAdapter;
 
     private CashBean cashBean;
+    private static int ACTION_NEWS=1;
+
+    private static final int REQUEST_CODE=1;
+    private static final int RESULT_CODE=200;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, CashActivity.class));
     }
@@ -75,8 +80,14 @@ public class CashActivity extends BaseActivity {
         cashRecycler.setAdapter(cashAdapter);
 
     }
-
+    private KProgressHUD hud;
     private void getDate() {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait.....")
+                .setCancellable(true)
+                .show();
+
         String token = (String) SPUtils.get(this, "token", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
@@ -86,12 +97,13 @@ public class CashActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        hud.dismiss();
                         if (s != null) {
                             Gson gson = new Gson();
                             cashBean = gson.fromJson(s, CashBean.class);
                             account.setText(cashBean.getData().getAccount());
                             total.setText(cashBean.getData().getTotal());
-                            cashAdapter.addData(cashBean.getData().getCashRecord());
+                                cashAdapter.setNewData(cashBean.getData().getCashRecord());
                             if (cashBean.getData().getAccount().length()>1) {
                                 btVisiable.setVisibility(View.GONE);
                                 btWithdrawal.setVisibility(View.VISIBLE);
@@ -115,9 +127,26 @@ public class CashActivity extends BaseActivity {
                 break;
             case R.id.bt_withdrawal:
                 //WithdrawalCashActivity.launch(this);
-                startActivity(new Intent(this,WithdrawalCashActivity.class).putExtra("cash",cashBean));
+                Intent intent=new Intent();
+                intent.putExtra("cash",cashBean);
+                intent.setClass(this,WithdrawalCashActivity.class);
+                startActivityForResult(intent,REQUEST_CODE);
+               // startActivity(new Intent(this,WithdrawalCashActivity.class).putExtra("cash",cashBean));
                 break;
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode){
+                case REQUEST_CODE:
+                    if(resultCode==RESULT_CODE){
+                        getDate();
+                    }
+                    break;
+            }
+
+
+    }
 }
