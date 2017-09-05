@@ -95,6 +95,17 @@ public class IntegarlExchangeFragment extends Fragment {
                             }
                         }
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                hud.dismiss();
+                            }
+                        });
+                    }
                 });
 
 

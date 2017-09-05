@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -67,7 +68,10 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private FragmentManager mFragmentManager;
     private SlideUp slideUp;
-
+    private static final int STUDENT = 2;
+    private static final int COMPANY = 1;
+    private static final int BUSINESS = 3;
+    private static final int FREE = 4;
     private Fragment mCurrentFragment;
     private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
 
@@ -270,19 +274,19 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
             case R.id.layoutGo:
                 break;
             case R.id.tv_Company:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(2));
+                EventBus.getDefault().post(new ProfessionalSelectEvent(COMPANY));
                 slideUp.hide();
                 break;
             case R.id.tv_Business:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(3));
+                EventBus.getDefault().post(new ProfessionalSelectEvent(BUSINESS));
                 slideUp.hide();
                 break;
             case R.id.tv_Student:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(1));
+                EventBus.getDefault().post(new ProfessionalSelectEvent(STUDENT));
                 slideUp.hide();
                 break;
             case R.id.tv_Freelancer:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(4));
+                EventBus.getDefault().post(new ProfessionalSelectEvent(FREE));
                 slideUp.hide();
                 break;
             case R.id.bt_cancel:
@@ -294,5 +298,13 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         }
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(slideUp.isVisible()){
+            slideUp.hide();
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+        return false;
+    }
 }

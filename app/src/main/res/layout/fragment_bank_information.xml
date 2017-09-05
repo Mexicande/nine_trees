@@ -82,14 +82,18 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
-                    android:id="@+id/et_SelectBank1"
-                    style="@style/information_style"
-                    whatever:testType="alpha"
-                    whatever:emptyAllowed="true"
 
-                    android:imeOptions="actionNext"
+                <TextView
+                    android:layout_width="220dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/et_SelectBank1"
+                    android:paddingLeft="@dimen/_10dp"
+                    android:text=""
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_height="@dimen/layout_height"
                     />
+
                 <TextView
                     style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_SelectBank1"
@@ -187,14 +191,17 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.andreabaccega.widget.FormEditText
+                <TextView
+                    android:layout_width="220dp"
+                    android:layout_alignParentRight="true"
                     android:id="@+id/et_SelectBank2"
-                    style="@style/information_style"
-                    whatever:testType="alpha"
-                    whatever:emptyAllowed="true"
-
-                    android:imeOptions="actionNext"
+                    android:paddingLeft="@dimen/_10dp"
+                    android:text=""
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_height="@dimen/layout_height"
                     />
+
                 <TextView
                     style="@style/information_text_style"
                     android:layout_toLeftOf="@id/et_SelectBank2"

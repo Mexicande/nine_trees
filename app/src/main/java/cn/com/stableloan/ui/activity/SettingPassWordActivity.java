@@ -188,6 +188,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         UpdataProfessionActivity.launch(SettingPassWordActivity.this);
                                         finish();
                                     } else {
+
                                         ToastUtils.showToast(SettingPassWordActivity.this, fromJson.getError_message());
                                     }
                                 }

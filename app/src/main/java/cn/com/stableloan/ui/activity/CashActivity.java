@@ -12,7 +12,9 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -64,9 +66,23 @@ public class CashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cash);
         ButterKnife.bind(this);
+        zhuGe();
         initRecyclerView();
         getDate();
         setListener();
+
+    }
+
+    private void zhuGe() {
+
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("cash", "");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ZhugeSDK.getInstance().track(this, "cash",  eventObject);
     }
 
     private void setListener() {
@@ -109,6 +125,18 @@ public class CashActivity extends BaseActivity {
                                 btWithdrawal.setVisibility(View.VISIBLE);
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                hud.dismiss();
+                                ToastUtils.showToast(CashActivity.this,"服务器异常");
+                            }
+                        });
                     }
                 });
     }

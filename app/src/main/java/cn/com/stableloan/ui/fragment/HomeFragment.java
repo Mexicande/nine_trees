@@ -126,7 +126,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         params.put("position", "1");
         params.put("type", "1");
         JSONObject object=new JSONObject(params);
-
         OkGo.post(Urls.Ip_url+Urls.Dialog.advertising)
                 .tag(this)
                 .upJson(object)
@@ -138,8 +137,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                             AdvertisingBean bean = gson.fromJson(s, AdvertisingBean.class);
                             if(bean.getError_code()==0){
                                 showAdvertising(bean.getData().getImg(),bean.getData().getUrl());
-                            }else {
-                                ToastUtils.showToast(getActivity(),bean.getError_message());
                             }
                         }
                     }
@@ -148,6 +145,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     }
 
     private void showAdvertising(String img,String url){
+
+
+
         AdInfo adInfo = new AdInfo();
         long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
@@ -164,7 +164,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
                 @Override
                 public void onImageClick(View view, AdInfo advInfo) {
-                    startActivity(new Intent(getActivity(),HtmlActivity.class).putExtra("advertising",url));
+                    if(!url.isEmpty()){
+                        startActivity(new Intent(getActivity(),HtmlActivity.class).putExtra("advertising",url));
+                    }
                     // Toast.makeText(getActivity(), "您点击了ViewPagerItem...", Toast.LENGTH_SHORT).show();
                     adManager.dismissAdDialog();
                 }

@@ -12,9 +12,9 @@ android {
         applicationId "cn.com.stableloan"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 5
+        versionCode 6
         multiDexEnabled true
-        versionName "1.3.0"
+        versionName "1.5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
@@ -22,10 +22,10 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-    ext {
+   /* ext {
         //for some reason, you may want to ignore tinkerBuild, such as instant run debug build?
         tinkerEnabled = false
-    }
+    }*/
     signingConfigs {
         debug {
             v1SigningEnabled true

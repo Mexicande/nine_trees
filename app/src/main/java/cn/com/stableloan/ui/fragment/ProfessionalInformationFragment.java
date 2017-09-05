@@ -188,7 +188,6 @@ public class ProfessionalInformationFragment extends Fragment {
                                                 title.setText("上班族");
                                                 setVisibilityProfession(layoutCompany);
                                                 id=COMPANY;
-
                                                 break;
                                             case BUSINESS:
                                                 title.setText("企业主");
@@ -336,7 +335,6 @@ public class ProfessionalInformationFragment extends Fragment {
                 title.setText("上班族");
                 setVisibilityProfession(layoutCompany);
                 id=COMPANY;
-
                 break;
             case BUSINESS:
                 title.setText("企业主");

@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -413,6 +414,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                 }
                 break;
             case R.id.bt_visiableDrawal:
+                zhuGe();
                 String toString1 = tvBalance.getText().toString();
                 int indexOf = toString1.lastIndexOf(".");
                 String substring = toString1.substring(0, indexOf);
@@ -433,6 +435,18 @@ public class WithdrawalCashActivity extends BaseActivity {
                 break;
 
         }
+    }
+
+    private void zhuGe() {
+
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("tixianbutton", "");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ZhugeSDK.getInstance().track(this, "tixianbutton",  eventObject);
     }
 
 

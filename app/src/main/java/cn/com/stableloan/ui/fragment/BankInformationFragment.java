@@ -53,22 +53,22 @@ public class BankInformationFragment extends Fragment {
     FormEditText etBankCard1;
     @Bind(R.id.et_BankPersonName1)
     FormEditText etBankPersonName1;
-    @Bind(R.id.et_SelectBank1)
-    FormEditText etSelectBank1;
     @Bind(R.id.et_BankPhone1)
     FormEditText etBankPhone1;
     @Bind(R.id.et_BankCard2)
     FormEditText etBankCard2;
     @Bind(R.id.et_BankPersonName2)
     FormEditText etBankPersonName2;
-    @Bind(R.id.et_SelectBank2)
-    FormEditText etSelectBank2;
     @Bind(R.id.et_BankPhone2)
     FormEditText etBankPhone2;
     @Bind(R.id.et_ValidityTime2)
     TextView etValidityTime2;
     @Bind(R.id.et_ValidityTime1)
     TextView etValidityTime1;
+    @Bind(R.id.et_SelectBank1)
+    TextView etSelectBank1;
+    @Bind(R.id.et_SelectBank2)
+    TextView etSelectBank2;
     private TimePickerView pvTime;
 
     private Bank bankBean;
@@ -100,7 +100,7 @@ public class BankInformationFragment extends Fragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息",  eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
 
 
         pvTime = new TimePickerView.Builder(getActivity(), new TimePickerView.OnTimeSelectListener() {
@@ -135,33 +135,33 @@ public class BankInformationFragment extends Fragment {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
 
-                        if(s!=null){
-                            Gson gson=new Gson();
+                        if (s != null) {
+                            Gson gson = new Gson();
                             BankInformation information = gson.fromJson(s, BankInformation.class);
-                            if(information.getError_code()==0){
-                                    if(information.getData().getStatus().equals("1")){
-                                        bankBean=   information.getData();
-                                        etBankCard1.setText(bankBean.getBank().getDebit().getDnumber());
-                                        etBankPersonName1.setText(bankBean.getBank().getDebit().getDname());
-                                        etBankPhone1.setText(bankBean.getBank().getDebit().getDphone());
-                                        etSelectBank1.setText(bankBean.getBank().getDebit().getDbank());
-                                        etValidityTime1.setText(bankBean.getBank().getDebit().getDperiod());
+                            if (information.getError_code() == 0) {
+                                if (information.getData().getStatus().equals("1")) {
+                                    bankBean = information.getData();
+                                    etBankCard1.setText(bankBean.getBank().getDebit().getDnumber());
+                                    etBankPersonName1.setText(bankBean.getBank().getDebit().getDname());
+                                    etBankPhone1.setText(bankBean.getBank().getDebit().getDphone());
+                                    etSelectBank1.setText(bankBean.getBank().getDebit().getDbank());
+                                    etValidityTime1.setText(bankBean.getBank().getDebit().getDperiod());
 
 
-                                        etBankCard2.setText(bankBean.getBank().getCredit().getCnumber());
-                                        etBankPersonName2.setText(bankBean.getBank().getCredit().getCname());
-                                        etBankPhone2.setText(bankBean.getBank().getCredit().getCphone());
-                                        etSelectBank2.setText(bankBean.getBank().getCredit().getCbank());
-                                        etValidityTime2.setText(bankBean.getBank().getCredit().getCperiod());
+                                    etBankCard2.setText(bankBean.getBank().getCredit().getCnumber());
+                                    etBankPersonName2.setText(bankBean.getBank().getCredit().getCname());
+                                    etBankPhone2.setText(bankBean.getBank().getCredit().getCphone());
+                                    etSelectBank2.setText(bankBean.getBank().getCredit().getCbank());
+                                    etValidityTime2.setText(bankBean.getBank().getCredit().getCperiod());
 
-                                    }else {
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                        startActivity(intent);
-                                    }
+                                } else {
+                                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                    startActivity(intent);
+                                }
 
 
-                            }else {
-                                ToastUtils.showToast(getActivity(),information.getError_message());
+                            } else {
+                                ToastUtils.showToast(getActivity(), information.getError_message());
                             }
                         }
 
@@ -181,7 +181,7 @@ public class BankInformationFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    pvTime.show(v);
+                pvTime.show(v);
             }
         });
         etValidityTime2.setFocusableInTouchMode(false);
@@ -189,7 +189,7 @@ public class BankInformationFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    pvTime.show(v);
+                pvTime.show(v);
             }
         });
         etBankCard1.addTextChangedListener(new TextWatcher() {
@@ -198,6 +198,7 @@ public class BankInformationFragment extends Fragment {
 
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
@@ -272,14 +273,11 @@ public class BankInformationFragment extends Fragment {
         debitBean.setDphone(etBankPhone1.getText().toString());
 
 
+        if (bankBean.getBank().getCredit().equals(creditBean) && bankBean.getBank().getDebit().equals(debitBean)) {
+            ToastUtils.showToast(getActivity(), "无修改内容");
 
-
-
-        if(bankBean.getBank().getCredit().equals(creditBean)&&bankBean.getBank().getDebit().equals(debitBean)){
-            ToastUtils.showToast(getActivity(),"无修改内容");
-
-        }else {
-            FormEditText[] allFields = {etBankCard1, etBankCard2,  etBankPersonName1, etBankPersonName1,etBankPhone1,etBankPhone2};
+        } else {
+            FormEditText[] allFields = {etBankCard1, etBankCard2, etBankPersonName1, etBankPersonName1, etBankPhone1, etBankPhone2};
             boolean allValid = true;
             for (FormEditText field : allFields) {
                 allValid = field.testValidity() && allValid;
@@ -289,13 +287,13 @@ public class BankInformationFragment extends Fragment {
                 Bank bank = new Bank();
                 bank.setToken(token);
                 Bank.BankBean bean = new Bank.BankBean();
-                if(!etBankPhone1.getText().toString().isEmpty()
-                        &&!etBankPersonName1.getText().toString().isEmpty()
-                        &&!etBankCard1.getText().toString().isEmpty()
-                        &&!etSelectBank1.getText().toString().isEmpty()
-                        &&!etValidityTime1.getText().toString().isEmpty()){
+                if (!etBankPhone1.getText().toString().isEmpty()
+                        && !etBankPersonName1.getText().toString().isEmpty()
+                        && !etBankCard1.getText().toString().isEmpty()
+                        && !etSelectBank1.getText().toString().isEmpty()
+                        && !etValidityTime1.getText().toString().isEmpty()) {
                     bean.setBstatus("1");
-                }else {
+                } else {
                     bean.setBstatus("0");
                 }
                 bean.setCredit(creditBean);
@@ -312,7 +310,7 @@ public class BankInformationFragment extends Fragment {
                                 try {
                                     JSONObject object = new JSONObject(s);
                                     int isSuccess = object.getInt("error_code");
-                                    if (isSuccess==0) {
+                                    if (isSuccess == 0) {
                                         EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                         String data = object.getString("data");
                                         JSONObject object1 = new JSONObject(data);
