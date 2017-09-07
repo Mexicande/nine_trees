@@ -22,7 +22,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-   /* ext {
+ /*   ext {
         //for some reason, you may want to ignore tinkerBuild, such as instant run debug build?
         tinkerEnabled = false
     }*/
@@ -67,7 +67,7 @@ android {
         // 指定渠道包的输出路径
         apkOutputFolder = new File("${project.buildDir}/outputs/channels");
         // 定制渠道包的APK的文件名称
-        apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
+        apkFileNameFormat = '${channel}-v${versionName}-${buildTime}.apk';
         // 渠道配置文件
         channelFile = new File("${project.getProjectDir()}/channel")
     }
@@ -166,9 +166,15 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zhy:autolayout:+'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
+
     compile 'cn.yipianfengye.android:ad-library:1.0'
     // walle
     compile 'com.meituan.android.walle:library:1.1.5'
+
+
+    compile 'com.google.android:flexbox:0.2.5'
+    compile 'com.google.android:flexbox:0.3.0-alpha2'
+
 
     testCompile 'junit:junit:4.12'
     compile files('libs/mta-sdk-1.6.2.jar')

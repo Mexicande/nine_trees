@@ -27,7 +27,6 @@
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
-        android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -47,7 +46,6 @@
 
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

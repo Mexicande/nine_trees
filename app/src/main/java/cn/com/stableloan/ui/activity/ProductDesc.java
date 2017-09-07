@@ -18,6 +18,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -269,8 +273,15 @@ public class ProductDesc extends BaseActivity {
         ZhugeSDK.getInstance().track(this, "产品详情贷款", eventObject);
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
+      /*  FlexboxLayoutManager manager = new FlexboxLayoutManager();
+        manager.setFlexDirection(FlexDirection.ROW);
+        //设置是否换行
+        manager.setFlexWrap(FlexWrap.WRAP);
+        manager.setAlignItems(AlignItems.STRETCH);
+        flowRecyclerView.setLayoutManager(manager);*/
 
-        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL));
+         flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL));
+
         superTextAdapter = new SuperTextAdapter(null);
         flowRecyclerView.setAdapter(superTextAdapter);
         superTextAdapter.addData(labels);

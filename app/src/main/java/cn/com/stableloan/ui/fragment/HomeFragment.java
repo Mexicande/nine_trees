@@ -146,8 +146,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     private void showAdvertising(String img,String url){
 
-
-
         AdInfo adInfo = new AdInfo();
         long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
