@@ -58,87 +58,73 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
                     view.setVisibility(View.VISIBLE);
                     view.setWidth(20);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                    view.setSolid(Color.parseColor(lables.get(0).getBackground()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
                     break;
                 case 2:
                     view.setVisibility(View.VISIBLE);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                    view.setSolid(Color.parseColor(lables.get(0).getBackground()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
                     view1.setVisibility(View.VISIBLE);
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                    view1.setSolid(Color.parseColor(lables.get(1).getBackground()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
                     break;
                 case 3:
                     view.setVisibility(View.VISIBLE);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                    view.setSolid(Color.parseColor(lables.get(0).getBackground()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
                     view1.setVisibility(View.VISIBLE);
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                    view1.setSolid(Color.parseColor(lables.get(1).getBackground()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
                     view2.setVisibility(View.VISIBLE);
                     view2.setTextColor(Color.parseColor(lables.get(2).getFont()));
-                    view2.setSolid(Color.parseColor(lables.get(2).getBackground()));
                     view2.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
                     view2.setText(lables.get(2).getName());
                     break;
                 case 4:
                     view.setVisibility(View.VISIBLE);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                    view.setSolid(Color.parseColor(lables.get(0).getBackground()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
 
                     view1.setVisibility(View.VISIBLE);
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                    view1.setSolid(Color.parseColor(lables.get(1).getBackground()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
 
 
                     view2.setVisibility(View.VISIBLE);
                     view2.setTextColor(Color.parseColor(lables.get(2).getFont()));
-                    view2.setSolid(Color.parseColor(lables.get(2).getBackground()));
                     view2.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
                     view2.setText(lables.get(2).getName());
 
                     view3.setVisibility(View.VISIBLE);
                     view3.setTextColor(Color.parseColor(lables.get(3).getFont()));
-                    view3.setSolid(Color.parseColor(lables.get(3).getBackground()));
                     view3.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setText(lables.get(3).getName());
                 default:
                     view.setVisibility(View.VISIBLE);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
-                    view.setSolid(Color.parseColor(lables.get(0).getBackground()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
 
                     view1.setVisibility(View.VISIBLE);
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
-                    view1.setSolid(Color.parseColor(lables.get(1).getBackground()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
 
 
                     view2.setVisibility(View.VISIBLE);
                     view2.setTextColor(Color.parseColor(lables.get(2).getFont()));
-                    view2.setSolid(Color.parseColor(lables.get(2).getBackground()));
                     view2.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
                     view2.setText(lables.get(2).getName());
 
                     view3.setVisibility(View.VISIBLE);
                     view3.setTextColor(Color.parseColor(lables.get(3).getFont()));
-                    view3.setSolid(Color.parseColor(lables.get(3).getBackground()));
                     view3.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setText(lables.get(3).getName());
 

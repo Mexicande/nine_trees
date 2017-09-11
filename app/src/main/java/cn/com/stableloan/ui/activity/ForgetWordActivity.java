@@ -142,13 +142,12 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
             HashMap<String, String> params = new HashMap<>();
             params.put("userphone", phone);
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.times.MESSAGE_SEND)
+            OkGo.post(Urls.Ip_url+Urls.times.MESSAGE_SEND)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-
                             Gson gson = new Gson();
                             MessageCode body = gson.fromJson(s, MessageCode.class);
                             if (body.getError_code() == 0) {

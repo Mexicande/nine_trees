@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         NormalItemView normalItemView = new NormalItemView(this);
         normalItemView.initialize(drawable,checkedDrawable,text);
         normalItemView.setTextDefaultColor(Color.GRAY);
-        normalItemView.setTextCheckedColor(0xFFffa900);
+        normalItemView.setTextCheckedColor(Color.rgb(253,32,33));
         return normalItemView;
     }
     private long mLastBackTime = 0;

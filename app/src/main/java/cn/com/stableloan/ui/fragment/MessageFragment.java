@@ -112,17 +112,30 @@ public class MessageFragment extends Fragment {
             Random random = new Random();
             int i = random.nextInt(99999) + 10000;
             long l = System.currentTimeMillis();
-
             times = String.valueOf(i) + String.valueOf(l);
-
         }
-
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL,btGetCode , getActivity());
         gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
 
         setListener();
-
         return view;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            //相当于Fragment的onPause
+            Atest=false;
+
+          //  gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+
+           // setGt3GeetestUtilsListener();
+
+        } else {
+           // gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+
+            // 相当于Fragment的onResume
+        }
     }
 
     @Override
@@ -161,7 +174,6 @@ public class MessageFragment extends Fragment {
                                 ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");
                             }
 
-
                         }
                     });
                 }
@@ -197,6 +209,7 @@ public class MessageFragment extends Fragment {
 
     private void GT3GeetestListener() {
         gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+
         gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
         changePhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         changePhone.getPaint().setAntiAlias(true);
@@ -204,7 +217,6 @@ public class MessageFragment extends Fragment {
 
         SPUtils.put(getActivity(), "ip", AdressIp);
         LogUtils.i("ipAddress", AdressIp);
-
 
         gt3GeetestUtils.setGtListener(new GT3GeetestUtils.GT3Listener() {
             /**
@@ -584,7 +596,7 @@ public class MessageFragment extends Fragment {
                 break;
         }
     }
-    @Override
+   /* @Override
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             Atest=false;
@@ -593,5 +605,5 @@ public class MessageFragment extends Fragment {
         // 相当于Fragment的onResume
         System.out.println("界面可见");
          }
-    }
+    }*/
 }

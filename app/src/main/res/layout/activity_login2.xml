@@ -30,11 +30,11 @@
             android:id="@+id/view_logo"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:layout_width="90dp"
+            android:layout_width="70dp"
             android:elevation="2dp"
-            android:layout_height="90dp"
-            android:src="@mipmap/logo"/>
-        <cn.com.stableloan.utils.SwitchMultiButton
+            android:layout_height="70dp"
+            android:src="@mipmap/iv_logo"/>
+  <!--      <cn.com.stableloan.utils.SwitchMultiButton
             android:id="@+id/switchmultibutton"
             android:layout_gravity="center_horizontal"
             android:layout_below="@id/view_logo"
@@ -45,7 +45,6 @@
             android:layout_marginBottom="2dp"
             android:background="@drawable/switch_button_bacground"
             android:layout_width="match_parent"
-
             android:layout_height="30dp"
             app:strokeRadius="7dp"
             app:selectedTab="0"
@@ -53,21 +52,41 @@
             app:selectedColor="#6392c6"
             app:textSize="16sp"/>
 
-      <!--  <include layout="@layout/login_password"
+      &lt;!&ndash;  <include layout="@layout/login_password"
             />
         <include layout="@layout/login_code"
             android:visibility="gone"/>
         <include layout="@layout/login_message"
             android:visibility="gone"
-            />-->
+            />&ndash;&gt;
         <FrameLayout
             android:id="@+id/fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="80dp">
-
         </FrameLayout>
-
+-->
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/login_magicindicator"
+            android:layout_marginRight="@dimen/_50dp"
+            android:layout_marginLeft="@dimen/_50dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_gravity="center_horizontal" />
+      <!--  <android.support.v4.view.ViewPager
+            android:id="@+id/login_Viewpager"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="80dp"/>-->
+        <FrameLayout
+            android:id="@+id/fragment"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="80dp">
+        </FrameLayout>
     </LinearLayout>
     <TextView
         android:layout_marginBottom="50dp"

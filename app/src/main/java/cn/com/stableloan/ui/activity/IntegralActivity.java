@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
@@ -32,6 +33,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +46,8 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.IntregarlEvent;
 import cn.com.stableloan.bean.ShareEvent;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
+import cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment;
+import cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
@@ -132,7 +136,10 @@ public class IntegralActivity extends BaseActivity {
 
 
     private void initFragments() {
-        myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager());
+        List<Fragment>list=new ArrayList<>();
+        list.add(new IntegarlTaskFragment());
+        list.add(new IntegarlExchangeFragment());
+        myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(),list);
         viewPager.setAdapter(myViewPagerAdapter);
         CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);

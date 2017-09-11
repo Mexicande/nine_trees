@@ -29,28 +29,26 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_30dp"
                 android:baselineAligned="false">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:text="身份"
                     android:textSize="17dp"
-                    android:gravity="center_horizontal"
                     android:textColor="@color/tag_textcolor"/>
                 <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
                     android:id="@+id/id_flowlayout"
                     android:layout_marginTop="@dimen/_5dp"
                     android:layout_width="match_parent"
                     zhy:max_select="1"
-                    app:gravity="center"
+                    app:gravity="left"
                     android:layout_height="wrap_content">
                 </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5dp"
-                    android:layout_gravity="center_horizontal"
                     android:text="标签"
                     android:textSize="17dp"
                     android:gravity="center_horizontal"
@@ -59,36 +57,49 @@
                     android:id="@+id/tag_flowlayout"
                     android:layout_marginTop="@dimen/_5dp"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="12dp"
                     zhy:max_select="-1"
+                    app:gravity="left"
                     android:layout_height="wrap_content">
                 </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
-                <cn.com.stableloan.view.RoundButton
-                    android:id="@+id/button"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="90dp"
-                    android:layout_height="30dp"
-                    android:text="递 交"
-                    app:btnCornerRadius="5dp"
-                    app:btnPressedRatio="0.9"
-                    app:btnSolidColor="#508BEF"
-                    android:gravity="center"
-                    android:textSize="17sp"
-                    android:textColor="#ffffff"
-                    />
-                <ImageView
-                    android:id="@+id/reset"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="20dp"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@mipmap/reset"
-                    android:layout_marginBottom="@dimen/_30dp"
-                    />
+
             </LinearLayout>
+
         </RelativeLayout>
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <cn.com.stableloan.view.RoundButton
+                android:id="@+id/button"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
+                android:text="确认"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="@color/product_desc"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textColor="#ffffff"
+                />
+            <cn.com.stableloan.view.RoundButton
+                android:id="@+id/reset"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
+                android:text="重置"
+                android:background="@drawable/ic_product_sure"
+                app:btnPressedRatio="0.9"
+                app:btnSolidColor="@color/white"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textColor="@color/blacktext"
+                />
+        </LinearLayout>
+
         <LinearLayout
           android:id="@+id/layoutGo"
           android:orientation="vertical"

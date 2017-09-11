@@ -64,6 +64,16 @@ public class Class_ListProductBean implements Serializable{
         private String min_algorithm;
         private String link;
 
+        public String getInterest_algorithm() {
+            return interest_algorithm;
+        }
+
+        public void setInterest_algorithm(String interest_algorithm) {
+            this.interest_algorithm = interest_algorithm;
+        }
+
+        private String interest_algorithm;
+
         public String getLink() {
             return link;
         }

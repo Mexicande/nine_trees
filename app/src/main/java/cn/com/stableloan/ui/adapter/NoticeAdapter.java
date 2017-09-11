@@ -29,8 +29,8 @@ public class NoticeAdapter extends BaseQuickAdapter<NoticeBean.AnnouncementsBean
     @Override
     protected void convert(BaseViewHolder helper, NoticeBean.AnnouncementsBean item) {
         RequestOptions options = new RequestOptions()
-                .placeholder(com.yalantis.ucrop.R.color.ucrop_color_grey)
                 .centerCrop()
+                .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
         helper.setText(R.id.tv_name,item.getName())

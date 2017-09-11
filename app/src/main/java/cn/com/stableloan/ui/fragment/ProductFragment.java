@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -73,8 +74,6 @@ public class ProductFragment extends ImmersionFragment {
 
     @Bind(R.id.SwipeRefreshLayout)
     SwipeRefreshLayout SwipeRefreshLayout;
-    @Bind(R.id.layout_select)
-    SuperTextView layoutSelect;
     @Bind(R.id.id_flowlayout)
     TagFlowLayout idFlowlayout;
     @Bind(R.id.tag_flowlayout)

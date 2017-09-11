@@ -15,27 +15,14 @@
         android:textSize="20sp"
         />
 
-    <com.coorchice.library.SuperTextView
-        android:layout_marginTop="20dp"
+    <ImageView
         android:layout_gravity="right"
+        android:src="@mipmap/iv_product_menu"
         android:id="@+id/layout_select"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="15dp"
+        android:layout_width="30dp"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_height="27dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginLeft="10dp"
-        android:gravity="center"
-        android:paddingLeft="23dp"
-        android:text="筛选"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:corner="40dp"
-        app:isShowState="true"
-        app:state_drawable="@mipmap/select"
-        app:state_drawable_height="18dp"
-        app:state_drawable_mode="left"
-        app:state_drawable_padding_left="10dp"
-        app:state_drawable_width="18dp"
         />
 
 </android.support.v7.widget.Toolbar>

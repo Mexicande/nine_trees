@@ -1,5 +1,6 @@
 package cn.com.stableloan.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.UserEvent;
+import cn.com.stableloan.interfaceutils.Touch_login;
 import cn.com.stableloan.model.DesBean;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
@@ -63,8 +65,8 @@ public class LoginFragment extends Fragment {
     cn.com.stableloan.utils.editext.PowerfulEditText etPassWord;
     @Bind(R.id.bt_login)
     RoundButton btLogin;
-    @Bind(R.id.tv_freeRegistered)
-    TextView tvFreeRegistered;
+    @Bind(R.id.tv_messagelogin)
+    TextView tv_messagelogin;
     @Bind(R.id.tv_forgetPassWord)
     TextView tvForgetPassWord;
     @Bind(R.id.view_passWord)
@@ -93,7 +95,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+       gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
         ButterKnife.bind(this, view);
         setGt3GeetestUtilsListener();
         long date = (long) SPUtils.get(getActivity(), "date", 1111111111111L);
@@ -109,6 +111,37 @@ public class LoginFragment extends Fragment {
         return view;
 
     }
+ /*   @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            //相当于Fragment的onPause
+
+
+        } else {
+          *//*  gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+
+            setGt3GeetestUtilsListener();*//*
+            // 相当于Fragment的onResume
+        }
+    }
+*/
+/* private boolean isFirst = true;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser && isFirst){
+            //在这里加载数据
+            isFirst = false;
+            gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+            setGt3GeetestUtilsListener();
+            setListener();
+
+
+        }
+
+    }*/
 
     @Override
     public void onResume() {
@@ -492,11 +525,12 @@ public class LoginFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.tv_freeRegistered, R.id.tv_forgetPassWord, R.id.bt_login})
+    @OnClick({R.id.tv_messagelogin, R.id.tv_forgetPassWord, R.id.bt_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_freeRegistered:
-                LoginActivity.switchmultibutton.setSelectedTab(0);
+            case R.id.tv_messagelogin:
+                mCallback.showProByName(1);
+                //LoginActivity.viewPager.setCurrentItem(0);
                 break;
             case R.id.tv_forgetPassWord:
                 ForgetWordActivity.launch(getActivity());
@@ -507,8 +541,17 @@ public class LoginFragment extends Fragment {
                 } else {
                     ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");
                 }
-
                 break;
         }
     }
+    private Touch_login mCallback;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context != null) {
+            mCallback = (Touch_login) context;
+        }
+    }
+
 }

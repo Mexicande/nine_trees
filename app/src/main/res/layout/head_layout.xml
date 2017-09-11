@@ -18,29 +18,136 @@
             app:banner_transitionEffect="defaultEffect"
             >
         </cn.bingoogolapple.bgabanner.BGABanner>
-
-    <RelativeLayout
-
+    <LinearLayout
         android:background="@color/white"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_work"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_working"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            <TextView
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/iv_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/product_limit"
+                android:text="上班族"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_student"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_student"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            <TextView
+                android:layout_marginTop="@dimen/_5dp"
+
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/iv_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/product_limit"
+                android:text="学生党"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_free"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_freeing"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            <TextView
+                android:layout_marginTop="@dimen/_5dp"
+
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/iv_free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/product_limit"
+                android:text="逍遥族"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_enterprise"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_bussins"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            <TextView
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/iv_enterprise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/product_limit"
+                android:text="企业主"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
         android:layout_height="30dp">
-        <ImageView
-            android:layout_marginLeft="10dp"
-            android:id="@+id/hot_ivon"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/hot_icon"/>
         <TextView
-            android:layout_toRightOf="@id/hot_ivon"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="热门推荐"/>
+            android:text="热门推荐"
+            android:textColor="@color/select_text_color"
+            android:textSize="15sp"/>
 
     </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:background="@color/white"
         android:id="@+id/linear_recyclerView"
@@ -48,7 +155,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
-    <RelativeLayout
+<!--    <RelativeLayout
         android:background="@color/white"
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
@@ -83,115 +190,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/line"/>
-    </RelativeLayout>
-    <LinearLayout
-        android:background="@color/white"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_centerHorizontal="true"
-                android:id="@+id/iv_work"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_header02"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                />
-            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/iv_work"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/product_limit"
-                android:text="上班族"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_centerHorizontal="true"
-                android:id="@+id/iv_student"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_header03"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                />
-            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/iv_student"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/product_limit"
-                android:text="学生党"/>
-        </RelativeLayout>
+    </RelativeLayout>-->
 
-        <RelativeLayout
-            android:layout_marginTop="5dp"
-
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_centerHorizontal="true"
-                android:id="@+id/iv_free"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_header01"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                />
-            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/iv_free"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/product_limit"
-                android:text="逍遥族"/>
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_centerHorizontal="true"
-                android:id="@+id/iv_enterprise"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_header04"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                />
-            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/iv_enterprise"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/product_limit"
-                android:text="企业主"/>
-        </RelativeLayout>
-
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_marginTop="5dp"
@@ -200,8 +200,8 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/layou4"
+            android:layout_marginLeft="@dimen/_10dp"
             android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
@@ -209,16 +209,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="分类专题"
-                android:layout_gravity="center_horizontal"/>
-            <TextView
-                android:textColor="#fea423"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BEST"/>
+                android:textSize="15sp"
+                android:textColor="@color/select_text_color"
+                />
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:layout_below="@id/layou4"
+            android:layout_marginTop="@dimen/_10dp"
             android:id="@+id/classify_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -229,23 +226,14 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
             <TextView
+                android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="新品上线"
+                android:textSize="15sp"
+                android:textColor="@color/select_text_color"
                 android:layout_gravity="center_horizontal"/>
-            <TextView
-                android:textColor="#ff0000"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NEW"/>
-        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
