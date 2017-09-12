@@ -19,9 +19,9 @@
         android:layout_gravity="right"
         android:src="@mipmap/iv_product_menu"
         android:id="@+id/layout_select"
-        android:layout_width="30dp"
-        android:layout_marginRight="@dimen/_10dp"
-        android:layout_height="27dp"
+        android:layout_width="24dp"
+        android:layout_marginRight="15dp"
+        android:layout_height="22dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         />
 

@@ -16,9 +16,10 @@
         android:layout_height="match_parent">
         <TextView
             android:layout_marginLeft="3dp"
-            android:textSize="15sp"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:text=" 借款审核细节"
-            android:textColor="@color/desc_text_color"
+            android:textColor="@color/select_text_color"
             android:drawableLeft="@drawable/circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -34,7 +35,6 @@
             />
         <TextView
             android:visibility="gone"
-
             android:id="@+id/review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,6 @@
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
-
         <TextView
             android:visibility="gone"
             android:id="@+id/actual_account"
@@ -66,7 +65,6 @@
             />
         <TextView
             android:visibility="gone"
-
             android:id="@+id/repayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,12 +97,10 @@
             />
         <TextView
             android:visibility="gone"
-
             android:id="@+id/prepayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/desc_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"

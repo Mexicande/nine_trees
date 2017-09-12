@@ -2,27 +2,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
-        android:background="@drawable/desc_top"
+        android:background="@color/white"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/layout3"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/product_logo"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="7dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             />
         <TextView
             android:id="@+id/tv_pname"
             android:textSize="18sp"
-            android:layout_marginLeft="5dp"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/select_text_color"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/product_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,27 +31,28 @@
         <TextView
             android:id="@+id/product_introduction"
             android:textSize="13sp"
-            android:textColor="@color/white"
+            android:textColor="@color/tag_textcolor"
             android:layout_alignLeft="@id/tv_pname"
             android:layout_width="wrap_content"
             android:ellipsize="end"
             android:lines="1"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pname"/>
-    </RelativeLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/flow"
-            android:layout_below="@id/layout3"
-            android:layout_marginLeft="15dp"
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_below="@id/product_introduction"
+            android:layout_marginLeft="75dp"
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+    </RelativeLayout>
     <View
         android:layout_marginTop="3dp"
         android:id="@+id/view"
         android:background="@color/white"
-        android:layout_below="@id/flow"
+        android:layout_below="@id/layout3"
         android:layout_width="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_height="2dp"/>
@@ -58,7 +60,6 @@
         android:layout_below="@id/view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
         <RelativeLayout
             android:id="@+id/layout4"
             android:layout_centerVertical="true"
@@ -71,7 +72,7 @@
                 android:id="@+id/tv_limt"
                 android:textSize="15sp"
                 android:layout_centerHorizontal="true"
-                android:textColor="#f9fefa"
+                android:textColor="@color/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="额度范围(元)"/>
@@ -82,7 +83,7 @@
                 android:layout_below="@id/tv_limt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#f9fefa"
+                android:textColor="@color/tag_textcolor"
                 android:layout_centerHorizontal="true"
                 />
 
@@ -98,7 +99,7 @@
                 android:id="@+id/tv_rate"
                 android:textSize="15sp"
                 android:layout_centerHorizontal="true"
-                android:textColor="#f9fefa"
+                android:textColor="@color/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="参考月利息"/>
@@ -109,7 +110,7 @@
                 android:layout_below="@id/tv_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#f9fefa"
+                android:textColor="@color/tag_textcolor"
                 android:layout_centerHorizontal="true"
                 />
         </RelativeLayout>
@@ -124,7 +125,7 @@
             <TextView
                 android:id="@+id/tv_time"
                 android:textSize="15sp"
-                android:textColor="#f9fefa"
+                android:textColor="@color/colorPrimary"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,7 +137,7 @@
                 android:layout_below="@id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#f9fefa"
+                android:textColor="@color/tag_textcolor"
                 android:layout_centerHorizontal="true"
                 />
         </RelativeLayout>

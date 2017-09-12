@@ -2,10 +2,12 @@ package cn.com.stableloan.ui.adapter;
 
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.coorchice.library.SuperTextView;
+import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.List;
 
@@ -27,12 +29,16 @@ public class SuperTextAdapter extends BaseQuickAdapter<Product_DescBean.DataBean
 
     @Override
     protected void convert(BaseViewHolder helper,Product_DescBean.DataBean.LabelsBean item) {
-        SuperTextView view4 =(SuperTextView)helper.getView(R.id.labels);
-
+        SuperTextView view4 =helper.getView(R.id.labels);
         view4.setStrokeColor(Color.parseColor(item.getFont()));
-        view4.setSolid(Color.parseColor(item.getBackground()));
         view4.setTextColor(Color.parseColor(item.getFont()));
         view4.setText(item.getName());
+        ViewGroup.LayoutParams lp = view4.getLayoutParams();
+        if (lp instanceof FlexboxLayoutManager.LayoutParams) {
+            FlexboxLayoutManager.LayoutParams flexboxLp =
+                    (FlexboxLayoutManager.LayoutParams) view4.getLayoutParams();
+            flexboxLp.setFlexGrow(1.0f);
+        }
 
 
 

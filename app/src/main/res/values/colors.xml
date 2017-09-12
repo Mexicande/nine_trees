@@ -12,6 +12,7 @@
     <color name="product_desc_color">#a4aaba</color>
     <color name="product_limit">#999999</color>
     <color name="select_text_color">#333333</color>
+    <color name="strawberry">#fd2021</color>
     <color name="product_desc">#e51a26</color>
     <!--登陆页面-->
     <color name="LoginNormalText">#fd2021</color>

@@ -6,7 +6,7 @@ package cn.com.stableloan.api;
 
 public interface Urls {
 
-    String Ip_url="http://api.anwenqianbao.com/v1/";
+    String Ip_url="http://test.api.anwenqianbao.com/v1/";
 
     String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
 

@@ -181,7 +181,7 @@
                             android:textColor="@color/product_limit"
                             />
                         <TextView
-                            android:layout_marginRight="20dp"
+                            android:layout_marginRight="5dp"
                             android:textColor="@color/product_limit"
                             android:id="@+id/rate"
                             android:layout_width="wrap_content"

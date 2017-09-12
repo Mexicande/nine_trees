@@ -266,6 +266,11 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
-
+    </style>
+   <!-- top_menu-->
+    <style name="TRM_ANIM_STYLE">
+        <item name="android:listDivider">@drawable/divider_bg</item>
+        <item name="android:windowEnterAnimation">@anim/trm_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/trm_popup_exit</item>
     </style>
 </resources>

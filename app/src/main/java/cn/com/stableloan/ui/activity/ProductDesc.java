@@ -6,22 +6,20 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -33,6 +31,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +43,13 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
-import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.top_menu.MenuItem;
+import cn.com.stableloan.utils.top_menu.TopRightMenu;
 import cn.com.stableloan.view.DescDialog;
-import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.likebutton.LikeButton;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
@@ -85,8 +83,6 @@ public class ProductDesc extends BaseActivity {
     @Bind(R.id.prepayment)
     TextView prepayment;
 
-    @Bind(R.id.space)
-    Space space;
     @Bind(R.id.ic_strategy)
     TextView icStrategy;
     @Bind(R.id.platform_desc)
@@ -126,24 +122,22 @@ public class ProductDesc extends BaseActivity {
     LinearLayout linla;
     @Bind(R.id.apply)
     Button apply;
-    @Bind(R.id.layoutgo)
-    RelativeLayout layoutgo;
-    @Bind(R.id.cash_slideView)
-    RelativeLayout slideView;
+    /*   @Bind(R.id.cash_slideView)
+       RelativeLayout slideView;*/
     @Bind(R.id.heart_button)
     LikeButton heartButton;
-    @Bind(R.id.view_wx)
-    View viewWx;
-    @Bind(R.id.wx)
-    TextView wx;
-    @Bind(R.id.layout_wx)
-    LinearLayout layoutWx;
-    @Bind(R.id.layout_friend)
-    LinearLayout layoutFriend;
-    @Bind(R.id.top)
-    RelativeLayout top;
-    @Bind(R.id.layoutGo)
-    View layoutGo;
+    @Bind(R.id.bt_share)
+    ImageView btShare;
+    /*    @Bind(R.id.view_wx)
+        View viewWx;
+        @Bind(R.id.wx)
+        TextView wx;
+        @Bind(R.id.layout_wx)
+        LinearLayout layoutWx;
+        @Bind(R.id.layout_friend)
+        LinearLayout layoutFriend;
+        @Bind(R.id.top)
+        RelativeLayout top;*/
     private String pid;
     private Product_DescBean descBean;
 
@@ -152,7 +146,7 @@ public class ProductDesc extends BaseActivity {
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
 
-    private boolean flag=false;
+    private boolean flag = false;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
@@ -165,31 +159,33 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         initToolbar();
+
         pid = getIntent().getStringExtra("pid");
         if (pid != null) {
             getProductDate();
         }
 
-        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID,null,null,null);
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
         wxManager = new WXManager(this);
         StateListener<String> wxStateListener = new StateListener<String>() {
             @Override
             public void onComplete(String s) {
-                ToastUtils.showToast(ProductDesc.this,s);
+                ToastUtils.showToast(ProductDesc.this, s);
             }
+
             @Override
             public void onError(String err) {
-                ToastUtils.showToast(ProductDesc.this,err);
+                ToastUtils.showToast(ProductDesc.this, err);
             }
+
             @Override
             public void onCancel() {
-                ToastUtils.showToast(ProductDesc.this,"取消");
+                ToastUtils.showToast(ProductDesc.this, "取消");
             }
         };
 
         wxManager.setListener(wxStateListener);
     }
-
 
 
     private void getProductDate() {
@@ -250,6 +246,7 @@ public class ProductDesc extends BaseActivity {
                 });
     }
 
+
     private String substringmin = "";
     private String substringmax = "";
 
@@ -273,18 +270,23 @@ public class ProductDesc extends BaseActivity {
         ZhugeSDK.getInstance().track(this, "产品详情贷款", eventObject);
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
-      /*  FlexboxLayoutManager manager = new FlexboxLayoutManager();
+
+
+       /* FlexboxLayoutManager manager = new FlexboxLayoutManager();
+
         manager.setFlexDirection(FlexDirection.ROW);
         //设置是否换行
         manager.setFlexWrap(FlexWrap.WRAP);
         manager.setAlignItems(AlignItems.STRETCH);
+
+        flowRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         flowRecyclerView.setLayoutManager(manager);*/
 
-         flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL));
+        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
 
-        superTextAdapter = new SuperTextAdapter(null);
+        superTextAdapter = new SuperTextAdapter(labels);
         flowRecyclerView.setAdapter(superTextAdapter);
-        superTextAdapter.addData(labels);
+        //superTextAdapter.addData(labels);
 
 
         RequestOptions options = new RequestOptions()
@@ -326,48 +328,49 @@ public class ProductDesc extends BaseActivity {
         }
         if (product.getActual_account() != null) {
             arrive.setVisibility(View.VISIBLE);
+            setTextViewColor(arrive, "到账方式: " + product.getActual_account());
 
-            arrive.setText("到账方式: " + product.getActual_account());
         }
-
-
         minMax.setText(substringmin + "~" + substringmax);
-
         if (product_crowd != null) {
             crowd.setVisibility(View.VISIBLE);
-            crowd.setText("面向人群: " + product_crowd);
+            setTextViewColor(crowd, "面向人群: " + product_crowd);
+
         }
         if (product_review != null) {
             review.setVisibility(View.VISIBLE);
+            setTextViewColor(review, "审核方式: " + product_review);
 
-            review.setText("审核方式: " + product_review);
         }
 
 
         if (product_actual_account != null) {
             actualAccount.setVisibility(View.VISIBLE);
+            setTextViewColor(actualAccount, "实际到账: " + product_actual_account);
 
-            actualAccount.setText("实际到账: " + product_actual_account);
+
         }
         if (product_repayment != null) {
             repayment.setVisibility(View.VISIBLE);
+            setTextViewColor(repayment, "还款方式: " + product_repayment);
 
-            repayment.setText("还款方式: " + product_repayment);
+
         }
         if (product_repayment_channels != null) {
             repaymentChannels.setVisibility(View.VISIBLE);
+            setTextViewColor(repaymentChannels, "还款渠道: " + product_repayment_channels);
 
-            repaymentChannels.setText("还款渠道: " + product_repayment_channels);
 
         }
         if (min != null && max != null) {
             interestAlgorithm.setVisibility(View.VISIBLE);
-            interestAlgorithm.setText("利息算法: " + product.getInterest_algorithm());
+            setTextViewColor(interestAlgorithm, "利息算法: " + product.getInterest_algorithm());
+
         }
 
         if (product_prepayment != null) {
             prepayment.setVisibility(View.VISIBLE);
-            prepayment.setText("提前还款: " + product_prepayment);
+            setTextViewColor(prepayment, "提前还款: " + product_prepayment);
         }
         if (product.getProduct_details() != null) {
             String details = product.getProduct_details();
@@ -376,8 +379,17 @@ public class ProductDesc extends BaseActivity {
         }
     }
 
+    private void setTextViewColor(TextView view, String s) {
+        SpannableString spanString = new SpannableString(s);
+        ForegroundColorSpan span = new ForegroundColorSpan(getResources().getColor(R.color.select_text_color));
+        spanString.setSpan(span, 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        view.setText(spanString);
+    }
+
     private void initToolbar() {
-        ivBack.setVisibility(View.VISIBLE);
+        titleName.setText("产品详情");
+
+      /*  ivBack.setVisibility(View.VISIBLE);
         titleName.setText("产品详情");
         slideUp = new SlideUp.Builder(slideView)
                 .withListeners(new SlideUp.Listener.Slide() {
@@ -388,11 +400,14 @@ public class ProductDesc extends BaseActivity {
                 .withStartGravity(Gravity.BOTTOM)
                 .withLoggingEnabled(true)
                 .withStartState(SlideUp.State.HIDDEN)
-                .build();
+                .build();*/
+
     }
+
     private DescDialog descDialog;
+
     @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy, R.id.bt_share
-            , R.id.layoutGo, R.id.layout_wx, R.id.layout_friend,R.id.heart_button})
+            , R.id.heart_button})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -402,7 +417,6 @@ public class ProductDesc extends BaseActivity {
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
                 break;
             case R.id.ic_strategy:
-
                 if (!descBean.getData().getRaiders_connection().isEmpty()) {
                     startActivity(new Intent(this, HtmlActivity.class).putExtra("Strate", descBean));
                 } else {
@@ -415,10 +429,10 @@ public class ProductDesc extends BaseActivity {
                     LoginActivity.launch(this);
                 } else {
                     Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                    if(dialog){
+                    if (dialog) {
                         sendIO();
                         startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
-                    }else {
+                    } else {
                         descDialog = new DescDialog(this);
                         descDialog.setTitle("提示");
                         descDialog.setMessage("确定退出登陆?");
@@ -444,31 +458,46 @@ public class ProductDesc extends BaseActivity {
                 }
                 break;
             case R.id.bt_share:
-                slideUp.show();
+                TopRightMenu mTopRightMenu = new TopRightMenu(this);
+                List<MenuItem> menuItems = new ArrayList<>();
+                menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
+                menuItems.add(new MenuItem(R.mipmap.iv_share_friend, "分享到朋友圈"));
+                menuItems.add(new MenuItem(R.mipmap.iv_collection, "收藏"));
+                mTopRightMenu
+                        .showIcon(true)     //显示菜单图标，默认为true
+                        .dimBackground(true)           //背景变暗，默认为true
+                        .needAnimationStyle(true)   //显示动画，默认为true
+                        .setAnimationStyle(R.style.TRM_ANIM_STYLE)  //默认为R.style.TRM_ANIM_STYLE
+                        .addMenuList(menuItems)
+                        .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
+                            @Override
+                            public void onMenuItemClick(int position) {
+                                Toast.makeText(ProductDesc.this, "点击菜单:" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .showAsDropDown(btShare, -225, 0);
+//                        .showAsDropDown(moreBtn);
                 break;
-            case R.id.layoutGo:
-                slideUp.hide();
-                break;
-            case R.id.layout_wx:
+          /*  case R.id.layout_wx:
                shareWechat(WXShareContent.WXSession);
                 break;
             case R.id.layout_friend:
                shareWechat(WXShareContent.WXTimeline);
-
-                break;
+                break;*/
             default:
                 break;
         }
     }
+
     private WXManager wxManager;
 
-    private void shareWechat( int scence) {
+    private void shareWechat(int scence) {
 
 
         WXShareContent contentWX = new WXShareContent();
         contentWX.setScene(scence)
                 .setType(WXShareContent.share_type.WebPage)
-                .setWeb_url(Urls.KEY.PageWeb+descBean.getData().getId())
+                .setWeb_url(Urls.KEY.PageWeb + descBean.getData().getId())
                 .setTitle("安稳钱包")
                 .setDescription(descBean.getData().getProduct_introduction())
                 .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
@@ -508,7 +537,7 @@ public class ProductDesc extends BaseActivity {
                                 JSONObject json = new JSONObject(s);
                                 int error_code = json.getInt("error_code");
                                 if (error_code == 0) {
-                                    flag=true;
+                                    flag = true;
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     if (status.equals("1")) {
                                         ToastUtils.showToast(ProductDesc.this, "收藏成功");
@@ -561,18 +590,18 @@ public class ProductDesc extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ZhugeSDK.getInstance().flush(getApplicationContext());
-        if(flag){
+        if (flag) {
             EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
         }
     }
 
     @Override
     public void onBackPressed() {
-        if(slideUp.isVisible()){
+      /*  if(slideUp.isVisible()){
             slideUp.hide();
         }else {
             super.onBackPressed();
-        }
+        }*/
     }
 
     @Override

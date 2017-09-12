@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements Touch_login {
         loginMagicindicator.setNavigator(commonNavigator);
         LinearLayout titleContainer = commonNavigator.getTitleContainer(); // must after setNavigator
         titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        titleContainer.setDividerPadding(UIUtil.dip2px(this, 7));
+        titleContainer.setDividerPadding(UIUtil.dip2px(this, 4));
         titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
        /* titleContainer.setDividerDrawable(new ColorDrawable() {
             @Override
@@ -280,6 +280,8 @@ public class LoginActivity extends AppCompatActivity implements Touch_login {
                 finish();
             } else if (from.equals("user2")) {
                 EventBus.getDefault().post(new InformationEvent("user2"));
+                finish();
+            }else {
                 finish();
             }
         } else {

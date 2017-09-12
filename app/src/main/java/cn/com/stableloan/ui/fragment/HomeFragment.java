@@ -2,6 +2,7 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -159,6 +160,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             adManager.setOverScreen(true)
                     .setPageTransformer(new DepthPageTransformer());
             adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
+            adManager.setPadding(50)
+                    .setBackViewColor(Color.parseColor("#AA333333"));
             adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
                 @Override
                 public void onImageClick(View view, AdInfo advInfo) {

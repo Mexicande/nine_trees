@@ -173,6 +173,10 @@ public class ProductFragment extends ImmersionFragment {
                                         TextView mTextView= (TextView) inflate.findViewById(R.id.tv_tag);
                                         inflate.removeView(mTextView);
                                         mTextView.setText(s);
+
+                                       /* TextView view = (TextView) getActivity().getLayoutInflater().inflate(R.layout.tag_item, null);
+                                        view.setText(s);*/
+
                                         return mTextView;
                                     }
                                 });
@@ -275,10 +279,13 @@ public class ProductFragment extends ImmersionFragment {
         idFlowlayout.setAdapter(new TagAdapter<String>(mVals) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
-                TextView view = (TextView) getActivity().getLayoutInflater().inflate(R.layout.tv, null);
-                view.setText(s);
-
-                return view;
+              /*  TextView view = (TextView) getActivity().getLayoutInflater().inflate(R.layout.tv, null);
+                view.setText(s);*/
+                LinearLayout inflate = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.tag_item, null);
+                TextView mTextView= (TextView) inflate.findViewById(R.id.tv_tag);
+                inflate.removeView(mTextView);
+                mTextView.setText(s);
+                return mTextView;
             }
         });
         notDataView = getActivity().getLayoutInflater().inflate(R.layout.view_empty, (ViewGroup) classifyRecycl.getParent(), false);
