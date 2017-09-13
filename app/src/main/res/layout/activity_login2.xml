@@ -33,7 +33,7 @@
             android:layout_width="70dp"
             android:elevation="2dp"
             android:layout_height="70dp"
-            android:src="@mipmap/iv_logo"/>
+            android:src="@mipmap/logo"/>
   <!--      <cn.com.stableloan.utils.SwitchMultiButton
             android:id="@+id/switchmultibutton"
             android:layout_gravity="center_horizontal"

@@ -115,7 +115,6 @@ public class CardUploadActivity extends BaseActivity {
                                                 .error(R.mipmap.ic_image_error)
                                                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                                         Glide.with(CardUploadActivity.this).load(photo1).apply(options).into(fiv);
-
                                         fiv.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {

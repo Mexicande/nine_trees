@@ -7,33 +7,48 @@
     android:background="#f2f3f5"
     tools:context="cn.com.stableloan.ui.fragment.UserFragment">
     <RelativeLayout
-        android:background="@drawable/user_top"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="160dp">
+        <ImageView
+            android:id="@+id/layout_setting"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="25dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_height="25dp"
+            android:src="@mipmap/iv_setting"/>
+        <ImageView
+            android:id="@+id/iv_Edit"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginRight="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/iv_edit"/>
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user_corrugated"/>
         <ImageView
             android:id="@+id/User_logo"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@mipmap/logo"/>
         <TextView
             android:id="@+id/tv_nick"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textColor="@color/white"
             android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:layout_above="@id/User_logo"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/User_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:id="@+id/tv_UserPhone"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/tv_nick"
-            android:layout_centerHorizontal="true"
-            android:textSize="15sp"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
@@ -44,8 +59,10 @@
         android:layout_width="match_parent"
         android:layout_height="70dp">
         <View
+            android:layout_marginTop="@dimen/_20dp"
+            android:layout_marginBottom="@dimen/_20dp"
             android:id="@+id/view"
-            android:background="#f2f3f5"
+            android:background="@color/colorPrimary"
             android:layout_width="@dimen/_1dp"
             android:layout_centerInParent="true"
             android:layout_height="match_parent"/>
@@ -56,32 +73,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="28dp"
-                    android:src="@mipmap/integral"/>
+
                 <TextView
-                    android:textSize="15sp"
-                    android:textColor="#4D4D4D"
-                    android:layout_marginLeft="6dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的积分:"
-                    />
-                <TextView
+                    android:layout_gravity="center_horizontal"
                     android:id="@+id/tv_Integral"
-                    android:textSize="15sp"
-                    android:textColor="#4D4D4D"
-                    android:layout_marginLeft="@dimen/_5dp"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""/>
 
+                <TextView
+                    android:textSize="15sp"
+                    android:textColor="@color/text_setting"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的积分"
+                    />
             </LinearLayout>
 
         </RelativeLayout>
@@ -92,31 +105,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/money"/>
-                <TextView
-                    android:textSize="15sp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的现金:"
-                    android:textColor="#4D4D4D"
-                    />
+
                 <TextView
                     android:id="@+id/bt_Money"
-                    android:textSize="15sp"
-                    android:textColor="#4D4D4D"
-                    android:layout_marginLeft="@dimen/_5dp"
-                    android:layout_gravity="center_vertical"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""/>
+                <TextView
+                    android:textSize="15sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的现金:"
+                    android:textColor="@color/text_setting"
+                    />
             </LinearLayout>
 
         </RelativeLayout>
@@ -126,15 +135,14 @@
 
     <com.allen.library.SuperTextView
         android:id="@+id/invite"
-        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/invite"
+        stv:sLeftIconRes="@mipmap/iv_invite"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
+        stv:sLeftIconHeight="20dp"
         stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
@@ -142,15 +150,14 @@
         stv:sLeftTextString="@string/inivte" />
     <com.allen.library.SuperTextView
         android:id="@+id/layout_my"
-        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_my"
+        stv:sLeftIconRes="@mipmap/iv_my"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
+        stv:sLeftIconHeight="20dp"
         stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
@@ -158,51 +165,48 @@
         stv:sLeftTextString="@string/information" />
     <com.allen.library.SuperTextView
         android:id="@+id/layout_collection"
-        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_collection"
+        stv:sLeftIconRes="@mipmap/iv_collectioning"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
+        stv:sLeftIconHeight="20dp"
         stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/collection" />
     <com.allen.library.SuperTextView
-        android:id="@+id/feedback"
-        android:layout_marginTop="1dp"
+        android:id="@+id/layout_attention"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/feedback"
+        stv:sLeftIconRes="@mipmap/iv_attention"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
+        stv:sLeftIconHeight="20dp"
         stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
-        stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
-        stv:sRightIconWidth="17dp"
-        stv:sLeftTextSize="16dp"
-        stv:sLeftTextString="@string/feedback" />
-    <com.allen.library.SuperTextView
-        android:id="@+id/layout_setting"
-        android:layout_marginTop="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_setting"
-        stv:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/setting" />
+    <com.allen.library.SuperTextView
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftIconRes="@mipmap/iv_feedback"
+        stv:sBottomLineMargin="0dp"
+        android:textSize="16sp"
+        stv:sLeftIconHeight="20dp"
+        stv:sLeftTextColor="@color/gay"
+        stv:sLeftIconWidth="20dp"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="17dp"
+        stv:sRightIconWidth="17dp"
+        stv:sLeftTextSize="16dp"
+        stv:sLeftTextString="@string/feedback" />
 
 </LinearLayout>

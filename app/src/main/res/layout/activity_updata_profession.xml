@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
-                android:src="@drawable/iv_header01"/>
+                android:src="@mipmap/iv_header01"/>
             <ImageView
                 android:id="@+id/tick"
                 android:visibility="gone"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
-                android:src="@drawable/iv_header02"/>
+                android:src="@mipmap/iv_header02"/>
             <ImageView
                 android:id="@+id/tick_free"
                 android:visibility="gone"
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
-                android:src="@drawable/iv_header03"/>
+                android:src="@mipmap/iv_header03"/>
             <ImageView
                 android:id="@+id/tick_student"
                 android:visibility="gone"
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
-                android:src="@drawable/iv_header04"/>
+                android:src="@mipmap/iv_header04"/>
             <ImageView
                 android:id="@+id/tick_company"
                 android:visibility="gone"

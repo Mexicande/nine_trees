@@ -620,7 +620,7 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text="保 存"
-                app:btnCornerRadius="10dp"
+                app:btnCornerRadius="2dp"
                 app:btnPressedRatio="0.9"
                 app:btnSolidColor="@color/colorPrimary"
                 android:gravity="center"

@@ -122,27 +122,11 @@ public class ProductDesc extends BaseActivity {
     LinearLayout linla;
     @Bind(R.id.apply)
     Button apply;
-    /*   @Bind(R.id.cash_slideView)
-       RelativeLayout slideView;*/
-    @Bind(R.id.heart_button)
-    LikeButton heartButton;
     @Bind(R.id.bt_share)
     ImageView btShare;
-    /*    @Bind(R.id.view_wx)
-        View viewWx;
-        @Bind(R.id.wx)
-        TextView wx;
-        @Bind(R.id.layout_wx)
-        LinearLayout layoutWx;
-        @Bind(R.id.layout_friend)
-        LinearLayout layoutFriend;
-        @Bind(R.id.top)
-        RelativeLayout top;*/
     private String pid;
     private Product_DescBean descBean;
-
-    private SlideUp slideUp;
-
+    private boolean shareFlag=false;
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
 
@@ -159,7 +143,6 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         initToolbar();
-
         pid = getIntent().getStringExtra("pid");
         if (pid != null) {
             getProductDate();
@@ -221,7 +204,6 @@ public class ProductDesc extends BaseActivity {
                                     descBean = gson.fromJson(s, Product_DescBean.class);
                                     if (descBean != null) {
                                         dateInset(descBean);
-
                                     }
 
                                 } else {
@@ -258,7 +240,7 @@ public class ProductDesc extends BaseActivity {
         Product_DescBean.DataBean product = date.getData();
         int collectioStatus = product.getCollectioStatus();
         if (collectioStatus == 1) {
-            heartButton.setLiked(true);
+            shareFlag=true;
         }
         JSONObject eventObject = new JSONObject();
         try {
@@ -385,29 +367,15 @@ public class ProductDesc extends BaseActivity {
         spanString.setSpan(span, 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         view.setText(spanString);
     }
-
     private void initToolbar() {
         titleName.setText("产品详情");
-
-      /*  ivBack.setVisibility(View.VISIBLE);
-        titleName.setText("产品详情");
-        slideUp = new SlideUp.Builder(slideView)
-                .withListeners(new SlideUp.Listener.Slide() {
-                    @Override
-                    public void onSlide(float percent) {
-                    }
-                })
-                .withStartGravity(Gravity.BOTTOM)
-                .withLoggingEnabled(true)
-                .withStartState(SlideUp.State.HIDDEN)
-                .build();*/
 
     }
 
     private DescDialog descDialog;
 
     @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy, R.id.bt_share
-            , R.id.heart_button})
+            })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -449,44 +417,59 @@ public class ProductDesc extends BaseActivity {
                     }
                 }
                 break;
-            case R.id.heart_button:
-                Boolean login1 = (Boolean) SPUtils.get(this, "login", false);
-                if (!login1) {
-                    startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
-                } else {
-                    CollectProduct();
-                }
-                break;
             case R.id.bt_share:
-                TopRightMenu mTopRightMenu = new TopRightMenu(this);
-                List<MenuItem> menuItems = new ArrayList<>();
-                menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
-                menuItems.add(new MenuItem(R.mipmap.iv_share_friend, "分享到朋友圈"));
-                menuItems.add(new MenuItem(R.mipmap.iv_collection, "收藏"));
-                mTopRightMenu
-                        .showIcon(true)     //显示菜单图标，默认为true
-                        .dimBackground(true)           //背景变暗，默认为true
-                        .needAnimationStyle(true)   //显示动画，默认为true
-                        .setAnimationStyle(R.style.TRM_ANIM_STYLE)  //默认为R.style.TRM_ANIM_STYLE
-                        .addMenuList(menuItems)
-                        .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
-                            @Override
-                            public void onMenuItemClick(int position) {
-                                Toast.makeText(ProductDesc.this, "点击菜单:" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .showAsDropDown(btShare, -225, 0);
-//                        .showAsDropDown(moreBtn);
+                setShared_Collection();
                 break;
-          /*  case R.id.layout_wx:
-               shareWechat(WXShareContent.WXSession);
-                break;
-            case R.id.layout_friend:
-               shareWechat(WXShareContent.WXTimeline);
-                break;*/
             default:
                 break;
         }
+    }
+    private void setShared_Collection(){
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
+        menuItems.add(new MenuItem(R.mipmap.iv_share_friend, "分享到朋友圈"));
+        if(shareFlag){
+            menuItems.add(new MenuItem(R.mipmap.iv_collectioning, "取消收藏"));
+        }else {
+            menuItems.add(new MenuItem(R.mipmap.iv_collection, "收藏"));
+        }
+        TopRightMenu mTopRightMenu = new TopRightMenu(this);
+        mTopRightMenu
+                .setHeight(430)
+                .showIcon(true)     //显示菜单图标，默认为true
+                .dimBackground(true)           //背景变暗，默认为true
+                .needAnimationStyle(true)   //显示动画，默认为true
+                .setAnimationStyle(R.style.TRM_ANIM_STYLE)  //默认为R.style.TRM_ANIM_STYLE
+                .addMenuList(menuItems)
+                .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(int position) {
+                        switch (position){
+                            case 0:
+                                shareWechat(WXShareContent.WXSession);
+                                break;
+                            case 1:
+                                shareWechat(WXShareContent.WXTimeline);
+                                break;
+                            case 2:
+                                Boolean login1 = (Boolean) SPUtils.get(ProductDesc.this, "login", false);
+                                if (!login1) {
+                                    startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
+                                } else {
+                                    if(shareFlag){
+                                        CollectionProduct("2");
+                                    }else {
+                                        CollectionProduct("1");
+                                    }
+                                }
+                                break;
+                        }
+
+                    }
+                })
+                .showAsDropDown(btShare);
+
+
     }
 
     private WXManager wxManager;
@@ -505,16 +488,6 @@ public class ProductDesc extends BaseActivity {
 
     }
 
-    private void CollectProduct() {
-        boolean liked = heartButton.isLiked();
-        if (liked) {
-            heartButton.setLiked(false);
-            CollectionProduct("2");
-        } else {
-            heartButton.setLiked(true);
-            CollectionProduct("1");
-        }
-    }
 
     private void CollectionProduct(final String status) {
 
@@ -540,14 +513,12 @@ public class ProductDesc extends BaseActivity {
                                     flag = true;
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     if (status.equals("1")) {
+                                        shareFlag=true;
                                         ToastUtils.showToast(ProductDesc.this, "收藏成功");
-                                        heartButton.setLiked(true);
-
                                     } else {
+                                        shareFlag=false;
                                         ToastUtils.showToast(ProductDesc.this, "取消成功");
-                                        heartButton.setLiked(false);
                                     }
-
                                 } else {
                                     String error_message = json.getString("error_message");
                                     ToastUtils.showToast(ProductDesc.this, error_message);
@@ -595,14 +566,6 @@ public class ProductDesc extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-      /*  if(slideUp.isVisible()){
-            slideUp.hide();
-        }else {
-            super.onBackPressed();
-        }*/
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -614,9 +577,8 @@ public class ProductDesc extends BaseActivity {
                     String ok = data.getStringExtra("ok");
                     if (ok != null) {
                         getProductDate();
-                        boolean liked = heartButton.isLiked();
-                        if (!liked) {
-                            heartButton.setLiked(true);
+                        if (!shareFlag) {
+                            shareFlag=true;
                         } else {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }

@@ -1,7 +1,11 @@
 package cn.com.stableloan.ui.fragment;
 
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -46,6 +51,7 @@ import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
@@ -57,6 +63,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.dialog.Wechat_dialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -70,8 +77,6 @@ public class UserFragment extends ImmersionFragment {
     ImageView UserLogo;
     @Bind(R.id.tv_nick)
     TextView tvNick;
-    @Bind(R.id.tv_UserPhone)
-    TextView tvUserPhone;
     @Bind(R.id.feedback)
     SuperTextView feedback;
     @Bind(R.id.tv_Integral)
@@ -85,7 +90,6 @@ public class UserFragment extends ImmersionFragment {
     private Handler handler = new Handler() {
     };
 
-    private SelfDialog selfDialog;
 
     private static final int FLAG_Profession = 1;
     private static final int SEND_Profession_ = 1000;
@@ -95,9 +99,8 @@ public class UserFragment extends ImmersionFragment {
     private static final int SEND_NICK = 2000;
     private static final int FLAG_LOGIN = 3;
     private static final int SEND_LOGIN = 4000;
-
+    private Wechat_dialog wechat_dialog;
     private static final int Moon = 1;
-
     public UserFragment() {
 
     }
@@ -161,7 +164,6 @@ public class UserFragment extends ImmersionFragment {
                                 if(personal.getError_code()==0){
                                     tinyDB.putObject("user", personal.getData());
                                     tvNick.setText(personal.getData().getNickname());
-                                    tvUserPhone.setText(personal.getData().getUserphone());
                                     tvIntegral.setText(personal.getData().getCredits());
                                     btMoney.setText(personal.getData().getTotal());
                                 }else {
@@ -199,9 +201,6 @@ public class UserFragment extends ImmersionFragment {
         if (!event.userNick.isEmpty()) {
             tvNick.setText(event.userNick);
         }
-        if (event.phone != null) {
-            tvUserPhone.setText(event.phone);
-        }
         if (event.phone.equals("1")) {
             TextUser();
         }
@@ -222,17 +221,19 @@ public class UserFragment extends ImmersionFragment {
         UserInfromBean userNick = event.userNick;
         if (userNick != null) {
             tvNick.setText(userNick.getData().getNickname());
-            tvUserPhone.setText(userNick.getData().getUserphone());
             tvIntegral.setText(userNick.getData().getCredits());
             btMoney.setText(userNick.getData().getTotal());
         }
     }
 
     @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
-            R.id.layout_Integral, R.id.laout_Money,R.id.invite})
+            R.id.layout_Integral, R.id.laout_Money,R.id.invite,R.id.iv_Edit,R.id.layout_attention})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
+                TextUser();
+                break;
+            case R.id.iv_Edit:
                 TextUser();
                 break;
             case R.id.layout_setting:
@@ -253,10 +254,57 @@ public class UserFragment extends ImmersionFragment {
             case R.id.invite:
                 InviteFriendsActivity.launch(getActivity());
                 break;
-                
+            case R.id.layout_attention:
+                wechat_dialog = new Wechat_dialog(getActivity());
+                wechat_dialog.setYesOnclickListener("去微信", new Wechat_dialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        wechat_dialog.dismiss();
+                       if(isWeixinAvilible(getActivity())){
+                           Intent intent = new Intent();
+                           ComponentName cmp=new ComponentName("com.tencent.mm","com.tencent.mm.ui.LauncherUI");
+                           intent.setAction(Intent.ACTION_MAIN);
+                           intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                           intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           intent.setComponent(cmp);
+                           startActivity(intent);
+                           getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+
+                       }else {
+                           ToastUtils.showToast(getActivity(),"请先安装微信");
+                       }
+
+
+                    }
+                });
+                wechat_dialog.setNoOnclickListener("取消", new Wechat_dialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+
+                        wechat_dialog.dismiss();
+
+
+                    }
+                });
+                wechat_dialog.show();
+                break;
+
         }
     }
 
+    public static boolean isWeixinAvilible(Context context) {
+        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mm")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     private KProgressHUD hud;
 

@@ -8,13 +8,25 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.Setting1Activity">
     <include layout="@layout/goback_toolbar"/>
-
+    <ImageView
+        android:layout_marginTop="@dimen/_50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/logo"/>
+    <TextView
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:text="v1.6"/>
     <com.allen.library.SuperTextView
         android:id="@+id/layout_nick"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_nick"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
@@ -27,11 +39,9 @@
         stv:sLeftTextString="修改昵称" />
     <com.allen.library.SuperTextView
         android:id="@+id/layout_profession"
-
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_profession"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
@@ -44,10 +54,9 @@
         stv:sLeftTextString="修改身份" />
     <com.allen.library.SuperTextView
         android:id="@+id/layout_Safe"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_userpassword"
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
@@ -58,28 +67,21 @@
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="账号安全" />
-    <com.allen.library.SuperTextView
-        android:id="@+id/exit"
-        android:layout_marginTop="10dp"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/ic_exit"
-        stv:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
-        stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
-        stv:sRightIconWidth="17dp"
-        stv:sLeftTextSize="16dp"
-        stv:sLeftTextString="退出" />
-
-    <TextView
-        android:id="@+id/version"
-        android:layout_marginTop="200dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/exit"
+            android:layout_marginBottom="@dimen/_10dp"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="@dimen/_20dp"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textSize="16sp"
+            android:text="退出登录"
+            android:textColor="@color/white"
+            android:background="@drawable/free_dialog_sure"/>
+    </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="#50000000"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/pass_word_dialog_bg"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="30dp"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="公众号文本已复制到剪切板
+打开微信号>点击搜索框>粘贴>
+搜一搜sdzj6699，
+就能关注快捷安全的"
+            android:textColor="@color/select_text_color"
+            android:textSize="18sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_10dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="公众号啦！"
+            android:layout_marginTop="@dimen/_10dp"
+            android:textColor="@color/select_text_color"
+            android:textSize="18sp" />
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:src="@drawable/iv_wechat"/>
+        <View
+            android:layout_marginTop="@dimen/_20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E4E4E4" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/no"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="取消"
+                android:textColor="@color/select_text_color"
+                android:textSize="19sp" />
+
+            <Button
+                android:id="@+id/yes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/strawberry"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="去微信"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

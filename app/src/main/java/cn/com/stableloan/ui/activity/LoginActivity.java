@@ -161,10 +161,12 @@ public class LoginActivity extends AppCompatActivity implements Touch_login {
 
         });
         loginMagicindicator.setNavigator(commonNavigator);
-        LinearLayout titleContainer = commonNavigator.getTitleContainer(); // must after setNavigator
+        LinearLayout titleContainer = commonNavigator.getTitleContainer();
+        // must after setNavigator
         titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        titleContainer.setDividerPadding(UIUtil.dip2px(this, 4));
+        titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
         titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
+
        /* titleContainer.setDividerDrawable(new ColorDrawable() {
             @Override
             public int getIntrinsicWidth() {

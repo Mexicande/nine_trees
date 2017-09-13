@@ -3,7 +3,6 @@ package cn.com.stableloan.utils.top_menu;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,12 +48,13 @@ public class TopRightMenu {
         content = LayoutInflater.from(mContext).inflate(R.layout.trm_popup_menu, null);
         mRecyclerView = (RecyclerView) content.findViewById(R.id.trm_recyclerview);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(
-                mContext, DividerItemDecoration.HORIZONTAL));
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(
+                mContext, DividerItemDecoration.VERTICAL_LIST));
+
+        mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         menuItemList = new ArrayList<>();
         mAdapter = new TRMenuAdapter(mContext, this, menuItemList, showIcon);
     }
@@ -101,6 +101,16 @@ public class TopRightMenu {
             this.popWidth = RecyclerView.LayoutParams.WRAP_CONTENT;
         }else {
             this.popWidth = width;
+        }
+        return this;
+    }
+
+    public TopRightMenu setMoveMenu(int  index){
+        if(mAdapter.getItemCount()>0){
+            menuItemList.remove(index);
+            mAdapter.setData(menuItemList);
+            mAdapter.notifyDataSetChanged();
+            mRecyclerView.setAdapter(mAdapter);
         }
         return this;
     }

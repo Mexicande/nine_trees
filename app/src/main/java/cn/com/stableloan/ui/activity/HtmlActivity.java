@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -220,11 +221,22 @@ public class HtmlActivity extends BaseActivity {
                 intent.setComponent(null);
                 startActivity(intent);
             } catch (Exception e) {
-
                 ToastUtils.showToast(this, "请安装最新版腾讯QQ");
             }
             return true;
-        } else {
+        } else if (url.contains("tmast://appdetails?")) {
+            try {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(HtmlActivity.this, "请安装最新版应用宝", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        else {
             return false;
         }
     }

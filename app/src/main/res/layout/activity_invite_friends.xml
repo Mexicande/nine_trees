@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/invitebackground"
+    android:background="@color/colorPrimary"
     tools:context="cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity">
     <LinearLayout
         android:orientation="vertical"
@@ -23,14 +23,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/back"/>
-                <TextView
-                    android:layout_marginLeft="@dimen/_2dp"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/back"
-                    android:textSize="18sp"
-                    android:textColor="@color/white"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"

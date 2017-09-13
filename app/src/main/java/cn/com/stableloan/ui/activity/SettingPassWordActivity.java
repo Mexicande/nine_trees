@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ import cn.com.stableloan.utils.aes.Des4;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.utils.ras.RSA;
 import cn.com.stableloan.view.RoundButton;
+import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.dialog.SettingPassWordDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -61,7 +64,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
     @Bind(R.id.bt_button)
     RoundButton btButton;
     private String userPhone;
-
+    private SettingPassWordDialog selfDialog;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SettingPassWordActivity.class));
     }
@@ -121,7 +124,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout:
-                finish();
+                exit();
                 break;
             case R.id.bt_login:
 
@@ -130,7 +133,6 @@ public class SettingPassWordActivity extends AppCompatActivity {
                         .setLabel("Please wait.....")
                         .setCancellable(true)
                         .show();
-
                 String strPassWord = etSettingPassWord.getText().toString();
                 boolean match = RegexUtils.isMatch(RegexUtils.number_letter_underline, strPassWord);
 
@@ -212,5 +214,31 @@ public class SettingPassWordActivity extends AppCompatActivity {
 
                 break;
         }
+    }
+    private void exit() {
+        selfDialog = new SettingPassWordDialog(this);
+        selfDialog.setYesOnclickListener("否", new SettingPassWordDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                selfDialog.dismiss();
+
+            }
+        });
+        selfDialog.setNoOnclickListener("退出", new SettingPassWordDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                selfDialog.dismiss();
+                finish();
+            }
+        });
+        selfDialog.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

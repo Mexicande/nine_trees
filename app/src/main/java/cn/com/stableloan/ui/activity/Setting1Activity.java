@@ -29,10 +29,6 @@ public class Setting1Activity extends BaseActivity {
     SuperTextView layoutNick;
     @Bind(R.id.layout_profession)
     SuperTextView layoutProfession;
-    @Bind(R.id.exit)
-    SuperTextView exit;
-    @Bind(R.id.version)
-    TextView version;
     @Bind(R.id.title_name)
     TextView titleName;
     @Bind(R.id.layout_go)
@@ -90,8 +86,6 @@ public class Setting1Activity extends BaseActivity {
 
     private void exit() {
         selfDialog = new SelfDialog(this);
-        selfDialog.setTitle("提示");
-        selfDialog.setMessage("确定退出登陆?");
         selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {

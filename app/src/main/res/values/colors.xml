@@ -15,10 +15,10 @@
     <color name="strawberry">#fd2021</color>
     <color name="product_desc">#e51a26</color>
     <!--登陆页面-->
-    <color name="LoginNormalText">#fd2021</color>
+    <color name="LoginNormalText">#fb5a5b</color>
     <color name="Normal_Button">#EF9A9A</color>
     <color name="gay">#999999</color>
-
+    <color name="line_color">#eeeeee</color>
     <color name="mask">#88000000</color>
 
     <color name="diver">#F3F2F8</color>
