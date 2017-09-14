@@ -25,7 +25,7 @@
     <color name="background">#f2f3f5</color>
 
     <color name="gray_light">#dcdcdc</color>
-
+    <color name="pinkishgrey">#cccccc</color>
     <color name="frame_color">#CCCCCC</color>
     <color name="kprogresshud_default_color">#b1000000</color>
     <color name="kprogresshud_grey_color">#449E9E9E</color>
@@ -61,4 +61,11 @@
     <color name="cash_toolbar">#F9C039</color>
     <color name="invitebackground">#FFAE2D</color>
     <color name="invite_friend">#FFEFBD</color>
+
+    <!--lock-->
+    <color name="grey_b2b2b2">#B2B2B2</color>
+    <color name="blue_78d2f6">#78D2F6</color>
+    <color name="blue_01aaee">#01AAEE</color>
+    <color name="blue_00aaee">#00AAEE</color>
+    <color name="red_f3323b">#F3323B</color>
 </resources>

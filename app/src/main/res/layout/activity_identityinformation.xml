@@ -12,15 +12,12 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
         <include layout="@layout/goback_toolbar"/>
-        <View
-            android:layout_marginTop="7dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#A0A0A0"
-            />
+
         <com.allen.library.CommonTextView
             android:id="@+id/safe"
-            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             ctv:cLeftIconResForDrawableLeft="@mipmap/iv_top_safe"
             ctv:cLeftTextSize="14sp"
@@ -28,8 +25,6 @@
             ctv:cUseRipple="true"
             ctv:cLeftIconDrawablePadding="7dp"
             ctv:cLeftTextColor="#fe4543"
-            ctv:cDividerLineHeight="1dp"
-            ctv:cDividerLineColor="@color/gay"
             ctv:cLeftTextString="我们会严格保护您的隐私安全,请您放心交给我们" />
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"
@@ -37,11 +32,6 @@
             android:layout_height="50dp"
             android:background="@color/white"
             android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#A0A0A0"
-            />
         <FrameLayout
             android:id="@+id/app_item"
             android:layout_width="match_parent"

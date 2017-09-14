@@ -1,8 +1,10 @@
 package cn.com.stableloan.ui.adapter;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +19,8 @@ import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.utils.ScreenSizeUtil;
+import cn.com.stableloan.view.drawable.CenterDrawable;
 
 
 /**
@@ -29,10 +33,12 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
     public Recycler_Classify_Adapter(ArrayList<Class_ListProductBean.ProductBean> data) {
         super(R.layout.product_trem, data);
 
+
     }
     @Override
     protected void convert(BaseViewHolder helper,Class_ListProductBean.ProductBean item) {
         int indexOf = mData.indexOf(item);
+
         switch (indexOf){
             case 0:
                 helper.getView(R.id.top).setVisibility(View.VISIBLE);

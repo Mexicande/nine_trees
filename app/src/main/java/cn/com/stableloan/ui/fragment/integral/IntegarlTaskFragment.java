@@ -48,15 +48,12 @@ import okhttp3.Response;
  */
 public class IntegarlTaskFragment extends Fragment {
 
-    @Bind(R.id.integar)
-    SuperTextView integar;
     @Bind(R.id.task_recycler)
     RecyclerView taskRecycler;
 
-
     private Integarl_taskAdapter adapter;
     private String shareUrl = "";
-
+    private SuperTextView integar;
     public IntegarlTaskFragment() {
         // Required empty public constructor
     }
@@ -91,7 +88,7 @@ public class IntegarlTaskFragment extends Fragment {
                             if (bean.getCode() == 200) {
                                 adapter.addData(bean.getData().getCode());
                                 integar.setText(bean.getData().getStatus());
-                                EventBus.getDefault().post(new IntregarlEvent(bean.getData().getOffical(), bean.getData().getCredits()));
+                                EventBus.getDefault().post(new IntregarlEvent(bean.getData().getOffical(), bean.getData().getCredits(),bean.getData().getTopCredits()));
                             } else {
                                 ToastUtils.showToast(getActivity(), bean.getError_message());
                             }
@@ -108,10 +105,17 @@ public class IntegarlTaskFragment extends Fragment {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                IntegarlBean.DataBean.CodeBean o = (IntegarlBean.DataBean.CodeBean) adapter.getData().get(position);
-                LogUtils.i("Share==", o.getUrl());
-                shareUrl = o.getUrl();
-                EventBus.getDefault().post(new ShareEvent(1, o.getUrl()));
+                if(position==0){
+
+                    getDate();
+
+                }else {
+                    IntegarlBean.DataBean.CodeBean o = (IntegarlBean.DataBean.CodeBean) adapter.getData().get(position);
+                    LogUtils.i("Share==", o.getUrl());
+                    shareUrl = o.getUrl();
+                    EventBus.getDefault().post(new ShareEvent(1, o.getUrl()));
+                }
+
 
             }
         });
@@ -124,7 +128,9 @@ public class IntegarlTaskFragment extends Fragment {
         adapter = new Integarl_taskAdapter(null);
         taskRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         taskRecycler.setAdapter(adapter);
-
+        View view = getActivity().getLayoutInflater().inflate(R.layout.integarl_header_layout, null);
+        integar= (SuperTextView) view.findViewById(R.id.integar);
+        adapter.addHeaderView(view,0);
 
 
     }
@@ -143,14 +149,14 @@ public class IntegarlTaskFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.user_information})
+    /*@OnClick({R.id.user_information})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_information:
                 getDate();
                 break;
         }
-    }
+    }*/
 
     private void getDate() {
         Map<String, String> parms = new HashMap<>();

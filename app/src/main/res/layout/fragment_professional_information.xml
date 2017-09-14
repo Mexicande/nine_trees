@@ -32,18 +32,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
-                    android:text="(填写得红包)"/>
+                    android:text=" (填写得红包)"/>
                 <Button
                     android:id="@+id/bt_SelectProfession"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_width="82dp"
-                    android:layout_height="24dp"
+                    android:layout_height="26dp"
                     android:text="点击切换身份"
                     android:textSize="12sp"
                     android:textColor="@color/white"
-                    android:background="#FFAE2D"/>
+                    android:background="@drawable/button_sure"/>
             </RelativeLayout>
             <LinearLayout
                 android:visibility="gone"
@@ -614,20 +614,18 @@
             </LinearLayout>
             <cn.com.stableloan.view.RoundButton
                 android:id="@+id/save"
-                android:layout_marginTop="@dimen/_50dp"
                 android:layout_marginBottom="50dp"
+                android:layout_marginTop="40dp"
                 android:layout_gravity="center"
                 android:layout_width="180dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="保 存"
-                app:btnCornerRadius="2dp"
+                app:btnCornerRadius="5dp"
                 app:btnPressedRatio="0.9"
                 app:btnSolidColor="@color/colorPrimary"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="#ccffffff"
-                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/white"
                 />
         </LinearLayout>
 

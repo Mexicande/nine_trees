@@ -14,38 +14,58 @@
         <RelativeLayout
             android:layout_marginTop="@dimen/_1dp"
             android:layout_width="match_parent"
-            android:background="@drawable/integral_background"
-            android:layout_height="130dp">
-            <TextView
-                android:id="@+id/tv_inte"
-                android:layout_marginTop="23dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="当前积分"
-                android:textSize="15sp"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/white"/>
+            android:background="@drawable/integral_bg"
+            android:layout_height="140dp">
             <LinearLayout
                 android:id="@+id/layout"
+                android:layout_marginLeft="@dimen/_30dp"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/_5dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/tv_inte"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_Liven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="16sp"
+                    android:text="123"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="积分榜首"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_liven"
+                android:layout_marginRight="@dimen/_30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_Credits"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="16sp"
+                    android:text="000"/>
                 <TextView
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="分"
+                    android:text="积分"
                     android:textSize="15sp"
                     android:textColor="@color/white"/>
             </LinearLayout>
-            <Button
+            <TextView
                 android:id="@+id/bt_Offical"
                 android:layout_marginTop="7dp"
                 android:layout_below="@id/layout"
@@ -53,17 +73,16 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="@dimen/_10dp"
                 android:layout_centerHorizontal="true"
-                android:textColor="#5F5E5D"
-                android:textSize="10dp"
+                android:textColor="@color/white"
+                android:textSize="14dp"
                 style="?android:attr/borderlessButtonStyle"
-                android:background="@drawable/prompt_background"
                 android:layout_height="20dp" />
         </RelativeLayout>
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"
             android:layout_width="match_parent"
             android:layout_height="51dp"
-            android:background="#F3F2F8"
+            android:background="@color/white"
             android:layout_gravity="center_horizontal" />
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"

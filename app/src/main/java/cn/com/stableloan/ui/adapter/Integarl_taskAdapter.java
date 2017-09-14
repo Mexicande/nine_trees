@@ -29,8 +29,7 @@ public class Integarl_taskAdapter extends BaseQuickAdapter<IntegarlBean.DataBean
     protected void convert(BaseViewHolder helper, IntegarlBean.DataBean.CodeBean item) {
         helper.setText(R.id.title,item.getTitle())
                 .setText(R.id.desc,item.getDesc())
-                .setText(R.id.code,item.getCode())
-                .addOnClickListener(R.id.in_share);
+                .setText(R.id.code,item.getCode());
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

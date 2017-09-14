@@ -14,7 +14,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/cash_toolbar"
             android:layout_width="match_parent"
-            android:background="@color/cash_toolbar"
+            android:background="@color/colorPrimary"
             android:layout_height="50dp">
             <RelativeLayout
                 android:id="@+id/close"
@@ -192,6 +192,7 @@
                     android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/select_text_color"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -205,22 +206,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="全部提现"
-                    android:textColor="#05C3EE"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     />
             </LinearLayout>
         </LinearLayout>
         <cn.com.stableloan.view.RoundButton
             android:id="@+id/bt_withdrawal"
-            android:layout_marginLeft="@dimen/_30dp"
-            android:layout_marginRight="@dimen/_30dp"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginRight="@dimen/_20dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="提 现"
             android:enabled="false"
             app:btnPressedRatio="0.9"
-            app:btnSolidColor="#C8E6C9"
+            app:btnCornerRadius="@dimen/_5dp"
+            app:btnSolidColor="#FF8A80"
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -229,15 +231,16 @@
             />
         <cn.com.stableloan.view.RoundButton
             android:id="@+id/bt_visiableDrawal"
-            android:layout_marginLeft="@dimen/_30dp"
-            android:layout_marginRight="@dimen/_30dp"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginRight="@dimen/_20dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="提 现"
             android:visibility="gone"
             app:btnPressedRatio="0.9"
-            app:btnSolidColor="#1AAD19"
+            app:btnSolidColor="@color/colorPrimary"
+            app:btnCornerRadius="@dimen/_5dp"
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="18sp"

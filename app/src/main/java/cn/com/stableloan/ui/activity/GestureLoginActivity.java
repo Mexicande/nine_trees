@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.star.lock.util.LockPatternUtil;
-import com.star.lock.widget.LockPatternView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -28,6 +26,8 @@ import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
+import cn.com.stableloan.view.lock.LockPatternUtil;
+import cn.com.stableloan.view.lock.LockPatternView;
 import okhttp3.Call;
 import okhttp3.Response;
 

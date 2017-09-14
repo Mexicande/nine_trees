@@ -9,14 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.star.lock.util.LockPatternUtil;
-import com.star.lock.widget.LockPatternIndicator;
-import com.star.lock.widget.LockPatternView;
 
 import org.greenrobot.eventbus.EventBus;
 
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,6 +26,9 @@ import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.lock.LockPatternIndicator;
+import cn.com.stableloan.view.lock.LockPatternUtil;
+import cn.com.stableloan.view.lock.LockPatternView;
 
 /**
  * create gesture activity
@@ -185,7 +185,6 @@ public class CreateGestureActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         selfDialog = new SelfDialog(this);
-        selfDialog.setTitle("返回");
         selfDialog.setMessage("是否要放弃设置指纹解锁手势?");
         selfDialog.setYesOnclickListener("是", new SelfDialog.onYesOnclickListener() {
             @Override

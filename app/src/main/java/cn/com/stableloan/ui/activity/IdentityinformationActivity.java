@@ -22,6 +22,7 @@ import com.zhy.autolayout.AutoLayoutActivity;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
@@ -163,13 +164,12 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                 SimplePagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
                 simplePagerTitleView.setText(mDataList.get(i));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#333333"));
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#fc2122"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#fb5a5b"));
                 simplePagerTitleView.setTextSize(16);
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mFragmentContainerHelper.handlePageSelected(i);
-
                         switchMenu(getFragmentName(i + 1));
                     }
                 });
@@ -180,7 +180,7 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setColors(Color.parseColor("#FFAE2D"));
+                indicator.setColors(Color.parseColor("#fb5a5b"));
                 return indicator;
             }
 
@@ -188,7 +188,7 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         magicIndicator.setNavigator(commonNavigator);
         LinearLayout titleContainer = commonNavigator.getTitleContainer(); // must after setNavigator
         titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        titleContainer.setDividerPadding(1);
+        titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
         titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
 

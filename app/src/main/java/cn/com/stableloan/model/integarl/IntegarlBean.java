@@ -80,11 +80,19 @@ public class IntegarlBean implements Serializable{
          * offical :
          * credits : 0
          */
-
+        private int topCredits;
         private String status;
         private String offical;
         private int credits;
         private List<CodeBean> code;
+
+        public int getTopCredits() {
+            return topCredits;
+        }
+
+        public void setTopCredits(int topCredits) {
+            this.topCredits = topCredits;
+        }
 
         public String getStatus() {
             return status;

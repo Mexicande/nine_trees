@@ -89,13 +89,12 @@ public class IntegarlExchangeFragment extends Fragment {
                             ExchangeIntegralBean bean = gson.fromJson(s, ExchangeIntegralBean.class);
                             if(bean.getError_code()==0){
                                 ToastUtils.showToast(getActivity(),"兑换成功");
-                                EventBus.getDefault().post(new IntregarlEvent(null,bean.getData().getCredit()));
+                                EventBus.getDefault().post(new IntregarlEvent(null,bean.getData().getCredit(),0));
                             }else {
                                 ToastUtils.showToast(getActivity(),bean.getError_message());
                             }
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

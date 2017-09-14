@@ -332,8 +332,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         classify_recyclView = (RecyclerView) view.findViewById(R.id.classify_recycler);
 
         classify_recycler_adapter = new Classify_Recycler_Adapter(null);
-        classify_recyclView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-
+        classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         classify_recyclView.setAdapter(classify_recycler_adapter);
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override

@@ -37,7 +37,7 @@
         android:layout_marginTop="@dimen/_10dp"
         android:orientation="vertical">
 
-        <com.star.lock.widget.LockPatternView
+        <cn.com.stableloan.view.lock.LockPatternView
             android:id="@+id/lockPatternView"
             android:layout_width="@dimen/_270dp"
             android:layout_height="@dimen/_270dp"

@@ -43,11 +43,15 @@ public class FeedbackActivity extends BaseActivity {
     EditText etMessagePhone;
     @Bind(R.id.bt_login)
     RoundButton btLogin;
+    @Bind(R.id.bt_visiableBt)
+    RoundButton btVisiableBt;
 
     private boolean falg = false;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, FeedbackActivity.class));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +73,10 @@ public class FeedbackActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!etMessage.getText().toString().isEmpty()) {
-                        btLogin.setEnabled(true);
+                    btVisiableBt.setVisibility(View.GONE);
+                    btLogin.setVisibility(View.VISIBLE);
+                    btLogin.setEnabled(true);
+
                 }
             }
 
@@ -103,15 +110,15 @@ public class FeedbackActivity extends BaseActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("token", token);
                 params.put("content", message);
-                if(phone.isEmpty()){
+                if (phone.isEmpty()) {
                     params.put("phone", "");
-                }else {
+                } else {
                     params.put("phone", phone);
 
                 }
                 JSONObject jsonObject = new JSONObject(params);
 
-                OkGo.<String>post(Urls.Ip_url+ Urls.user.FEEDBACK)
+                OkGo.<String>post(Urls.Ip_url + Urls.user.FEEDBACK)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {
@@ -133,7 +140,7 @@ public class FeedbackActivity extends BaseActivity {
                         });
 
             } else {
-                ToastUtils.showToast(this,"信息不能为空");
+                ToastUtils.showToast(this, "信息不能为空");
             }
         }
     }

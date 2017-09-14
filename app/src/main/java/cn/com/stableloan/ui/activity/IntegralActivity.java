@@ -3,14 +3,12 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -70,7 +68,9 @@ public class IntegralActivity extends BaseActivity {
     @Bind(R.id.tv_Credits)
     TextView tvCredits;
     @Bind(R.id.bt_Offical)
-    Button btOffical;
+    TextView btOffical;
+    @Bind(R.id.tv_Liven)
+    TextView tvLiven;
     private SlideUp slideUp;
     private List<String> mDataList = Arrays.asList(CHANNELS);
 
@@ -98,7 +98,7 @@ public class IntegralActivity extends BaseActivity {
     }
 
     private void setListener() {
-        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null,null,null);
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
         wxManager = new WXManager(this);
         wxManager.setListener(wxStateListener);
 
@@ -136,10 +136,10 @@ public class IntegralActivity extends BaseActivity {
 
 
     private void initFragments() {
-        List<Fragment>list=new ArrayList<>();
+        List<Fragment> list = new ArrayList<>();
         list.add(new IntegarlTaskFragment());
         list.add(new IntegarlExchangeFragment());
-        myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(),list);
+        myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(myViewPagerAdapter);
         CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);
@@ -155,8 +155,8 @@ public class IntegralActivity extends BaseActivity {
 
                 SimplePagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
                 simplePagerTitleView.setText(mDataList.get(i));
-                simplePagerTitleView.setNormalColor(Color.parseColor("#999999"));
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#FFAE2D"));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#333333"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#fb5a5b"));
                 simplePagerTitleView.setTextSize(16);
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -172,7 +172,7 @@ public class IntegralActivity extends BaseActivity {
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
-                indicator.setColors(Color.parseColor("#FFAE2D"));
+                indicator.setColors(Color.parseColor("#fb5a5b"));
                 indicator.setLineWidth(UIUtil.dip2px(context, 100));
 
                 return indicator;
@@ -182,12 +182,9 @@ public class IntegralActivity extends BaseActivity {
         magicIndicator.setNavigator(commonNavigator);
         LinearLayout titleContainer = commonNavigator.getTitleContainer(); // must after setNavigator
         titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        titleContainer.setDividerDrawable(new ColorDrawable() {
-            @Override
-            public int getIntrinsicWidth() {
-                return UIUtil.dip2px(IntegralActivity.this, 15);
-            }
-        });
+        titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
+        titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
+
 
         final FragmentContainerHelper fragmentContainerHelper = new FragmentContainerHelper(magicIndicator);
         fragmentContainerHelper.setInterpolator(new OvershootInterpolator(2.0f));
@@ -204,9 +201,10 @@ public class IntegralActivity extends BaseActivity {
     public void onMessageEvent(IntregarlEvent event) {
         if (event != null) {
             tvCredits.setText(String.valueOf(event.credit));
-            if(event.offica!=null){
+            if (event.offica != null) {
                 btOffical.setText(event.offica);
             }
+            tvLiven.setText(event.topCredits);
         }
     }
 
