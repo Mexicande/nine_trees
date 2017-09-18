@@ -63,8 +63,8 @@ public class IdentityUploadActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
+  /*  @Bind(R.id.tv_save)
+    TextView tvSave;*/
     @Bind(R.id.fiv)
     ImageView fiv;
     @Bind(R.id.fiv_un)

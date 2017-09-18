@@ -95,7 +95,7 @@ public class WithdrawalCashActivity extends BaseActivity {
         setContentView(R.layout.activity_withdrawal_cash);
         ButterKnife.bind(this);
 
-        ImmersionBar.with(this).statusBarColor(R.color.cash_toolbar)
+        ImmersionBar.with(this).statusBarColor(R.color.colorPrimary)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();

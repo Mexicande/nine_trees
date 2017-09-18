@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.animation.Animation;
@@ -30,6 +32,7 @@ import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.RoundButton;
 import cxy.com.validate.IValidateResult;
 import cxy.com.validate.Validate;
 import cxy.com.validate.ValidateAnimation;
@@ -41,7 +44,7 @@ import cxy.com.validate.annotation.RE;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class UpdatePassWordActivity extends BaseActivity  implements IValidateResult {
+public class UpdatePassWordActivity extends BaseActivity implements IValidateResult {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -49,12 +52,6 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
     ImageView ivBack;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
-
-
-
-
 
     @Index(1)
     @NotNull(msg = "验证码不能为空！")
@@ -74,6 +71,10 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
     @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
     @Bind(R.id.et_Confirm_Password)
     EditText etConfirmPassword;
+    @Bind(R.id.bt_update)
+    RoundButton btUpdate;
+    @Bind(R.id.bt_visiable)
+    RoundButton btVisiable;
 
 
     public static void launch(Context context) {
@@ -87,13 +88,77 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
         ButterKnife.bind(this);
         Validate.reg(this);
         initToolbar();
+        setListener();
+    }
+
+    private void setListener() {
+
+        upPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(s.length()>=6&&etPassword.getText().toString().length()>=6&&etConfirmPassword.getText().toString()
+                            .length()>=6){
+                        btVisiable.setVisibility(View.GONE);
+                        btUpdate.setVisibility(View.VISIBLE);
+                    }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()>=6&&etPassword.getText().toString().length()>=6&&upPassword.getText().toString()
+                        .length()>=6){
+                    btVisiable.setVisibility(View.GONE);
+                    btUpdate.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()>=6&&upPassword.getText().toString().length()>=6&&etConfirmPassword.getText().toString()
+                        .length()>=6){
+                    btVisiable.setVisibility(View.GONE);
+                    btUpdate.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     private void initToolbar() {
         titleName.setText("密码修改");
         ivBack.setVisibility(View.VISIBLE);
-        tvSave.setVisibility(View.VISIBLE);
-        tvSave.setText("保存");
         upPassword.setTransformationMethod(PasswordTransformationMethod
                 .getInstance());
         etPassword.setTransformationMethod(PasswordTransformationMethod
@@ -104,20 +169,22 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
     }
 
 
-    @OnClick({R.id.iv_back, R.id.tv_save})
+    @OnClick({R.id.iv_back, R.id.bt_update})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_save:
+            case R.id.bt_update:
                 Validate.check(UpdatePassWordActivity.this, UpdatePassWordActivity.this);
                 break;
             default:
                 break;
         }
     }
-    private  KProgressHUD hud;
+
+    private KProgressHUD hud;
+
     private void updatewWord() {
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -130,56 +197,57 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
 
         final String newWord = etPassword.getText().toString();
 
-        if(!oldWord.equals(newWord)){
+        if (!oldWord.equals(newWord)) {
 
-            if(token!=null){
+            if (token != null) {
                 String old = EncryptUtils.encryptMD5ToString(oldWord);
                 String news = EncryptUtils.encryptMD5ToString(newWord);
 
                 HashMap<String, String> params = new HashMap<>();
-                params.put("oldpassword",old);
-                params.put("password",news);
-                params.put("token",token);
-                params.put("status","0");
+                params.put("oldpassword", old);
+                params.put("password", news);
+                params.put("token", token);
+                params.put("status", "0");
                 JSONObject jsonObject = new JSONObject(params);
-                OkGo.post(Urls.puk_URL+Urls.update.UPDATE_Word)
+                OkGo.post(Urls.puk_URL + Urls.update.UPDATE_Word)
                         .tag(this)
                         .upJson(jsonObject.toString())
-                        .execute( new StringCallback() {
+                        .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
-                                LogUtils.i("密码修改",s);
+                                LogUtils.i("密码修改", s);
                                 try {
-                                    JSONObject object=new JSONObject(s);
+                                    JSONObject object = new JSONObject(s);
                                     String success = object.getString("isSuccess");
-                                    if(success.equals("1")){
-                                        ToastUtils.showToast(UpdatePassWordActivity.this,"修改成功");
+                                    if (success.equals("1")) {
+                                        ToastUtils.showToast(UpdatePassWordActivity.this, "修改成功");
                                         startActivity(new Intent(UpdatePassWordActivity.this, LoginActivity.class).putExtra("from", "user"));
                                         hud.dismiss();
-                                       // LoginActivity.launch(UpdatePassWordActivity.this);
+                                        // LoginActivity.launch(UpdatePassWordActivity.this);
                                         finish();
-                                    }else {
+                                    } else {
                                         hud.dismiss();
                                         String string = object.getString("msg");
-                                        ToastUtils.showToast(UpdatePassWordActivity.this,string);
+                                        ToastUtils.showToast(UpdatePassWordActivity.this, string);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
+
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
                                 hud.dismiss();
-                                ToastUtils.showToast(UpdatePassWordActivity.this,"网络异常，请检测网络");
+                                ToastUtils.showToast(UpdatePassWordActivity.this, "网络异常，请检测网络");
 
                             }
                         });
-            }else {
-                ToastUtils.showToast(UpdatePassWordActivity.this,"系统异常,请稍后再试");
+            } else {
+                ToastUtils.showToast(UpdatePassWordActivity.this, "系统异常,请稍后再试");
             }
-        }else {
-            ToastUtils.showToast(UpdatePassWordActivity.this,"新密码与原密码不能相同");
+        } else {
+            ToastUtils.showToast(UpdatePassWordActivity.this, "新密码与原密码不能相同");
 
         }
 
@@ -188,16 +256,14 @@ public class UpdatePassWordActivity extends BaseActivity  implements IValidateRe
 
     @Override
     public void onValidateSuccess() {
-            updatewWord();
+        updatewWord();
     }
-
-
 
     @Override
     public void onValidateError(String msg, EditText editText) {
         if (editText != null)
             editText.setFocusable(true);
-        ToastUtils.showToast(this,msg);
+        ToastUtils.showToast(this, msg);
     }
 
     @Override

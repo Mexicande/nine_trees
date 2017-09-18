@@ -51,8 +51,6 @@ public class ProductClassifyActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.SwipeRefreshLayout)

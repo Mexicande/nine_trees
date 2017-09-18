@@ -87,7 +87,7 @@
         android:layout_height="50dp"
         android:text="去借款"
         app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/LoginNormalText"
+        app:btnSolidColor="#FF8A80"
         android:gravity="center"
         android:textSize="24sp"
         android:textColor="#ffffff"

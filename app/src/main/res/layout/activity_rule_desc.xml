@@ -10,7 +10,7 @@
     tools:context="cn.com.stableloan.ui.activity.integarl.RuleDescActivity">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:background="#F9C039"
+        android:background="@color/colorPrimary"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:id="@+id/layout_close"
@@ -19,9 +19,9 @@
             android:layout_height="40dp">
             <ImageView
                 android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/camera_off"/>
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/iv_back"/>
         </RelativeLayout>
         <TextView
             android:layout_gravity="center_horizontal"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="关于现金提现规则说明"/>
+            android:text="关于现金提现规则"/>
     </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:orientation="vertical"
@@ -39,25 +39,30 @@
         <TextView
             android:layout_marginLeft="15dp"
             android:layout_marginTop="@dimen/_10dp"
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="关于零钱提现规则说明"
-            android:textSize="16sp"
-            android:textColor="@color/text_setting"/>
+            android:textSize="17sp"
+            android:textColor="@color/select_text_color"/>
         <View
             android:layout_marginTop="@dimen/_5dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginRight="@dimen/_20dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/text_setting"
+            android:background="@color/line_color"
             />
         <TextView
+            android:layout_marginTop="@dimen/_20dp"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="@dimen/_20dp"
             android:layout_marginRight="@dimen/_20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ruledesc"
+            android:textSize="@dimen/_16sp"
+            android:textColor="@color/select_text_color"
             />
     </LinearLayout>
         <TextView
@@ -82,6 +87,6 @@
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
-        stv:sLeftTextSize="16dp"
+        stv:sLeftTextSize="18dp"
         stv:sLeftTextString="意见反馈" />
 </LinearLayout>

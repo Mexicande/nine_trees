@@ -12,7 +12,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@drawable/user_top"
+            android:background="@drawable/integral_bg"
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -129,7 +129,7 @@
         android:text="我要提现"
         app:btnCornerRadius="5dp"
         app:btnPressedRatio="1"
-        app:btnSolidColor="#FFCC80"
+        app:btnSolidColor="#FF8A80"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18sp"

@@ -75,8 +75,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textSize="14dp"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_height="20dp" />
+                android:layout_height="wrap_content" />
         </RelativeLayout>
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"

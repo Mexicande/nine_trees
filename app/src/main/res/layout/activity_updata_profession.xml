@@ -86,13 +86,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <View
-            android:id="@id/view2"
+            android:id="@+id/line_profess"
             android:layout_width="40dp"
             android:layout_centerHorizontal="true"
             android:layout_height="50dp"
             />
         <RelativeLayout
-            android:layout_toLeftOf="@id/view2"
+            android:layout_toLeftOf="@id/line_profess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
@@ -118,7 +118,7 @@
                 android:text="学生党"/>
         </RelativeLayout>
         <RelativeLayout
-            android:layout_toRightOf="@id/view2"
+            android:layout_toRightOf="@id/line_profess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView

@@ -53,7 +53,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-     <!--   腾讯分享-->
+        <!-- 腾讯分享 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -63,11 +63,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- 需要改写此处的appId，将tencent后面xxx的改为自己申请的appId，如tencent12098372-->
+                <!-- 需要改写此处的appId，将tencent后面xxx的改为自己申请的appId，如tencent12098372 -->
                 <data android:scheme="tencent1106239350" />
             </intent-filter>
         </activity>
-       <!-- QQ分享-->
+        <!-- QQ分享 -->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -76,65 +76,64 @@
             android:name=".view.share.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
-       <!-- 引导页-->
+        <!-- 引导页 -->
         <activity
             android:name=".ui.activity.GuideActivity"
             android:screenOrientation="portrait" />
-       <!-- 注册-->
+        <!-- 注册 -->
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait" />
-        <!--WebView-->
+        <!-- WebView -->
         <activity
             android:name=".ui.activity.HtmlActivity"
             android:screenOrientation="portrait" />
-       <!-- Product详情-->
+        <!-- Product详情 -->
         <activity
             android:name=".ui.activity.ProductDesc"
             android:screenOrientation="portrait" />
-        <!--密码修改-->
+        <!-- 密码修改 -->
         <activity
             android:name=".ui.activity.UpdatePassWordActivity"
             android:screenOrientation="portrait" />
-       <!-- 昵称修改-->
+        <!-- 昵称修改 -->
         <activity
             android:name=".ui.activity.UpdateNickActivity"
             android:screenOrientation="portrait" />
-        <!--职业修改-->
+        <!-- 职业修改 -->
         <activity
             android:name=".ui.activity.UpdataProfessionActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.PlatformInfoActivity"
             android:screenOrientation="portrait" />
-        <!--Product分类-->
+        <!-- Product分类 -->
         <activity
             android:name=".ui.activity.ProductClassifyActivity"
             android:screenOrientation="portrait" />
-        <!--通知公告-->
+        <!-- 通知公告 -->
         <activity
             android:name=".ui.activity.NoticeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.StrateActivity"
             android:screenOrientation="portrait" />
-        <!--密码找回-->
+        <!-- 密码找回 -->
         <activity
             android:name=".ui.activity.ForgetWordActivity"
             android:screenOrientation="portrait" />
 
-     <!--   <meta-data
+        <!--
+        <meta-data
             android:name="ZHUGE_APPKEY"
             android:value="24520d39b750437b97f026353aa80aea" />
         <meta-data
             android:name="ZHUGE_CHANNEL"
-            android:value="vivo" />-->
+            android:value="vivo" />
+        -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="5KizzImryGritdSFV3nNNGPYpm6AAFDB" />
@@ -155,70 +154,70 @@
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".ui.activity.Setting1Activity" />
-        <!--存储设置-->
+        <!-- 存储设置 -->
         <activity android:name=".ui.activity.SafeActivity" />
-        <!--我的资料-->
+        <!-- 我的资料 -->
         <activity
             android:name=".ui.activity.UserInformationActivity"
             android:windowSoftInputMode="adjustResize" />
-        <!--个人信息资料-->
+        <!-- 个人信息资料 -->
         <activity
             android:name=".ui.activity.IdentityinformationActivity"
             android:screenOrientation="portrait" />
-       <!-- 图片认证状态-->
+        <!-- 图片认证状态 -->
         <activity
             android:name=".ui.activity.ImageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.IdentityUploadActivity"
             android:screenOrientation="portrait" />
-        <!-- 安全设置-->
+        <!-- 安全设置 -->
 
         <activity
             android:name=".ui.activity.SafeSettingActivity"
             android:screenOrientation="portrait" />
-       <!-- 手势解锁创建-->
+        <!-- 手势解锁创建 -->
         <activity
             android:name=".ui.activity.CreateGestureActivity"
             android:screenOrientation="portrait" />
-        <!--手势登陆-->
+        <!-- 手势登陆 -->
         <activity
             android:name=".ui.activity.GestureLoginActivity"
             android:screenOrientation="portrait" />
-       <!-- 安全验证-->
+        <!-- 安全验证 -->
         <activity
             android:name=".ui.activity.Verify_PasswordActivity"
             android:screenOrientation="portrait" />
-       <!-- 银行卡照片-->
+        <!-- 银行卡照片 -->
         <activity
             android:name=".ui.activity.BankUploadActivity"
             android:screenOrientation="portrait" />
-        <!-- 信用卡照片-->
+        <!-- 信用卡照片 -->
 
         <activity
             android:name=".ui.activity.CreditBankUploadActivity"
             android:screenOrientation="portrait" />
-        <!-- 营业执照照片-->
+        <!-- 营业执照照片 -->
         <activity
             android:name=".ui.activity.BusinessUploadActivity"
             android:screenOrientation="portrait" />
-        <!-- 工作卡照片-->
+        <!-- 工作卡照片 -->
 
         <activity
             android:name=".ui.activity.CardUploadActivity"
             android:screenOrientation="portrait" />
-        <!-- 登陆照片-->
+        <!-- 登陆照片 -->
 
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <!-- 密码设置-->
+        <!-- 密码设置 -->
 
         <activity android:name=".ui.activity.SettingPassWordActivity" />
-        <!-- 三方认证-->
+        <!-- 三方认证 -->
         <activity android:name=".ui.activity.CertificationActivity" />
-        <!-- 反馈意见-->
+        <!-- 反馈意见 -->
 
         <activity
             android:name=".ui.activity.FeedbackActivity"
@@ -230,7 +229,7 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.CarmeraResultActivity" />
         <activity android:name=".ui.activity.PictureActivity" />
-        <!-- 收藏-->
+        <!-- 收藏 -->
         <activity android:name=".ui.activity.CollectionActivity" />
 
         <meta-data
@@ -251,18 +250,19 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <!--Cash Running water-->
+        <!-- Cash Running water -->
         <activity android:name=".ui.activity.IntegralActivity" />
-        <!-- Cash desc-->
+        <!-- Cash desc -->
         <activity android:name=".ui.activity.CashActivity" />
 
-        <!-- Cash withdrawals rule-->
+        <!-- Cash withdrawals rule -->
         <activity android:name=".ui.activity.integarl.RuleDescActivity" />
         <!-- Cash withdrawals -->
 
         <activity android:name=".ui.activity.integarl.WithdrawalCashActivity" />
-        <!-- 好友邀请-->
-        <activity android:name=".ui.activity.integarl.InviteFriendsActivity"/>
+        <!-- 好友邀请 -->
+        <activity android:name=".ui.activity.integarl.InviteFriendsActivity" />
+        <activity android:name=".ui.activity.integarl.UpImageIdentityActivity"></activity>
     </application>
 
 </manifest>

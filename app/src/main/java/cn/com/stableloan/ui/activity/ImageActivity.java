@@ -27,6 +27,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.PicStatusEvent;
+import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
@@ -159,10 +160,13 @@ public class ImageActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.identity:
-                startActivity(new Intent(this, IdentityUploadActivity.class));
+                UpImageIdentityActivity.launch(this);
+               // startActivity(new Intent(this, IdentityUploadActivity.class));
                 break;
             case R.id.bank:
-                startActivity(new Intent(this, BankUploadActivity.class));
+                UpImageIdentityActivity.launch(this);
+
+                //startActivity(new Intent(this, BankUploadActivity.class));
 
                 break;
             case R.id.CreditBank:
@@ -170,7 +174,6 @@ public class ImageActivity extends BaseActivity {
                 break;
             case R.id.camp:
                 startActivity(new Intent(this, BusinessUploadActivity.class));
-
                 break;
             case R.id.userCard:
                 startActivity(new Intent(this, CardUploadActivity.class));

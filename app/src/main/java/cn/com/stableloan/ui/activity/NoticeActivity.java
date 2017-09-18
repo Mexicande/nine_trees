@@ -36,8 +36,6 @@ public class NoticeActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
     @Bind(R.id.notice_recycler)
     RecyclerView noticeRecycler;
     @Bind(R.id.SwipeRefreshLayout)

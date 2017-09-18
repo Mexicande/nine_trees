@@ -10,41 +10,74 @@
     <include layout="@layout/toolbar_layout"/>
     <EditText
         android:id="@+id/up_password"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="原始密码"
-        android:gravity="center"
-        android:background="@drawable/white_background"/>
+        android:hint="请输入原密码"
+        android:paddingLeft="@dimen/_10dp"
+        android:textColorHint="@color/gay"
+        android:background="@color/white"/>
     <EditText
         android:id="@+id/et_password"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="新密码"
-        android:gravity="center"
-        android:background="@drawable/white_background"/>
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="密码支持6-20位字符,建议字符下划线组成"
-        />
+        android:hint="输入新密码"
+        android:paddingLeft="@dimen/_10dp"
+        android:textColorHint="@color/gay"
+        android:background="@color/white"/>
+
     <EditText
         android:id="@+id/et_Confirm_Password"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="确认密码"
+        android:hint="请再次输入新密码"
+        android:paddingLeft="@dimen/_10dp"
+        android:textColorHint="@color/gay"
+        android:background="@color/white"/>
+    <TextView
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="包括字母和数字不少于6位"
+        />
+    <cn.com.stableloan.view.RoundButton
+        android:id="@+id/bt_update"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="确认修改"
+        android:visibility="gone"
+        android:enabled="true"
+        android:textStyle="bold"
+        app:btnPressedRatio="0.8"
+        app:btnCornerRadius="@dimen/_20dp"
+        app:btnSolidColor="@color/LoginNormalText"
         android:gravity="center"
-        android:background="@drawable/white_background"/>
-
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        />
+    <cn.com.stableloan.view.RoundButton
+        android:id="@+id/bt_visiable"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="确认修改"
+        android:enabled="false"
+        android:textStyle="bold"
+        app:btnPressedRatio="0.8"
+        app:btnSolidColor="#c2c0c0"
+        app:btnCornerRadius="@dimen/_20dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        />
 </LinearLayout>

@@ -127,7 +127,7 @@
             android:layout_height="144px"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="1000px"
-            android:src="@drawable/selector"/>
+            android:src="@mipmap/iv_camera_button"/>
 
         <ImageView
             android:id="@+id/iv_camera_off"

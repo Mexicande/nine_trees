@@ -44,8 +44,6 @@ public class UpdataProfessionActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.iv_work)

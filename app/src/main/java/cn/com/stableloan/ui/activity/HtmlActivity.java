@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -63,6 +64,7 @@ public class HtmlActivity extends BaseActivity {
 
     private WebView mWebView;
    private WelfareBean.DataBean welfare;
+
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, HtmlActivity.class));
@@ -174,6 +176,8 @@ public class HtmlActivity extends BaseActivity {
             webSettings.setAllowFileAccess(true);
             webSettings.setAppCacheEnabled(true);
             webSettings.setDisplayZoomControls(false);
+
+
             if (Build.VERSION.SDK_INT >= 21) {
                 webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }
@@ -181,13 +185,15 @@ public class HtmlActivity extends BaseActivity {
             mWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    LogUtils.i("webView", url);
                     if (parseScheme(url)) {
 
-                    } else {
-                        view.loadUrl(url);
+                    }else {
+                        WebView.HitTestResult hitTestResult = view.getHitTestResult();
+                        if (!TextUtils.isEmpty(url) && hitTestResult == null) {
+                            view.loadUrl(url);
+                            return true;
+                        }
                     }
-
                     return false;
                 }
             });

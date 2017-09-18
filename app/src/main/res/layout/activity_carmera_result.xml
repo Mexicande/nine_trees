@@ -7,31 +7,30 @@
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.activity.CarmeraResultActivity">
     <android.support.v7.widget.Toolbar
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/image_back_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_gravity="center|left"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_height="50dp">
+            android:layout_height="40dp">
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_height="20dp"
-                android:src="@mipmap/image_back"/>
-            <TextView
-                android:id="@+id/text_goBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:text="返回"
-                android:textSize="15sp"
-                android:textColor="@color/gay"/>
+                android:src="@mipmap/iv_back"/>
 
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="证件信息 "
+            android:textSize="22sp"
+            android:textColor="@color/white"/>
     </android.support.v7.widget.Toolbar>
     <ScrollView
         android:fillViewport="true"
@@ -42,13 +41,7 @@
             android:paddingBottom="@dimen/_50dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="身份证扫描 "
-                android:textSize="22sp"
-                android:textColor="@color/blacktext"/>
+
             <RelativeLayout
                 android:id="@+id/layout"
                 android:layout_gravity="center_horizontal"
@@ -70,50 +63,50 @@
                 android:layout_marginLeft="80dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
+                android:textSize="16sp"
+                android:textColor="@color/select_text_color"
                 />
             <LinearLayout
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <cn.com.stableloan.view.RoundButton
                     android:id="@+id/bt_backButton"
-                    android:layout_marginLeft="@dimen/_40dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_width="300dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
                     android:text="保存图片"
                     android:paddingLeft="@dimen/_30dp"
                     android:paddingRight="@dimen/_30dp"
-                    app:btnCornerRadius="10dp"
+                    app:btnCornerRadius="8dp"
                     app:btnPressedRatio="0.9"
-                    app:btnSolidColor="#ffffff"
+                    app:btnSolidColor="@color/white"
                     app:btnStrokeWidth="1dp"
-                    app:btnStrokeColor="@color/frame_color"
+                    app:btnStrokeColor="@color/colorPrimary"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:textColor="#05DC2E"
+                    android:textColor="@color/select_text_color"
                     />
-                <Space
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content" />
                 <cn.com.stableloan.view.RoundButton
                     android:id="@+id/bt_saveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    app:btnCornerRadius="10dp"
+                    android:layout_marginTop="@dimen/_30dp"
+                    android:layout_width="300dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    app:btnCornerRadius="8dp"
                     android:paddingLeft="@dimen/_30dp"
                     android:paddingRight="@dimen/_30dp"
                     app:btnPressedRatio="0.9"
-                    app:btnSolidColor="#ffffff"
+                    app:btnSolidColor="@color/colorPrimary"
                     app:btnStrokeWidth="1dp"
                     app:btnStrokeColor="@color/frame_color"
                     android:gravity="center_horizontal"
                     android:textSize="16sp"
-                    android:text="文字+图片"
-                    android:textColor="#05DC2E"
+                    android:text="保存图片和文字"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

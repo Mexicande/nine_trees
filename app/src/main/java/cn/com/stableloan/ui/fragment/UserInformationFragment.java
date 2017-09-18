@@ -298,20 +298,18 @@ public class UserInformationFragment extends Fragment {
                                         etName.setText(identityBean.getName());
                                         etIDCard.setText(identityBean.getIdcard());
                                         String sex = identityBean.getSex();
-                                        if (sex.equals("0")) {
+                                        if ("0".equals(sex)) {
                                             etSex.setText("女");
-                                        } else if (sex.equals("1")) {
+                                        } else if ("1".equals(sex)) {
                                             etSex.setText("男");
                                         }
                                         etAge1.setText(identityBean.getAge());
 
                                         etAddress.setText(identityBean.getIdaddress());
-
                                         String marriage = identityBean.getMarriage();
-
-                                        if (marriage.equals("0")) {
+                                        if ("0".equals(marriage)) {
                                             etMarriage.setText("未婚");
-                                        } else if (marriage.equals("1")) {
+                                        } else if ("1".equals(marriage)) {
                                             etMarriage.setText("已婚");
                                         }
                                         etCity.setText(identityBean.getCity());

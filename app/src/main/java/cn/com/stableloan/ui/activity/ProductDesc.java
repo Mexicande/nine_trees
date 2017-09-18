@@ -365,6 +365,7 @@ public class ProductDesc extends BaseActivity {
         SpannableString spanString = new SpannableString(s);
         ForegroundColorSpan span = new ForegroundColorSpan(getResources().getColor(R.color.select_text_color));
         spanString.setSpan(span, 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
         view.setText(spanString);
     }
     private void initToolbar() {

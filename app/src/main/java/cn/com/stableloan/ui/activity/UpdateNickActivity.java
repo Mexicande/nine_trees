@@ -52,8 +52,6 @@ public class UpdateNickActivity extends BaseActivity implements IValidateResult 
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.tv_save)
-    TextView tvSave;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.bt_commit)

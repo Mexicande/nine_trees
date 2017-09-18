@@ -94,8 +94,8 @@
     <!--inivte_friend-->
     <string name="invite_text">赚钱多多无上限，快来一起薅!</string>
     <string name="invite_text1"></string>
-    
-    
+
+
     <color name="test">#0000ff</color>
     <string name="inivte_friendstitle">邀请好友得现金</string>
     <string name="errcode_success">发送成功</string>
@@ -104,5 +104,18 @@
     <string name="errcode_unsupported">不支持错误</string>
     <string name="errcode_unknown">发送返回</string>
 
-    <string name="ruledesc">Lorem ipsum dolor sit amet, consectetur; adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet la accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociisfjhkj natoque penatibus et magnis dis parturik montes, nascetur ridiculus mus. Namjkdgj fermentum, nulla luctus pharetra vulputa felis tellus mollis orci, sed rhoncus ys nunc eget.Lorem ipsum dolor sit amet,hsg consectetur adipiscing elit. Aenean euis bibendum laoreet. Proin gravida dolor si amet lacus accumsan et viverra justosdhg commodo. Proin sodales pulvinar tempor.</string>
+    <string name="ruledesc">1.用户提取金额必须为整数\n2.单笔交易金额不得小于5元\n3.账户点击提现后，该提现金额会被冻结\n4.提现的账户为填写的支付宝账户\n
+        5.一旦确认提现，会在三个工作日内完成打款\n6.如因各种原因3个工作日内未完成打款，系统会自动退回提现金额\n7.恶意刷分刷钱的账户会被查封\n8.本活动最终解释权所有归安稳钱包
+   </string>
+    <string name="safe_text1">为了保障您的信息安全，我们默认不会长期存储您的个人资料。</string>
+    <string name="safe_text2">过期后我们将安全删除您的全部图片材料及授权资料。</string>
+    <string name="safe_text3">有效期会根据您的托管时间设置，从您最后一次修改图及授权材料的当日起计算，更新材料会刷新日期，更新图片会刷新日期，过期自动删除。</string>
+
+    
+    <!--ImageViewIdentity-->
+    <string name="identification_card">1.身份证 (照片清晰完整，不能使用软件编辑)</string>
+    <string name="business_card">2.营业执照 (照片清晰完整，不能使用软件编辑)</string>
+    <string name="job_card">3.名片或工牌 (照片清晰完整，不能使用软件编辑)</string>
+    <string name="debit_card">4.借记卡 (照片清晰完整，不能使用软件编辑)</string>
+    <string name="credit_card">5.信用卡 (照片清晰完整，不能使用软件编辑)</string>
 </resources>

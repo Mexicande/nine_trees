@@ -56,8 +56,6 @@ public class CertificationActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.text_goBack)
-    TextView textGoBack;
     @Bind(R.id.layout_go)
     LinearLayout layoutGo;
     @Bind(R.id.toolbar)
@@ -93,7 +91,7 @@ public class CertificationActivity extends BaseActivity {
     }
 
     private void getStatus() {
-
+        titleName.setText("授权信息");
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("persmaterials2", "");

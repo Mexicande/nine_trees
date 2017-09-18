@@ -23,7 +23,7 @@ public class RuleDescActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rule_desc);
         ButterKnife.bind(this);
-        ImmersionBar.with(this).statusBarColor(R.color.cash_toolbar)
+        ImmersionBar.with(this).statusBarColor(R.color.colorPrimary)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();    }

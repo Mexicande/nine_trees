@@ -13,19 +13,27 @@
         <ImageView
             android:id="@+id/layout_setting"
             android:layout_marginTop="@dimen/_10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_width="25dp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="45dp"
+            android:paddingTop="@dimen/_5dp"
+            android:paddingBottom="@dimen/_5dp"
+            android:paddingLeft="@dimen/_10dp"
+            android:paddingRight="@dimen/_10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_height="25dp"
+            android:layout_height="35dp"
             android:src="@mipmap/iv_setting"/>
         <ImageView
             android:id="@+id/iv_Edit"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/_10dp"
+            android:paddingTop="@dimen/_5dp"
+            android:paddingBottom="@dimen/_5dp"
+            android:paddingLeft="@dimen/_10dp"
+            android:paddingRight="@dimen/_10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginRight="15dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
             android:src="@mipmap/iv_edit"/>
         <ImageView
             android:layout_alignParentBottom="true"

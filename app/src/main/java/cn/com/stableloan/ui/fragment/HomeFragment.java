@@ -228,6 +228,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                     e.printStackTrace();
                 }
                 ZhugeSDK.getInstance().track(getActivity(), "新上线产品",  eventObject);
+
+               // HtmlActivity.launch(getActivity());
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
             }
@@ -293,7 +295,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         banner.setDelegate(new BGABanner.Delegate<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void onBannerItemClick(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
-
 
                 startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("Advertising", hotBean.getAdvertising().get(position)));
             }
