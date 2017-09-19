@@ -68,4 +68,7 @@
     <color name="blue_01aaee">#01AAEE</color>
     <color name="blue_00aaee">#00AAEE</color>
     <color name="red_f3323b">#F3323B</color>
+    <color name="common_pressed">#20000000</color>  <!--白色背景按下去的颜色-->
+    <color name="line">#e8e8e8</color>
+
 </resources>

@@ -118,23 +118,9 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                     }else if("PicStatus".equals(from)){
                                                         EventBus.getDefault().post(new PicStatusEvent("update"));
                                                         finish();
-                                                    }else if("IdentityUpload".equals(from)){
-                                                        EventBus.getDefault().post(new PicStatusEvent("identity"));
-                                                        finish();
-                                                    }else if("BankUpload".equals(from)){
-                                                        EventBus.getDefault().post(new PicStatusEvent("bankPic"));
-                                                        finish();
-
-                                                    }else if("BusinessUpload".equals(from)){
-                                                        EventBus.getDefault().post(new PicStatusEvent("BusinessPic"));
-                                                        finish();
-                                                    }
-                                                    else if("CreditUpload".equals(from)){
-                                                        EventBus.getDefault().post(new PicStatusEvent("CreditPic"));
-                                                        finish();
                                                     }
                                                     else if("CardUpload".equals(from)){
-                                                        EventBus.getDefault().post(new PicStatusEvent("CardPic"));
+                                                        EventBus.getDefault().post(new InformationEvent("CardPic"));
                                                         finish();
                                                     }
                                                     else if("informationStatus".equals(from)) {

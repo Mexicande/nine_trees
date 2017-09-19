@@ -40,6 +40,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/white"/>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_liven"
                 android:layout_marginRight="@dimen/_30dp"
@@ -76,6 +77,13 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_marginBottom="@dimen/_10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/bt_Offical"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@mipmap/logo"/>
         </RelativeLayout>
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"

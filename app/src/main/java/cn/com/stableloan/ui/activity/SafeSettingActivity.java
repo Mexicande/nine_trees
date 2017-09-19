@@ -396,7 +396,7 @@ public class SafeSettingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                if(tv_time.getText().toString().equals(saveBean.getLass_time())){
+                if(!tv_time.getText().toString().equals(saveBean.getLass_time())){
                     exit();
                 }else {
                     finish();
@@ -488,7 +488,7 @@ public class SafeSettingActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            if(tv_time.getText().toString().equals(saveBean.getLass_time())){
+            if(!tv_time.getText().toString().equals(saveBean.getLass_time())){
                 exit();
             }else {
                 finish();

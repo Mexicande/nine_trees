@@ -108,7 +108,6 @@ public class CardUploadActivity extends BaseActivity {
                                     }
 
                                     if(!photo1.isEmpty()){
-
                                         RequestOptions options = new RequestOptions()
                                                 .centerInside()
                                                 .placeholder(R.mipmap.ic_default_bank)

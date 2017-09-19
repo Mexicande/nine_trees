@@ -93,7 +93,7 @@ public class ImageDataBean implements Serializable {
         private String license_photo;
         private String brand_photo;
         private String isSuccess;
-        private String status;
+        private int status;
 
         public String getPositive_photo() {
             return positive_photo;
@@ -159,11 +159,11 @@ public class ImageDataBean implements Serializable {
             this.isSuccess = isSuccess;
         }
 
-        public String getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(int status) {
             this.status = status;
         }
     }

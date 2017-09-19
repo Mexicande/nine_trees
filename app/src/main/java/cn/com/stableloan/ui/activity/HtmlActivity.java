@@ -162,22 +162,25 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate(String url) {
+       // url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
         if (url != null) {
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
             webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
             webSettings.setUseWideViewPort(true);
             webSettings.setLoadWithOverviewMode(true);
-            webSettings.setBuiltInZoomControls(true);
+            webSettings.setBlockNetworkImage(false);
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
             webSettings.setGeolocationEnabled(true);
             webSettings.setDomStorageEnabled(true);
             webSettings.setDatabaseEnabled(true);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-            webSettings.setAllowFileAccess(true);
             webSettings.setAppCacheEnabled(true);
-            webSettings.setDisplayZoomControls(false);
-
-
+            webSettings.setSupportZoom(false);
+            webSettings.setNeedInitialFocus(false);
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webSettings.setLoadsImagesAutomatically(true);
+            webSettings.setBuiltInZoomControls(false);
             if (Build.VERSION.SDK_INT >= 21) {
                 webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }

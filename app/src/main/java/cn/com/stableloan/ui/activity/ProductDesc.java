@@ -436,7 +436,7 @@ public class ProductDesc extends BaseActivity {
         }
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         mTopRightMenu
-                .setHeight(430)
+                .setHeight(400)
                 .showIcon(true)     //显示菜单图标，默认为true
                 .dimBackground(true)           //背景变暗，默认为true
                 .needAnimationStyle(true)   //显示动画，默认为true

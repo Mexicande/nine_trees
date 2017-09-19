@@ -2,11 +2,12 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.allen.library.SuperTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -25,12 +26,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -67,13 +67,15 @@ public class ImageActivity extends BaseActivity {
         getPicStatus();
 
     }
+
     @Subscribe
-    public void onPicSatus(PicStatusEvent event){
-        if("update".equals(event.status)){
+    public void onPicSatus(PicStatusEvent event) {
+        if ("update".equals(event.status)) {
             getPicStatus();
         }
 
     }
+
     private void getPicStatus() {
         JSONObject eventObject = new JSONObject();
         try {
@@ -82,7 +84,7 @@ public class ImageActivity extends BaseActivity {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(this, "图片材料页",  eventObject);
+        ZhugeSDK.getInstance().track(this, "图片材料页", eventObject);
 
 
         String token = (String) SPUtils.get(this, "token", "1");
@@ -101,44 +103,65 @@ public class ImageActivity extends BaseActivity {
                         try {
                             JSONObject object = new JSONObject(s);
                             int error_code = object.getInt("error_code");
-                            if (error_code==0) {
+                            if (error_code == 0) {
                                 String data = object.getString("data");
-                                JSONObject jsonObject1=new JSONObject(data);
-                                    String step1 = jsonObject1.getString("step1");
-                                        if("1".equals(step1)){
-                                            identity.setRightString("已完成");
-                                        }else {
-                                            identity.setRightString("未完成");
-                                        }
-                                    String step2 = jsonObject1.getString("step2");
-                                    if("1".equals(step2)){
-                                        bank.setRightString("已完成");
-                                        }else {
-                                        bank.setRightString("未完成");
-                                        }
-                                    String step3 = jsonObject1.getString("step3");
+                                JSONObject jsonObject1 = new JSONObject(data);
+                                String step1 = jsonObject1.getString("step1");
 
-                                    if("1".equals(step3)){
-                                        CreditBank.setRightString("已完成");
-                                        }else {
-                                        CreditBank.setRightString("未完成");
-                                        }
-                                    String step4 = jsonObject1.getString("step4");
+                                if ("1".equals(step1)) {
 
-                                    if("1".equals(step4)){
-                                        camp.setRightString("已完成");
-                                        }else {
-                                        camp.setRightString("未完成");
-                                        }
-                                    String step5 = jsonObject1.getString("step5");
-
-                                    if("1".equals(step5)){
-                                        userCard.setRightString("已完成");
-                                        }else {
-                                        userCard.setRightString("未完成");
-                                        }
-
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_succeed);
+                                    identity.setTextBackground(drawable);
+                                    identity.setRightString("已完成");
+                                } else {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_fail);
+                                    identity.setTextBackground(drawable);
+                                    identity.setRightString("未完成");
                                 }
+                                String step2 = jsonObject1.getString("step2");
+                                if ("1".equals(step2)) {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_succeed);
+                                    bank.setTextBackground(drawable);
+                                    bank.setRightString("已完成");
+                                } else {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_fail);
+                                    bank.setTextBackground(drawable);
+                                    bank.setRightString("未完成");
+                                }
+                                String step3 = jsonObject1.getString("step3");
+
+                                if ("1".equals(step3)) {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_succeed);
+                                    CreditBank.setTextBackground(drawable);
+                                    CreditBank.setRightString("已完成");
+                                } else {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_fail);
+                                    CreditBank.setTextBackground(drawable);
+                                    CreditBank.setRightString("未完成");
+                                }
+                                String step4 = jsonObject1.getString("step4");
+
+                                if ("1".equals(step4)) {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_succeed);
+                                    camp.setTextBackground(drawable);
+                                    camp.setRightString("已完成");
+                                } else {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_fail);
+                                    camp.setTextBackground(drawable);
+                                    camp.setRightString("未完成");
+                                }
+                                String step5 = jsonObject1.getString("step5");
+                                if ("1".equals(step5)) {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_succeed);
+                                    userCard.setTextBackground(drawable);
+                                    userCard.setRightString("已完成");
+                                } else {
+                                    Drawable drawable = ContextCompat.getDrawable(ImageActivity.this, R.drawable.button_fail);
+                                    userCard.setTextBackground(drawable);
+                                    userCard.setRightString("未完成");
+                                }
+
+                            }
 
 
                         } catch (JSONException e) {
@@ -161,22 +184,27 @@ public class ImageActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.identity:
                 UpImageIdentityActivity.launch(this);
-               // startActivity(new Intent(this, IdentityUploadActivity.class));
+                // startActivity(new Intent(this, IdentityUploadActivity.class));
                 break;
             case R.id.bank:
                 UpImageIdentityActivity.launch(this);
-
                 //startActivity(new Intent(this, BankUploadActivity.class));
 
                 break;
             case R.id.CreditBank:
-                startActivity(new Intent(this, CreditBankUploadActivity.class));
+                UpImageIdentityActivity.launch(this);
+
+                //startActivity(new Intent(this, CreditBankUploadActivity.class));
                 break;
             case R.id.camp:
-                startActivity(new Intent(this, BusinessUploadActivity.class));
+                UpImageIdentityActivity.launch(this);
+
+               // startActivity(new Intent(this, BusinessUploadActivity.class));
                 break;
             case R.id.userCard:
-                startActivity(new Intent(this, CardUploadActivity.class));
+                UpImageIdentityActivity.launch(this);
+
+                //startActivity(new Intent(this, CardUploadActivity.class));
                 break;
             case R.id.layout_go:
                 finish();

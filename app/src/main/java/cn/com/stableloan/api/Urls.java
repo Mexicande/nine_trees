@@ -136,9 +136,9 @@ public interface Urls {
     interface Pictrue{
         String GET_QINIUTOKEN="Mine/GetToken";
 
-        String UpLoadImage="Pictrue/AddIdcard";
+        String UpLoadImage="picture/addPicture";
 
-        String Get_Pictrue="Pictrue/GetPictrue";
+        String Get_Pictrue="picture/getPicture";
     }
     interface KEY{
         String WEICHAT_APPID="wxd8a11cffdc98f84b";

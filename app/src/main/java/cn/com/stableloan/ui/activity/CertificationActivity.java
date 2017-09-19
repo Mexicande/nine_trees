@@ -3,14 +3,15 @@ package cn.com.stableloan.ui.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.allen.library.SuperTextView;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -45,6 +46,7 @@ import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -62,14 +64,16 @@ public class CertificationActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.alipay)
     SuperTextView alipay;
-    /* @Bind(R.id.jd)
-     SuperTextView jd;*/
+    @Bind(R.id.taobao)
+    SuperTextView taobao;
     @Bind(R.id.mobile)
     SuperTextView mobile;
     @Bind(R.id.contact)
     SuperTextView contact;
-    @Bind(R.id.taobao)
-    SuperTextView taobao;
+    @Bind(R.id.loction)
+    SuperTextView loction;
+    /* @Bind(R.id.jd)
+     SuperTextView jd;*/
 
     private String phone;
     private KProgressHUD hud;
@@ -99,9 +103,7 @@ public class CertificationActivity extends BaseActivity {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(this, "授权材料页",  eventObject);
-
-
+        ZhugeSDK.getInstance().track(this, "授权材料页", eventObject);
 
 
         hud = KProgressHUD.create(this)
@@ -125,11 +127,32 @@ public class CertificationActivity extends BaseActivity {
                             Certification.DataBean data = fromJson.getData();
                             if (data != null) {
                                 if (data.getAliStatus() == 1) {
-                                    alipay.setRightString("已认证");
-                                } else if (data.getTaobaoStatus() == 1) {
-                                    taobao.setRightString("已认证");
-                                } else if (data.getCapStatus() == 1) {
+                                    Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
+                                    alipay.setTextBackground(drawable);
+                                    alipay.setRightString("已完成");
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_fail);
+                                    alipay.setTextBackground(drawable);
+                                    alipay.setRightString("未完成");
+                                }
+
+                                if (data.getTaobaoStatus() == 1) {
+                                    Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
+                                    taobao.setTextBackground(drawable);
+                                    taobao.setRightString("已完成");
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_fail);
+                                    taobao.setTextBackground(drawable);
+                                    taobao.setRightString("未完成");
+                                }
+                                if (data.getCapStatus() == 1) {
+                                    Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
+                                    mobile.setTextBackground(drawable);
                                     mobile.setRightString("已认证");
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_fail);
+                                    mobile.setTextBackground(drawable);
+                                    mobile.setRightString("未完成");
                                 }
                             }
 
@@ -181,8 +204,10 @@ public class CertificationActivity extends BaseActivity {
             // 这里的requestCode就是申请时设置的requestCode。
             // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
             if (requestCode == 200) {
+                Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
+                contact.setTextBackground(drawable);
                 contact.setRightString("已认证");
-            }
+                }
         }
 
         @Override
@@ -190,6 +215,9 @@ public class CertificationActivity extends BaseActivity {
             // 权限申请失败回调。
             if (requestCode == 200) {
                 // TODO ...
+                Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_fail);
+                contact.setTextBackground(drawable);
+                contact.setRightString("未认证");
             }
         }
     };
@@ -200,13 +228,8 @@ public class CertificationActivity extends BaseActivity {
         hud.dismiss();
     }
 
-    @OnClick({R.id.mobile, R.id.alipay, R.id.taobao,R.id.layout_go})
+    @OnClick({R.id.mobile, R.id.alipay, R.id.taobao, R.id.layout_go})
     public void onViewClicked(View view) {
-        hud = KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
-                .setCancellable(true)
-                .show();
         switch (view.getId()) {
             case R.id.layout_go:
                 finish();

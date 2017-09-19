@@ -21,13 +21,15 @@
                     android:layout_centerVertical="true"
                     android:id="@+id/cash_back"
                     android:layout_width="40dp"
+                    android:layout_marginLeft="@dimen/_10dp"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:layout_centerVertical="true"
                         android:layout_marginTop="@dimen/_10dp"
-                        android:layout_marginLeft="@dimen/_10dp"
-                        android:layout_width="16dp"
-                        android:layout_height="19dp"
+                        android:layout_width="30dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="@dimen/_10dp"
                         android:src="@drawable/back"/>
                 </RelativeLayout>
                 <TextView

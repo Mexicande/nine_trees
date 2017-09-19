@@ -35,6 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_takephoto"/>
+
                 <ImageView
                     android:id="@+id/iv_IdentityUp"
                     android:layout_marginLeft="@dimen/_20dp"
@@ -52,6 +53,7 @@
                     android:id="@+id/iv_IdentityHead"
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
+
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_identity_head"/>
             </LinearLayout>
@@ -97,11 +99,13 @@
                     android:id="@+id/take_job"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:src="@mipmap/iv_takephoto"/>
                 <ImageView
                     android:id="@+id/iv_job"
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
+
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_job"/>
             </LinearLayout>
