@@ -38,8 +38,10 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
 import cn.com.stableloan.model.SaveBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
@@ -85,7 +87,7 @@ public class SafeSettingActivity extends BaseActivity {
     private SlideUp waySlideUp;
 
     private SaveBean saveBean;
-
+    private String lo="密码解锁";
     private SettingPassWordDialog passWordDialog;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeSettingActivity.class));
@@ -102,14 +104,22 @@ public class SafeSettingActivity extends BaseActivity {
         initToolbar();
         getDate();
         setLisenter();
+        lo = aCache.getAsString("lock");
+        if(lo!=null){
+            if(lo.equals(list[0])){
+                lock.setText(list[0]);
+            }else {
+                lock.setText(list[1]);
+            }
+        }
     }
 
     @Subscribe
     public void onMessageEvent(MsgEvent event) {
         if (event.msg != null && "ok".equals(event.msg)) {
-            lock.setText(list[1]);
-        } else if (event.msg != null) {
             lock.setText(list[0]);
+        } else if (event.msg == null) {
+            lock.setText(list[1]);
         }
     }
 
@@ -166,9 +176,11 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void getDate() {
+        final TinyDB tinyDB = new TinyDB(this);
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+        String userphone = user.getUserphone();
 
-
-        String lock1 = aCache.getAsString("lock");
+        String lock1 = aCache.getAsString(userphone);
         if (lock1 != null) {
 
             if (lock1.length() > 1) {
@@ -194,13 +206,6 @@ public class SafeSettingActivity extends BaseActivity {
                             if ("1".equals(isSuccess)) {
                                 Gson gson = new Gson();
                                 saveBean = gson.fromJson(s, SaveBean.class);
-                                String way1 = saveBean.getWay();
-
-                                if (way1 != null) {
-                                    if ("1".equals(way1)) {
-                                        EventBus.getDefault().post(new MsgEvent("1"));
-                                    }
-                                }
                                 String managed = saveBean.getManaged();
 
                                 if (managed != null && managed.length() == 1) {
@@ -330,55 +335,69 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void Save() {
-        String var = "";
-        String string = month.getText().toString();
-        for (int i = 0; i < list1.length; i++) {
-            if (list1[i].equals(string)) {
-                var = String.valueOf(i);
+        if(tv_time.getText().toString().equals(saveBean.getLass_time())){
+            if(!lo.equals(lock.getText().toString())){
+                if (lock.getText().toString().equals(list[0])) {
+                    aCache.put("lock", "on");
+                } else {
+                    aCache.put("lock", "off");
+                }
             }
-        }
-        String String1 = lock.getText().toString();
-        String parrtern = "";
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].equals(String1)) {
-                parrtern = String.valueOf(i);
+            finish();
+
+        }else {
+            String var = "";
+            String string = month.getText().toString();
+            for (int i = 0; i < list1.length; i++) {
+                if (list1[i].equals(string)) {
+                    var = String.valueOf(i);
+                }
             }
-        }
-        String token = (String) SPUtils.get(this, "token", "1");
-        Map<String, String> parms = new HashMap<>();
-        parms.put("token", token);
-        parms.put("way", parrtern);
-        parms.put("managed", var);
-        parms.put("period", tv_time.getText().toString());
-        JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Save_Setting)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            String msg = object.getString("msg");
-                            if ("1".equals(isSuccess)) {
-                                if (month.getText().toString().equals("手机解锁")) {
-                                    aCache.put("lock", "off");
+            String String1 = lock.getText().toString();
+            String parrtern = "";
+            for (int i = 0; i < list.length; i++) {
+                if (list[i].equals(String1)) {
+                    parrtern = String.valueOf(i);
+                }
+            }
+            String token = (String) SPUtils.get(this, "token", "1");
+            Map<String, String> parms = new HashMap<>();
+            parms.put("token", token);
+            parms.put("way", parrtern);
+            parms.put("managed", var);
+            parms.put("period", tv_time.getText().toString());
+            JSONObject jsonObject = new JSONObject(parms);
+            OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Save_Setting)
+                    .tag(this)
+                    .upJson(jsonObject)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                String isSuccess = object.getString("isSuccess");
+                                String msg = object.getString("msg");
+                                if ("1".equals(isSuccess)) {
+                                    if (lock.getText().toString().equals(list[0])) {
+                                        aCache.put("lock", "on");
+                                    } else {
+                                        aCache.put("lock", "off");
+                                    }
+                                    ToastUtils.showToast(SafeSettingActivity.this, msg);
+                                    finish();
                                 } else {
-                                    aCache.put("lock", "on");
+                                    ToastUtils.showToast(SafeSettingActivity.this, msg);
                                 }
-                                ToastUtils.showToast(SafeSettingActivity.this, msg);
-                                finish();
-                            } else {
-                                ToastUtils.showToast(SafeSettingActivity.this, msg);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
                         }
-                    }
-                });
+                    });
+        }
+
+
 
     }
 
@@ -403,18 +422,28 @@ public class SafeSettingActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_OneWeek:
+                timeSlideUp.hide();
+
                 setTimes(0);
                 break;
             case R.id.tv_OneMonth:
+                timeSlideUp.hide();
+
                 setTimes(1);
                 break;
             case R.id.tv_ThreeMonth:
+                timeSlideUp.hide();
+
                 setTimes(2);
                 break;
             case R.id.tv_SixMonth:
+                timeSlideUp.hide();
+
                 setTimes(3);
                 break;
             case R.id.tv_forever:
+                timeSlideUp.hide();
+
                 setTimes(4);
                 break;
             case R.id.bt_cancel:
@@ -431,8 +460,11 @@ public class SafeSettingActivity extends BaseActivity {
                 break;
             case R.id.tv_HeaderLock:
                 lock.setText(list[0]);
-                if (lock.getText().toString().equals("手机解锁")) {
-                    String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                final TinyDB tinyDB = new TinyDB(this);
+                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                String userphone = user.getUserphone();
+                if (lock.getText().toString().equals(list[0])) {
+                    String gesturePassword = aCache.getAsString(userphone);
                     if (gesturePassword == null || "".equals(gesturePassword)) {
                         startActivity(new Intent(SafeSettingActivity.this, CreateGestureActivity.class).putExtra("ok", "1"));
                     }
@@ -477,7 +509,6 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void setTimes(int times) {
-        timeSlideUp.hide();
         month.setText(list1[times]);
         LogUtils.i("time----", list1[times]);
         if (!saveBean.getLass_time().isEmpty()) {
@@ -488,7 +519,8 @@ public class SafeSettingActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            if(!tv_time.getText().toString().equals(saveBean.getLass_time())){
+            lo = aCache.getAsString("lock");
+            if(!tv_time.getText().toString().equals(saveBean.getLass_time())||!lo.equals(lock.getText().toString())){
                 exit();
             }else {
                 finish();

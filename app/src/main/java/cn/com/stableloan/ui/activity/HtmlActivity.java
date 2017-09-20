@@ -2,12 +2,15 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -162,8 +165,9 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate(String url) {
-       // url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
+      //  url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
         if (url != null) {
+
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
             webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -174,13 +178,15 @@ public class HtmlActivity extends BaseActivity {
             webSettings.setGeolocationEnabled(true);
             webSettings.setDomStorageEnabled(true);
             webSettings.setDatabaseEnabled(true);
-            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
             webSettings.setAppCacheEnabled(true);
             webSettings.setSupportZoom(false);
             webSettings.setNeedInitialFocus(false);
-            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
             webSettings.setLoadsImagesAutomatically(true);
             webSettings.setBuiltInZoomControls(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mWebView.getSettings().setMixedContentMode(
+                        WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+            }
             if (Build.VERSION.SDK_INT >= 21) {
                 webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }
@@ -198,6 +204,12 @@ public class HtmlActivity extends BaseActivity {
                         }
                     }
                     return false;
+                }
+
+                @Override
+                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                    handler.proceed();
+
                 }
             });
 

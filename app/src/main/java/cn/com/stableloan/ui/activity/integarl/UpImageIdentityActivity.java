@@ -53,11 +53,15 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ImageDataBean;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.PicStatusEvent;
+import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.PictureActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -107,6 +111,7 @@ public class UpImageIdentityActivity extends BaseActivity {
     public static final int LICENSE_CODE = 6;
     public static final int BRAND_PHOTO = 7;
 
+    private ACache aCache;
 
     private Context mContext;
     private int HEIGHT;
@@ -121,6 +126,7 @@ public class UpImageIdentityActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_identity);
         ButterKnife.bind(this);
+        aCache = ACache.get(this);
         EventBus.getDefault().register(this);
         mContext = this;
         initToolbar();
@@ -185,8 +191,19 @@ public class UpImageIdentityActivity extends BaseActivity {
                                         fillImageView(am_photo, ivIdentityHead, "手持身份证");
                                     }
                                 } else {
-                                    Intent intent = new Intent(mContext, Verify_PasswordActivity.class).putExtra("from", "CardUpload");
-                                    startActivity(intent);
+
+                                    final TinyDB tinyDB = new TinyDB(getApplicationContext());
+                                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                    String userphone = user.getUserphone();
+                                    String gesturePassword = aCache.getAsString(userphone);
+
+                                    if (gesturePassword == null || "".equals(gesturePassword)) {
+                                        Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
+                                        startActivity(intent);
+                                    } else {
+                                        Intent intent = new Intent(mContext, Verify_PasswordActivity.class).putExtra("from", "CardUpload");
+                                        startActivity(intent);
+                                    }
                                 }
                             } else {
                                 ToastUtils.showToast(mContext, imageDataBean.getError_message());
@@ -200,7 +217,7 @@ public class UpImageIdentityActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(InformationEvent event) {
         String message = event.message;
-        if ("CardPic".equals(message)) {
+        if ("CardUpload".equals(message)) {
             getImageDate();
         }
     }

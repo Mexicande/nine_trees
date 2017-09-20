@@ -11,7 +11,6 @@ import java.util.List;
  */
 
 public class Class_ListProductBean implements Serializable{
-
     /**
      * image : http://or2eh71ll.bkt.clouddn.com/149715014330539.png?e=1497153764&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:FbwRiNcuYzvh-urGLyDDVSynMo0=
      * product : [{"pname":"秒啦","product_introduction,":"30秒申请，秒批结果，快至2小时到款","id":"27","product_logo":"http://or2eh71ll.bkt.clouddn.com/149701120799042.png?e=1497014807&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:fCT6ea-Je57Jp2FFwgv8t6nr0x8=","average_time":"4小时","min_algorithm":"0.4%","lables":[{"id":"27","labels":[{"id":"3","name":"2","font":"#FF0","background":"#888","number":"0","status":"0","created_at":"2017-06-06 16:03:12","updated_at":"2017-06-06 16:03:12"}]}]},{"pname":"林志玲","product_introduction,":"喏翻墙翻墙缫䗄启发启发 ","id":"28","product_logo":"http://or2eh71ll.bkt.clouddn.com/149681756348774.jpg?e=1496821167&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:pr9qT9M5O3bRT9zFBw_bq48Ss9E=","average_time":"1小时","min_algorithm":"0.1","lables":[{"id":"28","labels":[]}]},{"pname":"DADADA","product_introduction,":"fdsafdsafasfdafdsafdsaf","id":"29","product_logo":"http://or2eh71ll.bkt.clouddn.com/149682450718849.jpg?e=1496828111&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:k76kLFZFwJewANlT9DoDQlh2JAE=","average_time":"范德萨","min_algorithm":"1","lables":[{"id":"29","labels":[]}]},{"pname":"任信用","product_introduction,":"信用卡极速贷,极速借款任性用","id":"30","product_logo":"http://or2eh71ll.bkt.clouddn.com/149701326470477.png?e=1497016864&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:g_bKERwo6ZgCckbckkQl58k2y-I=","average_time":"4小时","min_algorithm":"0.05","lables":[{"id":"30","labels":[{"id":"7","name":"一次还清","font":"e25a5a","background":"fbe8e8","number":"0","status":"1","created_at":"2017-06-09 20:29:56","updated_at":"2017-06-09 20:29:56"}]}]},{"pname":"学子速贷","product_introduction,":"大学生专属，通过率高，高效快速放款","id":"32","product_logo":"http://or2eh71ll.bkt.clouddn.com/149701337726906.png?e=1497016999&token=Npg7Sanmf4z8uv3mvwwffjOvoCMYN8Ezm4T8pDrC:sHqFDfi7Y9mPdqAbO4pyvTu7EKg=","average_time":"12小时","min_algorithm":"0.5","lables":[{"id":"32","labels":[{"id":"7","name":"一次还清","font":"e25a5a","background":"fbe8e8","number":"0","status":"1","created_at":"2017-06-09 20:29:56","updated_at":"2017-06-09 20:29:56"},{"id":"3","name":"2","font":"#FF0","background":"#888","number":"0","status":"0","created_at":"2017-06-06 16:03:12","updated_at":"2017-06-06 16:03:12"}]}]}]
@@ -64,15 +63,15 @@ public class Class_ListProductBean implements Serializable{
         private String min_algorithm;
         private String link;
 
-        public String getInterest_algorithm() {
+        public int getInterest_algorithm() {
             return interest_algorithm;
         }
 
-        public void setInterest_algorithm(String interest_algorithm) {
+        public void setInterest_algorithm(int interest_algorithm) {
             this.interest_algorithm = interest_algorithm;
         }
 
-        private String interest_algorithm;
+        private int interest_algorithm;
 
         public String getLink() {
             return link;

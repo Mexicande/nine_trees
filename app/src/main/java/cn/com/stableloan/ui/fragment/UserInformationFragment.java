@@ -60,6 +60,7 @@ import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
+import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.EncryptUtils;
@@ -68,6 +69,7 @@ import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.BetterSpinner;
 import cn.com.stableloan.view.RoundButton;
 import okhttp3.Call;
@@ -129,6 +131,7 @@ public class UserInformationFragment extends Fragment {
     TextView etAge1;
     @Bind(R.id.save)
     RoundButton save;
+    private ACache aCache;
 
 
     private UserBean user;
@@ -156,6 +159,7 @@ public class UserInformationFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         ButterKnife.bind(this, view);
+        aCache = ACache.get(getActivity());
         EventBus.getDefault().register(this);
         getDate();
         mLocationClient = new LocationClient(getActivity().getApplicationContext());
@@ -336,10 +340,21 @@ public class UserInformationFragment extends Fragment {
                                             int i1 = Integer.parseInt(bet2);
                                             etBetween2.setText(list[i1]);
                                         }
-
                                     }else {
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                        startActivity(intent);
+
+
+                                        final TinyDB tinyDB = new TinyDB(getActivity());
+                                        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                        String userphone = user.getUserphone();
+                                        String gesturePassword = aCache.getAsString(userphone);
+
+                                        if (gesturePassword == null || "".equals(gesturePassword)) {
+                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
+                                            startActivity(intent);
+                                        } else {
+                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                            startActivity(intent);
+                                        }
                                     }
                                 }
                             }else {

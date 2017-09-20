@@ -436,7 +436,6 @@ public class ProductDesc extends BaseActivity {
         }
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         mTopRightMenu
-                .setHeight(400)
                 .showIcon(true)     //显示菜单图标，默认为true
                 .dimBackground(true)           //背景变暗，默认为true
                 .needAnimationStyle(true)   //显示动画，默认为true
@@ -468,7 +467,7 @@ public class ProductDesc extends BaseActivity {
 
                     }
                 })
-                .showAsDropDown(btShare);
+                .showAsDropDown(btShare, -245, 0);
 
 
     }
@@ -583,6 +582,7 @@ public class ProductDesc extends BaseActivity {
                         } else {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }
+                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                     }
                 }
                 break;

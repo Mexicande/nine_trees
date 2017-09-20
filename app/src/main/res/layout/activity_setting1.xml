@@ -22,7 +22,7 @@
         android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:text="v1.6"/>
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/layout_nick"
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
@@ -30,14 +30,13 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="修改昵称" />
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/layout_profession"
         android:layout_marginTop="1dp"
         android:layout_width="match_parent"
@@ -45,14 +44,13 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="修改身份" />
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/layout_Safe"
         android:layout_marginTop="1dp"
         android:layout_width="match_parent"
@@ -60,8 +58,7 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="@color/gay"
-        stv:sLeftIconWidth="25dp"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"

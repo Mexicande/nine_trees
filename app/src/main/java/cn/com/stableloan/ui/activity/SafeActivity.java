@@ -24,7 +24,9 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.SaveBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
@@ -58,7 +60,12 @@ public class SafeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.safe:
-                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+
+                final TinyDB tinyDB = new TinyDB(this);
+                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                String userphone = user.getUserphone();
+
+                String gesturePassword = aCache.getAsString(userphone);
                 if(gesturePassword == null || "".equals(gesturePassword)) {
                     Intent intent=new Intent(this,Verify_PasswordActivity.class).putExtra("from","safe");
                     startActivity(intent);

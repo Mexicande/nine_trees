@@ -231,8 +231,8 @@
 
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@android:color/darker_gray</item>
-        <item name="colorControlActivated">@color/login_button</item>
+        <item name="colorControlNormal">@color/gay</item>
+        <item name="colorControlActivated">@color/gay</item>
     </style>
 
 
@@ -274,4 +274,6 @@
         <item name="android:windowEnterAnimation">@anim/trm_popup_enter</item>
         <item name="android:windowExitAnimation">@anim/trm_popup_exit</item>
     </style>
+
+
 </resources>

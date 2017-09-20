@@ -128,13 +128,14 @@
         </RelativeLayout>
 
     </LinearLayout>
+
     <RelativeLayout
         android:background="@color/white"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="45dp">
         <TextView
-            android:layout_centerVertical="true"
+            android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,14 +145,18 @@
             android:textColor="@color/select_text_color"
            />
     </RelativeLayout>
-
     <android.support.v7.widget.RecyclerView
         android:background="@color/white"
         android:id="@+id/linear_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5dp">
+        >
     </android.support.v7.widget.RecyclerView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/white"
+        />
 <!--    <RelativeLayout
         android:background="@color/white"
         android:layout_marginTop="8dp"
@@ -190,19 +195,20 @@
     </RelativeLayout>-->
 
 
-    <RelativeLayout
-        android:layout_marginTop="5dp"
+    <LinearLayout
+        android:layout_marginTop="10dp"
         android:background="@color/white"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/layou4"
             android:layout_marginLeft="@dimen/_10dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_width="match_parent"
             android:layout_height="45dp">
             <TextView
-                android:layout_gravity="center_vertical"
+                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="分类专题"
@@ -211,13 +217,19 @@
                 android:textColor="@color/select_text_color"
                 />
         </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
             android:layout_below="@id/layou4"
             android:id="@+id/classify_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
-    </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/white"
+            />
+    </LinearLayout>
     <RelativeLayout
         android:layout_marginTop="5dp"
         android:background="@color/white"

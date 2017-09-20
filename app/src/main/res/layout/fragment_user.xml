@@ -141,7 +141,7 @@
     </RelativeLayout>
 
 
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/invite"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -149,14 +149,14 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="20dp"
-        stv:sLeftTextColor="@color/gay"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/inivte" />
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/layout_my"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -164,14 +164,14 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="20dp"
-        stv:sLeftTextColor="@color/gay"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/information" />
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/layout_collection"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -179,14 +179,14 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="20dp"
-        stv:sLeftTextColor="@color/gay"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/collection" />
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/layout_attention"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -194,14 +194,14 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="20dp"
-        stv:sLeftTextColor="@color/gay"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/setting" />
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/feedback"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -209,7 +209,7 @@
         stv:sBottomLineMargin="0dp"
         android:textSize="16sp"
         stv:sLeftIconHeight="20dp"
-        stv:sLeftTextColor="@color/gay"
+        stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
         stv:sRightIconHeight="17dp"

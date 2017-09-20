@@ -7,17 +7,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.allen.library.SuperTextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 
 /**
  * 设置页面
@@ -85,6 +86,10 @@ public class Setting1Activity extends BaseActivity {
     }
 
     private void exit() {
+        final TinyDB tinyDB = new TinyDB(this);
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+        String userphone = user.getUserphone();
+
         selfDialog = new SelfDialog(this);
         selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
             @Override
@@ -93,6 +98,7 @@ public class Setting1Activity extends BaseActivity {
                 SPUtils.clear(Setting1Activity.this);
                 TinyDB tinyDB = new TinyDB(Setting1Activity.this);
                 tinyDB.clear();
+                aCache.remove(userphone);
                 startActivity(new Intent(Setting1Activity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();
             }

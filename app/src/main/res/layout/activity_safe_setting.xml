@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/gay"
                     android:textSize="15sp"
-                    android:text="手机解锁"/>
+                    android:text="密码解锁"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/select_way"

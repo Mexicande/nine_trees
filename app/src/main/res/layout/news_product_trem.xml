@@ -47,7 +47,6 @@
                     />
                 <ImageView
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:layout_alignParentRight="true"
                     android:src="@mipmap/iv_new_allow"
                     android:layout_width="wrap_content"
@@ -82,7 +81,7 @@
                         android:paddingBottom="2dp"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center"
                         android:textSize="10sp"
                         app:corner="2dp"

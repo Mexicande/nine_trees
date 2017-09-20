@@ -6,11 +6,11 @@ package cn.com.stableloan.api;
 
 public interface Urls {
 
-    String Ip_url="http://test.api.anwenqianbao.com/v1/";
+    String Ip_url="http://api.anwenqianbao.com/v1/";
 
-    String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
+    String puk_URL="http://api.shoujijiekuan.com/Home/ApiLogin/";
 
-    String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
+    String NEW_URL="http://api.shoujijiekuan.com/Home/";
 
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +

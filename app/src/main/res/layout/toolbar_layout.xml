@@ -20,7 +20,6 @@
         android:layout_height="30dp"
         android:paddingTop="@dimen/_5dp"
         android:paddingBottom="@dimen/_5dp"
-        android:paddingLeft="@dimen/_10dp"
         android:paddingRight="@dimen/_10dp"
         android:src="@mipmap/iv_back"/>
     <TextView

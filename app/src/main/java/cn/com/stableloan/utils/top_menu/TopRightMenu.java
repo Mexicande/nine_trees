@@ -28,7 +28,7 @@ public class TopRightMenu {
     private List<MenuItem> menuItemList;
 
     private static final int DEFAULT_HEIGHT = 480;
-    private int popHeight = DEFAULT_HEIGHT;
+    private int popHeight = RecyclerView.LayoutParams.WRAP_CONTENT;
     private int popWidth = RecyclerView.LayoutParams.WRAP_CONTENT;
     private boolean showIcon = true;
     private boolean dimBackground = true;

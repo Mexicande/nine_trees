@@ -138,7 +138,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commitAllowingStateLoss();
         navigationController = tab.custom()
                 .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down,"首页"))
-                .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"产品"))
+                .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"贷款"))
                 .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"福利"))
                 .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
                 .build();

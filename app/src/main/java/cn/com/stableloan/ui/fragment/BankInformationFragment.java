@@ -20,6 +20,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,10 +37,14 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.Bank;
 import cn.com.stableloan.model.BankInformation;
 import cn.com.stableloan.model.InformationEvent;
+import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.BankUtils;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.cache.ACache;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -72,6 +77,7 @@ public class BankInformationFragment extends Fragment {
     private TimePickerView pvTime;
 
     private Bank bankBean;
+    private ACache aCache;
 
     public BankInformationFragment() {
         // Required empty public constructor
@@ -86,6 +92,9 @@ public class BankInformationFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_bank_information, container, false);
         ButterKnife.bind(this, view);
+        aCache = ACache.get(getActivity());
+        EventBus.getDefault().register(this);
+
         initTime();
         setListener();
         getDate();
@@ -119,6 +128,15 @@ public class BankInformationFragment extends Fragment {
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .build();
     }
+
+    @Subscribe
+    public void onMessageEvent(InformationEvent event) {
+        String message = event.message;
+        if ("bankinformation".equals(message)) {
+            getDate();
+        }
+    }
+
 
     private void getDate() {
 
@@ -155,8 +173,18 @@ public class BankInformationFragment extends Fragment {
                                     etValidityTime2.setText(bankBean.getBank().getCredit().getCperiod());
 
                                 } else {
-                                    Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                    startActivity(intent);
+
+                                    final TinyDB tinyDB = new TinyDB(getActivity());
+                                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                    String userphone = user.getUserphone();
+                                    String gesturePassword = aCache.getAsString(userphone);
+                                    if (gesturePassword == null || "".equals(gesturePassword)) {
+                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "bankinformation");
+                                        startActivity(intent);
+                                    } else {
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "bankinformation");
+                                        startActivity(intent);
+                                    }
                                 }
 
 
@@ -334,4 +362,10 @@ public class BankInformationFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
 }

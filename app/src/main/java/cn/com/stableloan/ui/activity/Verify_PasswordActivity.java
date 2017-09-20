@@ -120,7 +120,7 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                         finish();
                                                     }
                                                     else if("CardUpload".equals(from)){
-                                                        EventBus.getDefault().post(new InformationEvent("CardPic"));
+                                                        EventBus.getDefault().post(new InformationEvent("CardUpload"));
                                                         finish();
                                                     }
                                                     else if("informationStatus".equals(from)) {
@@ -128,6 +128,9 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                         finish();
                                                     }else if("integarl".equals(from)){
                                                        IdentityinformationActivity.launch(Verify_PasswordActivity.this);
+                                                        finish();
+                                                    }else if("bankinformation".equals(from)){
+                                                        EventBus.getDefault().post(new InformationEvent("bankinformation"));
                                                         finish();
                                                     }
                                                 }

@@ -149,12 +149,15 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
             view2.setVisibility(View.GONE);
             view3.setVisibility(View.GONE);
             view4.setVisibility(View.GONE);
-
         }
         helper.setText(R.id.product_list_name,item.getPname())
                 .setText(R.id.rate,item.getFastest_time())
-                .setText(R.id.tv_Limit,item.getMin_algorithm()+"%")
-        .setText(R.id.interest_algorithm,item.getInterest_algorithm());
+                .setText(R.id.tv_Limit,item.getMin_algorithm()+"%");
+        if(item.getInterest_algorithm()==0){
+            helper.setText(R.id.interest_algorithm,"日");
+        }else {
+            helper.setText(R.id.interest_algorithm,"月");
+        }
         helper.setText(R.id.product_introduction,item.getProduct_introduction());
 
         RequestOptions options = new RequestOptions()

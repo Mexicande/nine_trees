@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.allen.library.SuperTextView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
@@ -64,6 +63,7 @@ import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -101,6 +101,9 @@ public class UserFragment extends ImmersionFragment {
     private static final int SEND_LOGIN = 4000;
     private Wechat_dialog wechat_dialog;
     private static final int Moon = 1;
+
+
+    private String userPhone="";
     public UserFragment() {
 
     }
@@ -166,6 +169,7 @@ public class UserFragment extends ImmersionFragment {
                                     tvNick.setText(personal.getData().getNickname());
                                     tvIntegral.setText(personal.getData().getCredits());
                                     btMoney.setText(personal.getData().getTotal());
+                                    userPhone=personal.getData().getUserphone();
                                 }else {
                                     ToastUtils.showToast(getActivity(),personal.getError_message());
                                 }
@@ -330,7 +334,7 @@ public class UserFragment extends ImmersionFragment {
                                 if ("1".equals(status)) {
                                     UserInformationActivity.launch(getActivity());
                                 } else {
-                                    String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
+                                    String gesturePassword = aCache.getAsString(userPhone);
                                     if (gesturePassword == null || "".equals(gesturePassword)) {
                                         Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
                                         startActivity(intent);
@@ -393,7 +397,7 @@ public class UserFragment extends ImmersionFragment {
 
                                     } else {
                                         if (gesturePassword == null || "".equals(gesturePassword)) {
-                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
+                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userinformation");
                                             startActivity(intent);
                                         } else {
                                             Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");

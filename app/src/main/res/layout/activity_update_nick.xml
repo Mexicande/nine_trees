@@ -10,7 +10,6 @@
     <include layout="@layout/toolbar_layout"/>
 
     <EditText
-        android:paddingLeft="10dp"
         android:id="@+id/et_nick"
         android:gravity="center"
         android:layout_marginTop="30dp"
@@ -18,6 +17,7 @@
         android:layout_marginRight="50dp"
         android:background="@drawable/update_background"
         android:hint="新昵称"
+        android:theme="@style/MyEditText"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
     <Button

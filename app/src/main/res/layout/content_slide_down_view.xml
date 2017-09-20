@@ -79,7 +79,7 @@
                 android:layout_height="45dp"
                 android:text="确认"
                 app:btnPressedRatio="0.9"
-                app:btnSolidColor="@color/product_desc"
+                app:btnSolidColor="@color/colorPrimary"
                 android:gravity="center"
                 android:textSize="17sp"
                 android:textColor="#ffffff"

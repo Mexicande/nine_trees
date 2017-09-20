@@ -142,7 +142,7 @@ public class ProfessionalInformationFragment extends Fragment {
         EventBus.getDefault().register(this);
         getDate();
         initBetter();
-         token = (String) SPUtils.get(getActivity(), "token", "1");
+        token = (String) SPUtils.get(getActivity(), "token", "1");
 
         return view;
     }

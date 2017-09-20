@@ -10,81 +10,108 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
-        <include layout="@layout/toolbar_layout"/>
-        <RelativeLayout
-            android:layout_marginTop="@dimen/_1dp"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="vertical"
             android:background="@drawable/integral_bg"
-            android:layout_height="140dp">
-            <LinearLayout
-                android:id="@+id/layout"
-                android:layout_marginLeft="@dimen/_30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/_5dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
                 <TextView
-                    android:id="@+id/tv_Liven"
+                    android:id="@+id/title_name"
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="16sp"
-                    android:text="123"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="积分榜首"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    />
+                <ImageView
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/iv_back"
+                    android:layout_width="40dp"
+                    android:layout_marginLeft="@dimen/_5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30dp"
+                    android:paddingTop="@dimen/_5dp"
+                    android:paddingBottom="@dimen/_5dp"
+                    android:paddingRight="@dimen/_10dp"
+                    android:src="@mipmap/iv_back"/>
 
-            <LinearLayout
-                android:id="@+id/layout_liven"
-                android:layout_marginRight="@dimen/_30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_alignParentRight="true"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_Credits"
-                    android:layout_gravity="center_horizontal"
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp">
+                <LinearLayout
+                    android:id="@+id/layout"
+                    android:layout_marginLeft="@dimen/_30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_Liven"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="16sp"
+                        android:text="123"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="积分榜首"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_liven"
+                    android:layout_marginRight="@dimen/_30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_Credits"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="000"/>
+                    <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="积分"
+                        android:textSize="15sp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/bt_Offical"
+                    android:layout_marginTop="7dp"
+                    android:layout_below="@id/layout"
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/_10dp"
+                    android:layout_centerHorizontal="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="000"/>
-                <TextView
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="积分"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/bt_Offical"
-                android:layout_marginTop="7dp"
-                android:layout_below="@id/layout"
-                android:layout_width="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="@dimen/_10dp"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_marginBottom="@dimen/_10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_above="@id/bt_Offical"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/logo"/>
-        </RelativeLayout>
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_marginBottom="@dimen/_10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@id/bt_Offical"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/logo"/>
+            </RelativeLayout>
+        </LinearLayout>
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"
             android:layout_width="match_parent"
