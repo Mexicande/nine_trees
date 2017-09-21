@@ -14,6 +14,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXApiService;
@@ -53,6 +54,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         }
         switch (baseResp.errCode){
             case BaseResp.ErrCode.ERR_OK:
+
+                LogUtils.i("qq-----Type()======",baseResp.getType());
                 if (baseResp.getType() == 1){//授权登录获取用户信息
                     getAccessToken(((SendAuth.Resp) baseResp).code);
                 }else if (baseResp.getType() == 2){// 分享

@@ -178,7 +178,9 @@ public class BankInformationFragment extends Fragment {
                                     UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
                                     String userphone = user.getUserphone();
                                     String gesturePassword = aCache.getAsString(userphone);
-                                    if (gesturePassword == null || "".equals(gesturePassword)) {
+                                    String lock = aCache.getAsString("lock");
+
+                                    if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
                                         Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "bankinformation");
                                         startActivity(intent);
                                     } else {
@@ -186,8 +188,6 @@ public class BankInformationFragment extends Fragment {
                                         startActivity(intent);
                                     }
                                 }
-
-
                             } else {
                                 ToastUtils.showToast(getActivity(), information.getError_message());
                             }

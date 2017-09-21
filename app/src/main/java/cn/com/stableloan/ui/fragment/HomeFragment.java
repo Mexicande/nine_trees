@@ -158,8 +158,10 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             advList.add(adInfo);
             AdManager adManager = new AdManager(getActivity(), advList);
             adManager.setOverScreen(true)
+                    .setWidthPerHeight(1f)
                     .setPageTransformer(new DepthPageTransformer());
             adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
+
             adManager.setPadding(50)
                     .setBackViewColor(Color.parseColor("#AA333333"));
             adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {

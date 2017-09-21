@@ -164,7 +164,6 @@ public class InviteFriendsActivity extends BaseActivity {
 
             @Override
             public void onComplete(String s) {
-                ToastUtils.showToast(InviteFriendsActivity.this, s);
 
             }
 

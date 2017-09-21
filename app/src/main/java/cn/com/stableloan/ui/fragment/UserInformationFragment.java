@@ -347,8 +347,9 @@ public class UserInformationFragment extends Fragment {
                                         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
                                         String userphone = user.getUserphone();
                                         String gesturePassword = aCache.getAsString(userphone);
+                                        String lock = aCache.getAsString("lock");
 
-                                        if (gesturePassword == null || "".equals(gesturePassword)) {
+                                        if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
                                             Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
                                             startActivity(intent);
                                         } else {

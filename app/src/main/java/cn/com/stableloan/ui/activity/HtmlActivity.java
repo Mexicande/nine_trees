@@ -165,9 +165,8 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate(String url) {
-      //  url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
+      // url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
         if (url != null) {
-
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
             webSettings.setJavaScriptCanOpenWindowsAutomatically(true);

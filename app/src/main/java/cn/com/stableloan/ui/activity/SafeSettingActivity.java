@@ -106,7 +106,7 @@ public class SafeSettingActivity extends BaseActivity {
         setLisenter();
         lo = aCache.getAsString("lock");
         if(lo!=null){
-            if(lo.equals(list[0])){
+            if(lo.equals("on")){
                 lock.setText(list[0]);
             }else {
                 lock.setText(list[1]);
@@ -176,19 +176,16 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void getDate() {
-        final TinyDB tinyDB = new TinyDB(this);
+      /*  final TinyDB tinyDB = new TinyDB(this);
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         String userphone = user.getUserphone();
 
         String lock1 = aCache.getAsString(userphone);
         if (lock1 != null) {
-
             if (lock1.length() > 1) {
                 lock.setText(list[1]);
             }
-
-        }
-
+        }*/
         String token = (String) SPUtils.get(this, "token", "1");
 
         Map<String, String> parms = new HashMap<>();
@@ -395,6 +392,7 @@ public class SafeSettingActivity extends BaseActivity {
                             }
                         }
                     });
+
         }
 
 
@@ -459,6 +457,7 @@ public class SafeSettingActivity extends BaseActivity {
                 timeSlideUp.hide();
                 break;
             case R.id.tv_HeaderLock:
+                waySlideUp.hide();
                 lock.setText(list[0]);
                 final TinyDB tinyDB = new TinyDB(this);
                 UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
@@ -469,11 +468,10 @@ public class SafeSettingActivity extends BaseActivity {
                         startActivity(new Intent(SafeSettingActivity.this, CreateGestureActivity.class).putExtra("ok", "1"));
                     }
                 }
-                waySlideUp.hide();
                 break;
             case R.id.tv_WordLock:
-                lock.setText(list[1]);
                 waySlideUp.hide();
+                lock.setText(list[1]);
                 break;
             case R.id.bt_CancelWay:
                 waySlideUp.hide();
@@ -490,7 +488,6 @@ public class SafeSettingActivity extends BaseActivity {
     private void exit() {
 
         passWordDialog=new SettingPassWordDialog(this);
-        passWordDialog.setTitle("是否要放弃修改?");
         passWordDialog.setYesOnclickListener("是", new SettingPassWordDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {

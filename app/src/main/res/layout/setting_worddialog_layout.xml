@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="是否退出?"
+                android:text="没有进行保存"
                 android:textColor="@color/select_text_color"
                 android:textSize="18sp"
                 />
@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:textColor="@color/select_text_color"
                 android:layout_gravity="center"
-                android:text="现在退出为非登录状态"
+                android:text="确定退出修改？"
                 android:textSize="18sp" />
 
             <View

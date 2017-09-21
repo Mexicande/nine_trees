@@ -205,9 +205,11 @@ public class UserFragment extends ImmersionFragment {
         if (!event.userNick.isEmpty()) {
             tvNick.setText(event.userNick);
         }
-        if (event.phone.equals("1")) {
-            TextUser();
-        }
+       /* if(event.phone!=null){
+            if (event.phone.equals("1")) {
+                TextUser();
+            }
+        }*/
 
     }
 
@@ -335,7 +337,9 @@ public class UserFragment extends ImmersionFragment {
                                     UserInformationActivity.launch(getActivity());
                                 } else {
                                     String gesturePassword = aCache.getAsString(userPhone);
-                                    if (gesturePassword == null || "".equals(gesturePassword)) {
+                                    String lock = aCache.getAsString("lock");
+
+                                    if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
                                         Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
                                         startActivity(intent);
                                     } else {

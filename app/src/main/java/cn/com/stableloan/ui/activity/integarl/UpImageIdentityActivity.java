@@ -197,7 +197,9 @@ public class UpImageIdentityActivity extends BaseActivity {
                                     String userphone = user.getUserphone();
                                     String gesturePassword = aCache.getAsString(userphone);
 
-                                    if (gesturePassword == null || "".equals(gesturePassword)) {
+
+                                    String lock = aCache.getAsString("lock");
+                                    if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
                                         Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
                                         startActivity(intent);
                                     } else {
