@@ -9,17 +9,10 @@ import android.view.KeyEvent;
 
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
-import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
-import okhttp3.Call;
-import okhttp3.Response;
 
 
 /**
@@ -28,7 +21,6 @@ import okhttp3.Response;
  */
 public class SplashActivity extends AppCompatActivity {
     private SwitchHandler mHandler = new SwitchHandler(this);
-    private String HTML="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,35 +37,8 @@ public class SplashActivity extends AppCompatActivity {
         }
         ImmersionBar.with(this).transparentBar().init();
         setWelcome();
-      /*  CameraActivity.launch(this);
-        finish();*/
-      /*  boolean flag = SPUtils.contains(this, "url");
-
-        if(flag){
-            mHandler.sendEmptyMessageDelayed(1, 1000);
-        }else {
-            GoHtml();
-        }*/
     }
 
-    private void GoHtml() {
-        HTML= "http://www.shoujiweidai.com/android/app97.html";
-        OkGo.get(HTML)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        SPUtils.put(SplashActivity.this,"url",HTML);
-                        setWelcome( );
-                    }
-                             @Override
-                             public void onError(Call call, Response response, Exception e) {
-                                 super.onError(call, response, e);
-                                 mHandler.sendEmptyMessageDelayed(2, 1000);
-                             }
-                         }
-                );
-    }
 
     private static class SwitchHandler extends Handler {
         private WeakReference<SplashActivity> mWeakReference;

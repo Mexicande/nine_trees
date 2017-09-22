@@ -42,7 +42,6 @@ import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
@@ -50,18 +49,15 @@ import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
-import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -85,22 +81,7 @@ public class UserFragment extends ImmersionFragment {
     TextView btMoney;
 
     private ACache aCache;
-    private Bitmap splashBitmap;
-    private int screenWidth, screenHeight;
-    private Handler handler = new Handler() {
-    };
-
-
-    private static final int FLAG_Profession = 1;
-    private static final int SEND_Profession_ = 1000;
-
-
-    private static final int FLAG_NICK = 2;
-    private static final int SEND_NICK = 2000;
-    private static final int FLAG_LOGIN = 3;
-    private static final int SEND_LOGIN = 4000;
     private Wechat_dialog wechat_dialog;
-    private static final int Moon = 1;
 
 
     private String userPhone="";

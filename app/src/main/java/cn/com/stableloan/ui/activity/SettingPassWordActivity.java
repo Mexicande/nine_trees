@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -22,7 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -46,7 +44,6 @@ import cn.com.stableloan.utils.aes.Des4;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.utils.ras.RSA;
 import cn.com.stableloan.view.RoundButton;
-import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.dialog.SettingPassWordDialog;
 import okhttp3.Call;
 import okhttp3.Response;

@@ -184,27 +184,18 @@ public class ImageActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.identity:
                 UpImageIdentityActivity.launch(this);
-                // startActivity(new Intent(this, IdentityUploadActivity.class));
                 break;
             case R.id.bank:
                 UpImageIdentityActivity.launch(this);
-                //startActivity(new Intent(this, BankUploadActivity.class));
-
                 break;
             case R.id.CreditBank:
                 UpImageIdentityActivity.launch(this);
-
-                //startActivity(new Intent(this, CreditBankUploadActivity.class));
                 break;
             case R.id.camp:
                 UpImageIdentityActivity.launch(this);
-
-               // startActivity(new Intent(this, BusinessUploadActivity.class));
                 break;
             case R.id.userCard:
                 UpImageIdentityActivity.launch(this);
-
-                //startActivity(new Intent(this, CardUploadActivity.class));
                 break;
             case R.id.layout_go:
                 finish();

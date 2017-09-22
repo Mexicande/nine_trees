@@ -62,7 +62,6 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
-import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 import okhttp3.Call;
 import okhttp3.Response;
 

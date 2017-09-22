@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import cn.com.stableloan.R;
-import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.model.integarl.InviteFriendList;
 
 /**

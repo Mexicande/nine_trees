@@ -1,18 +1,5 @@
 package cn.com.stableloan.utils.permission;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionListener;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RationaleListener;
-
-import java.util.List;
-
 /**
  * Created by apple on 2017/8/24.
  */

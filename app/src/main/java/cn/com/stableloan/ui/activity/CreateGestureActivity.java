@@ -26,7 +26,6 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.lock.LockPatternIndicator;
 import cn.com.stableloan.view.lock.LockPatternUtil;

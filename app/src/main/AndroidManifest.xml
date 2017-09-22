@@ -168,9 +168,6 @@
         <activity
             android:name=".ui.activity.ImageActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.IdentityUploadActivity"
-            android:screenOrientation="portrait" />
         <!-- 安全设置 -->
 
         <activity
@@ -189,24 +186,7 @@
             android:name=".ui.activity.Verify_PasswordActivity"
             android:screenOrientation="portrait" />
         <!-- 银行卡照片 -->
-        <activity
-            android:name=".ui.activity.BankUploadActivity"
-            android:screenOrientation="portrait" />
-        <!-- 信用卡照片 -->
 
-        <activity
-            android:name=".ui.activity.CreditBankUploadActivity"
-            android:screenOrientation="portrait" />
-        <!-- 营业执照照片 -->
-        <activity
-            android:name=".ui.activity.BusinessUploadActivity"
-            android:screenOrientation="portrait" />
-        <!-- 工作卡照片 -->
-
-        <activity
-            android:name=".ui.activity.CardUploadActivity"
-            android:screenOrientation="portrait" />
-        <!-- 登陆照片 -->
 
         <activity
             android:name=".ui.activity.LoginActivity"

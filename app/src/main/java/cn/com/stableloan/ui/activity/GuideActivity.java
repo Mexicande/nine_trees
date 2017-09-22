@@ -9,17 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
-import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
 
 /**

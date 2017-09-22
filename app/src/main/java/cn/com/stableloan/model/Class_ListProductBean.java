@@ -1,10 +1,7 @@
 package cn.com.stableloan.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by apple on 2017/6/12.

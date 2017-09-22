@@ -1,6 +1,5 @@
 package cn.com.stableloan.ui.adapter;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 
 /**

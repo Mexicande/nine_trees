@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -41,7 +40,6 @@ import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.WelfareShutBean;
 import cn.com.stableloan.ui.js.JsInteration;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;

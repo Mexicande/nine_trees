@@ -33,8 +33,11 @@ public interface Urls {
     String Api_Id="3846f6f1e99e4f1b958111fda257c368";
     //
     interface Update{
+
         String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
+
         String value="url=vivo";
+
     }
     interface  times{
         String MESSAGE_SEND="sms/getcode";

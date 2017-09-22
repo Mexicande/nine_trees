@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import butterknife.Bind;
 import cn.com.stableloan.R;
 import cn.com.stableloan.utils.SPUtils;
 

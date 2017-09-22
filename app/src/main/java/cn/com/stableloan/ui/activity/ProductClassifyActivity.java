@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,7 +36,6 @@ import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.News_ClassBean;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
-import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_create_gesture"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_f6f6f6"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
     <include layout="@layout/toolbar_layout"/>
     <cn.com.stableloan.view.lock.LockPatternIndicator
         android:id="@+id/lockPatterIndicator"

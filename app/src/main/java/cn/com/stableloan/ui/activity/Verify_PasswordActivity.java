@@ -1,9 +1,7 @@
 package cn.com.stableloan.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,12 +21,10 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -58,6 +54,7 @@ public class Verify_PasswordActivity extends BaseActivity {
         titleName.setText("身份验证");
         etPassWord.setTransformationMethod(PasswordTransformationMethod
                 .getInstance());
+
     }
 
 

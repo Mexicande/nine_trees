@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -33,25 +31,18 @@ import cn.com.stableloan.bean.CodeMessage;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.EncryptUtils;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
-import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cxy.com.validate.IValidateResult;
 import cxy.com.validate.Validate;
 import cxy.com.validate.ValidateAnimation;
 import cxy.com.validate.annotation.Index;
-import cxy.com.validate.annotation.MaxLength;
-import cxy.com.validate.annotation.MinLength;
 import cxy.com.validate.annotation.NotNull;
 import cxy.com.validate.annotation.Password1;
 import cxy.com.validate.annotation.Password2;
 import cxy.com.validate.annotation.RE;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static cn.com.stableloan.R.id.msg;
 
 public class RegisterActivity extends BaseActivity implements IValidateResult {
 

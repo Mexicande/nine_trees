@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.google.gson.Gson;
-import com.mancj.slideup.SlideUp;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,7 +20,6 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UpdateInfoBean;
 import cn.com.stableloan.model.UserBean;
@@ -29,8 +27,6 @@ import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
-import cn.com.stableloan.ui.fragment.UserInformationFragment;
-import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;

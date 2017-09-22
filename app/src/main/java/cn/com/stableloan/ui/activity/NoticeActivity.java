@@ -25,7 +25,6 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.NoticeBean;
 import cn.com.stableloan.ui.adapter.NoticeAdapter;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;

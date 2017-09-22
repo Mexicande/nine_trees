@@ -1,6 +1,5 @@
 package cn.com.stableloan.base;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;

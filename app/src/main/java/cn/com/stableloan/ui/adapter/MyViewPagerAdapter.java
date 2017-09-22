@@ -8,9 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment;
-import cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment;
-
 
 public class MyViewPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> list = new ArrayList<>();

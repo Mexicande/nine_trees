@@ -3,7 +3,6 @@ package cn.com.stableloan.ui.fragment;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -63,7 +62,6 @@ import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.CommonUtils;
-import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;

@@ -11,7 +11,6 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
-import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 
 public class RuleDescActivity extends AppCompatActivity {

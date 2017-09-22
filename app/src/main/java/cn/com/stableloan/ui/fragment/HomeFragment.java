@@ -6,14 +6,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -29,7 +27,6 @@ import com.uuch.adlibrary.AdConstant;
 import com.uuch.adlibrary.AdManager;
 import com.uuch.adlibrary.bean.AdInfo;
 import com.uuch.adlibrary.transformer.DepthPageTransformer;
-import com.uuch.adlibrary.transformer.RotateDownPageTransformer;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -440,7 +437,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                         bean.setHome_image("http://orizavg5s.bkt.clouddn.com/classify_04.png");
                                         list.add(bean);
                                     }
-
                                     classify_recycler_adapter.setNewData(list);
                                     LogUtils.i("classX-size", newBean.getClassX().size());
                                     productAdapter.setNewData(newBean.getProduct());

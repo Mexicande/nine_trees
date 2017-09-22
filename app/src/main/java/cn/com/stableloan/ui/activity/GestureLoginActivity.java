@@ -28,7 +28,6 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.view.lock.LockPatternUtil;
 import cn.com.stableloan.view.lock.LockPatternView;
 import okhttp3.Call;

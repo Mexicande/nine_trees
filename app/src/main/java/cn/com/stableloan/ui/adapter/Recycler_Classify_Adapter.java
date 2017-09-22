@@ -1,10 +1,8 @@
 package cn.com.stableloan.ui.adapter;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,12 +13,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.coorchice.library.SuperTextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
-import cn.com.stableloan.utils.ScreenSizeUtil;
-import cn.com.stableloan.view.drawable.CenterDrawable;
 
 
 /**

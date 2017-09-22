@@ -1,17 +1,12 @@
 package cn.com.stableloan.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.drawable.Drawable;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

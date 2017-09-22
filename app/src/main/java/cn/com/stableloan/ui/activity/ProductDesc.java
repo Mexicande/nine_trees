@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,7 +23,6 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.mancj.slideup.SlideUp;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,7 +48,6 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
 import cn.com.stableloan.view.DescDialog;
-import cn.com.stableloan.view.likebutton.LikeButton;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXManager;

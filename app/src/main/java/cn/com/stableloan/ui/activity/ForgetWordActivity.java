@@ -16,7 +16,6 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;

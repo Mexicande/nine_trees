@@ -17,7 +17,6 @@ import com.lzy.okgo.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -25,7 +24,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IntegarUpEvent;
@@ -34,7 +32,6 @@ import cn.com.stableloan.bean.ShareEvent;
 import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.integarl.IntegarlBean;
 import cn.com.stableloan.ui.activity.IdentityinformationActivity;
-import cn.com.stableloan.ui.activity.IntegralActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.adapter.Integarl_taskAdapter;
 import cn.com.stableloan.utils.LogUtils;

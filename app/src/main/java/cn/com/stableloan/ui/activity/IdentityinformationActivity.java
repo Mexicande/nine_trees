@@ -46,7 +46,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.model.event.ProfessionalSelectEvent;
 import cn.com.stableloan.ui.fragment.BankInformationFragment;
 import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;

@@ -12,7 +12,6 @@ import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Banner_HotBean;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 
 /**
