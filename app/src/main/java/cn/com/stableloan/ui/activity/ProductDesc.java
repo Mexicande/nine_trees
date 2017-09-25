@@ -48,6 +48,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
 import cn.com.stableloan.view.DescDialog;
+import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXManager;
@@ -262,7 +263,8 @@ public class ProductDesc extends BaseActivity {
         flowRecyclerView.setLayoutManager(manager);*/
 
         flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
-
+        SpacesItemDecoration decoration = new SpacesItemDecoration(5);
+        flowRecyclerView.addItemDecoration(decoration);
         superTextAdapter = new SuperTextAdapter(labels);
         flowRecyclerView.setAdapter(superTextAdapter);
         //superTextAdapter.addData(labels);

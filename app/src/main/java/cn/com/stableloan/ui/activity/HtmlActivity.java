@@ -194,6 +194,7 @@ public class HtmlActivity extends BaseActivity {
                     if (parseScheme(url)) {
 
                     }else {
+
                         WebView.HitTestResult hitTestResult = view.getHitTestResult();
                         if (!TextUtils.isEmpty(url) && hitTestResult == null) {
                             view.loadUrl(url);

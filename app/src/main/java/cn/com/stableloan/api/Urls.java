@@ -30,13 +30,14 @@ public interface Urls {
             "oscNEArgXtmmKrzFbxIMGNpYyg/l1tuF0/kcOxBnoJoZZ2xK2q1WSdMCQQCQDV6/" +
             "y0puJ4EGhEa+jwiSi8rSD/vw09CNUNTieVGqx5DzxvPUzTyvRQ9y4dpU8zufqq5p" +
             "BI1hNZWOmpTyld2F";
+
     String Api_Id="3846f6f1e99e4f1b958111fda257c368";
     //
     interface Update{
 
         String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
 
-        String value="url=vivo";
+        String value="url=";
 
     }
     interface  times{
@@ -75,7 +76,6 @@ public interface Urls {
     interface  Identity{
         String GetIdentity="person/getIdentity";
         String Getbank="person/getBank ";
-
         String GetOccupation="person/getOccupation";
 
         String AddIdentity="person/addIdentity";

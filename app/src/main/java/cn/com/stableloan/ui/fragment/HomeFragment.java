@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -43,10 +44,8 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentityProduct;
-import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.News_ClassBean;
-import cn.com.stableloan.model.NoticeBean;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
@@ -76,12 +75,11 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     RecyclerView recylerview;
     @Bind(R.id.easylayout)
     EasyRefreshLayout easylayout;
-    @Bind(R.id.iv_notice)
-    ImageView ivNotice;
+   /* @Bind(R.id.iv_notice)
+    ImageView ivNotice;*/
 
-    private String P_id;
+
     private ListProductAdapter productAdapter;
-    private ArrayList<ProductListBean.ProductBean> list;
 
     int ACTION = 1;
 
@@ -111,7 +109,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "homepage",  eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "homepage", eventObject);
         getDate();
         setListener();
         return view;
@@ -123,18 +121,18 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         HashMap<String, String> params = new HashMap<>();
         params.put("position", "1");
         params.put("type", "1");
-        JSONObject object=new JSONObject(params);
-        OkGo.post(Urls.Ip_url+Urls.Dialog.advertising)
+        JSONObject object = new JSONObject(params);
+        OkGo.post(Urls.Ip_url + Urls.Dialog.advertising)
                 .tag(this)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if(s!=null){
-                            Gson gson=new Gson();
+                        if (s != null) {
+                            Gson gson = new Gson();
                             AdvertisingBean bean = gson.fromJson(s, AdvertisingBean.class);
-                            if(bean.getError_code()==0){
-                                showAdvertising(bean.getData().getImg(),bean.getData().getUrl());
+                            if (bean.getError_code() == 0) {
+                                showAdvertising(bean.getData().getImg(), bean.getData().getUrl());
                             }
                         }
                     }
@@ -142,14 +140,14 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     }
 
-    private void showAdvertising(String img,String url){
+    private void showAdvertising(String img, String url) {
 
         AdInfo adInfo = new AdInfo();
         long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
-        if(today){
+        if (today) {
 
-        }else {
+        } else {
             adInfo.setActivityImg(img);
             advList = new ArrayList<>();
             advList.add(adInfo);
@@ -164,8 +162,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
                 @Override
                 public void onImageClick(View view, AdInfo advInfo) {
-                    if(!url.isEmpty()){
-                        startActivity(new Intent(getActivity(),HtmlActivity.class).putExtra("advertising",url));
+                    if (!url.isEmpty()) {
+                        startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("advertising", url));
                     }
                     // Toast.makeText(getActivity(), "您点击了ViewPagerItem...", Toast.LENGTH_SHORT).show();
                     adManager.dismissAdDialog();
@@ -185,6 +183,22 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
      */
     private void setListener() {
         //easylayout.autoRefresh();
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NoticeActivity.launch(getActivity());
+
+            }
+        });
+
+        //Money选择
+        Selecte_Money.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         easylayout.addEasyEvent(new EasyRefreshLayout.EasyEvent() {
             @Override
             public void onLoadMore() {
@@ -204,7 +218,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 re_View.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(!rc_adapter.getData().isEmpty()){
+                        if (!rc_adapter.getData().isEmpty()) {
                             if (rc_adapter.getData().size() > 2) {
                                 re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);
                             }
@@ -226,9 +240,9 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                ZhugeSDK.getInstance().track(getActivity(), "新上线产品",  eventObject);
+                ZhugeSDK.getInstance().track(getActivity(), "新上线产品", eventObject);
 
-               // HtmlActivity.launch(getActivity());
+                // HtmlActivity.launch(getActivity());
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
             }
@@ -242,7 +256,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     private void getDate() {
 
-        ivNotice.setOnClickListener(this);
         View view = setHeaderView();
         productAdapter = new ListProductAdapter(null);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -252,10 +265,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         recylerview.setAdapter(productAdapter);
 
     }
-
-    private NoticeBean noticeBean;
-
-
 
 
     private BGABanner banner;
@@ -271,9 +280,15 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     private Banner_HotBean hotBean;
 
+    private ImageView notice;
+
+    private RelativeLayout Selecte_Money;
+
     private View setHeaderView() {
         View view = getActivity().getLayoutInflater().inflate(R.layout.head_layout, null);
         banner = (BGABanner) view.findViewById(R.id.banner_fresco_demo_content);
+        notice= (ImageView) view.findViewById(R.id.iv_notice);
+        Selecte_Money= (RelativeLayout) view.findViewById(R.id.select_money);
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
@@ -281,8 +296,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
                         .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        ;
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
 
                 Glide.with(getActivity())
                         .load(model.getPictrue())
@@ -317,7 +331,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                ZhugeSDK.getInstance().track(getActivity(), "rementuijian",  eventObject);
+                ZhugeSDK.getInstance().track(getActivity(), "rementuijian", eventObject);
                 if (app.startsWith("http")) {
                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("hotbean", hotBean.getRecommends().get(position)));
                 } else if (app.startsWith("product")) {
@@ -337,14 +351,14 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if(newBean.getClassX().get(position).getName()!=null){
+                if (newBean.getClassX().get(position).getName() != null) {
                     JSONObject eventObject = new JSONObject();
                     try {
                         eventObject.put("fenleizhuanti", newBean.getClassX().get(position).getName());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ZhugeSDK.getInstance().track(getActivity(), "分类专题",  eventObject);
+                    ZhugeSDK.getInstance().track(getActivity(), "分类专题", eventObject);
                     startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
                 }
             }
@@ -391,7 +405,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                         easylayout.refreshComplete();
                                     } else {
                                         banner.setData(hotBean.getAdvertising(), null);
-                                        if(hotBean.getRecommends()!=null){
+                                        if (hotBean.getRecommends() != null) {
                                             rc_adapter.addData(hotBean.getRecommends());
                                         }
                                     }
@@ -409,6 +423,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                             ToastUtils.showToast(getActivity(), "网络异常");
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         //easylayout.setRefreshing(false);
@@ -432,8 +447,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                     newBean = gson.fromJson(s, News_ClassBean.class);
                                     List<News_ClassBean.ClassBean> list = newBean.getClassX();
 
-                                    if(list.size()%2==1){
-                                        News_ClassBean.ClassBean bean=new News_ClassBean.ClassBean();
+                                    if (list.size() % 2 == 1) {
+                                        News_ClassBean.ClassBean bean = new News_ClassBean.ClassBean();
                                         bean.setHome_image("http://orizavg5s.bkt.clouddn.com/classify_04.png");
                                         list.add(bean);
                                     }
@@ -467,35 +482,33 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
     }
 
     private String professional;
+
     @Override
     public void onClick(View v) {
         JSONObject eventObject = new JSONObject();
 
         switch (v.getId()) {
             case R.id.iv_free:
-                professional="xiaoyaoke";
+                professional = "xiaoyaoke";
                 EventBus.getDefault().post(new IdentityProduct(3));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_student:
-                professional="xueshengdang";
+                professional = "xueshengdang";
                 EventBus.getDefault().post(new IdentityProduct(2));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_work:
-                professional="shangbanzu";
+                professional = "shangbanzu";
                 EventBus.getDefault().post(new IdentityProduct(1));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_enterprise:
-                professional="qiyezhu";
+                professional = "qiyezhu";
                 EventBus.getDefault().post(new IdentityProduct(4));
                 MainActivity.navigationController.setSelect(1);
                 break;
-            case R.id.iv_notice:
-                NoticeActivity.launch(getActivity());
-                ivNotice.setImageResource(R.mipmap.icon_unnotice);
-                break;
+
 
         }
         try {
@@ -504,7 +517,7 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "职业搜索",  eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "职业搜索", eventObject);
 
     }
 }

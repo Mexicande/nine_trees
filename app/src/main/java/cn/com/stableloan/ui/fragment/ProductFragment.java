@@ -481,65 +481,7 @@ public class ProductFragment extends ImmersionFragment {
                     }
                 });
     }
-/*
 
-    private void selectGetProduct(int[] arr, String stat) {
-        SelectProduct selectProduct = new SelectProduct(arr, stat);
-        Gson gson = new Gson();
-        String json = gson.toJson(selectProduct);
-        OkGo.post(Urls.puk_URL + Urls.product.ProDuctScreening)
-                .tag(this)
-                .upJson(json)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
-                                    Gson gson = new Gson();
-                                    Class_ListProductBean productBean = gson.fromJson(s, Class_ListProductBean.class);
-                                    classify_recycler_adapter.setNewData(productBean.getProduct());
-                                    classifyRecycl.smoothScrollToPosition(0);
-                                    stateLayout.showContentView();
-                                } else {
-                                    classify_recycler_adapter.setNewData(null);
-                                    classify_recycler_adapter.setEmptyView(notDataView);
-                                    ToastUtils.showToast(getActivity(), "没有符合的产品");
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showToast(getActivity(), "网络异常");
-
-                            }
-                        });
-
-                    }
-                });
-
-    }
-
-    List<Integer> list = new ArrayList<>();
-
-    private void addCheck(int s) {
-        if (s != 0) {
-            list.add(s);
-        }
-    }
-*/
     @Override
     public void onDestroy() {
         super.onDestroy();

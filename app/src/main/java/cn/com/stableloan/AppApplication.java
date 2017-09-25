@@ -61,7 +61,7 @@ public class AppApplication extends Application {
      */
     public static Handler mHandler;
     public static AppApplication sApp;
-
+    String channel="test";
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -91,9 +91,9 @@ public class AppApplication extends Application {
         uploadManager=new UploadManager();
         instance = this;
 
-        String channel = WalleChannelReader.getChannel(this.getApplicationContext());
+        channel = WalleChannelReader.getChannel(this.getApplicationContext());
 
-        ZhugeSDK.getInstance().init(getApplicationContext(),"24520d39b750437b97f026353aa80aea",channel);
+        ZhugeSDK.getInstance().init(this,"24520d39b750437b97f026353aa80aea",channel);
 
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问

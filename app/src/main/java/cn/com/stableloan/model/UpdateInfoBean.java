@@ -36,7 +36,7 @@ public class UpdateInfoBean implements Serializable {
     public String updatecontent;
     public String url;
     public String md5;
-    public String size;
+    public long size;
 
     public UpdateInfoBean() {
 
@@ -130,11 +130,11 @@ public class UpdateInfoBean implements Serializable {
         this.md5 = md5;
     }
 
-    public String getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(long size) {
         this.size = size;
     }
 

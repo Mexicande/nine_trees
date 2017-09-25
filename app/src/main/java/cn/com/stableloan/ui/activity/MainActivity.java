@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.google.gson.Gson;
+import com.meituan.android.walle.WalleChannelReader;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -76,8 +77,9 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     }
 
     private void VisionTest() {
+      String  channel = WalleChannelReader.getChannel(this.getApplicationContext());
 
-        UpdateManager.create(this).setUrl(Urls.Update.APP_UPDATA).setPostData(Urls.Update.value).setParser(new IUpdateParser() {
+        UpdateManager.create(this).setUrl(Urls.Update.APP_UPDATA).setPostData(Urls.Update.value+channel).setParser(new IUpdateParser() {
             @Override
             public UpdateInfo parse(String source) throws Exception {
 
@@ -98,10 +100,10 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                 info.versionName = infoBean.getVersionName();
                 info.url = infoBean.getUrl();
                 info.md5 =infoBean.getMd5();
-                info.size = Long.parseLong(infoBean.getSize());
+                info.size = infoBean.getSize();
                 info.isForce = infoBean.isForce();
                 info.isIgnorable = infoBean.isIgnorable();
-                info.isAutoInstall=infoBean.isAutoInstall();
+                info.isAutoInstall=true;
                 info.isSilent = infoBean.isSilent();
                 info.maxTimes=Integer.parseInt(infoBean.getMaxTimes());
                 return info;
@@ -109,11 +111,13 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         }).setManual(true).setManual(true).setWifiOnly(false).setOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(UpdateError error) {
+
                 LogUtils.i("update",error.getMessage());
             }
         }).check();
 
     }
+    private String s="";
     public String getVersionCode(Context context){
         PackageManager packageManager=context.getPackageManager();
         PackageInfo packageInfo;
