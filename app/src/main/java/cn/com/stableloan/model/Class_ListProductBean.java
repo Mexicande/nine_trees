@@ -58,7 +58,11 @@ public class Class_ListProductBean implements Serializable{
         private String product_logo;
         private String average_time;
         private String min_algorithm;
+        private int interest_algorithm;
+
         private String link;
+
+        private ArrayList<LabelsBean> labels;
 
         public int getInterest_algorithm() {
             return interest_algorithm;
@@ -68,8 +72,6 @@ public class Class_ListProductBean implements Serializable{
             this.interest_algorithm = interest_algorithm;
         }
 
-        private int interest_algorithm;
-
         public String getLink() {
             return link;
         }
@@ -77,8 +79,6 @@ public class Class_ListProductBean implements Serializable{
         public void setLink(String link) {
             this.link = link;
         }
-
-        private ArrayList<LabelsBean> labels;
 
         public String getFastest_time() {
             return fastest_time;
@@ -155,7 +155,6 @@ public class Class_ListProductBean implements Serializable{
              * created_at : 2017-06-06 16:02:05
              * updated_at : 2017-06-06 16:02:05
              */
-
             private String id;
             private String name;
             private String font;

@@ -6,13 +6,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -46,6 +50,9 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentityProduct;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.News_ClassBean;
+import cn.com.stableloan.model.home.Hot_New_Product;
+import cn.com.stableloan.model.home.Seckill_Bean;
+import cn.com.stableloan.model.home.SpecialClassBean;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
@@ -68,16 +75,13 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends ImmersionFragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
     @Bind(R.id.recylerview)
     RecyclerView recylerview;
     @Bind(R.id.easylayout)
     EasyRefreshLayout easylayout;
-   /* @Bind(R.id.iv_notice)
-    ImageView ivNotice;*/
-
 
     private ListProductAdapter productAdapter;
 
@@ -87,14 +91,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     }
 
-    @Override
-    protected void immersionInit() {
-        ImmersionBar.with(getActivity())
-                .statusBarDarkFont(false)
-                .navigationBarColor(R.color.md_grey_900)
-                .statusBarAlpha(0.3f)
-                .init();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,6 +98,8 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         initDialog();
+
+
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("首页", "");
@@ -110,9 +108,62 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         }
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "homepage", eventObject);
+
         getDate();
         setListener();
         return view;
+    }
+
+    /**
+     * 秒杀活动
+     */
+    private void getSeckill() {
+
+
+        OkGo.post(Urls.NEW_Ip_url+Urls.HOME_FRAGMENT.SPECKILL)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                        if(s!=null){
+                            Gson gson=new Gson();
+                            Seckill_Bean seckillBean = gson.fromJson(s, Seckill_Bean.class);
+                            if(seckillBean.getError_code()==0){
+                                switch (seckillBean.getData().size()){
+                                    case 1:
+                                        mSeckill_layout.setVisibility(View.VISIBLE);
+                                        re_View.setVisibility(View.GONE);
+                                        Seckill_Bean.DataBean dataBean = seckillBean.getData().get(0);
+                                        RequestOptions options = new RequestOptions()
+                                                .centerCrop()
+                                                .dontAnimate()
+                                                .placeholder(R.mipmap.logo)
+                                                .error(R.mipmap.logo)
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL);
+                                        Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(product_logo);
+                                        tv_amout.setText("最高"+dataBean.getAmount()+"元");
+
+                                        tv_activity_desc.setText(dataBean.getActivity_desc());
+                                        tv_pname.setText(dataBean.getProduct_name());
+                                        break;
+                                    case 2:
+                                        re_View.setVisibility(View.VISIBLE);
+                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(),2,LinearLayoutManager.HORIZONTAL,false));
+                                        re_View.setAdapter(rc_adapter);
+                                        break;
+                                    case 3:
+                                        re_View.setVisibility(View.VISIBLE);
+                                        re_View.setLayoutManager(new ScrollSpeedLinearLayoutManger(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                                        re_View.setAdapter(rc_adapter);
+                                        break;
+                                }
+                            }
+                        }
+
+                    }
+                });
+
     }
 
     private void initDialog() {
@@ -229,7 +280,6 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         });
         easylayout.setEnableLoadMore(false);
 
-
         recylerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -276,11 +326,14 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
 
     private ImageView iv_work, iv_student, iv_free, iv_enterprise;
 
-    private News_ClassBean newBean;
+
+    //秒杀
+    private LinearLayout mSeckill_layout;
+    private TextView   tv_pname,tv_amout,tv_activity_desc;
 
     private Banner_HotBean hotBean;
 
-    private ImageView notice;
+    private ImageView notice,product_logo;
 
     private RelativeLayout Selecte_Money;
 
@@ -289,6 +342,11 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
         banner = (BGABanner) view.findViewById(R.id.banner_fresco_demo_content);
         notice= (ImageView) view.findViewById(R.id.iv_notice);
         Selecte_Money= (RelativeLayout) view.findViewById(R.id.select_money);
+        product_logo= (ImageView) view.findViewById(R.id.product_logo);
+        mSeckill_layout= (LinearLayout) view.findViewById(R.id.layout_kill);
+        tv_pname= (TextView) view.findViewById(R.id.pname);
+        tv_activity_desc = (TextView) view.findViewById(R.id.activity_desc);
+        tv_amout= (TextView) view.findViewById(R.id.amount);
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
@@ -313,14 +371,13 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
             }
         });
         getBannerDate(ACTION);
-        //热门推荐
-        re_View = (RecyclerView) view.findViewById(R.id.linear_recyclerView);
+        //秒杀
+        getSeckill();
+        re_View = (RecyclerView) view.findViewById(R.id.speckill_recycyler);
         rc_adapter = new Recycler_Adapter(null);
-        re_View.setLayoutManager(new ScrollSpeedLinearLayoutManger(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        re_View.setAdapter(rc_adapter);
 
 
-        re_View.addOnItemTouchListener(new OnItemClickListener() {
+      /*  re_View.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String app = hotBean.getRecommends().get(position).getApp();
@@ -339,41 +396,22 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                     startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", split[1]));
                 }
             }
-        });
+        });*/
 
 
         // 分类
-        classify_recyclView = (RecyclerView) view.findViewById(R.id.classify_recycler);
+        classify_recyclView = (RecyclerView) view.findViewById(R.id.recycler_special);
 
         classify_recycler_adapter = new Classify_Recycler_Adapter(null);
-        classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         classify_recyclView.setAdapter(classify_recycler_adapter);
-        classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (newBean.getClassX().get(position).getName() != null) {
-                    JSONObject eventObject = new JSONObject();
-                    try {
-                        eventObject.put("fenleizhuanti", newBean.getClassX().get(position).getName());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    ZhugeSDK.getInstance().track(getActivity(), "分类专题", eventObject);
-                    startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", newBean.getClassX().get(position)));
-                }
-            }
-        });
 
         // 职业选择
         iv_free = (ImageView) view.findViewById(R.id.iv_free);
-        iv_student = (ImageView) view.findViewById(R.id.iv_student);
         iv_work = (ImageView) view.findViewById(R.id.iv_work);
-        iv_enterprise = (ImageView) view.findViewById(R.id.iv_enterprise);
 
         iv_free.setOnClickListener(this);
-        iv_student.setOnClickListener(this);
         iv_work.setOnClickListener(this);
-        iv_enterprise.setOnClickListener(this);
         return view;
     }
 
@@ -400,14 +438,10 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                                     Gson gson = new Gson();
                                     hotBean = gson.fromJson(s, Banner_HotBean.class);
                                     if (Action == 2) {
-                                        rc_adapter.setNewData(hotBean.getRecommends());
                                         banner.setData(hotBean.getAdvertising(), null);
                                         easylayout.refreshComplete();
                                     } else {
                                         banner.setData(hotBean.getAdvertising(), null);
-                                        if (hotBean.getRecommends() != null) {
-                                            rc_adapter.addData(hotBean.getRecommends());
-                                        }
                                     }
                                 } else {
                                     easylayout.refreshComplete();
@@ -432,36 +466,38 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                         super.onError(call, response, e);
                     }
                 });
-        //分类专题和新品
-        OkGo.post(Urls.puk_URL + Urls.HOME_FRAGMENT.PRODUCT_LIST)
+
+
+        OkGo.post(Urls.NEW_Ip_url+Urls.HOME_FRAGMENT.HOT_NEW_PRODUCT)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if(s!=null){
+                            Gson gson=new Gson();
+                            Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
+
+
+
+
+                        }
+                    }
+                });
+
+
+        //分类专题
+        OkGo.post(Urls.NEW_Ip_url + Urls.HOME_FRAGMENT.Class_Product_List)
                 .tag(getActivity())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s != null) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                String success = jsonObject.getString("isSuccess");
-                                if (success.equals("1")) {
-                                    Gson gson = new Gson();
-                                    newBean = gson.fromJson(s, News_ClassBean.class);
-                                    List<News_ClassBean.ClassBean> list = newBean.getClassX();
-
-                                    if (list.size() % 2 == 1) {
-                                        News_ClassBean.ClassBean bean = new News_ClassBean.ClassBean();
-                                        bean.setHome_image("http://orizavg5s.bkt.clouddn.com/classify_04.png");
-                                        list.add(bean);
-                                    }
-                                    classify_recycler_adapter.setNewData(list);
-                                    LogUtils.i("classX-size", newBean.getClassX().size());
-                                    productAdapter.setNewData(newBean.getProduct());
-
-                                } else {
-                                    String msg = jsonObject.getString("msg");
-                                    ToastUtils.showToast(getActivity(), msg);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                           Gson gson=new Gson();
+                            SpecialClassBean specialClassBean = gson.fromJson(s, SpecialClassBean.class);
+                            if(specialClassBean.getError_code()==0){
+                                classify_recycler_adapter.setNewData(specialClassBean.getData());
+                            }else {
+                                ToastUtils.showToast(getActivity(),specialClassBean.getError_message());
                             }
 
                         } else {
@@ -503,11 +539,11 @@ public class HomeFragment extends ImmersionFragment implements View.OnClickListe
                 EventBus.getDefault().post(new IdentityProduct(1));
                 MainActivity.navigationController.setSelect(1);
                 break;
-            case R.id.iv_enterprise:
+            /*case R.id.iv_enterprise:
                 professional = "qiyezhu";
                 EventBus.getDefault().post(new IdentityProduct(4));
                 MainActivity.navigationController.setSelect(1);
-                break;
+                break;*/
 
 
         }

@@ -12,29 +12,36 @@ import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Banner_HotBean;
+import cn.com.stableloan.model.home.Seckill_Bean;
 
 
 /**
  * Created by apple on 2017/4/11.
  */
 
-public class Recycler_Adapter extends BaseQuickAdapter<Banner_HotBean.RecommendsBean,BaseViewHolder> {
+public class Recycler_Adapter extends BaseQuickAdapter<Seckill_Bean.DataBean,BaseViewHolder> {
 
 
 
-    public Recycler_Adapter(List<Banner_HotBean.RecommendsBean> data) {
-        super(R.layout.recycler_item, data);
+    public Recycler_Adapter(List<Seckill_Bean.DataBean> data) {
+        super(R.layout.seckill_item_two, data);
 
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Banner_HotBean.RecommendsBean item) {
+    protected void convert(BaseViewHolder helper, Seckill_Bean.DataBean item) {
+
+
+        helper.setText(R.id.activity_desc,item.getActivity_desc())
+                .setText(R.id.pname,item.getProduct_name())
+                .setText(R.id.amount,"最高"+item.getAmount()+"元")
+                .setText(R.id.headline,item.getHeadline());
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 ;
 
-        Glide.with(mContext).load(item.getPictrue()).apply(options).into((ImageView) helper.getView(R.id.head));
+        Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.product_logo));
 
        // Glide.with(mContext).load(R.mipmap.new_product).crossFade().centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.biaoqian));
     }

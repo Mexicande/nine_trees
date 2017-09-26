@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.design.widget.AppBarLayout
@@ -82,7 +83,6 @@
                 android:layout_height="30dp">
                <LinearLayout
                    android:layout_gravity="center_vertical"
-
                    android:layout_marginLeft="13dp"
                    android:layout_weight="1"
                    android:layout_width="wrap_content"
@@ -141,126 +141,68 @@
                        android:text="AWs加密严防泄露"/>
                </LinearLayout>
             </LinearLayout>
+            <View
+                android:background="@color/base_white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_10dp"/>
 
-
+            <include layout="@layout/home_header_item"
+               />
             <LinearLayout
-                android:background="@color/white"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="@dimen/_20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:layout_marginTop="5dp"
+                <ImageView
                     android:layout_weight="1"
+                    android:id="@+id/iv_work"
                     android:layout_width="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/iv_work"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/iv_working"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        />
-                    <TextView
-                        android:layout_marginTop="@dimen/_5dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/iv_work"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textColor="@color/product_limit"
-                        android:text="上班族"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/iv_job_identity"/>
+                <ImageView
                     android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/iv_student"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/iv_student"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        />
-                    <TextView
-                        android:layout_marginTop="@dimen/_5dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/iv_student"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textColor="@color/product_limit"
-                        android:text="学生党"/>
-                </RelativeLayout>
+                    android:id="@+id/bussiones"
 
-                <RelativeLayout
-                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/iv_bussines_identity"/>
+                <ImageView
                     android:layout_weight="1"
+                    android:id="@+id/iv_free"
+
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/iv_free"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/iv_freeing"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        />
-                    <TextView
-                        android:layout_marginTop="@dimen/_5dp"
-
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/iv_free"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textColor="@color/product_limit"
-                        android:text="逍遥族"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/iv_free_identity"/>
+                <ImageView
                     android:layout_weight="1"
+                    android:id="@+id/iv_other"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/iv_enterprise"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/iv_bussins"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        />
-                    <TextView
-                        android:layout_marginTop="@dimen/_5dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/iv_enterprise"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textColor="@color/product_limit"
-                        android:text="企业主"/>
-                </RelativeLayout>
-
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/iv_other_identity"/>
             </LinearLayout>
 
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_special"
+                android:layout_marginTop="@dimen/_20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
             <RelativeLayout
-                android:background="@color/white"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="45dp">
+                <ImageView
+                    android:id="@+id/iv_fire"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/iv_fire"/>
                 <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iv_fire"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
@@ -284,59 +226,6 @@
                 android:background="@color/white"
                 />
 
-
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/layou4"
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_marginTop="@dimen/_5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp">
-                    <TextView
-                        android:layout_marginTop="15dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="分类专题"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:textColor="@color/select_text_color"
-                        />
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_below="@id/layou4"
-                    android:id="@+id/classify_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:background="@color/white"
-                    />
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_marginTop="5dp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-                <TextView
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="新品上线"
-                    android:layout_centerVertical="true"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
-                    android:textColor="@color/select_text_color"
-                    />
-            </RelativeLayout>
         </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
