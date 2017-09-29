@@ -246,6 +246,8 @@ public class CarmeraResultActivity extends AppCompatActivity {
             }
         }
 
+
+
         private void UpLoadImage(final Activity activity, String tolen, String url, String var, String photo) {
             Map<String, String> parms = new HashMap<>();
             parms.put("var", var);

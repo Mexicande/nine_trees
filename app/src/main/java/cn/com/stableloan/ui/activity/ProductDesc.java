@@ -106,14 +106,10 @@ public class ProductDesc extends BaseActivity {
     View view;
     @Bind(R.id.tv_limt)
     TextView tvLimt;
-    @Bind(R.id.min_max)
-    TextView minMax;
     @Bind(R.id.layout4)
     RelativeLayout layout4;
     @Bind(R.id.tv_time)
     TextView tvTime;
-    @Bind(R.id.average_time)
-    TextView averageTime;
     @Bind(R.id.crowd)
     TextView crowd;
     @Bind(R.id.linla)
@@ -122,8 +118,10 @@ public class ProductDesc extends BaseActivity {
     Button apply;
     @Bind(R.id.bt_share)
     ImageView btShare;
-    private String pid;
+    private int pid;
+
     private Product_DescBean descBean;
+
     private boolean shareFlag=false;
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
@@ -141,11 +139,10 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         initToolbar();
-        pid = getIntent().getStringExtra("pid");
-        if (pid != null) {
+        pid= getIntent().getIntExtra("pid",0);
+        if (pid != 0) {
             getProductDate();
         }
-
         TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
         wxManager = new WXManager(this);
         StateListener<String> wxStateListener = new StateListener<String>() {
@@ -174,7 +171,7 @@ public class ProductDesc extends BaseActivity {
         String token = (String) SPUtils.get(this, "token", "1");
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("id", pid);
+        params.put("id", String.valueOf(pid));
         if (login != null) {
             if (login) {
                 params.put("token", token);
@@ -187,7 +184,7 @@ public class ProductDesc extends BaseActivity {
                 .show();
 
         final JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.Ip_url + Urls.product.Productdetail)
+        OkGo.post(Urls.NEW_Ip_url + Urls.product.Productdetail)
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(new StringCallback() {
@@ -237,6 +234,7 @@ public class ProductDesc extends BaseActivity {
 
         Product_DescBean.DataBean product = date.getData();
         int collectioStatus = product.getCollectioStatus();
+
         if (collectioStatus == 1) {
             shareFlag=true;
         }
@@ -277,7 +275,7 @@ public class ProductDesc extends BaseActivity {
         Glide.with(this).load(product.getProduct_logo()).apply(options)
                 .into(productLogo);
 
-        averageTime.setText(product.getAverage_time());
+        //averageTime.setText(product.getAverage_time());
 
         tvPname.setText(product.getPname());
         productIntroduction.setText(product.getProduct_introduction());
@@ -312,7 +310,7 @@ public class ProductDesc extends BaseActivity {
             setTextViewColor(arrive, "到账方式: " + product.getActual_account());
 
         }
-        minMax.setText(substringmin + "~" + substringmax);
+       // minMax.setText(substringmin + "~" + substringmax);
         if (product_crowd != null) {
             crowd.setVisibility(View.VISIBLE);
             setTextViewColor(crowd, "面向人群: " + product_crowd);
@@ -495,7 +493,7 @@ public class ProductDesc extends BaseActivity {
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         parms1.put("status", status);
-        parms1.put("product_id", pid);
+        parms1.put("product_id", String.valueOf(pid));
         JSONObject jsonObject = new JSONObject(parms1);
 
         OkGo.post(Urls.Ip_url + Urls.product.CollectionDesc)

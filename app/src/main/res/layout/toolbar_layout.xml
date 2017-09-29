@@ -16,11 +16,11 @@
     <ImageView
         android:background="?attr/selectableItemBackgroundBorderless"
         android:id="@+id/iv_back"
-        android:layout_width="40dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
+        android:paddingRight="@dimen/_10dp"
         android:paddingTop="@dimen/_5dp"
         android:paddingBottom="@dimen/_5dp"
-        android:paddingRight="@dimen/_10dp"
         android:src="@mipmap/iv_back"/>
     <TextView
         android:id="@+id/tv_save"

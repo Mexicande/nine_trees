@@ -10,7 +10,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="shadow">60dp</dimen>
     <dimen name="behind_offset">90dp</dimen>
-
+    <dimen name="seekbar_thumb_width">25dp</dimen>
     <!-- 首页快速导航-->
     <dimen name="quick_size">16sp</dimen>
     <dimen name="img_width">40dp</dimen>

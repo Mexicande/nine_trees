@@ -34,6 +34,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -129,13 +130,13 @@ public class CollectionActivity extends BaseActivity {
                             if (error_code == 0) {
                                 String data = json.getString("data");
                                 Gson gson = new Gson();
-                                Class_ListProductBean.ProductBean[] productBeen = gson.fromJson(data, Class_ListProductBean.ProductBean[].class);
+                                Class_Special.DataBean.ProductBean[] productBeen = gson.fromJson(data, Class_Special.DataBean.ProductBean[].class);
                                 if (productBeen.length == 0) {
                                     classify_recycler_adapter.setNewData(null);
                                     classify_recycler_adapter.setEmptyView(notDataView);
                                 } else {
                                     classify_recycler_adapter.setNewData(Arrays.asList(productBeen));
-                                    //recyclerView.smoothScrollToPosition(0);
+                                    recyclerView.smoothScrollToPosition(0);
                                 }
                             } else {
                                 classify_recycler_adapter.setNewData(null);
@@ -173,7 +174,7 @@ public class CollectionActivity extends BaseActivity {
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
 
 
-        classify_recycler_adapter = new Recycler_Classify_Adapter(null);
+        classify_recycler_adapter = new Recycler_Classify_Adapter(R.layout.product_trem,null);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(classify_recycler_adapter);
 

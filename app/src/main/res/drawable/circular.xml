@@ -6,4 +6,5 @@
         android:dashWidth="2dp" android:dashGap="3dp" />
     <!-- 虚线的高度 -->
     <size android:height="2dp" />
+
 </shape>

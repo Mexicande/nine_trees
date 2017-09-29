@@ -16,20 +16,21 @@ import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.home.Hot_New_Product;
 
 
 /**
  * Created by apple on 2017/5/22.
  */
 
-public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.ProductBean,BaseViewHolder>{
+public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBean,BaseViewHolder>{
 
-    public ListProductAdapter(List<Class_ListProductBean.ProductBean> data) {
+    public ListProductAdapter(List<Hot_New_Product.DataBean> data) {
         super(R.layout.news_product_trem, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Class_ListProductBean.ProductBean item) {
+    protected void convert(BaseViewHolder helper, Hot_New_Product.DataBean item) {
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()
@@ -45,10 +46,19 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
         SuperTextView view2 = (SuperTextView) helper.getView(R.id.label3);
         SuperTextView view3 = (SuperTextView) helper.getView(R.id.label4);
         TextView view5 = (TextView) helper.getView(R.id.shengluehao);
+        View news = helper.getView(R.id.iv_news);
+        View hots = helper.getView(R.id.iv_hots);
+        if(item.getActivity()==1){
+                hots.setVisibility(View.VISIBLE);
+            }
+        if(item.getOnline()==1){
+            news.setVisibility(View.VISIBLE);
+            }
+
 
         if(item.getLabels()!=null){
             int size = item.getLabels().size();
-            List<Class_ListProductBean.ProductBean.LabelsBean> lables = item.getLabels();
+            List<Hot_New_Product.DataBean.LabelsBean> lables = item.getLabels();
             switch (size){
                 case 0:
                     break;
@@ -132,8 +142,6 @@ public class ListProductAdapter  extends BaseQuickAdapter<Class_ListProductBean.
         }
             helper.setText(R.id.product_list_desc,item.getProduct_introduction())
                     .setText(R.id.tv_Pname,item.getPname());
-
-
 
     }
 

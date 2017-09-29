@@ -18,10 +18,50 @@
         >
         <RelativeLayout
             android:background="#ffffff"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:layout_marginTop="@dimen/_20dp"
+                android:id="@+id/seekbar_layout"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="借款金额"/>
+                <cn.com.stableloan.view.seekbar.SeekbarWithIntervals
+                    android:id="@+id/seekbarWithIntervals"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    />
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginLeft="@dimen/_10dp"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="500元"/>
+                    <TextView
+                        android:layout_marginRight="@dimen/_10dp"
+                        android:layout_alignParentRight="true"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="大于1万元"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_below="@id/seekbar_layout"
                 android:id="@+id/layoutcheck"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -31,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_20dp"
                 android:baselineAligned="false">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

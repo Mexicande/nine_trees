@@ -24,8 +24,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
-import com.gyf.barlibrary.ImmersionBar;
-import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.uuch.adlibrary.AdConstant;
@@ -39,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,7 +48,6 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentityProduct;
 import cn.com.stableloan.model.Banner_HotBean;
-import cn.com.stableloan.model.News_ClassBean;
 import cn.com.stableloan.model.home.Hot_New_Product;
 import cn.com.stableloan.model.home.Seckill_Bean;
 import cn.com.stableloan.model.home.SpecialClassBean;
@@ -62,13 +60,13 @@ import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
-import cn.com.stableloan.view.SpacesItemDecoration;
+import cn.com.stableloan.view.countdownview.CountdownView;
+import cn.com.stableloan.view.countdownview.SimpleCountDownTimer;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -82,9 +80,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView recylerview;
     @Bind(R.id.easylayout)
     EasyRefreshLayout easylayout;
+    @Bind(R.id.iv_notice)
+    ImageView ivNotice;
+    @Bind(R.id.select_money)
+    RelativeLayout selectMoney;
 
     private ListProductAdapter productAdapter;
-
+    private Seckill_Bean seckillBean;
     int ACTION = 1;
 
     public HomeFragment() {
@@ -120,17 +122,46 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void getSeckill() {
 
 
-        OkGo.post(Urls.NEW_Ip_url+Urls.HOME_FRAGMENT.SPECKILL)
+        OkGo.post(Urls.NEW_Ip_url + Urls.HOME_FRAGMENT.SPECKILL)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
 
-                        if(s!=null){
-                            Gson gson=new Gson();
-                            Seckill_Bean seckillBean = gson.fromJson(s, Seckill_Bean.class);
-                            if(seckillBean.getError_code()==0){
-                                switch (seckillBean.getData().size()){
+                        if (s != null) {
+                            Gson gson = new Gson();
+                             seckillBean = gson.fromJson(s, Seckill_Bean.class);
+                            if (seckillBean.getError_code() == 0) {
+                                if (seckillBean.getData().size() != 0) {
+
+                                    long time = System.currentTimeMillis();
+                                      Calendar mCalendar = Calendar.getInstance();
+                                      mCalendar.setTimeInMillis(time);
+                                    int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+                                    int minute = mCalendar.get(Calendar.MINUTE);
+                                    int second = mCalendar.get(Calendar.SECOND);
+
+                                    int millisecond = mCalendar.get(Calendar.MILLISECOND);
+
+                                    long h = (long) (24-hour) * 60 * 60 * 1000;
+                                    long m = (long) minute * 60 * 1000;
+                                    long se = (long) second * 1000;
+
+                                    long time21 = h + m + se + millisecond;
+
+                                    mCountdownView.start(time21);
+                                    // 总时间
+                                    // 初始化并启动倒计时
+                                    new SimpleCountDownTimer(time21, tvDisplay).setOnFinishListener(new SimpleCountDownTimer.OnFinishListener() {
+                                        @Override
+                                        public void onFinish() {
+
+                                        }
+                                    }).start();
+
+                                }
+
+                                switch (seckillBean.getData().size()) {
                                     case 1:
                                         mSeckill_layout.setVisibility(View.VISIBLE);
                                         re_View.setVisibility(View.GONE);
@@ -142,14 +173,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                                 .error(R.mipmap.logo)
                                                 .diskCacheStrategy(DiskCacheStrategy.ALL);
                                         Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(product_logo);
-                                        tv_amout.setText("最高"+dataBean.getAmount()+"元");
-
+                                        tv_amout.setText("最高" + dataBean.getAmount() + "元");
                                         tv_activity_desc.setText(dataBean.getActivity_desc());
                                         tv_pname.setText(dataBean.getProduct_name());
+
+                                        mCardView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(0).getId()));
+                                            }
+                                        });
                                         break;
                                     case 2:
                                         re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(),2,LinearLayoutManager.HORIZONTAL,false));
+                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.HORIZONTAL, false));
                                         re_View.setAdapter(rc_adapter);
                                         break;
                                     case 3:
@@ -160,7 +197,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 }
                             }
                         }
-
                     }
                 });
 
@@ -234,7 +270,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
      */
     private void setListener() {
         //easylayout.autoRefresh();
-        notice.setOnClickListener(new View.OnClickListener() {
+        ivNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NoticeActivity.launch(getActivity());
@@ -243,7 +279,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
         //Money选择
-        Selecte_Money.setOnClickListener(new View.OnClickListener() {
+        selectMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -266,7 +302,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 }, 1000);
                 //horizontal 水平 滑动位置
-                re_View.postDelayed(new Runnable() {
+              /*  re_View.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (!rc_adapter.getData().isEmpty()) {
@@ -275,7 +311,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             }
                         }
                     }
-                }, 100);
+                }, 100);*/
             }
         });
         easylayout.setEnableLoadMore(false);
@@ -297,6 +333,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+        //分类专题
+
+        classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(specialClassBean.getData().get(position).getProject_name()!=null){
+                    JSONObject eventObject = new JSONObject();
+                    try {
+                        eventObject.put("fenleizhuanti",specialClassBean.getData().get(position).getProject_name());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ZhugeSDK.getInstance().track(getActivity(), "分类专题",  eventObject);
+                    startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", specialClassBean.getData().get(position)));
+                }
+            }
+        });
+
     }
 
     /**
@@ -310,8 +364,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         productAdapter = new ListProductAdapter(null);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         productAdapter.addHeaderView(view, 0);
-        SpacesItemDecoration decoration = new SpacesItemDecoration(5);
-        recylerview.addItemDecoration(decoration);
         recylerview.setAdapter(productAdapter);
 
     }
@@ -326,27 +378,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private ImageView iv_work, iv_student, iv_free, iv_enterprise;
 
-
+   private CardView mCardView;
     //秒杀
     private LinearLayout mSeckill_layout;
-    private TextView   tv_pname,tv_amout,tv_activity_desc;
+    private TextView tv_pname, tv_amout, tv_activity_desc, tvDisplay;
 
     private Banner_HotBean hotBean;
 
-    private ImageView notice,product_logo;
+    private ImageView  product_logo;
 
-    private RelativeLayout Selecte_Money;
-
+    private CountdownView mCountdownView;
+   private SpecialClassBean specialClassBean;
     private View setHeaderView() {
         View view = getActivity().getLayoutInflater().inflate(R.layout.head_layout, null);
         banner = (BGABanner) view.findViewById(R.id.banner_fresco_demo_content);
-        notice= (ImageView) view.findViewById(R.id.iv_notice);
-        Selecte_Money= (RelativeLayout) view.findViewById(R.id.select_money);
-        product_logo= (ImageView) view.findViewById(R.id.product_logo);
-        mSeckill_layout= (LinearLayout) view.findViewById(R.id.layout_kill);
-        tv_pname= (TextView) view.findViewById(R.id.pname);
+        product_logo = (ImageView) view.findViewById(R.id.product_logo);
+        mSeckill_layout = (LinearLayout) view.findViewById(R.id.layout_kill);
+        tv_pname = (TextView) view.findViewById(R.id.pname);
         tv_activity_desc = (TextView) view.findViewById(R.id.activity_desc);
-        tv_amout= (TextView) view.findViewById(R.id.amount);
+        tv_amout = (TextView) view.findViewById(R.id.amount);
+        mCardView= (CardView) view.findViewById(R.id.seckill_item_one);
+        mCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
+
+        tvDisplay = (TextView) view.findViewById(R.id.tv_display);
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
@@ -370,48 +424,45 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("Advertising", hotBean.getAdvertising().get(position)));
             }
         });
-        getBannerDate(ACTION);
         //秒杀
-        getSeckill();
         re_View = (RecyclerView) view.findViewById(R.id.speckill_recycyler);
+
         rc_adapter = new Recycler_Adapter(null);
+        getBannerDate(ACTION);
 
 
-      /*  re_View.addOnItemTouchListener(new OnItemClickListener() {
+        re_View.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 String app = hotBean.getRecommends().get(position).getApp();
                 JSONObject eventObject = new JSONObject();
                 try {
-                    eventObject.put("remen1", hotBean.getRecommends().get(position).getName());
+                    eventObject.put("miaosha", hotBean.getRecommends().get(position).getName());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 ZhugeSDK.getInstance().track(getActivity(), "rementuijian", eventObject);
-                if (app.startsWith("http")) {
-                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("hotbean", hotBean.getRecommends().get(position)));
-                } else if (app.startsWith("product")) {
-                    String[] split = app.split("id");
-                    startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", split[1]));
-                }
+                    startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getId()));
             }
-        });*/
+        });
 
 
         // 分类
         classify_recyclView = (RecyclerView) view.findViewById(R.id.recycler_special);
-
         classify_recycler_adapter = new Classify_Recycler_Adapter(null);
         classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         classify_recyclView.setAdapter(classify_recycler_adapter);
-
+        classify_recyclView.setFocusable(false);
         // 职业选择
         iv_free = (ImageView) view.findViewById(R.id.iv_free);
         iv_work = (ImageView) view.findViewById(R.id.iv_work);
-
+        iv_student= (ImageView) view.findViewById(R.id.iv_other);
+        iv_enterprise= (ImageView) view.findViewById(R.id.bussiones);
         iv_free.setOnClickListener(this);
         iv_work.setOnClickListener(this);
+        iv_student.setOnClickListener(this);
+        iv_enterprise.setOnClickListener(this);
         return view;
     }
 
@@ -438,6 +489,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     Gson gson = new Gson();
                                     hotBean = gson.fromJson(s, Banner_HotBean.class);
                                     if (Action == 2) {
+                                        banner.getViews().clear();
                                         banner.setData(hotBean.getAdvertising(), null);
                                         easylayout.refreshComplete();
                                     } else {
@@ -467,19 +519,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 });
 
+        getSeckill();
 
-        OkGo.post(Urls.NEW_Ip_url+Urls.HOME_FRAGMENT.HOT_NEW_PRODUCT)
+        OkGo.post(Urls.NEW_Ip_url + Urls.HOME_FRAGMENT.HOT_NEW_PRODUCT)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if(s!=null){
-                            Gson gson=new Gson();
+                        if (s != null) {
+                            Gson gson = new Gson();
                             Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
-
-
-
-
+                            if (hotNewProduct.getError_code() == 0) {
+                                productAdapter.setNewData(hotNewProduct.getData());
+                            }
                         }
                     }
                 });
@@ -492,12 +544,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s != null) {
-                           Gson gson=new Gson();
-                            SpecialClassBean specialClassBean = gson.fromJson(s, SpecialClassBean.class);
-                            if(specialClassBean.getError_code()==0){
+                            Gson gson = new Gson();
+                            specialClassBean = gson.fromJson(s, SpecialClassBean.class);
+                            if (specialClassBean.getError_code() == 0) {
                                 classify_recycler_adapter.setNewData(specialClassBean.getData());
-                            }else {
-                                ToastUtils.showToast(getActivity(),specialClassBean.getError_message());
+                            } else {
+                                ToastUtils.showToast(getActivity(), specialClassBean.getError_message());
                             }
 
                         } else {
@@ -506,8 +558,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
 
                 });
-
-
     }
 
     @Override
@@ -529,7 +579,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 EventBus.getDefault().post(new IdentityProduct(3));
                 MainActivity.navigationController.setSelect(1);
                 break;
-            case R.id.iv_student:
+            case R.id.iv_other:
                 professional = "xueshengdang";
                 EventBus.getDefault().post(new IdentityProduct(2));
                 MainActivity.navigationController.setSelect(1);
@@ -539,11 +589,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 EventBus.getDefault().post(new IdentityProduct(1));
                 MainActivity.navigationController.setSelect(1);
                 break;
-            /*case R.id.iv_enterprise:
+            case R.id.iv_business:
                 professional = "qiyezhu";
                 EventBus.getDefault().post(new IdentityProduct(4));
                 MainActivity.navigationController.setSelect(1);
-                break;*/
+                break;
 
 
         }
@@ -555,5 +605,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "职业搜索", eventObject);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCountdownView.stop();
     }
 }

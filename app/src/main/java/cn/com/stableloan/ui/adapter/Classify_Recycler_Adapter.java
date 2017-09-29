@@ -17,7 +17,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import cn.com.stableloan.R;
-import cn.com.stableloan.model.News_ClassBean;
 import cn.com.stableloan.model.home.SpecialClassBean;
 
 

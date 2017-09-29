@@ -1,22 +1,73 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.fragment.HomeFragment">
 
-        <cn.com.stableloan.view.EasyRefreshLayout
-            android:id="@+id/easylayout"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <android.support.v7.widget.Toolbar
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recylerview"
-                android:background="@color/base_white"
+            android:layout_height="50dp">
+            <ImageView
+                android:id="@+id/iv_notice"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_notice"/>
+            <RelativeLayout
+                android:id="@+id/select_money"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
-        </cn.com.stableloan.view.EasyRefreshLayout>
+                android:layout_height="35dp"
+                android:background="@drawable/toolbar_search"
+                >
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#666666"
+                    android:text="我要多少钱？"
+                    />
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_marginRight="@dimen/_20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/iv_down_arrow"/>
+                <View
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="@dimen/_1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/text_setting"
+                    android:layout_toLeftOf="@id/iv_arrow"/>
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+    <cn.com.stableloan.view.EasyRefreshLayout
+        android:id="@+id/easylayout"
+        android:layout_below="@id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recylerview"
+            android:background="@color/base_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </cn.com.stableloan.view.EasyRefreshLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

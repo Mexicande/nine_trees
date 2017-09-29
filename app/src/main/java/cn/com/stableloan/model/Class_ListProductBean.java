@@ -3,6 +3,8 @@ package cn.com.stableloan.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import cn.com.stableloan.model.clsaa_special.Class_Special;
+
 /**
  * Created by apple on 2017/6/12.
  */
@@ -15,7 +17,7 @@ public class Class_ListProductBean implements Serializable{
      */
     private String image;
     private boolean isSuccess;
-    private ArrayList<ProductBean> product;
+    private ArrayList<Class_Special.DataBean.ProductBean> product;
 
     public String getImage() {
         return image;
@@ -33,7 +35,15 @@ public class Class_ListProductBean implements Serializable{
         this.isSuccess = isSuccess;
     }
 
-    public ArrayList<ProductBean> getProduct() {
+    public ArrayList<Class_Special.DataBean.ProductBean> getProduct() {
+        return product;
+    }
+
+    public void setProduct(ArrayList<Class_Special.DataBean.ProductBean> product) {
+        this.product = product;
+    }
+
+    /* public ArrayList<ProductBean> getProduct() {
         return product;
     }
 
@@ -42,7 +52,7 @@ public class Class_ListProductBean implements Serializable{
     }
 
     public static class ProductBean implements Serializable{
-        /**
+        *//**
          * pname : 秒啦
          * product_introduction, : 30秒申请，秒批结果，快至2小时到款
          * id : 27
@@ -50,7 +60,7 @@ public class Class_ListProductBean implements Serializable{
          * average_time : 4小时
          * min_algorithm : 0.4%
          * lables : [{"id":"27","labels":[{"id":"3","name":"2","font":"#FF0","background":"#888","number":"0","status":"0","created_at":"2017-06-06 16:03:12","updated_at":"2017-06-06 16:03:12"}]}]
-         */
+         *//*
         private String fastest_time;
         private String pname;
         private String product_introduction; // FIXME check this code
@@ -59,8 +69,25 @@ public class Class_ListProductBean implements Serializable{
         private String average_time;
         private String min_algorithm;
         private int interest_algorithm;
-
+        private int activity;
+        private int  online;
         private String link;
+
+        public int getActivity() {
+            return activity;
+        }
+
+        public void setActivity(int activity) {
+            this.activity = activity;
+        }
+
+        public int getOnline() {
+            return online;
+        }
+
+        public void setOnline(int online) {
+            this.online = online;
+        }
 
         private ArrayList<LabelsBean> labels;
 
@@ -145,7 +172,7 @@ public class Class_ListProductBean implements Serializable{
         }
 
         public static class LabelsBean implements Serializable{
-            /**
+            *//**
              * id : 3
              * name : 22
              * font : #ffff
@@ -154,7 +181,7 @@ public class Class_ListProductBean implements Serializable{
              * status : 0
              * created_at : 2017-06-06 16:02:05
              * updated_at : 2017-06-06 16:02:05
-             */
+             *//*
             private String id;
             private String name;
             private String font;
@@ -228,5 +255,5 @@ public class Class_ListProductBean implements Serializable{
                 this.updated_at = updated_at;
             }
         }
-    }
+    }*/
 }

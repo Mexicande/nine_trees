@@ -111,8 +111,6 @@ public class HtmlActivity extends BaseActivity {
                 titleName.setText(desc1.getData().getPlatformdetail().getPl_name() + "攻略");
                 ivBack.setVisibility(View.VISIBLE);
                 String url = desc1.getData().getRaiders_connection();
-
-
                 getDate(url);
             }
             String advertising = getIntent().getStringExtra("advertising");

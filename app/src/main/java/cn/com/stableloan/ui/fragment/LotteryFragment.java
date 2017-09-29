@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -57,6 +58,8 @@ public class LotteryFragment extends ImmersionFragment {
     RecyclerView welfareRecycler;
     @Bind(R.id.swip)
     SwipeRefreshLayout swip;
+    @Bind(R.id.iv_back)
+    ImageView ivBack;
 
     private WelfareAdapter welfareAdapter;
 
@@ -84,6 +87,7 @@ public class LotteryFragment extends ImmersionFragment {
         View view = inflater.inflate(R.layout.fragment_lottery, container, false);
         ButterKnife.bind(this, view);
         titleName.setText("福利");
+        ivBack.setVisibility(View.GONE);
         CheckInternet();
         SetListener();
         return view;
@@ -153,7 +157,6 @@ public class LotteryFragment extends ImmersionFragment {
                         welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
                         welfareRecycler.setAdapter(welfareAdapter);
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

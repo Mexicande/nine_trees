@@ -37,15 +37,18 @@ public interface Urls {
     //
     interface Update{
 
-        String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
+        String APP_UPDATA="http://test.api.shoujijiekuan.com/Home/ApiLogin/Version";
 
         String value="url=";
 
     }
     interface  times{
+
         String MESSAGE_SEND="sms/getcode";
+
     }
     interface Login{
+
         String SettingPassWord="set/password";
         //验证码发送
         String LOGIN="login/login";
@@ -58,6 +61,7 @@ public interface Urls {
 
     }
     interface CreditrePort{
+
         String PRIVATE_KEY  = "MIICXAIBAAKBgQCRMcGMrZIKu956ubKD2kDFzRtSP13ycgRtPVz+MvseTje0YgGl" +
                 "ht+zGuPgCD9KgW44FFdwGS2Wp7Ir/zzEpInTPlKWjXGZP06iwlu+7p04ktgK7TB6" +
                 "NjF83gHB/T//OrliHrX1l/Jzh3LFHwCAxT6fJt1Ja6eziGvxtLPT94TkcwIDAQAB" +
@@ -116,17 +120,17 @@ public interface Urls {
 
     interface product{
         //产品详情
-        String Productdetail="product/productStatus";
+        String Productdetail="product/detail";
         String GetSlotdetail ="GetSlotdetail";
-        String ClassProduct="ClassificationList";
+        String ClassProduct="project/information";
         String ProductList="ProductList";
         String ProTagFlow="product/getlabels";
         String ProductSelect="product/screening";
         String ProductCollectionList="product/getlist";
         String CollectionDesc="product/collection";
     }
-
     interface update{
+
         String UPDATE_NICK="Modify";
         String UPDATE_Word="Modify";
         String UPDATE_PROFRSSION="Modify";

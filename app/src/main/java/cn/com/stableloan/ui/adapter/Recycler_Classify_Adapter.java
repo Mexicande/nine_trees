@@ -13,49 +13,44 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.coorchice.library.SuperTextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
+import cn.com.stableloan.model.clsaa_special.Class_Special;
 
 
 /**
  * Created by apple on 2017/4/11.
  */
 
-public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProductBean.ProductBean,BaseViewHolder> {
+public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_Special.DataBean.ProductBean,BaseViewHolder> {
 
 
-    public Recycler_Classify_Adapter(ArrayList<Class_ListProductBean.ProductBean> data) {
-        super(R.layout.product_trem, data);
+    public Recycler_Classify_Adapter(int layoutResId,ArrayList<Class_Special.DataBean.ProductBean> data) {
+        super(layoutResId, data);
 
 
     }
     @Override
-    protected void convert(BaseViewHolder helper,Class_ListProductBean.ProductBean item) {
-        int indexOf = mData.indexOf(item);
+    protected void convert(BaseViewHolder helper,Class_Special.DataBean.ProductBean item) {
 
-        switch (indexOf){
-            case 0:
-                helper.getView(R.id.top).setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                helper.getView(R.id.top).setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                helper.getView(R.id.top).setVisibility(View.VISIBLE);
-                break;
-            default:
-                helper.getView(R.id.top).setVisibility(View.GONE);
-                break;
+        SuperTextView view = (SuperTextView) helper.getView(R.id.label1_Special);
+        SuperTextView view1 = (SuperTextView) helper.getView(R.id.label2_Special);
+        SuperTextView view2 = (SuperTextView) helper.getView(R.id.label3_Special);
+        SuperTextView view3 = (SuperTextView) helper.getView(R.id.label4_Special);
+        TextView view4 = (TextView) helper.getView(R.id.shengluehao_Special);
+        View news = helper.getView(R.id.special_news);
+        View hots = helper.getView(R.id.special_hots);
+        if(item.getActivity()==1){
+            hots.setVisibility(View.VISIBLE);
         }
-        SuperTextView view = (SuperTextView) helper.getView(R.id.label1);
-        SuperTextView view1 = (SuperTextView) helper.getView(R.id.label2);
-        SuperTextView view2 = (SuperTextView) helper.getView(R.id.label3);
-        SuperTextView view3 = (SuperTextView) helper.getView(R.id.label4);
-        TextView view4 = (TextView) helper.getView(R.id.shengluehao);
+        if(item.getOnline()==1){
+            news.setVisibility(View.VISIBLE);
+        }
         if(item.getLabels()!=null&&item.getLabels().size()>0){
             int size = item.getLabels().size();
-            ArrayList<Class_ListProductBean.ProductBean.LabelsBean> lables = item.getLabels();
+            List<Class_Special.DataBean.ProductBean.LabelsBean> lables = item.getLabels();
             switch (size){
                 case 0:
                     break;
@@ -145,20 +140,21 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_ListProduc
             view3.setVisibility(View.GONE);
             view4.setVisibility(View.GONE);
         }
-        helper.setText(R.id.product_list_name,item.getPname())
-                .setText(R.id.rate,item.getFastest_time())
-                .setText(R.id.tv_Limit,item.getMin_algorithm()+"%");
-        if(item.getInterest_algorithm()==0){
-            helper.setText(R.id.interest_algorithm,"日");
+        int interest_algorithm = item.getInterest_algorithm();
+        helper.setText(R.id.special__desc,item.getProduct_introduction())
+                .setText(R.id.min_algorithm_Special,item.getMin_algorithm()+"%")
+                .setText(R.id.average_time_Special,item.getFastest_time())
+        .setText(R.id.min_max_Special,item.getMinimum_amount()+"-"+item.getMaximum_amount());
+        if(interest_algorithm==0){
+            helper.setText(R.id.special_rate,"参考日利率");
         }else {
-            helper.setText(R.id.interest_algorithm,"月");
-        }
-        helper.setText(R.id.product_introduction,item.getProduct_introduction());
+            helper.setText(R.id.special_rate,"参考月利率");
 
+        }
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.ic_product_logo));
+        Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.ic_logoSpecial));
 
     }
 }

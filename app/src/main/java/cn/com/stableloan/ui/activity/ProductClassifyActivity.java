@@ -34,8 +34,11 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProductListBean;
 import cn.com.stableloan.model.Class_ListProductBean;
-import cn.com.stableloan.model.News_ClassBean;
+import cn.com.stableloan.model.clsaa_special.Class_Special;
+import cn.com.stableloan.model.home.SpecialClassBean;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
+import cn.com.stableloan.ui.adapter.Special_FootAdapter;
+import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
@@ -57,8 +60,9 @@ public class ProductClassifyActivity extends BaseActivity {
     StateLayout stateLayout;
     private Recycler_Classify_Adapter classify_recycler_adapter;
 
+    private Class_Special classBean;
     private List<ProductListBean.ProductBean> list2;
-    private News_ClassBean.ClassBean class_product;
+    private SpecialClassBean.DataBean specialClassBean;
     private ImageView mImageView;
     private Class_ListProductBean class_List;
 
@@ -77,7 +81,7 @@ public class ProductClassifyActivity extends BaseActivity {
                 .init();*/
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
 
-        class_product = (News_ClassBean.ClassBean) getIntent().getSerializableExtra("class_product");
+        specialClassBean = (SpecialClassBean.DataBean) getIntent().getSerializableExtra("class_product");
 
         initView();
         getDate();
@@ -85,43 +89,41 @@ public class ProductClassifyActivity extends BaseActivity {
     }
 
     private void getDate() {
-        if(class_product!=null){
-            String id = class_product.getId();
-            titleName.setText(class_product.getName());
+        if(specialClassBean!=null){
+            int id = specialClassBean.getId();
+            titleName.setText(specialClassBean.getProject_name());
             ivBack.setVisibility(View.VISIBLE);
             stateLayout.showProgressView();
-            if (class_product != null && id != null) {
+            if (specialClassBean != null && id !=0) {
                 HashMap<String, String> params = new HashMap<>();
-                params.put("id", id);
+                params.put("id",String.valueOf( id));
                 final JSONObject jsonObject = new JSONObject(params);
-                OkGo.post(Urls.puk_URL + Urls.product.ClassProduct)
+                OkGo.post(Urls.NEW_Ip_url + Urls.product.ClassProduct)
                         .tag(this)
                         .upJson(jsonObject.toString())
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
                                 if (s != null) {
-                                    try {
-                                        JSONObject object = new JSONObject(s);
-                                        String success = object.getString("isSuccess");
-                                        if (success.equals("1")) {
-                                            Gson gson = new Gson();
-                                            stateLayout.showContentView();
-                                            class_List = gson.fromJson(s, Class_ListProductBean.class);
-                                            RequestOptions options = new RequestOptions()
-                                                    .centerCrop()
-                                                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                                    Gson gson=new Gson();
+                                    classBean = gson.fromJson(s, Class_Special.class);
 
-                                            Glide.with(ProductClassifyActivity.this).load(class_List.getImage()).apply(options).into(mImageView);
+                                    if(classBean.getError_code()==0){
+                                        stateLayout.showContentView();
+                                        RequestOptions options = new RequestOptions()
+                                                .centerCrop()
+                                                .error(R.drawable.iv_special_bg)
+                                                .placeholder(R.drawable.iv_special_bg)
+                                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
-                                            classify_recycler_adapter.setNewData(class_List.getProduct());
-                                        } else {
+                                        Glide.with(ProductClassifyActivity.this).load(classBean.getData().getProject().get(0).getProject_logo()).apply(options).into(mImageView);
+                                        mProject_name.setText(classBean.getData().getProject().get(0).getTitle());
+                                        mBody_Project.setText(classBean.getData().getProject().get(0).getBody_project());
+                                        classify_recycler_adapter.setNewData(classBean.getData().getProduct());
+                                        mSpecial_footAdapter.setNewData(classBean.getData().getMdse());
+                                    }else {
                                             stateLayout.showEmptyView();
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
-
                                 }
                             }
 
@@ -155,28 +157,47 @@ public class ProductClassifyActivity extends BaseActivity {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 // ProductDesc.launch(getActivity());
-                startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", class_List.getProduct().get(position).getId()));
+                startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", classBean.getData().getProduct().get(position).getId()));
 
             }
         });
     }
 
+    private RecyclerView mFootRecycler;
+
+    private Special_FootAdapter mSpecial_footAdapter;
+
+    private  TextView mProject_name,mBody_Project;
     private void initView() {
         View view = getLayoutInflater().inflate(R.layout.class_top_imageview, null);
         mImageView = (ImageView) view.findViewById(R.id.ic_default_top);
+        mProject_name= (TextView) view.findViewById(R.id.project_name);
+        mBody_Project= (TextView) view.findViewById(R.id.body_project);
 
+        View foot = getLayoutInflater().inflate(R.layout.special_foot_layout, null);
 
-
-
+        mFootRecycler= (RecyclerView) foot.findViewById(R.id.foot_recycler);
     /*    imageView = new ImageView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(lp);*/
 
 
-        classify_recycler_adapter = new Recycler_Classify_Adapter(null);
+        classify_recycler_adapter = new Recycler_Classify_Adapter(R.layout.special_product_item,null);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(this));
+        SpacesItemDecoration decoration = new SpacesItemDecoration(2);
+
+        classifyRecycl.addItemDecoration(decoration);
+
         classify_recycler_adapter.addHeaderView(view, 0);
+
+        classify_recycler_adapter.addFooterView(foot);
+        mSpecial_footAdapter=new Special_FootAdapter(null);
+
+        mFootRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mFootRecycler.setAdapter(mSpecial_footAdapter);
         classifyRecycl.setAdapter(classify_recycler_adapter);
+
+
     }
 
     @OnClick(R.id.iv_back)

@@ -1,69 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-        <android.support.v7.widget.Toolbar
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <ImageView
-                android:id="@+id/iv_notice"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_notice"/>
-            <RelativeLayout
-                android:id="@+id/select_money"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/toolbar_search"
-                >
-                <TextView
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="#666666"
-                    android:text="我要多少钱？"
-                    />
-                <ImageView
-                    android:id="@+id/iv_arrow"
-                    android:layout_marginRight="@dimen/_20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/iv_down_arrow"/>
-                <View
-                    android:layout_marginBottom="7dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_width="@dimen/_1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/text_setting"
-                    android:layout_toLeftOf="@id/iv_arrow"/>
-            </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:scrollbars="none"
-            android:layout_marginTop="@dimen/_50dp"
-            android:layout_height="match_parent">
             <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/banner_fresco_demo_content"
                 android:layout_width="match_parent"
@@ -145,7 +87,6 @@
                 android:background="@color/base_white"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_10dp"/>
-
             <include layout="@layout/home_header_item"
                />
             <LinearLayout
@@ -182,7 +123,6 @@
                     android:src="@mipmap/iv_other_identity"/>
             </LinearLayout>
 
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_special"
                 android:layout_marginTop="@dimen/_20dp"
@@ -213,6 +153,10 @@
                     android:textColor="@color/select_text_color"
                     />
             </RelativeLayout>
+    <View
+        android:background="@color/base_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1dp"/>
             <android.support.v7.widget.RecyclerView
                 android:background="@color/white"
                 android:id="@+id/linear_recyclerView"
@@ -225,7 +169,4 @@
                 android:layout_height="10dp"
                 android:background="@color/white"
                 />
-
-        </LinearLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
