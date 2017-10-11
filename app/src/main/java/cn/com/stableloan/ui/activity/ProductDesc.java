@@ -3,14 +3,20 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,6 +62,9 @@ import cn.com.stableloan.view.share.WXShareContent;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * 产品desc
+ */
 public class ProductDesc extends BaseActivity {
 
 
@@ -70,8 +79,6 @@ public class ProductDesc extends BaseActivity {
     TextView review;
     @Bind(R.id.arrive)
     TextView arrive;
-    @Bind(R.id.actual_account)
-    TextView actualAccount;
     @Bind(R.id.repayment)
     TextView repayment;
     @Bind(R.id.repayment_channels)
@@ -80,9 +87,6 @@ public class ProductDesc extends BaseActivity {
     TextView interestAlgorithm;
     @Bind(R.id.prepayment)
     TextView prepayment;
-
-    @Bind(R.id.ic_strategy)
-    TextView icStrategy;
     @Bind(R.id.platform_desc)
     TextView platformDesc;
     @Bind(R.id.min_algorithm)
@@ -104,12 +108,6 @@ public class ProductDesc extends BaseActivity {
     RelativeLayout layout3;
     @Bind(R.id.view)
     View view;
-    @Bind(R.id.tv_limt)
-    TextView tvLimt;
-    @Bind(R.id.layout4)
-    RelativeLayout layout4;
-    @Bind(R.id.tv_time)
-    TextView tvTime;
     @Bind(R.id.crowd)
     TextView crowd;
     @Bind(R.id.linla)
@@ -118,11 +116,27 @@ public class ProductDesc extends BaseActivity {
     Button apply;
     @Bind(R.id.bt_share)
     ImageView btShare;
+    @Bind(R.id.tv_DescAmount)
+    TextView tvDescAmount;
+    @Bind(R.id.tv_cycle)
+    TextView tvCycle;
+    @Bind(R.id.fastest_time)
+    TextView fastestTime;
+    @Bind(R.id.minMax_algorithm)
+    TextView minMaxAlgorithm;
+    @Bind(R.id.tv_interest_algorithm)
+    TextView tvInterestAlgorithm;
+    @Bind(R.id.et_MaxLimit)
+    EditText etMaxLimit;
+    @Bind(R.id.et_MaxTime)
+    EditText etMaxTime;
+    @Bind(R.id.tv_platform)
+    TextView tvPlatform;
     private int pid;
 
     private Product_DescBean descBean;
 
-    private boolean shareFlag=false;
+    private boolean shareFlag = false;
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
 
@@ -139,10 +153,21 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         initToolbar();
-        pid= getIntent().getIntExtra("pid",0);
+        pid = getIntent().getIntExtra("pid", 0);
         if (pid != 0) {
             getProductDate();
         }
+
+        setListener();
+
+    }
+
+    /**
+     * 微信分享
+     * ediText
+     */
+    private void setListener() {
+
         TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
         wxManager = new WXManager(this);
         StateListener<String> wxStateListener = new StateListener<String>() {
@@ -163,6 +188,35 @@ public class ProductDesc extends BaseActivity {
         };
 
         wxManager.setListener(wxStateListener);
+
+        etMaxLimit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String limite = etMaxLimit.getText().toString();
+                int lim = Integer.parseInt(limite);
+                String minimum_amount = descBean.getData().getMinimum_amount();
+                String maximum_amount = descBean.getData().getMaximum_amount();
+                if(lim<Integer.parseInt(minimum_amount)){
+                    etMaxLimit.setText(minimum_amount);
+                }
+                if(lim>Integer.parseInt(maximum_amount)){
+                    etMaxLimit.setText(maximum_amount);
+                }
+            }
+        });
+
     }
 
 
@@ -236,7 +290,7 @@ public class ProductDesc extends BaseActivity {
         int collectioStatus = product.getCollectioStatus();
 
         if (collectioStatus == 1) {
-            shareFlag=true;
+            shareFlag = true;
         }
         JSONObject eventObject = new JSONObject();
         try {
@@ -266,24 +320,19 @@ public class ProductDesc extends BaseActivity {
         superTextAdapter = new SuperTextAdapter(labels);
         flowRecyclerView.setAdapter(superTextAdapter);
         //superTextAdapter.addData(labels);
-
-
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         Glide.with(this).load(product.getProduct_logo()).apply(options)
                 .into(productLogo);
-
         //averageTime.setText(product.getAverage_time());
-
         tvPname.setText(product.getPname());
         productIntroduction.setText(product.getProduct_introduction());
         String minAl = product.getMin_algorithm();
         minAlgorithm.setText(minAl + "%");
         String product_crowd = product.getCrowd();
         String product_review = product.getReview();
-        String product_actual_account = product.getActual_account();
         String product_repayment = product.getRepayment();
         String product_repayment_channels = product.getRepayment_channels();
         String min = product.getMin_algorithm();
@@ -291,13 +340,26 @@ public class ProductDesc extends BaseActivity {
         String product_prepayment = product.getPrepayment();
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
-        tvRate.setText("参考" + product.getInterest_algorithm());
-
+        int interest_algorithm = product.getInterest_algorithm();
+        if (interest_algorithm == 0) {
+            tvInterestAlgorithm.setText("参考日利率");
+        } else {
+            tvInterestAlgorithm.setText("参考月利率");
+        }
+        tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle());
         if (minimum_amount.length() > 4) {
             substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
             substringmin = substringmin + "万";
         } else {
             substringmin = minimum_amount;
+        }
+        fastestTime.setText(product.getFastest_time());
+        if (max == null || min == null) {
+            minMaxAlgorithm.setVisibility(View.GONE);
+        } else if (max.equals(min)) {
+            setTextViewColor(minMaxAlgorithm, "利息额度: " + product.getMin_algorithm() + "%");
+        } else {
+            setTextViewColor(minMaxAlgorithm, "利息额度: " + product.getMin_algorithm() + "%" + "~" + product.getMax_algorithm() + "%");
         }
         if (maximum_amount.length() > 4) {
             substringmax = maximum_amount.substring(0, maximum_amount.length() - 4);
@@ -305,52 +367,54 @@ public class ProductDesc extends BaseActivity {
         } else {
             substringmax = maximum_amount;
         }
-        if (product.getActual_account() != null) {
-            arrive.setVisibility(View.VISIBLE);
+
+        etMaxLimit.setText(maximum_amount);
+        etMaxTime.setText(product.getMax_cycle());
+        tvPlatform.setText(product.getPlatformdetail().getPl_name());
+        if (product.getActual_account() != null && !product.getActual_account().isEmpty()) {
             setTextViewColor(arrive, "到账方式: " + product.getActual_account());
-
+        } else {
+            arrive.setVisibility(View.GONE);
         }
-       // minMax.setText(substringmin + "~" + substringmax);
+        tvDescAmount.setText(substringmin + "~" + substringmax);
         if (product_crowd != null) {
-            crowd.setVisibility(View.VISIBLE);
             setTextViewColor(crowd, "面向人群: " + product_crowd);
-
+        } else {
+            crowd.setVisibility(View.GONE);
         }
-        if (product_review != null) {
-            review.setVisibility(View.VISIBLE);
+        if (product_review != null && !product_review.isEmpty()) {
             setTextViewColor(review, "审核方式: " + product_review);
-
+        } else {
+            review.setVisibility(View.GONE);
         }
-
-
-        if (product_actual_account != null) {
-            actualAccount.setVisibility(View.VISIBLE);
-            setTextViewColor(actualAccount, "实际到账: " + product_actual_account);
-
-
-        }
-        if (product_repayment != null) {
-            repayment.setVisibility(View.VISIBLE);
+        if (product_repayment != null && !product_repayment.isEmpty()) {
             setTextViewColor(repayment, "还款方式: " + product_repayment);
-
-
+        } else {
+            repayment.setVisibility(View.GONE);
         }
-        if (product_repayment_channels != null) {
-            repaymentChannels.setVisibility(View.VISIBLE);
+        if (product_repayment_channels != null && !product_repayment_channels.isEmpty()) {
             setTextViewColor(repaymentChannels, "还款渠道: " + product_repayment_channels);
-
+        } else {
+            repaymentChannels.setVisibility(View.GONE);
 
         }
         if (min != null && max != null) {
-            interestAlgorithm.setVisibility(View.VISIBLE);
-            setTextViewColor(interestAlgorithm, "利息算法: " + product.getInterest_algorithm());
+            if (interest_algorithm == 0) {
+                setTextViewColor(interestAlgorithm, "利息算法: 日利率");
+            } else {
+                setTextViewColor(interestAlgorithm, "利息算法: 月利率");
+            }
+        } else {
+            interestAlgorithm.setVisibility(View.GONE);
 
         }
-
-        if (product_prepayment != null) {
+        if (product_prepayment != null && !product_prepayment.isEmpty()) {
             prepayment.setVisibility(View.VISIBLE);
             setTextViewColor(prepayment, "提前还款: " + product_prepayment);
+        } else {
+            prepayment.setVisibility(View.GONE);
         }
+
         if (product.getProduct_details() != null) {
             String details = product.getProduct_details();
             String aaa = details.replace("aaa", "\n");
@@ -365,6 +429,7 @@ public class ProductDesc extends BaseActivity {
 
         view.setText(spanString);
     }
+
     private void initToolbar() {
         titleName.setText("产品详情");
 
@@ -372,8 +437,8 @@ public class ProductDesc extends BaseActivity {
 
     private DescDialog descDialog;
 
-    @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.ic_strategy, R.id.bt_share
-            })
+    @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.bt_share
+    })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -381,13 +446,6 @@ public class ProductDesc extends BaseActivity {
                 break;
             case R.id.platform_desc:
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
-                break;
-            case R.id.ic_strategy:
-                if (!descBean.getData().getRaiders_connection().isEmpty()) {
-                    startActivity(new Intent(this, HtmlActivity.class).putExtra("Strate", descBean));
-                } else {
-                    ToastUtils.showToast(this, "此产品暂无攻略");
-                }
                 break;
             case R.id.apply:
                 Boolean login = (Boolean) SPUtils.get(this, "login", false);
@@ -422,13 +480,14 @@ public class ProductDesc extends BaseActivity {
                 break;
         }
     }
-    private void setShared_Collection(){
+
+    private void setShared_Collection() {
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
         menuItems.add(new MenuItem(R.mipmap.iv_share_friend, "分享到朋友圈"));
-        if(shareFlag){
+        if (shareFlag) {
             menuItems.add(new MenuItem(R.mipmap.iv_collectioning, "取消收藏"));
-        }else {
+        } else {
             menuItems.add(new MenuItem(R.mipmap.iv_collection, "收藏"));
         }
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
@@ -441,7 +500,7 @@ public class ProductDesc extends BaseActivity {
                 .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
                     @Override
                     public void onMenuItemClick(int position) {
-                        switch (position){
+                        switch (position) {
                             case 0:
                                 shareWechat(WXShareContent.WXSession);
                                 break;
@@ -453,9 +512,9 @@ public class ProductDesc extends BaseActivity {
                                 if (!login1) {
                                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
                                 } else {
-                                    if(shareFlag){
+                                    if (shareFlag) {
                                         CollectionProduct("2");
-                                    }else {
+                                    } else {
                                         CollectionProduct("1");
                                     }
                                 }
@@ -510,10 +569,10 @@ public class ProductDesc extends BaseActivity {
                                     flag = true;
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     if (status.equals("1")) {
-                                        shareFlag=true;
+                                        shareFlag = true;
                                         ToastUtils.showToast(ProductDesc.this, "收藏成功");
                                     } else {
-                                        shareFlag=false;
+                                        shareFlag = false;
                                         ToastUtils.showToast(ProductDesc.this, "取消成功");
                                     }
                                 } else {
@@ -575,7 +634,7 @@ public class ProductDesc extends BaseActivity {
                     if (ok != null) {
                         getProductDate();
                         if (!shareFlag) {
-                            shareFlag=true;
+                            shareFlag = true;
                         } else {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }

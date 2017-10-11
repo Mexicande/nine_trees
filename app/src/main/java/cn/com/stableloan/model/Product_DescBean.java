@@ -133,7 +133,7 @@ public class Product_DescBean implements Serializable {
         private String average_time;
         private String review;
         private int index;
-        private String interest_algorithm;
+        private int interest_algorithm;
         private String min_algorithm;
         private String max_algorithm;
         private String min_cycle;
@@ -267,11 +267,11 @@ public class Product_DescBean implements Serializable {
             this.index = index;
         }
 
-        public String getInterest_algorithm() {
+        public int getInterest_algorithm() {
             return interest_algorithm;
         }
 
-        public void setInterest_algorithm(String interest_algorithm) {
+        public void setInterest_algorithm(int interest_algorithm) {
             this.interest_algorithm = interest_algorithm;
         }
 

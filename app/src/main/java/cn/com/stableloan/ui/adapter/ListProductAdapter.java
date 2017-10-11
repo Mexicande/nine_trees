@@ -17,6 +17,7 @@ import java.util.List;
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.home.Hot_New_Product;
+import cn.com.stableloan.view.countdownview.CountdownView;
 
 
 /**
@@ -24,19 +25,23 @@ import cn.com.stableloan.model.home.Hot_New_Product;
  */
 
 public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBean,BaseViewHolder>{
+    private CountdownView  mCountdownView;
+    private long vTime;
 
     public ListProductAdapter(List<Hot_New_Product.DataBean> data) {
         super(R.layout.news_product_trem, data);
     }
-
+    public void setCountDownView(CountdownView  CountdownView,long time){
+        this.mCountdownView=CountdownView;
+        this.vTime=time;
+        mCountdownView.start(time);
+        mCountdownView.updateShow(time);
+    }
     @Override
     protected void convert(BaseViewHolder helper, Hot_New_Product.DataBean item) {
-
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                ;
-
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
 
         Glide.with(mContext).load(item.getProduct_logo())
                     .apply(options).into((ImageView) helper.getView(R.id.ic_product_logo));
@@ -135,7 +140,6 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
                     view3.setTextColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setText(lables.get(3).getName());
-
                     view5.setVisibility(View.VISIBLE);
                     break;
             }

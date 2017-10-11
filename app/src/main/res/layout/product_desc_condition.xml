@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_titleName"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="3dp"
-            android:textSize="17sp"
-            android:textColor="@color/select_text_color"
-            android:text=" 申请条件/所需材料"
-            android:textStyle="bold"
-            android:drawableLeft="@drawable/circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
-            android:id="@+id/platform_desc"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:background="@drawable/cat_platform"
-            android:textColor="@color/colorPrimary"
-            android:textSize="12sp"
+        <ImageView
+            android:id="@+id/desc_advertising"
+            android:layout_marginRight="@dimen/_20dp"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="查看平台详情"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             />
+        <LinearLayout
+            android:id="@+id/layout_tileName"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_below="@id/desc_advertising"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/line"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="4dp"
+                    android:background="@color/colorStatus"
+                    android:layout_height="20dp"/>
+                <TextView
+                    android:id="@+id/tv_titleName"
+                    android:layout_marginLeft="3dp"
+                    android:textSize="17sp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/select_text_color"
+                    android:text=" 借款条件"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+        </LinearLayout>
         <TextView
-            android:layout_below="@id/tv_titleName"
+            android:layout_below="@id/layout_tileName"
             android:layout_marginTop="10dp"
             android:id="@+id/product_details"
             android:layout_marginLeft="@dimen/desc_left"
@@ -43,4 +50,5 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             />
+
 </RelativeLayout>

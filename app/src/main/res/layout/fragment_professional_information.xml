@@ -434,25 +434,17 @@
                     <cn.com.stableloan.view.EmailAutoCompleteTextView
                         android:id="@+id/Business_email"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/_30dp"
                         android:layout_alignParentRight="true"
                         android:paddingLeft="5dp"
-                        android:layout_width="220dp"
-                        android:layout_height="35dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
                         android:textSize="@dimen/textsize"
                         android:maxLines="1"
+                        android:hint="邮箱地址"
                         android:imeOptions="actionNext"
                         android:tint="@color/gay"
                         android:textColor="@color/gay"
                         android:background="@drawable/editext_normal"/>
-
-                    <TextView
-                        style="@style/information_text_style"
-                        android:layout_toLeftOf="@id/Business_email"
-                        android:text="企业邮箱 : "
-                        android:textColor="@color/text_setting"
-
-                        />
                 </RelativeLayout>
 
                 <RelativeLayout

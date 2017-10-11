@@ -180,13 +180,16 @@ public class BankInformationFragment extends Fragment {
                                     String gesturePassword = aCache.getAsString(userphone);
                                     String lock = aCache.getAsString("lock");
 
+
                                     if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
-                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "bankinformation");
-                                        startActivity(intent);
-                                    } else {
                                         Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "bankinformation");
                                         startActivity(intent);
+                                    } else {
+                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "bankinformation");
+                                        startActivity(intent);
                                     }
+
+
                                 }
                             } else {
                                 ToastUtils.showToast(getActivity(), information.getError_message());
@@ -200,8 +203,6 @@ public class BankInformationFragment extends Fragment {
 
 
     private void setListener() {
-       /* etSelectBank1.setKeyListener(null);
-        etSelectBank2.setKeyListener(null);*/
 
         etValidityTime1.setFocusableInTouchMode(false);
 
@@ -268,7 +269,8 @@ public class BankInformationFragment extends Fragment {
         });
     }
 
-    private String getTime(Date date) {//可根据需要自行截取数据显示
+    private String getTime(Date date) {
+        //可根据需要自行截取数据显示
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM");
         return format.format(date);
     }

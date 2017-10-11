@@ -50,7 +50,7 @@ public class SuperTextView extends RelativeLayout {
 
     private int defaultColor = 0xFF373737;//文字默认颜色
     private int defaultSize = 15;//默认字体大小
-    private int defaultMaxEms = 15;
+    private int defaultMaxEms = 20;
 
 
     private String mLeftTextString;

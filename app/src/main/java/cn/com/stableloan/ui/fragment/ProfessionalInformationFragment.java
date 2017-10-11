@@ -97,7 +97,6 @@ public class ProfessionalInformationFragment extends Fragment {
 
     WorkInformation.DataBean work;
 
-
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.layout4)
@@ -126,6 +125,8 @@ public class ProfessionalInformationFragment extends Fragment {
     private static int id;
     private String token;
     private boolean falg=true;
+
+
     public ProfessionalInformationFragment() {
         // Required empty public constructor
     }
@@ -179,7 +180,7 @@ public class ProfessionalInformationFragment extends Fragment {
                                         int anInt = Integer.parseInt(identity);
                                         switch (anInt){
                                             case STUDENT:
-                                                title.setText("学生党");
+                                                title.setText("其他");
                                                 setVisibilityProfession(layoutStudent);
                                                 id=STUDENT;
                                                 break;
@@ -253,11 +254,9 @@ public class ProfessionalInformationFragment extends Fragment {
                                             checkbox3.setChecked(false);
                                             checkbox4.setChecked(true);
                                         }
-
                                     }
                             }
                         }
-
                     }
                 });
 
@@ -326,7 +325,7 @@ public class ProfessionalInformationFragment extends Fragment {
         int message = msg.message;
         switch (message) {
             case STUDENT:
-                title.setText("学生党");
+                title.setText("其他");
                 setVisibilityProfession(layoutStudent);
                 id=STUDENT;
                 break;
@@ -354,9 +353,6 @@ public class ProfessionalInformationFragment extends Fragment {
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
     }
-
-
-
 
 
     private void saveInformation() {
@@ -544,52 +540,6 @@ public class ProfessionalInformationFragment extends Fragment {
 
 
 
-
-
-
-
-    /*    if (work.getOccupation().getStudent().equals(studentBean) && work.getOccupation().getBusiness().equals(businessBean)
-                && work.getOccupation().getCompany().equals(companyBean) && work.getOccupation().getFreelancer().equals(freelancerBean)) {
-            ToastUtils.showToast(getActivity(), "无修改内容");
-        } else {
-            boolean tel = RegexUtils.isTel(etPreTeacherphone.getText().toString() + etTeacher.getText().toString());
-            boolean tel1 = RegexUtils.isTel(preFixedline.getText().toString() + etFixedline.getText().toString());
-            if (!tel && tel1) {
-                ToastUtils.showToast(getActivity(), "固定电话格式错误");
-
-            } else {
-                occupationBean.setStudent(studentBean);
-                occupationBean.setBusiness(businessBean);
-                occupationBean.setCompany(companyBean);
-                occupationBean.setFreelancer(freelancerBean);
-
-                String school = etSchool.getText().toString();
-                String operations = etOperations.getText().toString();
-                String Cincome = etCincome.getText().toString();
-                String fixedline = etFixedline.getText().toString();
-                String company = et_company.getText().toString();
-                String email = et_etEmail.getText().toString();
-                String loction = et_location.getText().toString();
-                String teacher = etTeacher.getText().toString();
-                String SchoolAddress = etSchoolAddress.getText().toString();
-                String yers = etYears.getText().toString();
-
-                if (school.isEmpty() || operations.isEmpty() || Cincome.isEmpty() || fixedline.isEmpty() || company.isEmpty() || email.isEmpty()
-                        || loction.isEmpty() || teacher.isEmpty() || SchoolAddress.isEmpty() || yers.isEmpty()) {
-                    if (!checkbox1.isChecked() && !checkbox2.isChecked()) {
-                        if (!checkbox3.isChecked() && !checkbox4.isChecked()) {
-                            occupationBean.setStatus("0");
-
-                        }
-                    }
-                } else {
-                    occupationBean.setStatus("1");
-                }
-
-            }
-
-        }*/
-
     }
 
     private SlideUp slideUp;
@@ -607,173 +557,8 @@ public class ProfessionalInformationFragment extends Fragment {
         }
     }
 
-    private void addOccupation() {
-        switch (id) {
-            case STUDENT:
-                id=STUDENT;
-                WorkInformation.DataBean dataBean=new WorkInformation.DataBean();
-                WorkInformation.DataBean.OccupationBean occupationBean=new WorkInformation.DataBean.OccupationBean();
-                WorkInformation.DataBean.OccupationBean.StudentBean bean=new WorkInformation.DataBean.OccupationBean.StudentBean();
-
-                String school = etSchool.getText().toString();
-                String teather = etTeacher.getText().toString();
-                String address = etSchoolAddress.getText().toString();
-                String phone = etPreTeacherphone.getText().toString();
-                bean.setSchool(school);
-                bean.setTeacherphone(teather);
-                bean.setAddress(address);
-                bean.setPreTeacherphone(phone);
-
-                dataBean.setIdentity(String.valueOf(STUDENT));
-                if(!school.isEmpty()&&!teather.isEmpty()&&!address.isEmpty()&&!phone.isEmpty()){
-                    occupationBean.setStatus("1");
-                }else {
-                    occupationBean.setStatus("0");
-                }
-                occupationBean.setStudent(bean);
-                dataBean.setOccupation(occupationBean);
-
-                Gson gson = new Gson();
-                String json = gson.toJson(dataBean);
-                sendApi(json);
-
-                break;
-            case COMPANY:
-                id=COMPANY;
-                WorkInformation.DataBean companyBeandataBean=new WorkInformation.DataBean();
-                WorkInformation.DataBean.OccupationBean companyBeanoccupationBean=new WorkInformation.DataBean.OccupationBean();
-                WorkInformation.DataBean.OccupationBean.CompanyBean companyBeanbean=new WorkInformation.DataBean.OccupationBean.CompanyBean();
 
 
-                String cComPanyName = et_company.getText().toString();
-                String cCompanyLocation = et_location.getText().toString();
-                String cCompanyEmail = et_etEmail.getText().toString();
-                String cCompantProFixedline = preFixedline.getText().toString();
-                String cCincome = etCincome.getText().toString();
-                String cCompanyFixedline = etFixedline.getText().toString();
-
-                companyBeanbean.setCompany(cComPanyName);
-                companyBeanbean.setLocation(cCompanyLocation);
-                companyBeanbean.setEmail(cCompanyEmail);
-                companyBeanbean.setPreFixedline(cCompantProFixedline);
-                companyBeanbean.setCincome(cCincome);
-                companyBeanbean.setFixedline(cCompanyFixedline);
-                companyBeanbean.setYears("");
-                String cYears = etYears.getText().toString();
-                for (int i = 0; i < list2.length; i++) {
-                    if (list2[i].equals(cYears)) {
-                        String s = String.valueOf(i);
-                        companyBeanbean.setYears(s);
-                    }
-                }
-                if(!cComPanyName.isEmpty()&&!cCompanyLocation.isEmpty()&&!cCompanyEmail.isEmpty()
-                        &&!cCompantProFixedline.isEmpty()&&!cCincome.isEmpty()&&!cCompanyFixedline.isEmpty()
-                       &&!cYears.isEmpty()){
-                    companyBeanoccupationBean.setStatus("1");
-                }else {
-                    companyBeanoccupationBean.setStatus("0");
-                }
-                companyBeandataBean.setIdentity(String.valueOf(COMPANY));
-
-                companyBeanoccupationBean.setCompany(companyBeanbean);
-                companyBeandataBean.setOccupation(companyBeanoccupationBean);
-
-                Gson ComPanyGson = new Gson();
-                String ComPanyjson = ComPanyGson.toJson(companyBeandataBean);
-                sendApi(ComPanyjson);
-
-                break;
-            case BUSINESS:
-                id=BUSINESS;
-                WorkInformation.DataBean businessBeandataBean=new WorkInformation.DataBean();
-                WorkInformation.DataBean.OccupationBean businessBeanoccupationBean=new WorkInformation.DataBean.OccupationBean();
-                WorkInformation.DataBean.OccupationBean.BusinessBean businessBean = new WorkInformation.DataBean.OccupationBean.BusinessBean();
-
-                String toString = etOperations.getText().toString();
-
-                businessBean.setOperations("");
-                for (int i = 0; i < list2.length; i++) {
-                    if (list2[i].equals(toString)) {
-                        String s = String.valueOf(i);
-                        businessBean.setOperations(s);
-                    }
-                }
-                businessBean.setLicense("");
-                if (checkbox1.isChecked()) {
-                    businessBean.setLicense("0");
-                }
-                if (checkbox2.isChecked()) {
-                    businessBean.setLicense("1");
-                }
-                String BusinessName = BusinessCompany.getText().toString();
-                String BusinessLocation = this.BusinessLocation.getText().toString();
-                String BusinessFixedLine = etBusinessFixedline.getText().toString();
-                String BusinessPreFixed = BusinessPreFixedline.getText().toString();
-                String BusinessYears = this.BusinessYears.getText().toString();
-                String BusinessEmail = this.BusinessEmail.getText().toString();
-                String BusinessCincome = this.BusinessCincome.getText().toString();
-
-                businessBean.setBcompany(BusinessName);
-                businessBean.setBlocation(BusinessLocation);
-                businessBean.setBfixedline(BusinessFixedLine);
-                businessBean.setBpreFixedline(BusinessPreFixed);
-                businessBean.setByears(BusinessYears);
-                businessBean.setBemail(BusinessEmail);
-                businessBean.setBcincome(BusinessCincome);
-
-                if(!BusinessName.isEmpty()&&!BusinessCincome.isEmpty()&&BusinessEmail.isEmpty()
-                        &&!BusinessFixedLine.isEmpty()&&!BusinessLocation.isEmpty()&&!BusinessPreFixed.isEmpty()
-                        &&!BusinessYears.isEmpty()&&!businessBean.getLicense().isEmpty()&&!businessBean.getOperations().isEmpty()){
-                    businessBeanoccupationBean.setStatus("1");
-                }else {
-                    businessBeanoccupationBean.setStatus("0");
-                }
-                businessBeanoccupationBean.setBusiness(businessBean);
-
-                businessBeandataBean.setOccupation(businessBeanoccupationBean);
-                businessBeandataBean.setIdentity(String.valueOf(COMPANY));
-
-
-                Gson BusinessGson = new Gson();
-                String Businessjson = BusinessGson.toJson(businessBeandataBean);
-
-                sendApi(Businessjson);
-
-                break;
-            case FREE:
-                id=FREE;
-                WorkInformation.DataBean FreelancerBeandataBean=new WorkInformation.DataBean();
-                WorkInformation.DataBean.OccupationBean FreelancerBeanoccupationBean=new WorkInformation.DataBean.OccupationBean();
-
-                WorkInformation.DataBean.OccupationBean.FreelancerBean freelancerBean = new WorkInformation.DataBean.OccupationBean.FreelancerBean();
-                freelancerBean.setSource("");
-                if (checkbox3.isChecked()) {
-                    freelancerBean.setSource("0");
-                }
-                if (checkbox4.isChecked()) {
-                    freelancerBean.setSource("1");
-                }
-                if(freelancerBean.getSource().length()<1){
-                    FreelancerBeanoccupationBean.setStatus("0");
-                }else {
-                    FreelancerBeanoccupationBean.setStatus("1");
-                }
-                FreelancerBeandataBean.setIdentity(String.valueOf(FREE));
-                FreelancerBeanoccupationBean.setFreelancer(freelancerBean);
-                FreelancerBeandataBean.setOccupation(FreelancerBeanoccupationBean);
-
-
-                Gson FreeGson = new Gson();
-                String Freelancerjson = FreeGson.toJson(FreelancerBeandataBean);
-
-                sendApi(Freelancerjson);
-
-
-                break;
-        }
-
-
-    }
 
     private void sendApi(String json) {
 

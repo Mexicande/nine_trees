@@ -15,6 +15,8 @@
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
+
             <ImageView
                 android:id="@+id/iv_notice"
                 android:layout_gravity="center_vertical"
@@ -30,6 +32,7 @@
                 android:layout_height="35dp"
                 android:background="@drawable/toolbar_search"
                 >
+
                 <TextView
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
@@ -57,6 +60,9 @@
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
+
+
     <cn.com.stableloan.view.EasyRefreshLayout
         android:id="@+id/easylayout"
         android:layout_below="@id/appbar_layout"

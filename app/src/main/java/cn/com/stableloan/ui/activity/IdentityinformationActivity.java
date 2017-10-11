@@ -47,9 +47,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.event.ProfessionalSelectEvent;
-import cn.com.stableloan.ui.fragment.BankInformationFragment;
-import cn.com.stableloan.ui.fragment.ProfessionalInformationFragment;
-import cn.com.stableloan.ui.fragment.UserInformationFragment;
+import cn.com.stableloan.ui.fragment.information.User_Bank_Fragment;
+import cn.com.stableloan.ui.fragment.information.User_MeansFragment;
+import cn.com.stableloan.ui.fragment.information.User_Professional_Fragment;
 import cn.com.stableloan.utils.SPUtils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -146,7 +146,7 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
 
 
     private void initMagicIndicator() {
-        mCurrentFragment = new UserInformationFragment();
+        mCurrentFragment = new User_MeansFragment();
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commit();
 
@@ -224,11 +224,11 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     private String getFragmentName(int menuId) {
         switch (menuId) {
             case 1:
-                return UserInformationFragment.class.getName();
+                return User_MeansFragment.class.getName();
             case 2:
-                return BankInformationFragment.class.getName();
+                return User_Bank_Fragment.class.getName();
             case 3:
-                return ProfessionalInformationFragment.class.getName();
+                return User_Professional_Fragment.class.getName();
             default:
                 return null;
         }

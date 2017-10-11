@@ -28,6 +28,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/flow"
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_below="@id/tv_pname"
+            android:layout_marginLeft="75dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
         <TextView
             android:id="@+id/product_introduction"
             android:textSize="13sp"
@@ -37,16 +47,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_pname"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/flow"
-            android:layout_marginTop="@dimen/_5dp"
-            android:layout_below="@id/product_introduction"
-            android:layout_marginLeft="75dp"
-            android:layout_marginRight="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_below="@id/flow"/>
     </RelativeLayout>
     <View
         android:layout_marginTop="3dp"

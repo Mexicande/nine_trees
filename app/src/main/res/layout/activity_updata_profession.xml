@@ -8,15 +8,30 @@
     android:background="#EEEEEE"
     tools:context="cn.com.stableloan.ui.activity.UpdataProfessionActivity">
     <include layout="@layout/toolbar_layout"/>
+
+
     <TextView
+        android:textColor="@color/gay"
+        android:layout_marginTop="@dimen/_20dp"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:layout_gravity="center_horizontal"
-        android:text="请选择一项"/>
+        android:textSize="14sp"
+        android:text="点击设置昵称"/>
+    <EditText
+        android:id="@+id/et_nick"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:hint="新昵称"
+        android:textSize="14sp"
+        android:textColorHint="@color/select_text_color"
+        android:theme="@style/MyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
     <RelativeLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <View

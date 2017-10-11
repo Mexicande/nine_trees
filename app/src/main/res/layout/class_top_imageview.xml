@@ -5,7 +5,6 @@
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ic_default_top"
-        android:layout_marginTop="@dimen/_1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"

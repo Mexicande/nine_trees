@@ -37,7 +37,7 @@
     <dimen name="_100dp">100dp</dimen>
     <dimen name="_150dp">150dp</dimen>
     <dimen name="_270dp">270dp</dimen>
-
+    <dimen name="information_textSize">16sp</dimen>
     <dimen name="_16sp">16sp</dimen>
     <dimen name="_14sp">14sp</dimen>
 

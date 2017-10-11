@@ -177,6 +177,42 @@ public interface Urls {
         String INVITE_FRIENDS="invite/smsInvite";
         String INVITE_LIST="invite/inviteList";
     }
+    interface DateChange{
+        // 个人信息
+        int      NAME=                                                                              1;  // 姓名
+        int      IDCARD=                                                                            2;
+        int      SEX=                                                                               3;
+        int      AGE=                                                                               4;
+        int      CONTACT_PHONE1=                                                                    6;
+        int      CONTACT_PHONE2=                                                                    7;
+        int      ADDRESS=                                                                           8;
+        //银行信息
+        int      DEBIT_CARD   =                                                                     9;
+        int      DEBIT_NAME   =                                                                     10;
+        int      DEBIT_PHONE  =                                                                     11;
+        int      CREDIT_CARD  =                                                                     13;
+        int      CREDIT_NAME  =                                                                     14;
+        int      CREDIT_PHONE =                                                                     15;
+        //职业信息
+                    // 公司信息
+        int      COMPANY_NAME =                                                                     16;
+        int      COMPANY_ADRESS =                                                                   17;
+        int      COMPANY_EMAIL =                                                                    18;
+        int      COMPANY_SALART =                                                                   19;
+        int      COMPANY_TELEPHONE =                                                                20;
+                    // 企业信息
+        int      BUSSINESS_NAME =                                                                   21;
+        int      BUSSINESS_ADRESS =                                                                 22;
+        int      BUSSINESS_EMAIL =                                                                  23;
+        int      BUSSINESS_SALART =                                                                 24;
+        int      BUSSINESS_TELEPHONE =                                                              25;
+                    // 其他信息
+        int      STUHENT_NAME =                                                                     26;
+        int      STUHENT_ADRESS =                                                                   27;
+        int      STUHENT_TELEPHONE =                                                                28;
+
+
+    }
 
     String  TOKEN=                                                                                  "token";
     String NUMBER_ZERO=                                                                             "0";

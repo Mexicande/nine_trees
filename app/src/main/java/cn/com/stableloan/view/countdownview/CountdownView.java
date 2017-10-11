@@ -9,7 +9,6 @@ import android.view.View;
 
 import cn.com.stableloan.R;
 
-
 /**
  * Countdown View
  * Created by iWgang on 15/9/16.

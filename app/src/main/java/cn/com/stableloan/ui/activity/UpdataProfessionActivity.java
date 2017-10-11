@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +30,12 @@ import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cxy.com.validate.IValidateResult;
+import cxy.com.validate.Validate;
+import cxy.com.validate.ValidateAnimation;
+import cxy.com.validate.annotation.Index;
+import cxy.com.validate.annotation.NotNull;
+import cxy.com.validate.annotation.RE;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -35,7 +43,7 @@ import okhttp3.Response;
  * 用户身份选择
  *
  */
-public class UpdataProfessionActivity extends BaseActivity {
+public class UpdataProfessionActivity extends BaseActivity implements IValidateResult {
 
 
 
@@ -63,6 +71,13 @@ public class UpdataProfessionActivity extends BaseActivity {
     ImageView tickCompany;
     @Bind(R.id.iv_back)
     ImageView ivBack;
+
+
+    @Index(1)
+    @NotNull(msg = "昵称不为能空！")
+    @RE(re = RE.number_letter_nick, msg = "昵称格式不正确")
+    @Bind(R.id.et_nick)
+    EditText etNick;
 
     private static int Flge = 0;
 
@@ -140,8 +155,8 @@ public class UpdataProfessionActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_Save:
+                Validate.check(UpdataProfessionActivity.this, UpdataProfessionActivity.this);
 
-                updateIdentity(Flge+"");
                /* UserBean user = (UserBean) SPUtils.get(this, "user",UserBean.class);
                 user.setIdentity(""+Flge);
                 setResult(-1,new Intent().putExtra("HeadPhoto",Flge));
@@ -178,7 +193,6 @@ public class UpdataProfessionActivity extends BaseActivity {
                                 if(success.equals("1")){
                                     hud.dismiss();
                                     LogUtils.i("-----",identity);
-
                                     SPUtils.put(UpdataProfessionActivity.this,"identity",identity);
                                     ToastUtils.showToast(UpdataProfessionActivity.this,"保存成功");
                                     TinyDB tinyDB=new TinyDB(UpdataProfessionActivity.this);
@@ -235,4 +249,23 @@ public class UpdataProfessionActivity extends BaseActivity {
         ivCompany.setColorFilter(null);
     }
 
+    @Override
+    public void onValidateSuccess() {
+        updateIdentity(Flge+"");
+
+       // sendUpdateNick();
+    }
+
+
+    @Override
+    public void onValidateError(String msg, EditText editText) {
+        if (editText != null)
+            editText.setFocusable(true);
+        ToastUtils.showToast(this,msg);
+    }
+
+    @Override
+    public Animation onValidateErrorAnno() {
+        return ValidateAnimation.horizontalTranslate();
+    }
 }

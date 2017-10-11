@@ -121,24 +121,24 @@ public class GestureLoginActivity extends BaseActivity {
      */
     private void loginGestureSuccess() {
         String from = getIntent().getStringExtra("from");
-        if(from!=null){
-            if(from.equals("SettingSafe")){
+        if(from!=null) {
+            if (("SettingSafe").equals(from)) {
                 String token = (String) SPUtils.get(this, "token", "1");
-                Map<String,String> parms=new HashMap<>();
-                parms.put("token",token);
-                JSONObject jsonObject=new JSONObject(parms);
-                OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
+                Map<String, String> parms = new HashMap<>();
+                parms.put("token", token);
+                JSONObject jsonObject = new JSONObject(parms);
+                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
                                 try {
-                                    JSONObject jsonObject1=new JSONObject(s);
+                                    JSONObject jsonObject1 = new JSONObject(s);
                                     String isSuccess = jsonObject1.getString("isSuccess");
-                                    if("1".equals(isSuccess)){
+                                    if ("1".equals(isSuccess)) {
                                         String signature = jsonObject1.getString("signature");
-                                        SPUtils.put(GestureLoginActivity.this,"signature",signature);
+                                        SPUtils.put(GestureLoginActivity.this, "signature", signature);
                                         SafeSettingActivity.launch(GestureLoginActivity.this);
                                         finish();
                                     }
@@ -148,24 +148,24 @@ public class GestureLoginActivity extends BaseActivity {
 
                             }
                         });
-            }else if(from.equals("PicStatus")){
+            } else if (("PicStatus").equals(from)) {
 
                 String token = (String) SPUtils.get(this, "token", "1");
-                Map<String,String> parms=new HashMap<>();
-                parms.put("token",token);
-                JSONObject jsonObject=new JSONObject(parms);
-                OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
+                Map<String, String> parms = new HashMap<>();
+                parms.put("token", token);
+                JSONObject jsonObject = new JSONObject(parms);
+                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
                                 try {
-                                    JSONObject jsonObject1=new JSONObject(s);
+                                    JSONObject jsonObject1 = new JSONObject(s);
                                     String isSuccess = jsonObject1.getString("isSuccess");
-                                    if("1".equals(isSuccess)){
+                                    if ("1".equals(isSuccess)) {
                                         String signature = jsonObject1.getString("signature");
-                                        SPUtils.put(GestureLoginActivity.this,"signature",signature);
+                                        SPUtils.put(GestureLoginActivity.this, "signature", signature);
                                         EventBus.getDefault().post(new PicStatusEvent("update"));
                                         finish();
                                     }
@@ -176,90 +176,89 @@ public class GestureLoginActivity extends BaseActivity {
                             }
                         });
 
+            } else if (("CardUpload").equals(from)) {
+                String token = (String) SPUtils.get(this, "token", "1");
+                Map<String, String> parms = new HashMap<>();
+                parms.put("token", token);
+                JSONObject jsonObject = new JSONObject(parms);
+                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
+                        .tag(this)
+                        .upJson(jsonObject)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject1 = new JSONObject(s);
+                                    String isSuccess = jsonObject1.getString("isSuccess");
+                                    if ("1".equals(isSuccess)) {
+                                        String signature = jsonObject1.getString("signature");
+                                        SPUtils.put(GestureLoginActivity.this, "signature", signature);
+                                        EventBus.getDefault().post(new InformationEvent("CardUpload"));
+                                        finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
+            } else if (("UserInformation").equals(from)) {
+                String token = (String) SPUtils.get(this, "token", "1");
+                Map<String, String> parms = new HashMap<>();
+                parms.put("token", token);
+                JSONObject jsonObject = new JSONObject(parms);
+                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
+                        .tag(this)
+                        .upJson(jsonObject)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject1 = new JSONObject(s);
+                                    String isSuccess = jsonObject1.getString("isSuccess");
+                                    if ("1".equals(isSuccess)) {
+                                        String signature = jsonObject1.getString("signature");
+                                        SPUtils.put(GestureLoginActivity.this, "signature", signature);
+                                        EventBus.getDefault().post(new InformationEvent("ok"));
+                                        finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
+
+            } else if (("bankinformation").equals(from)) {
+                String token = (String) SPUtils.get(this, "token", "1");
+                Map<String, String> parms = new HashMap<>();
+                parms.put("token", token);
+                JSONObject jsonObject = new JSONObject(parms);
+                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
+                        .tag(this)
+                        .upJson(jsonObject)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject1 = new JSONObject(s);
+                                    String isSuccess = jsonObject1.getString("isSuccess");
+                                    if ("1".equals(isSuccess)) {
+                                        String signature = jsonObject1.getString("signature");
+                                        SPUtils.put(GestureLoginActivity.this, "signature", signature);
+                                        EventBus.getDefault().post(new InformationEvent("bankinformation"));
+                                        finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
             }
-        } else if(from.equals("CardUpload")){
-            String token = (String) SPUtils.get(this, "token", "1");
-            Map<String,String> parms=new HashMap<>();
-            parms.put("token",token);
-            JSONObject jsonObject=new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject1=new JSONObject(s);
-                                String isSuccess = jsonObject1.getString("isSuccess");
-                                if("1".equals(isSuccess)){
-                                    String signature = jsonObject1.getString("signature");
-                                    SPUtils.put(GestureLoginActivity.this,"signature",signature);
-                                    EventBus.getDefault().post(new InformationEvent("CardUpload"));
-                                    finish();
-                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
-
-        } else if(from.equals("UserInformation")){
-            String token = (String) SPUtils.get(this, "token", "1");
-            Map<String,String> parms=new HashMap<>();
-            parms.put("token",token);
-            JSONObject jsonObject=new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject1=new JSONObject(s);
-                                String isSuccess = jsonObject1.getString("isSuccess");
-                                if("1".equals(isSuccess)){
-                                    String signature = jsonObject1.getString("signature");
-                                    EventBus.getDefault().post(new InformationEvent("ok"));
-                                    SPUtils.put(GestureLoginActivity.this,"signature",signature);
-                                    finish();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
-
-
-
-        }else  if(from.equals("bankinformation")){
-            String token = (String) SPUtils.get(this, "token", "1");
-            Map<String,String> parms=new HashMap<>();
-            parms.put("token",token);
-            JSONObject jsonObject=new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL+ Urls.Login.GET_SIGNATURE)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject1=new JSONObject(s);
-                                String isSuccess = jsonObject1.getString("isSuccess");
-                                if("1".equals(isSuccess)){
-                                    String signature = jsonObject1.getString("signature");
-                                    SPUtils.put(GestureLoginActivity.this,"signature",signature);
-                                    EventBus.getDefault().post(new InformationEvent("bankinformation"));
-                                    finish();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
-
         }else  {
             String token = (String) SPUtils.get(this, "token", "1");
             Map<String,String> parms=new HashMap<>();

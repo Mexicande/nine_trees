@@ -198,13 +198,17 @@ public class UpImageIdentityActivity extends BaseActivity {
 
 
                                     String lock = aCache.getAsString("lock");
+
                                     if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
-                                        Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
+                                        Intent intent = new Intent(getApplicationContext(), Verify_PasswordActivity.class).putExtra("from", "CardUpload");
                                         startActivity(intent);
                                     } else {
-                                        Intent intent = new Intent(mContext, Verify_PasswordActivity.class).putExtra("from", "CardUpload");
+                                        Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
                                         startActivity(intent);
                                     }
+
+
+
                                 }
                             } else {
                                 ToastUtils.showToast(mContext, imageDataBean.getError_message());

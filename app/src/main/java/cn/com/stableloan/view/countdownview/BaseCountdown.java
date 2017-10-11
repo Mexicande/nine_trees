@@ -72,7 +72,7 @@ class BaseCountdown {
         if (ta.getBoolean(R.styleable.CountdownView_isHideTimeBackground, true)) {
             isConvertDaysToHours = ta.getBoolean(R.styleable.CountdownView_isConvertDaysToHours, false);
         }
-        isSuffixTextBold = ta.getBoolean(R.styleable.CountdownView_isSuffixTextBold, true);
+        isSuffixTextBold = ta.getBoolean(R.styleable.CountdownView_isSuffixTextBold, false);
         mSuffixTextSize = ta.getDimension(R.styleable.CountdownView_suffixTextSize, Utils.sp2px(mContext, 12));
         mSuffixTextColor = ta.getColor(R.styleable.CountdownView_suffixTextColor, 0xFF000000);
         mSuffix = ta.getString(R.styleable.CountdownView_suffix);
@@ -100,7 +100,7 @@ class BaseCountdown {
 
         // time validate
         if (!isShowDay && !isShowHour && !isShowMinute) isShowSecond = true;
-        if (!isShowSecond) isShowMillisecond = false;
+        //if (!isShowSecond) isShowMillisecond = false;
     }
 
     public void initialize() {
@@ -113,7 +113,7 @@ class BaseCountdown {
         // regular time data
         // pick one of two (minute and second)
 //        if (!isShowMinute && !isShowSecond) isShowSecond = true;
-        if (!isShowSecond) isShowMillisecond = false;
+       // if (!isShowSecond) isShowMillisecond = false;
 
         initTimeTextBaseInfo();
     }

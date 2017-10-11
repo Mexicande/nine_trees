@@ -96,6 +96,7 @@ public class AppApplication extends Application {
         ZhugeSDK.getInstance().init(this,"24520d39b750437b97f026353aa80aea",channel);
 
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
+
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
 
         Fresco.initialize(this);

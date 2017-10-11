@@ -111,7 +111,7 @@
     <string name="safe_text2">过期后我们将安全删除您的全部图片材料及授权资料。</string>
     <string name="safe_text3">有效期会根据您的托管时间设置，从您最后一次修改图及授权材料的当日起计算，更新材料会刷新日期，更新图片会刷新日期，过期自动删除。</string>
 
-    
+
     <!--ImageViewIdentity-->
     <string name="identification_card">1.身份证 (照片清晰完整，不能使用软件编辑)</string>
     <string name="business_card">2.营业执照 (照片清晰完整，不能使用软件编辑)</string>

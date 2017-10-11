@@ -217,6 +217,15 @@ public class Bank implements Serializable {
             private String cperiod;
             private String cbank;
             private String cphone;
+            private int is_credit;
+
+            public int getIs_credit() {
+                return is_credit;
+            }
+
+            public void setIs_credit(int is_credit) {
+                this.is_credit = is_credit;
+            }
 
             public String getCnumber() {
                 return cnumber;

@@ -104,14 +104,12 @@
                 <ImageView
                     android:layout_weight="1"
                     android:id="@+id/bussiones"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_bussines_identity"/>
                 <ImageView
                     android:layout_weight="1"
                     android:id="@+id/iv_free"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_free_identity"/>

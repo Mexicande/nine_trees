@@ -171,11 +171,8 @@ public class UserInformationFragment extends Fragment {
         setListenter();
 
         view.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
-
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     if(getActivity().getCurrentFocus()!=null && getActivity().getCurrentFocus().getWindowToken()!=null){
@@ -370,10 +367,10 @@ public class UserInformationFragment extends Fragment {
                                         String lock = aCache.getAsString("lock");
 
                                         if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
-                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
+                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
                                             startActivity(intent);
                                         } else {
-                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
                                             startActivity(intent);
                                         }
                                     }
@@ -628,10 +625,7 @@ public class UserInformationFragment extends Fragment {
                             }
                         }
                     });
-        } else {
-
         }
-
     }
 
     /**
