@@ -14,6 +14,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,11 +26,14 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.dialog.IdentityDialog;
 import cxy.com.validate.IValidateResult;
 import cxy.com.validate.Validate;
 import cxy.com.validate.ValidateAnimation;
@@ -79,9 +83,7 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
     @Bind(R.id.et_nick)
     EditText etNick;
 
-    private static int Flge = 0;
-
-    private int Userid=0;
+    private  int Flge = 0;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UpdataProfessionActivity.class));
     }
@@ -91,9 +93,13 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updata_profession);
         ButterKnife.bind(this);
+        Validate.reg(this);
+
         ivBack.setVisibility(View.VISIBLE);
-        titleName.setText("身份修改");
-        TinyDB tinyDB = new TinyDB(this);
+        titleName.setText("个人资料");
+        getIdentity();
+
+        /*TinyDB tinyDB = new TinyDB(this);
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         LogUtils.i("identity", user.toString());
         String identity1 = (String) SPUtils.get(this, "identity", "");
@@ -103,25 +109,61 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
             if (user.getIdentity() != 0) {
                 Userid = user.getIdentity();
             }
-        }
-        switch (Userid) {
-            case 1:
-                ivWork.setColorFilter(getResources().getColor(R.color.mask));
-                tick.setVisibility(View.VISIBLE);
-                break;
-            case 4:
-                ivFree.setColorFilter(getResources().getColor(R.color.mask));
-                tickFree.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                ivStudent.setColorFilter(getResources().getColor(R.color.mask));
-                tickStudent.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                ivCompany.setColorFilter(getResources().getColor(R.color.mask));
-                tickCompany.setVisibility(View.VISIBLE);
-                break;
-        }
+        }*/
+
+
+    }
+
+    private void getIdentity() {
+
+
+        String token = (String) SPUtils.get(this, "token", "1");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token",token);
+        JSONObject jsonObject = new JSONObject(params);
+        OkGo.post(Urls.NEW_Ip_url+Urls.update.GET_IDENTITY)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object=new JSONObject(s);
+
+                            int error_code = object.getInt("error_code");
+                            if(error_code==0){
+                                String data = object.getString("data");
+                                JSONObject dateObject=new JSONObject(data);
+                                Flge = dateObject.getInt("identity");
+                                String nickname = dateObject.getString("nickname");
+                                etNick.setHint(nickname);
+                                switch (Flge) {
+                                    case 1:
+                                        ivWork.setColorFilter(getResources().getColor(R.color.mask));
+                                        tick.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 4:
+                                        ivFree.setColorFilter(getResources().getColor(R.color.mask));
+                                        tickFree.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 2:
+                                        ivStudent.setColorFilter(getResources().getColor(R.color.mask));
+                                        tickStudent.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 3:
+                                        ivCompany.setColorFilter(getResources().getColor(R.color.mask));
+                                        tickCompany.setVisibility(View.VISIBLE);
+                                        break;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+
 
     }
 
@@ -156,11 +198,6 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                 break;
             case R.id.bt_Save:
                 Validate.check(UpdataProfessionActivity.this, UpdataProfessionActivity.this);
-
-               /* UserBean user = (UserBean) SPUtils.get(this, "user",UserBean.class);
-                user.setIdentity(""+Flge);
-                setResult(-1,new Intent().putExtra("HeadPhoto",Flge));
-                finish();*/
                 break;
             default:
                 break;
@@ -179,9 +216,9 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
             HashMap<String, String> params = new HashMap<>();
             params.put("identity",identity);
             params.put("token",token);
-            params.put("status","2");
+            params.put("nickname",etNick.getText().toString());
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.puk_URL+Urls.update.UPDATE_PROFRSSION)
+            OkGo.post(Urls.NEW_Ip_url+Urls.update.UPDATE_PROFRSSION)
                     .tag(this)
                     .upJson(jsonObject.toString())
                     .execute( new StringCallback() {
@@ -189,25 +226,27 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                         public void onSuccess(String s, Call call, Response response) {
                             try {
                                 JSONObject object=new JSONObject(s);
-                                String success = object.getString("isSuccess");
-                                if(success.equals("1")){
+                                int error_code = object.getInt("error_code");
+                                if(error_code==0){
                                     hud.dismiss();
-                                    LogUtils.i("-----",identity);
                                     SPUtils.put(UpdataProfessionActivity.this,"identity",identity);
                                     ToastUtils.showToast(UpdataProfessionActivity.this,"保存成功");
                                     TinyDB tinyDB=new TinyDB(UpdataProfessionActivity.this);
                                     UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
                                     user.setIdentity(Integer.parseInt(identity));
+                                    user.setNickname(etNick.getText().toString());
                                     if(getIntent().getStringExtra("from")!=null){
                                         IdentityinformationActivity.launch(UpdataProfessionActivity.this);
                                         finish();
                                     }else {
-                                        setResult(1000,new Intent().putExtra("HeadPhoto",identity));
+                                        setResult(100, getIntent().putExtra("nick", etNick.getText().toString()));
+                                       /* EventBus.getDefault().post(new MessageEvent(etNick.getText().toString(),null));
+                                        setResult(1000,new Intent().putExtra("HeadPhoto",identity));*/
                                         finish();
                                     }
                                 }else {
                                     hud.dismiss();
-                                    String string = object.getString("msg");
+                                    String string = object.getString("error_message");
                                     ToastUtils.showToast(UpdataProfessionActivity.this,string);
                                 }
                             } catch (JSONException e) {
@@ -251,21 +290,29 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
 
     @Override
     public void onValidateSuccess() {
-        updateIdentity(Flge+"");
-
-       // sendUpdateNick();
+        if(Flge!=0){
+            updateIdentity(Flge+"");
+        }else {
+            IdentityDialog dialog=new IdentityDialog(this);
+            dialog.setYesOnclickListener("确定", new IdentityDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
     }
 
 
     @Override
     public void onValidateError(String msg, EditText editText) {
-        if (editText != null)
-            editText.setFocusable(true);
         ToastUtils.showToast(this,msg);
+
     }
 
     @Override
     public Animation onValidateErrorAnno() {
-        return ValidateAnimation.horizontalTranslate();
+        return null;
     }
 }

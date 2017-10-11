@@ -49,7 +49,9 @@ import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
+import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.Setting1Activity;
+import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
@@ -221,10 +223,11 @@ public class UserFragment extends ImmersionFragment {
                 TextUser();
                 break;
             case R.id.iv_Edit:
-                TextUser();
+                //TextUser();
+                startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class),100);
                 break;
             case R.id.layout_setting:
-                Setting1Activity.launch(getActivity());
+                SafeActivity.launch(getActivity());
                 break;
             case R.id.feedback:
                 FeedbackActivity.launch(getActivity());
@@ -406,7 +409,21 @@ public class UserFragment extends ImmersionFragment {
 
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100){
+            switch (resultCode){
+                case 100:
+                    if(data!=null){
+                        String nick = data.getStringExtra("nick");
+                        if(nick!=null){
+                            tvNick.setText(nick);
+                        }
+                    }
+            }
+        }
+    }
 
     @Override
     public void onDestroy() {

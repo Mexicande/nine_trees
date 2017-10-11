@@ -26,7 +26,7 @@
         android:layout_marginRight="100dp"
         android:hint="新昵称"
         android:textSize="14sp"
-        android:textColorHint="@color/select_text_color"
+        android:textColorHint="@color/gay"
         android:theme="@style/MyEditText"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
@@ -42,6 +42,79 @@
             />
         <RelativeLayout
             android:layout_toLeftOf="@id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@mipmap/iv_header02"/>
+            <ImageView
+                android:id="@+id/tick_free"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_tick"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_free"
+                android:layout_centerHorizontal="true"
+                android:text="逍遥客"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_toRightOf="@id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@mipmap/iv_header04"/>
+            <ImageView
+                android:id="@+id/tick_company"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_tick"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_company"
+                android:layout_centerHorizontal="true"
+                android:text="企业主"/>
+        </RelativeLayout>
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:id="@+id/line_profess"
+            android:layout_width="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="50dp"
+            />
+
+        <RelativeLayout
+            android:layout_toLeftOf="@id/line_profess"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
@@ -67,47 +140,11 @@
                 android:text="上班族"/>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_toRightOf="@id/view1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_free"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/iv_header02"/>
-            <ImageView
-                android:id="@+id/tick_free"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_tick"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:textSize="17sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_free"
-                android:layout_centerHorizontal="true"
-                android:text="逍遥客"/>
-        </RelativeLayout>
 
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:id="@+id/line_profess"
-            android:layout_width="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_height="50dp"
-            />
+
         <RelativeLayout
-            android:layout_toLeftOf="@id/line_profess"
+            android:layout_toRightOf="@id/line_profess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
@@ -115,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
-                android:src="@mipmap/iv_header03"/>
+                android:src="@mipmap/iv_id_other"/>
             <ImageView
                 android:id="@+id/tick_student"
                 android:visibility="gone"
@@ -130,34 +167,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_student"
                 android:layout_centerHorizontal="true"
-                android:text="学生党"/>
+                android:text="其他"/>
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_toRightOf="@id/line_profess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_company"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/iv_header04"/>
-            <ImageView
-                android:id="@+id/tick_company"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/iv_tick"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:textSize="17sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_company"
-                android:layout_centerHorizontal="true"
-                android:text="企业主"/>
-        </RelativeLayout>
+
     </RelativeLayout>
 
     <Button

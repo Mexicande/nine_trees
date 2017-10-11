@@ -133,7 +133,8 @@ public interface Urls {
 
         String UPDATE_NICK="Modify";
         String UPDATE_Word="Modify";
-        String UPDATE_PROFRSSION="Modify";
+        String UPDATE_PROFRSSION="person/setIdentity";
+        String GET_IDENTITY="person/getIdentity";
     }
     interface user{
         String USERT_INFO="person/getPerson";
