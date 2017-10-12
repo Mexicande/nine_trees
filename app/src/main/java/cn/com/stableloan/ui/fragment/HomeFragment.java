@@ -137,6 +137,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             seckillBean = gson.fromJson(s, Seckill_Bean.class);
                             if (seckillBean.getError_code() == 0) {
                                 if (seckillBean.getData().size() != 0) {
+                                    long time = System.currentTimeMillis();
+                                    Calendar mCalendar = Calendar.getInstance();
+                                    mCalendar.setTimeInMillis(time);
+                                    int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+                                    int minute = mCalendar.get(Calendar.MINUTE);
+                                    int second = mCalendar.get(Calendar.SECOND);
+                                    int millisecond = mCalendar.get(Calendar.MILLISECOND);
+                                    long h = (long) (24 - hour) * 60 * 60 * 1000;
+                                    long m = (long) (60 - minute) * 60 * 1000;
+                                    long se = (long) (60 - second) * 1000;
+
+                                    long time12 = h + m + se + (1000 - millisecond);
+
+                                    LogUtils.i("time21===", time12);
+                                    mCountdownView.start(time12);
+                                    mCountdownView.updateShow(time12);
+
+                                    simpleCountDownTimer = new SimpleCountDownTimer(time12, tvDisplay);
+                                    simpleCountDownTimer.start();
 
                                     //mSeckill_layout.setVisibility(View.VISIBLE);
 
@@ -342,31 +361,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void getDate() {
 
-        View view = setHeaderView();
         productAdapter = new ListProductAdapter(null);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        productAdapter.addHeaderView(view, 0);
-
-
-        long time = System.currentTimeMillis();
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(time);
-        int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-        int minute = mCalendar.get(Calendar.MINUTE);
-        int second = mCalendar.get(Calendar.SECOND);
-        int millisecond = mCalendar.get(Calendar.MILLISECOND);
-        long h = (long) (24 - hour) * 60 * 60 * 1000;
-        long m = (long) (60 - minute) * 60 * 1000;
-        long se = (long) (60 - second) * 1000;
-
-        long time12 = h + m + se + (1000 - millisecond);
-
-        LogUtils.i("time21===", time12);
-
         recylerview.setAdapter(productAdapter);
-       // mCountdownView.start(time12);
-        simpleCountDownTimer = new SimpleCountDownTimer(time12, tvDisplay);
-        simpleCountDownTimer.start();
+        View view = setHeaderView();
+        productAdapter.addHeaderView(view, 0);
+        //productAdapter.addFooterView(view, 0);
+
+
+
 
        // productAdapter.setCountDownView(mCountdownView,100000000);
 
@@ -400,7 +403,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tv_activity_desc = (TextView) view.findViewById(R.id.activity_desc);
         tv_amout = (TextView) view.findViewById(R.id.amount);
         mCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
-
+        mCountdownView.start(100000);
         mCardView = (CardView) view.findViewById(R.id.seckill_item_one);
         tvDisplay = (TextView) view.findViewById(R.id.tv_display);
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
@@ -534,7 +537,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
                             if (hotNewProduct.getError_code() == 0) {
                                 productAdapter.setNewData(hotNewProduct.getData());
-                                mCountdownView.start(10000000);
                             }
                         }
                     }

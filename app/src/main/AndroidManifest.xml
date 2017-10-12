@@ -155,7 +155,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".ui.activity.Setting1Activity" />
         <!-- 存储设置 -->
-        <activity android:name=".ui.activity.SafeActivity" />
+        <activity android:name=".ui.activity.SafeActivity11111" />
         <!-- 我的资料 -->
         <activity
             android:name=".ui.activity.UserInformationActivity"
@@ -171,7 +171,7 @@
         <!-- 安全设置 -->
 
         <activity
-            android:name=".ui.activity.SafeSettingActivity"
+            android:name=".ui.activity.SafeActivity"
             android:screenOrientation="portrait" />
         <!-- 手势解锁创建 -->
         <activity
@@ -242,7 +242,9 @@
         <!-- 好友邀请 -->
         <activity android:name=".ui.activity.integarl.InviteFriendsActivity" />
         <activity android:name=".ui.activity.integarl.UpImageIdentityActivity" />
-        <activity android:name=".ui.activity.integarl.DateChangeActivity"></activity>
+        <activity android:name=".ui.activity.integarl.DateChangeActivity" />
+        <activity android:name=".ui.activity.integarl.SafeSettingActivity" />
+        <activity android:name=".ui.activity.integarl.SettingChangDateActivity"></activity>
     </application>
 
 </manifest>

@@ -68,7 +68,7 @@ public class Setting1Activity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_Safe:
-                SafeActivity.launch(this);
+                SafeActivity11111.launch(this);
                 break;
             case R.id.layout_nick:
                 UpdateNickActivity.launch(this);

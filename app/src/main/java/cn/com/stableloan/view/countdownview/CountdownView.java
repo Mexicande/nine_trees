@@ -97,6 +97,8 @@ public class CountdownView extends View {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         stop();
+
+
     }
 
     private void reLayout() {

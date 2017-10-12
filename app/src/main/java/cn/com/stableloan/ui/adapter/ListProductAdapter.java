@@ -25,20 +25,16 @@ import cn.com.stableloan.view.countdownview.CountdownView;
  */
 
 public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBean,BaseViewHolder>{
-    private CountdownView  mCountdownView;
-    private long vTime;
 
     public ListProductAdapter(List<Hot_New_Product.DataBean> data) {
         super(R.layout.news_product_trem, data);
     }
-    public void setCountDownView(CountdownView  CountdownView,long time){
-        this.mCountdownView=CountdownView;
-        this.vTime=time;
-        mCountdownView.start(time);
-        mCountdownView.updateShow(time);
-    }
+
     @Override
     protected void convert(BaseViewHolder helper, Hot_New_Product.DataBean item) {
+
+
+
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);

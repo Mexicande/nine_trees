@@ -5,163 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context="cn.com.stableloan.ui.activity.SafeSettingActivity">
+    tools:context="cn.com.stableloan.ui.activity.SafeActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/toolbar_layout"/>
-        <RelativeLayout
-            android:layout_marginTop="@dimen/_20dp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50dp">
-            <LinearLayout
-                android:layout_marginRight="130dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:layout_centerVertical="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:id="@+id/view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="个人信息解锁方式:"
-                    android:textColor="@color/select_text_color"
-                    android:textSize="16sp"/>
-                <TextView
-                    android:layout_marginTop="@dimen/_10dp"
-                    android:id="@+id/lock"
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_toRightOf="@id/view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gay"
-                    android:textSize="15sp"
-                    android:text="密码解锁"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/select_way"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="变更"
-                android:textSize="16sp"
-                android:layout_marginRight="@dimen/_20dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/text_setting"/>
-        </RelativeLayout>
-        <View
-            android:layout_marginTop="@dimen/_10dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color"/>
-        <RelativeLayout
-            android:layout_marginTop="@dimen/_20dp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50dp">
-            <LinearLayout
-                android:layout_marginRight="130dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:layout_centerVertical="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/view1"
-                    android:textColor="@color/select_text_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="材料托管时间:"
-                    android:textSize="16sp"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/_10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gay"
-                        android:textSize="15sp"
-                        android:layout_marginTop="@dimen/_5dp"
-                        android:text="有效期至:"/>
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gay"
-                        android:textSize="15sp"
-                        android:layout_marginTop="@dimen/_5dp"
-                        android:text="无数据"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/month"
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:textColor="@color/gay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3个月"
-                    android:textSize="16sp"/>
-                <TextView
-                    android:layout_marginTop="@dimen/_5dp"
-                    android:id="@+id/select_time"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_setting"
-                    android:textSize="16sp"
-                    android:text="变更"/>
-            </LinearLayout>
 
-        </RelativeLayout>
-        <View
+        <RelativeLayout
             android:layout_marginTop="@dimen/_10dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color"/>
-        <RelativeLayout
-            android:layout_marginTop="@dimen/_20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="*"
-                android:textSize="17sp"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:textColor="@color/red_f4333c"/>
-            <TextView
-                android:textSize="15sp"
-                android:layout_toRightOf="@id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/safe_text1"
-                android:textColor="@color/select_text_color"/>
-        </RelativeLayout>
-        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -177,11 +31,29 @@
                 android:layout_toRightOf="@id/text1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/safe_text1"
+                android:textColor="@color/select_text_color"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*"
+                android:textSize="17sp"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:textColor="@color/red_f4333c"/>
+            <TextView
+                android:textSize="15sp"
+                android:layout_toRightOf="@id/text3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/safe_text2"
                 android:textColor="@color/select_text_color"/>
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginTop="@dimen/_10dp"
             android:layout_marginRight="@dimen/_20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -194,15 +66,66 @@
                 android:layout_marginLeft="@dimen/_10dp"
                 android:textColor="@color/red_f4333c"/>
             <TextView
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:layout_toRightOf="@id/text2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/safe_text3"
                 android:textColor="@color/select_text_color"/>
         </RelativeLayout>
+        <View
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"/>
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/select_time"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            stv:sLeftTextSize="@dimen/information_textSize"
+            stv:sLeftTextString="材料托管时间"
+            stv:sLeftTextIsBold="true"
+            stv:sRightIconRes="@mipmap/iv_left"
+            stv:sRightTextString="6个月"
+            stv:sRightTextColor="@color/colorPrimary"
+            stv:sLeftTextColor="@color/select_text_color"
+            stv:sRightTextSize="@dimen/information_textSize"
+            stv:sBottomDividerLineMarginLeft="10dp"
+            stv:sBottomDividerLineMarginRight="10dp"
+            />
+        <TextView
+            android:id="@+id/time"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/_5dp"
+            android:text="当前档案将于 2007/07/07 日后自动清除。"/>
     </LinearLayout>
-    <include layout="@layout/safe_time_slide"
+    <cn.com.stableloan.view.supertextview.SuperTextView
+        android:id="@+id/st_deleteDate"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        stv:sLeftTextSize="@dimen/information_textSize"
+        stv:sLeftTextString="今日清除材料"
+        stv:sLeftTextIsBold="true"
+        stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightTextString="6个月"
+        stv:sRightTextColor="@color/colorPrimary"
+        stv:sLeftTextColor="@color/gay"
+        stv:sRightTextSize="@dimen/information_textSize"
+        stv:sBottomDividerLineMarginLeft="10dp"
+        stv:sBottomDividerLineMarginRight="10dp"
         />
-    <include layout="@layout/safe_way_slide"/>
+    <View
+        android:layout_above="@id/st_deleteDate"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color"/>
+
+   <include layout="@layout/safe_time_slide"/>
 </RelativeLayout>

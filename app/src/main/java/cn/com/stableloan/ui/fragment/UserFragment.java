@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,12 +47,12 @@ import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
-import cn.com.stableloan.ui.activity.SafeActivity;
-import cn.com.stableloan.ui.activity.Setting1Activity;
+import cn.com.stableloan.ui.activity.SafeActivity11111;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
+import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -227,7 +225,8 @@ public class UserFragment extends ImmersionFragment {
                 startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class),100);
                 break;
             case R.id.layout_setting:
-                SafeActivity.launch(getActivity());
+                SafeSettingActivity.launch(getActivity());
+                //SafeActivity11111.launch(getActivity());
                 break;
             case R.id.feedback:
                 FeedbackActivity.launch(getActivity());

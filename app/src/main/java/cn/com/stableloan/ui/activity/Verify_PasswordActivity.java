@@ -115,7 +115,7 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                         UserInformationActivity.launch(Verify_PasswordActivity.this);
                                                         finish();
                                                     }else if("safe".equals(from)){
-                                                        SafeSettingActivity.launch(Verify_PasswordActivity.this);
+                                                        SafeActivity.launch(Verify_PasswordActivity.this);
                                                         finish();
                                                     }else if("UserInformation".equals(from)){
                                                         EventBus.getDefault().post(new InformationEvent("ok"));

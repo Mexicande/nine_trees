@@ -139,7 +139,7 @@ public class GestureLoginActivity extends BaseActivity {
                                     if ("1".equals(isSuccess)) {
                                         String signature = jsonObject1.getString("signature");
                                         SPUtils.put(GestureLoginActivity.this, "signature", signature);
-                                        SafeSettingActivity.launch(GestureLoginActivity.this);
+                                        SafeActivity.launch(GestureLoginActivity.this);
                                         finish();
                                     }
                                 } catch (JSONException e) {
