@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -11,13 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,21 +30,18 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.MsgEvent;
 import cn.com.stableloan.model.SaveBean;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.view.dialog.SettingPassWordDialog;
+import cn.com.stableloan.utils.WaitTimeUtils;
+import cn.com.stableloan.view.dialog.SafeInformationDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * 安全设置，存储方式
+ * 安全设置，存储时间
  */
 public class SafeActivity extends BaseActivity {
 
@@ -59,12 +53,14 @@ public class SafeActivity extends BaseActivity {
     TextView tv_time;
     @Bind(R.id.slide_Safe_Time)
     RelativeLayout slideSafeTime;
-    @Bind(R.id.slide_Safe_Way)
-    RelativeLayout slideSafeWay;
     @Bind(R.id.select_time)
     SuperTextView selectTime;
     @Bind(R.id.st_deleteDate)
     SuperTextView stDeleteDate;
+    @Bind(R.id.tv1)
+    TextView tv1;
+    @Bind(R.id.tv2)
+    TextView tv2;
 
     private String[] list;
     private String[] list1;
@@ -74,7 +70,11 @@ public class SafeActivity extends BaseActivity {
     private SlideUp waySlideUp;
 
     private SaveBean saveBean;
-    private SettingPassWordDialog passWordDialog;
+    private SafeInformationDialog safeSettingDialog;
+
+
+    private String period;
+    private String manage;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeActivity.class));
@@ -85,11 +85,8 @@ public class SafeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_safe_setting);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
         initToolbar();
         setLisenter();
-
-
     }
 
    /* @Subscribe
@@ -103,7 +100,17 @@ public class SafeActivity extends BaseActivity {
 
 
     private void setLisenter() {
+        stDeleteDate.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                if (WaitTimeUtils.isFastDoubleClick()) {
+                    return;
+                } else {
+                    exit();
+                }
 
+            }
+        });
     }
 
 
@@ -123,51 +130,78 @@ public class SafeActivity extends BaseActivity {
                 .withLoggingEnabled(true)
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
-        SaveBean saveBean = (SaveBean) getIntent().getSerializableExtra("save");
+        saveBean = (SaveBean) getIntent().getSerializableExtra("save");
         if (saveBean != null) {
-            tv_time.setText("当前档案将于"+saveBean.getPeriod()+"2007/07/07日 后自动清除。");
+            if (saveBean.getPeriod().length() < 2) {
+                tv_time.setText("无数据");
+            } else {
+
+                tv_time.setText(saveBean.getPeriod());
+            }
+            period=saveBean.getPeriod();
+
             int i = Integer.parseInt(saveBean.getManaged());
-            selectTime.setRightString(list1[i]);
+            manage = list1[i];
+            selectTime.setRightString(manage);
+
         }
     }
 
-    private void settingTime() {
-        int position = 0;
-        long l = 0;
-        l = dateToStamp(saveBean.getLass_time());
-        String string = selectTime.getRightString();
-        for (int i = 0; i < list1.length; i++) {
-            if (list1[i].equals(string)) {
-                position = i;
-            }
-        }
+    private void setTimes(int times) {
+        LogUtils.i("time----", list1[times]);
+            settingTime(times);
+
+    }
+
+    private void settingTime(int index) {
+        long l = 0l;
+
+        l = dateToStamp(period);
         long ls = 0;
-        switch (position) {
+        switch (index) {
             case 0:
                 ls = 604800000;
+                setDateTo(0,ls);
                 break;
             case 1:
                 ls = 2592000000L;
+                setDateTo(1,ls);
                 break;
             case 2:
                 ls = 7776000000L;
+                setDateTo(2,ls);
                 break;
             case 3:
                 ls = 15552000000L;
+                setDateTo(3,ls);
+                break;
+            case 4:
+                Save(4, "永久");
                 break;
 
         }
 
-        long l1 = l + ls;
-        String of = String.valueOf(l1);
-        String date = stampToDate(of);
-
-        tv_time.setText(date);
-        if (string.equals("永久")) {
-            tv_time.setText("永久");
-        }
 
     }
+
+    private void setDateTo(int index,long ls){
+        long stamp = dateToStamp(period);
+
+        long l1 = stamp + ls;
+        long l2 = System.currentTimeMillis();
+        if (l2 > l1) {
+            String of = String.valueOf(l2 + 86400000);
+            String date = stampToDate(of);
+            Save(index, date);
+        } else {
+            String of = String.valueOf(l1);
+            String date = stampToDate(of);
+            saveBean.setPeriod(date);
+            tv_time.setText(date);
+            Save(index, date);
+        }
+    }
+
 
     /**
      * 转为时间戳
@@ -176,8 +210,7 @@ public class SafeActivity extends BaseActivity {
      * @return
      */
     public static long dateToStamp(String s) {
-        String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
             date = simpleDateFormat.parse(s);
@@ -189,95 +222,79 @@ public class SafeActivity extends BaseActivity {
         return ts;
     }
 
-
     public static String stampToDate(String s) {
         String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         long lt = new Long(s);
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
         return res;
     }
 
-    private void Save() {
-        if (tv_time.getText().toString().equals(saveBean.getLass_time())) {
+    private void Save( int managed,String date) {
+        String man = String.valueOf(managed);
+        String token = (String) SPUtils.get(this, "token", "1");
+        Map<String, String> parms = new HashMap<>();
+        parms.put("token", token);
+        parms.put("managed", man);
+        parms.put("period", date);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Save_Setting)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String isSuccess = object.getString("isSuccess");
+                            String msg = object.getString("msg");
+                            if ("1".equals(isSuccess)) {
+                                saveBean.setPeriod(date);
+                                saveBean.setManaged(man);
+                                tv_time.setText(date);
+                                selectTime.setRightString(list1[managed]);
+                                ToastUtils.showToast(SafeActivity.this, "修改清档日期成功");
+                            } else {
 
-            finish();
-
-        } else {
-            String var = "";
-            String string = selectTime.getRightString();
-            for (int i = 0; i < list1.length; i++) {
-                if (list1[i].equals(string)) {
-                    var = String.valueOf(i);
-                }
-            }
-          /*String String1 = lock.getText().toString();
-            String parrtern = "";
-            for (int i = 0; i < list.length; i++) {
-                if (list[i].equals(String1)) {
-                    parrtern = String.valueOf(i);
-                }
-            }*/
-            String token = (String) SPUtils.get(this, "token", "1");
-            Map<String, String> parms = new HashMap<>();
-            parms.put("token", token);
-            parms.put("managed", var);
-            parms.put("period", tv_time.getText().toString());
-            JSONObject jsonObject = new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Save_Setting)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String isSuccess = object.getString("isSuccess");
-                                String msg = object.getString("msg");
-                                if ("1".equals(isSuccess)) {
-
-                                    ToastUtils.showToast(SafeActivity.this, msg);
-                                    finish();
-                                } else {
-                                    ToastUtils.showToast(SafeActivity.this, msg);
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
+                                ToastUtils.showToast(SafeActivity.this, msg);
                             }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
                         }
-                    });
-
-        }
-
+                    }
+                });
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
 
     }
 
     @OnClick({R.id.iv_back, R.id.tv_OneWeek, R.id.tv_OneMonth, R.id.tv_ThreeMonth,
             R.id.tv_SixMonth, R.id.tv_forever, R.id.bt_cancel, R.id.select_time
-            , R.id.time_Visiable, R.id.tv_HeaderLock, R.id.tv_WordLock, R.id.bt_CancelWay, R.id.way_Visiable
-            , R.id.tv_save})
+            , R.id.time_Visiable
+    })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                if (!tv_time.getText().toString().equals(saveBean.getLass_time())) {
-                    exit();
+
+                if (tv_time.getText().toString().equals(period) && selectTime.getRightString().equals(manage)) {
+                    finish();
                 } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("month", selectTime.getRightString());
+                    intent.putExtra("time", tv_time.getText().toString());
+                    setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                     finish();
                 }
                 break;
             case R.id.tv_OneWeek:
                 timeSlideUp.hide();
-
                 setTimes(0);
                 break;
             case R.id.tv_OneMonth:
@@ -287,17 +304,14 @@ public class SafeActivity extends BaseActivity {
                 break;
             case R.id.tv_ThreeMonth:
                 timeSlideUp.hide();
-
                 setTimes(2);
                 break;
             case R.id.tv_SixMonth:
                 timeSlideUp.hide();
-
                 setTimes(3);
                 break;
             case R.id.tv_forever:
                 timeSlideUp.hide();
-
                 setTimes(4);
                 break;
             case R.id.bt_cancel:
@@ -309,73 +323,109 @@ public class SafeActivity extends BaseActivity {
             case R.id.time_Visiable:
                 timeSlideUp.hide();
                 break;
-            case R.id.tv_HeaderLock:
+          /*  case R.id.tv_HeaderLock:
                 waySlideUp.hide();
                // lock.setText(list[0]);
                 final TinyDB tinyDB = new TinyDB(this);
                 UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
                 String userphone = user.getUserphone();
-             /*   if (lock.getText().toString().equals(list[0])) {
+             *//*   if (lock.getText().toString().equals(list[0])) {
                     String gesturePassword = aCache.getAsString(userphone);
                     if (gesturePassword == null || "".equals(gesturePassword)) {
                         startActivity(new Intent(SafeActivity.this, CreateGestureActivity.class).putExtra("ok", "1"));
                     }
-                }*/
-                break;
-            case R.id.tv_WordLock:
+                }*//*
+                break;*/
+           /* case R.id.tv_WordLock:
                 waySlideUp.hide();
                // lock.setText(list[1]);
-                break;
-            case R.id.bt_CancelWay:
+                break;*/
+          /*  case R.id.bt_CancelWay:
                 waySlideUp.hide();
-                break;
-            case R.id.way_Visiable:
+                break;*/
+         /*   case R.id.way_Visiable:
                 waySlideUp.hide();
                 break;
             case R.id.tv_save:
                 Save();
-                break;
+                break;*/
         }
     }
 
     private void exit() {
 
-        passWordDialog = new SettingPassWordDialog(this);
-        passWordDialog.setYesOnclickListener("是", new SettingPassWordDialog.onYesOnclickListener() {
+        safeSettingDialog = new SafeInformationDialog(this);
+        safeSettingDialog.setYesOnclickListener("保存", new SafeInformationDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                passWordDialog.dismiss();
+                //保存
+                safeSettingDialog.dismiss();
                 finish();
             }
         });
-        passWordDialog.setNoOnclickListener("否", new SettingPassWordDialog.onNoOnclickListener() {
+        safeSettingDialog.setNoOnclickListener("清除", new SafeInformationDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {
-                passWordDialog.dismiss();
+                //清除
+                safeSettingDialog.dismiss();
+                deleteDate();
             }
         });
-        passWordDialog.show();
+        safeSettingDialog.show();
 
     }
 
-    private void setTimes(int times) {
-        selectTime.setRightString(list1[times]);
-        LogUtils.i("time----", list1[times]);
-        if (!saveBean.getLass_time().isEmpty()) {
-            settingTime();
-        }
+    /**
+     * 资料清除
+     */
+    private void deleteDate() {
+        String token = (String) SPUtils.get(this, "token", "1");
+        Map<String, String> parms = new HashMap<>();
+        parms.put("token", token);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.update.DELETE_DATE)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            int code = object.getInt("error_code");
+                            String msg = object.getString("error_message");
+                            if (code == 0) {
+                                ToastUtils.showToast(SafeActivity.this, "清除成功,档案将在一天后清除");
+                                long l = System.currentTimeMillis() + 86400000;
+                                String date = stampToDate(String.valueOf(l));
+                                tv_time.setText(date);
+                                saveBean.setPeriod(date);
+                            } else {
+                                ToastUtils.showToast(SafeActivity.this, msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                });
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-       /* if (keyCode == KeyEvent.KEYCODE_BACK) {
-            lo = aCache.getAsString("lock");
-            if (!tv_time.getText().toString().equals(saveBean.getLass_time()) || !lo.equals(lock.getText().toString())) {
-                exit();
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if (tv_time.getText().toString().equals(saveBean.getPeriod()) && selectTime.getRightString().equals(manage)) {
+                finish();
             } else {
+                Intent intent = new Intent();
+                intent.putExtra("month", selectTime.getRightString());
+                intent.putExtra("time", tv_time.getText().toString());
+                setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                 finish();
             }
-        }*/
+        }
         return super.onKeyDown(keyCode, event);
     }
 }

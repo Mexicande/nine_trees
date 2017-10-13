@@ -24,18 +24,26 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.SaveBean;
+import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.SafeActivity11111;
+import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
+import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
 import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.WaitTimeUtils;
+import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class SafeSettingActivity extends AppCompatActivity {
+public class SafeSettingActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -93,14 +101,28 @@ public class SafeSettingActivity extends AppCompatActivity {
         svDateTime.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
-                SafeActivity.launch(mContext);
-                Intent intent=new Intent(mContext,SafeActivity.class);
-                intent.putExtra("save",saveBean);
-                startActivityForResult(intent,REQUEST_CODE);
+                if (WaitTimeUtils.isFastDoubleClick()) {
+                    return;
+                }else {
+                    Intent intent=new Intent(mContext,SafeActivity.class);
+                    intent.putExtra("save",saveBean);
+                    startActivityForResult(intent,REQUEST_CODE);
+                }
             }
         });
 
-
+        svQuitLogin.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                exit();
+            }
+        });
+        svTerminal.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                DeviceActivity.launch(SafeSettingActivity.this);
+            }
+        });
     }
 
     private void initDate() {
@@ -143,6 +165,7 @@ public class SafeSettingActivity extends AppCompatActivity {
                                     String managed = saveBean.getManaged();
                                     if (managed != null && managed.length() == 1) {
                                         int i = Integer.parseInt(managed);
+
                                         svDateTime.setRightString(managedList[i]);
                                     }
                                     if (saveBean.getPeriod().length() < 2) {
@@ -150,7 +173,6 @@ public class SafeSettingActivity extends AppCompatActivity {
                                         svDateTime.setRightString("无数据");
                                     } else {
                                         svDateTime.setLeftBottomString("自动清档时间:"+saveBean.getPeriod());
-
                                     }
                                 } else {
                                 }
@@ -163,14 +185,66 @@ public class SafeSettingActivity extends AppCompatActivity {
 
 
         }
+    private  SelfDialog selfDialog;
+    private void exit() {
+        final TinyDB tinyDB = new TinyDB(this);
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+        String userphone = user.getUserphone();
+
+        selfDialog = new SelfDialog(this);
+        selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                selfDialog.dismiss();
+                SPUtils.clear(SafeSettingActivity.this);
+                TinyDB tinyDB = new TinyDB(SafeSettingActivity.this);
+                tinyDB.clear();
+                //aCache.remove(userphone);
+                startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
+                finish();
+            }
+        });
+        selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                selfDialog.dismiss();
+            }
+        });
+        selfDialog.show();
+    }
+
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         finish();
     }
 
+
+
     @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE){
+            switch (resultCode){
+                case  Urls.SettingResultCode.SAFE_DATE:
+                    String month = data.getStringExtra("month");
+                    String period = data.getStringExtra("time");
+                    saveBean.setPeriod(period);
+
+
+                    String var = "";
+                    for (int i = 0; i < managedList.length; i++) {
+                        if (managedList[i].equals(month)) {
+                            var = String.valueOf(i);
+                        }
+                    }
+                    saveBean.setManaged(var);
+
+
+                    svDateTime.setRightString(month);
+                    svDateTime.setLeftBottomString("自动清档时间:"+period);
+
+            }
+        }
     }
 }

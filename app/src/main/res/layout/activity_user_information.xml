@@ -7,10 +7,41 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.activity.UserInformationActivity">
-    <include layout="@layout/toolbar_layout"/>
+
+    <RelativeLayout
+        android:background="@drawable/user_formation_top_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_marginTop="@dimen/_10dp"
+                android:id="@+id/title_name"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                />
+            <ImageView
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/iv_back"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:paddingRight="@dimen/_20dp"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingBottom="@dimen/_5dp"
+                android:src="@mipmap/iv_back"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
     <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/User_information"
-        android:layout_marginTop="@dimen/_10dp"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         stv:sLeftBottomTextColor="@color/gay"
@@ -25,7 +56,7 @@
         stv:sLeftViewMarginLeft="15dp"
         stv:sLeftIconMarginLeft="15dp"
         stv:sRightTextColor="@color/white"
-        stv:sRightTextSize="17sp"
+        stv:sRightTextSize="15sp"
         stv:sRightTvDrawableWidth="20dp"
         stv:sRightTvDrawableHeight="20dp"
         stv:sTextViewDrawablePadding="10dp"
@@ -47,7 +78,7 @@
         stv:sLeftViewMarginLeft="15dp"
         stv:sLeftIconMarginLeft="20dp"
         stv:sRightTextColor="@color/white"
-        stv:sRightTextSize="17sp"
+        stv:sRightTextSize="15sp"
         stv:sRightTvDrawableWidth="20dp"
         stv:sRightTvDrawableHeight="20dp"
         stv:sTextViewDrawablePadding="10dp"
@@ -69,7 +100,7 @@
         stv:sLeftViewMarginLeft="15dp"
         stv:sLeftIconMarginLeft="20dp"
         stv:sRightTextColor="@color/white"
-        stv:sRightTextSize="17sp"
+        stv:sRightTextSize="15sp"
         stv:sRightTvDrawableWidth="20dp"
         stv:sRightTvDrawableHeight="20dp"
         stv:sTextViewDrawablePadding="10dp"

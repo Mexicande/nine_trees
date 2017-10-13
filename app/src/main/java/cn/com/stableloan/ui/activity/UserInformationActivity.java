@@ -1,15 +1,19 @@
 package cn.com.stableloan.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.pm.ActivityInfoCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -39,7 +43,7 @@ import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class UserInformationActivity extends BaseActivity {
+public class UserInformationActivity extends Activity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -52,7 +56,10 @@ public class UserInformationActivity extends BaseActivity {
     @Bind(R.id.User_Pic)
     SuperTextView UserPic;
 
-
+    /**
+     * #17326b
+     * @param context
+     */
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UserInformationActivity.class));
     }
@@ -62,6 +69,12 @@ public class UserInformationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
         ButterKnife.bind(this);
+
+        ImmersionBar.with(this).statusBarColor(R.color.information_title)
+                .statusBarAlpha(0.3f)
+                .fitsSystemWindows(true)
+                .init();
+
         EventBus.getDefault().register(this);
         getStatus();
         initToolbar();

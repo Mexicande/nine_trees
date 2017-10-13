@@ -13,8 +13,10 @@ import cn.com.stableloan.R;
  * Created by apple on 2017/5/25.
  */
 
-public class IdentityDialog extends Dialog {
+public class SafeInformationDialog extends Dialog {
     private Button yes;//确定按钮
+    private Button no;//取消按钮
+    private TextView titleTv;//消息标题文本
     private TextView messageTv;//消息提示文本
     private String titleStr;//从外界设置的title文本
     private String messageStr;//从外界设置的消息文本
@@ -49,14 +51,14 @@ public class IdentityDialog extends Dialog {
         this.yesOnclickListener = onYesOnclickListener;
     }
 
-    public IdentityDialog(Context context) {
+    public SafeInformationDialog(Context context) {
         super(context, R.style.MyDialog);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.identity_dialog);
+        setContentView(R.layout.safe_information_dialog);
 
         //按空白处不能取消动画
         setCanceledOnTouchOutside(false);
@@ -82,6 +84,15 @@ public class IdentityDialog extends Dialog {
                 }
             }
         });
+        //设置取消按钮被点击后，向外界提供监听
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (noOnclickListener != null) {
+                    noOnclickListener.onNoClick();
+                }
+            }
+        });
     }
 
     /**
@@ -89,12 +100,18 @@ public class IdentityDialog extends Dialog {
      */
     private void initData() {
         //如果用户自定了title和message
+        if (titleStr != null) {
+            titleTv.setText(titleStr);
+        }
         if (messageStr != null) {
             messageTv.setText(messageStr);
         }
         //如果设置按钮的文字
         if (yesStr != null) {
             yes.setText(yesStr);
+        }
+        if (noStr != null) {
+            no.setText(noStr);
         }
     }
 
@@ -103,6 +120,8 @@ public class IdentityDialog extends Dialog {
      */
     private void initView() {
         yes = (Button) findViewById(R.id.yes);
+        no = (Button) findViewById(R.id.no);
+        titleTv = (TextView) findViewById(R.id.name);
         messageTv = (TextView) findViewById(R.id.description);
 
     }

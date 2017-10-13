@@ -110,13 +110,9 @@ public interface Urls {
 
     }
     interface register{
-
         String REGSTER  = "Registered";
-
         String FORGETWORD="set/forgetpassword";
     }
-
-
 
     interface product{
         //产品详情
@@ -135,11 +131,13 @@ public interface Urls {
         String UPDATE_Word="Modify";
         String UPDATE_PROFRSSION="person/setIdentity";
         String GET_IDENTITY="person/getIdentity";
+        String DELETE_DATE="set/updatePeriod";
     }
     interface user{
         String USERT_INFO="person/getPerson";
         String USER_STATUS="status/getStatus";
         String FEEDBACK="feedback/opinion";
+        String DEVICE="set/getComDevice";
     }
     interface  notice{
         String Announcement="Announcement";
@@ -212,9 +210,10 @@ public interface Urls {
         int      STUHENT_ADRESS =                                                                   27;
         int      STUHENT_TELEPHONE =                                                                28;
 
-
     }
-
+    interface SettingResultCode{
+        int     SAFE_DATE   =                                                                       200;
+    }
     String  TOKEN=                                                                                  "token";
     String NUMBER_ZERO=                                                                             "0";
     String NUMBER_ONE=                                                                              "1";

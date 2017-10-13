@@ -40,7 +40,6 @@
             android:gravity="center"
             android:textColor="#838383"
             android:textSize="16sp" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -62,7 +61,6 @@
                 android:text="查看规则"
                 android:textColor="@color/select_text_color"
                 android:textSize="19sp" />
-
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
