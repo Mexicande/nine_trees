@@ -1,7 +1,5 @@
 package cn.com.stableloan.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 /**
@@ -9,13 +7,15 @@ import java.io.Serializable;
  */
 
 public class Device implements Serializable {
+
+
     /**
      * code : 200
      * message : 0
-     * data : {"0":{"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"},"is_device":1}
+     * data : {"device":{"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"},"is_device":1}
      * error_code : 0
      * error_message :
-     * time : 2017-10-13 19:32:15
+     * time : 2017-10-15 22:27:59
      */
 
     private int code;
@@ -75,20 +75,19 @@ public class Device implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
-         * 0 : {"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"}
+         * device : {"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"}
          * is_device : 1
          */
 
-        @SerializedName("0")
-        private _$0Bean _$0;
+        private DeviceBean device;
         private int is_device;
 
-        public _$0Bean get_$0() {
-            return _$0;
+        public DeviceBean getDevice() {
+            return device;
         }
 
-        public void set_$0(_$0Bean _$0) {
-            this._$0 = _$0;
+        public void setDevice(DeviceBean device) {
+            this.device = device;
         }
 
         public int getIs_device() {
@@ -99,7 +98,7 @@ public class Device implements Serializable {
             this.is_device = is_device;
         }
 
-        public static class _$0Bean implements Serializable{
+        public static class DeviceBean implements Serializable{
             /**
              * id : 1
              * user_id : 242
@@ -145,15 +144,4 @@ public class Device implements Serializable {
             }
         }
     }
-
-    /**
-     * code : 200
-     * message :
-     * data : {"is_device":1,"device":[{"id":1,"device":"小米5","version_number":"IOS 10.0.3"},{"id":2,"device":"小米5","version_number":"IOS 10.0.3"}]}
-     * error_code : 0
-     * error_message :
-     * time : 2017-08-18 15:24:09
-     */
-
-
 }

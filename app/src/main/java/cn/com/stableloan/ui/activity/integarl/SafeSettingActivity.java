@@ -84,10 +84,16 @@ public class SafeSettingActivity extends BaseActivity {
         setContentView(R.layout.activity_safe_setting_activty);
         ButterKnife.bind(this);
         mContext=this;
+        initToolbar();
         initDate();
         getDate();
         setListener();
 
+    }
+
+    private void initToolbar() {
+
+        titleName.setText("安全设置");
     }
 
     private void setListener() {

@@ -138,6 +138,7 @@ public interface Urls {
         String USER_STATUS="status/getStatus";
         String FEEDBACK="feedback/opinion";
         String DEVICE="set/getComDevice";
+        String DELETE_DEVICE="set/delComDevice";
     }
     interface  notice{
         String Announcement="Announcement";

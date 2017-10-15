@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/sv_Device"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sTextViewDrawablePadding="10dp"
-        stv:sLeftTextSize="@dimen/information_textSize"
-        stv:sLeftTopTextString="HUAWEI-VIR-AL00"
-        stv:sLeftViewGravity="left_center"
-        stv:sLeftBottomTextString="android-24"
-        stv:sLeftBottomTextSize="13sp"
-        stv:sLeftBottomTextColor="@color/gay"
-        stv:sLeftTextColor="@color/text_setting"
-        stv:sRightTextSize="@dimen/information_textSize"
-        stv:sBottomDividerLineMarginLeft="10dp"
-        stv:sBottomDividerLineMarginRight="10dp"
+    android:layout_height="60dp">
+    <LinearLayout
+        android:layout_marginLeft="@dimen/_10dp"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1221"
+            android:textSize="@dimen/information_textSize"
+            android:textColor="@color/text_setting"/>
+        <TextView
+            android:id="@+id/tv_version_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1221"
+            android:textSize="13sp"
+            android:textColor="@color/gay"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/bt_delete"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:background="@drawable/button_succeed"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:textSize="@dimen/information_textSize"
         />
-
-</LinearLayout>
+    <View
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_marginLeft="@dimen/_10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:background="@color/frame_color"
+        android:layout_height="@dimen/_1dp"/>
+</RelativeLayout>

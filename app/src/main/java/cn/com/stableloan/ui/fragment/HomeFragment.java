@@ -458,7 +458,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         classify_recycler_adapter = new Classify_Recycler_Adapter(null);
         classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         classify_recyclView.setAdapter(classify_recycler_adapter);
-        classify_recyclView.setFocusable(false);
 
         // 职业选择
         iv_free = (ImageView) view.findViewById(R.id.iv_free);

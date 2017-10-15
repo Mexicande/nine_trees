@@ -643,7 +643,6 @@ public class SuperTextView extends RelativeLayout {
         setDefaultDrawable(leftView.getCenterTextView(), mLeftTvDrawableLeft, mLeftTvDrawableRight, mTextViewDrawablePadding, mLeftTvDrawableWidth, mLeftTvDrawableHeight);
         setDefaultBackground(leftView.getCenterTextView(), mLeftTextBackground);
         setDefaultString(leftView, mLeftTopTextString, mLeftTextString, mLeftBottomTextString);
-
         addView(leftView);
     }
 
