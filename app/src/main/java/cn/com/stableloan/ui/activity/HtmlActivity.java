@@ -123,6 +123,11 @@ public class HtmlActivity extends BaseActivity {
                 ivBack.setVisibility(View.VISIBLE);
                 getUrl(welfare.getId());
             }
+
+            String safe = getIntent().getStringExtra("safe");
+            if(safe!=null){
+                getDate(Urls.HTML_URL+safe);
+            }
         } else {
             ToastUtils.showToast(this,"网络异常");
         }

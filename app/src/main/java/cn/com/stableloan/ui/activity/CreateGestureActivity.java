@@ -164,14 +164,12 @@ public class CreateGestureActivity extends BaseActivity {
      * 成功设置了手势密码(跳到首页)
      */
     private void setLockPatternSuccess() {
-        EventBus.getDefault().post(new MsgEvent("ok"));
-
         aCache.put("lock","on");
-        if(getIntent().getStringExtra("ok")!=null){
+        EventBus.getDefault().post(new MsgEvent("ok"));
+      /*  if(getIntent().getStringExtra("ok")!=null){
             EventBus.getDefault().post(new MsgEvent("ok"));
-        }
+        }*/
         finish();
-        //Toast.makeText(this, "create gesture success", Toast.LENGTH_SHORT).show();
     }
 
     /**

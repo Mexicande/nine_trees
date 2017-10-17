@@ -1,11 +1,16 @@
 package cn.com.stableloan.ui.fragment;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,6 +25,10 @@ import com.example.gt3unbindsdk.GT3GeetestUtils;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -31,6 +40,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -45,11 +55,13 @@ import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
+import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.Utils;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.view.RoundButton;
 import okhttp3.Call;
@@ -105,6 +117,10 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
+
+
+
+
         String unique = (String) SPUtils.get(getActivity(), "unique", null);
         if(unique!=null){
             times=unique;
@@ -530,46 +546,96 @@ public class MessageFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_message_login:
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("userphone", etPhone.getText().toString());
-                    params.put("code", etCode.getText().toString());
-                    params.put("gtcode", gtcode);
-                    params.put("status",status);
-                    params.put("unique",times);
-                    JSONObject object=new JSONObject(params);
-                    OkGo.<String>post(Urls.Ip_url+ Urls.Login.QUICK_LOGIN)
-                            .tag(this)
-                            .upJson(object)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(String s, Call call, Response response) {
-                                    Gson gson=new Gson();
-                                    CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
-                                    LogUtils.i("CodeMessage",codeMessage);
+                AndPermission.with(getActivity())
+                        .requestCode(300)
+                        .permission(Manifest.permission.READ_PHONE_STATE)
+                        .callback(listener)
+                        .start();
+                break;
+        }
+    }
 
-                                    if(codeMessage.getError_code()==0){
-                                        if("1".equals(codeMessage.getData().getStatus())){
-                                            SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
-                                            String from = getActivity().getIntent().getStringExtra("from");
-                                            Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
-                                            SPUtils.put(getActivity(), "login", true);
-                                            if (from != null) {
-                                                if(from.equals("user")){
-                                                    EventBus.getDefault().post(new InformationEvent("user3"));
-                                                    getActivity().finish();
-                                                }else if(from.equals("123")){
-                                                    EventBus.getDefault().post(new InformationEvent("user3"));
-                                                    getActivity().finish();
-                                                }else if(from.equals("user2")){
-                                                    EventBus.getDefault().post(new InformationEvent("userinfor"));
-                                                    EventBus.getDefault().post(new MessageEvent("","1"));
-                                                    getActivity().finish();
-                                                }else if(from.equals("collection")){
-                                                    Intent intent = new Intent();
-                                                    intent.putExtra("ok", "ok");
-                                                    getActivity().setResult(2000, intent);
-                                                    getActivity().finish();
-                                                }
+
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+
+            // 这里的requestCode就是申请时设置的requestCode。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if(requestCode == 300) {
+                // TODO ...
+                loginPassWord();
+
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            ToastUtils.showToast(getActivity(),"为了您的账号安全,请打开设备权限");
+            if(requestCode == 300) {
+                if((AndPermission.hasAlwaysDeniedPermission(getActivity(), deniedPermissions))){
+                    AndPermission.defaultSettingDialog(getActivity(), 400).show();
+
+                }
+            }
+        }
+    };
+
+
+
+
+    /**
+     * 权限取得之后登陆
+     */
+    private void loginPassWord() {
+        String phone = AppUtils.getPhone(getActivity());
+        String model = AppUtils.getModel();
+        String androidVersion = AppUtils.getSDKVersion();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userphone", etPhone.getText().toString());
+        params.put("code", etCode.getText().toString());
+        params.put("gtcode", gtcode);
+        params.put("status",status);
+        params.put("unique",times);
+        params.put("validatePhone",phone);
+        params.put("device",model);
+        params.put("version_number","android "+androidVersion);
+        JSONObject object=new JSONObject(params);
+        OkGo.<String>post(Urls.NEW_Ip_url+ Urls.Login.QUICK_LOGIN)
+                .tag(this)
+                .upJson(object)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        Gson gson=new Gson();
+                        CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
+                        LogUtils.i("CodeMessage",codeMessage);
+                        if(codeMessage.getError_code()==0){
+                            if("1".equals(codeMessage.getData().getStatus())){
+                                SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
+                                String from = getActivity().getIntent().getStringExtra("from");
+                                Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
+                                SPUtils.put(getActivity(), "login", true);
+                                if (from != null) {
+                                    if(from.equals("user")){
+                                        EventBus.getDefault().post(new InformationEvent("user3"));
+                                        getActivity().finish();
+                                    }else if(from.equals("123")){
+                                        EventBus.getDefault().post(new InformationEvent("user3"));
+                                        getActivity().finish();
+                                    }else if(from.equals("user2")){
+                                        EventBus.getDefault().post(new InformationEvent("userinfor"));
+                                        EventBus.getDefault().post(new MessageEvent("","1"));
+                                        getActivity().finish();
+                                    }else if(from.equals("collection")){
+                                        Intent intent = new Intent();
+                                        intent.putExtra("ok", "ok");
+                                        getActivity().setResult(2000, intent);
+                                        getActivity().finish();
+                                    }
                                             /*else if(from.equals("user1")){
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();
@@ -577,33 +643,43 @@ public class MessageFragment extends Fragment {
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();
                                                                 }*/
-                                            } else if(welfare!=null){
-                                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
-                                                getActivity().finish();
-                                            } else{
-                                                EventBus.getDefault().post(new MessageEvent("","1"));
-                                                getActivity().finish();
-                                            }
-                                        }else {
-                                            LogUtils.i("status",codeMessage.getData().getStatus());
-                                            startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
-                                        }
-                                    }else {
-                                        ToastUtils.showToast(getActivity(),codeMessage.getError_message());
-                                    }
+                                } else if(welfare!=null){
+                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
+                                    getActivity().finish();
+                                } else{
+                                    EventBus.getDefault().post(new MessageEvent("","1"));
+                                    getActivity().finish();
                                 }
-                            });
-                break;
-        }
+                            }else {
+                                LogUtils.i("status",codeMessage.getData().getStatus());
+                                startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
+                            }
+                        }else {
+                            ToastUtils.showToast(getActivity(),codeMessage.getError_message());
+                        }
+                    }
+                });
+
     }
-   /* @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (hidden) {
-            Atest=false;
-        LogUtils.i("1","不可见");
-         } else {
-        // 相当于Fragment的onResume
-        System.out.println("界面可见");
-         }
-    }*/
+
+
+
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 400: // 这个400就是上面defineSettingDialog()的第二个参数。
+                // 你可以在这里检查你需要的权限是否被允许，并做相应的操作。
+                if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    loginPassWord();
+                }else {
+                    ToastUtils.showToast(getActivity(),"获取权限失败");
+                }
+                break;
+            }
+        }
 }

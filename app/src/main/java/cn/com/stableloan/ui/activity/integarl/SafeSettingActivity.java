@@ -27,6 +27,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
@@ -100,12 +101,7 @@ public class SafeSettingActivity extends BaseActivity {
 
     private void setListener() {
 
-        svChangePW.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                UpdatePassWordActivity.launch(mContext);
-            }
-        });
+
         svDateTime.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
@@ -131,7 +127,7 @@ public class SafeSettingActivity extends BaseActivity {
                 DeviceActivity.launch(SafeSettingActivity.this);
             }
         });
-
+        //修改密码
         svChangePW.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
@@ -147,7 +143,13 @@ public class SafeSettingActivity extends BaseActivity {
         svChangeGesture.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
-                SwitchPassWordActivity.launch(SafeSettingActivity.this);
+                SwitchPassWordActivity.launch(mContext);
+            }
+        });
+        svSafeNurse.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                startActivity(new Intent(mContext, HtmlActivity.class).putExtra("safe","#/minTips"));
             }
         });
     }
@@ -226,7 +228,6 @@ public class SafeSettingActivity extends BaseActivity {
                 SPUtils.clear(SafeSettingActivity.this);
                 TinyDB tinyDB = new TinyDB(SafeSettingActivity.this);
                 tinyDB.clear();
-                aCache.remove(userphone);
                 startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();
             }

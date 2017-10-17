@@ -7,6 +7,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
+import android.telephony.TelephonyManager;
+
 import java.util.List;
 
 /**
@@ -258,6 +261,19 @@ public final class AppUtils {
 
 
 
+    public static String getModel() {
+        String model = Build.MODEL;
+        if (model != null) {
+            model = model.trim().replaceAll("\\s*", "");
+        } else {
+            model = "";
+        }
+        return model;
+    }
+
+    public static String getSDKVersion() {
+        return android.os.Build.VERSION.RELEASE;
+    }
 
 
     private static boolean isSpace(String s) {
@@ -269,4 +285,17 @@ public final class AppUtils {
         }
         return true;
     }
+    public static  String getPhone(Context mContext){
+
+        TelephonyManager tm = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        String str = "";
+        str = tm.getLine1Number();
+
+        if(str!=null&&str.length()>11){
+            str = str.substring(str.length() - 11, str.length());
+        }
+        return str;
+    }
+
+
 }

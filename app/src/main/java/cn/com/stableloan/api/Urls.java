@@ -14,6 +14,8 @@ public interface Urls {
 
     String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
 
+    String HTML_URL="http://test.m.anwenqianbao.com/";
+
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
             "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4" +

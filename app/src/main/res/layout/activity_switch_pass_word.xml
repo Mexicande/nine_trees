@@ -9,6 +9,7 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.settingdate.SwitchPassWordActivity">
     <include layout="@layout/toolbar_layout"/>
+
     <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/st_GestureOpen"
         android:layout_width="match_parent"
@@ -27,6 +28,8 @@
         stv:sTrackResource="@drawable/track"
         stv:sDividerLineHeight="1dp"
         />
+
+
     <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/st_CreateGesture"
         android:layout_width="match_parent"

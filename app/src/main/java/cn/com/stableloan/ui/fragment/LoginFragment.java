@@ -1,9 +1,12 @@
 package cn.com.stableloan.ui.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,12 +22,15 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -42,6 +48,7 @@ import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -410,6 +417,12 @@ public class LoginFragment extends Fragment {
     private KProgressHUD hud;
 
     private void loginUser() {
+
+
+        String phone = AppUtils.getPhone(getActivity());
+        String model = AppUtils.getModel();
+        String androidVersion = AppUtils.getSDKVersion();
+
         hud = KProgressHUD.create(getActivity())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
@@ -422,6 +435,9 @@ public class LoginFragment extends Fragment {
         params.put("gtcode", gtcode);
         params.put("status", status);
         params.put("unique", times);
+        params.put("validatePhone",phone);
+        params.put("device",model);
+        params.put("version_number","android "+androidVersion);
         JSONObject object = new JSONObject(params);
         String Deskey = null;
         String sign = null;
@@ -535,7 +551,13 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.bt_login:
                 if (Atest) {
-                    loginUser();
+                    AndPermission.with(getActivity())
+                            .requestCode(200)
+                            .permission(Manifest.permission.READ_PHONE_STATE)
+                            .callback(listener)
+                            .start();
+
+
                 } else {
                     ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");
                 }
@@ -544,11 +566,55 @@ public class LoginFragment extends Fragment {
     }
     private Touch_login mCallback;
 
+
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+
+            // 这里的requestCode就是申请时设置的requestCode。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if(requestCode == 200) {
+                // TODO ...
+
+                loginUser();
+
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            ToastUtils.showToast(getActivity(),"为了您的账号安全,请打开设备权限");
+            if(requestCode == 200) {
+                if((AndPermission.hasAlwaysDeniedPermission(getActivity(), deniedPermissions))){
+                    AndPermission.defaultSettingDialog(getActivity(), 500).show();
+
+                }
+            }
+        }
+    };
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context != null) {
             mCallback = (Touch_login) context;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 500: // 这个400就是上面defineSettingDialog()的第二个参数。
+                // 你可以在这里检查你需要的权限是否被允许，并做相应的操作。
+                if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    loginUser();
+                }else {
+                    ToastUtils.showToast(getActivity(),"获取权限失败");
+                }
+                break;
         }
     }
 
