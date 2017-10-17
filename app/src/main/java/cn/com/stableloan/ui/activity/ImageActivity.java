@@ -176,7 +176,7 @@ public class ImageActivity extends BaseActivity {
 
     private void initToolbar() {
 
-        titleName.setText("图片信息");
+        titleName.setText("图片材料");
     }
 
     @OnClick({R.id.identity, R.id.bank, R.id.CreditBank, R.id.camp, R.id.userCard, R.id.layout_go})

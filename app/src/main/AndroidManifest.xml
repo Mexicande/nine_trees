@@ -245,7 +245,10 @@
         <activity android:name=".ui.activity.integarl.DateChangeActivity" />
         <activity android:name=".ui.activity.integarl.SafeSettingActivity" />
         <activity android:name=".ui.activity.integarl.SettingChangDateActivity" />
-        <activity android:name=".ui.activity.settingdate.DeviceActivity"></activity>
+        <activity android:name=".ui.activity.settingdate.DeviceActivity" />
+        <activity android:name=".ui.activity.UpdatePWActivity" />
+        <activity android:name=".ui.activity.cash.GetCashRule" />
+        <activity android:name=".ui.activity.settingdate.SwitchPassWordActivity"></activity>
     </application>
 
 </manifest>

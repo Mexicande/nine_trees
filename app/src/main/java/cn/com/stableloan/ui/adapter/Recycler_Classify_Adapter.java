@@ -44,9 +44,14 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_Special.Da
         View hots = helper.getView(R.id.special_hots);
         if(item.getActivity()==1){
             hots.setVisibility(View.VISIBLE);
+        }else {
+            hots.setVisibility(View.GONE);
         }
         if(item.getOnline()==1){
             news.setVisibility(View.VISIBLE);
+        }else {
+            news.setVisibility(View.GONE);
+
         }
         if(item.getLabels()!=null&&item.getLabels().size()>0){
             int size = item.getLabels().size();

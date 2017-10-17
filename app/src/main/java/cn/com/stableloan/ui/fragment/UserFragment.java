@@ -81,10 +81,10 @@ public class UserFragment extends ImmersionFragment {
     TextView btMoney;
 
     private ACache aCache;
-    private Wechat_dialog wechat_dialog;
-
-
     private String userPhone="";
+
+
+    private Wechat_dialog wechat_dialog;
     public UserFragment() {
 
     }

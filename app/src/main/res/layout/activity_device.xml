@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/base_white"
+    android:orientation="vertical"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.settingdate.DeviceActivity">
     <include layout="@layout/toolbar_layout"/>
@@ -31,11 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:text="开启账号保护后，在不常用的设备上登录安稳钱包，需要验证你的手机号码，地理位置,和真人"
-        android:textColor="@color/text_setting"/>
+        android:textStyle="bold"
+        android:text="开启账号保护后，在不常用的设备上登录安稳钱包，需要验证你的手机号码，地理位置,和真人\n"
+        android:textColor="@color/text_setting"
+        />
 
     <TextView
-        android:layout_marginTop="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
         android:textSize="18sp"
         android:paddingLeft="@dimen/_10dp"
         android:layout_width="match_parent"

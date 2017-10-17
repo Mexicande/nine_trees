@@ -438,8 +438,6 @@ public class ProductFragment extends ImmersionFragment {
     private void selectProduct(String[] ident) {
 
         ProductList_Param param=new ProductList_Param();
-
-        HashMap<String, String[]> params = new HashMap<>();
         amount.add(500);
         amount.add(1000);
         amount.add(2000);

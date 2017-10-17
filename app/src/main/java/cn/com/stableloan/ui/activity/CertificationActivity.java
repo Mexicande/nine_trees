@@ -95,7 +95,7 @@ public class CertificationActivity extends BaseActivity {
     }
 
     private void getStatus() {
-        titleName.setText("授权信息");
+        titleName.setText("授权材料");
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("persmaterials2", "");

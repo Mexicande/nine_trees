@@ -45,7 +45,7 @@ public class GestureLoginActivity extends BaseActivity {
     @Bind(R.id.messageTv)
     TextView messageTv;
     @Bind(R.id.forgetGestureBtn)
-    Button forgetGestureBtn;
+    TextView forgetGestureBtn;
     @Bind(R.id.title_name)
     TextView titleName;
 
@@ -58,12 +58,14 @@ public class GestureLoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_login);
         ButterKnife.bind(this);
-        titleName.setText("身份验证");
+        titleName.setText("安全验证");
         this.init();
     }
 
     private void init() {
         aCache = ACache.get(GestureLoginActivity.this);
+
+
         //得到当前用户的手势密码
 
         final TinyDB tinyDB = new TinyDB(this);

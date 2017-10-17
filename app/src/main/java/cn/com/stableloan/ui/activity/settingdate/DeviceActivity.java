@@ -33,6 +33,7 @@ import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.ui.adapter.DeviceAdapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.MyDecoration;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -89,7 +90,23 @@ public class DeviceActivity extends BaseActivity {
                                     }else {
                                         stProtect.setSwitchIsChecked(true);
                                     }
-                                    mDeviceAdapter.addData(device.getData().getDevice());
+                                    Device.DataBean.ListBean bean = new Device.DataBean.ListBean();
+                                    bean.setDevice("pixel");
+                                    bean.setVersion_number("Android-8.0");
+
+                                    Device.DataBean.ListBean bean1 = new Device.DataBean.ListBean();
+                                    bean1.setDevice("pixel2");
+                                    bean1.setVersion_number("Android-7.0");
+
+                                    device.getData().getList().add(bean);
+                                    device.getData().getList().add(bean1);
+                                    device.getData().getList().add(bean1);
+                                    device.getData().getList().add(bean1);
+                                    device.getData().getList().add(bean1);
+                                    device.getData().getList().add(bean1);
+
+
+                                    mDeviceAdapter.addData(device.getData().getList());
                                 }else {
                                     ToastUtils.showToast(DeviceActivity.this,device.getError_message());
                                 }
@@ -107,21 +124,21 @@ public class DeviceActivity extends BaseActivity {
         mDeviceAdapter=new DeviceAdapter(null);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(mDeviceAdapter);
+        recycler.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
+
 
         mDeviceAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(DeviceActivity.this,"删除");
-                mDeviceAdapter.remove(position);
-                deleteDevice(position+1);
+                deleteDevice(position+1,device.getData().getList().get(position).getId());
             }
         });
     }
 
-    private void deleteDevice(int position) {
+    private void deleteDevice(int position,int id) {
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
-        parms.put("id", String.valueOf(position));
+        parms.put("id", String.valueOf(id));
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_Ip_url+Urls.user.DELETE_DEVICE)
                 .tag(this)
@@ -134,8 +151,13 @@ public class DeviceActivity extends BaseActivity {
                                 JSONObject object=new JSONObject(s);
                                 int error_code = object.getInt("error_code");
                                 if(error_code==0){
+
+                                    device.getData().getList().remove(position);
+                                    mDeviceAdapter.remove(position-1);
                                     ToastUtils.showToast(DeviceActivity.this,"成功删除");
+
                                 }else {
+
                                     String error_message = object.getString("error_message");
                                     ToastUtils.showToast(DeviceActivity.this,error_message);
                                 }

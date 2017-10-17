@@ -128,7 +128,7 @@ public interface Urls {
     interface update{
 
         String UPDATE_NICK="Modify";
-        String UPDATE_Word="Modify";
+        String UPDATE_Word="person/setPassword";
         String UPDATE_PROFRSSION="person/setIdentity";
         String GET_IDENTITY="person/getIdentity";
         String DELETE_DATE="set/updatePeriod";

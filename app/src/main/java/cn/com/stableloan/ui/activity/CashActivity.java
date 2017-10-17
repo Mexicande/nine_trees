@@ -26,11 +26,14 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.integarl.CashBean;
+import cn.com.stableloan.ui.activity.cash.GetCashRule;
+import cn.com.stableloan.ui.activity.integarl.RuleDescActivity;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.RoundButton;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -49,14 +52,19 @@ public class CashActivity extends BaseActivity {
     TextView account;
     @Bind(R.id.bt_visiable)
     RoundButton btVisiable;
+    @Bind(R.id.sv_GetRule)
+    SuperTextView svGetRule;
+    @Bind(R.id.sv_ExtractionRule)
+    SuperTextView svExtractionRule;
 
     private CashAdapter cashAdapter;
 
     private CashBean cashBean;
-    private static int ACTION_NEWS=1;
+    private static int ACTION_NEWS = 1;
 
-    private static final int REQUEST_CODE=1;
-    private static final int RESULT_CODE=200;
+    private static final int REQUEST_CODE = 1;
+    private static final int RESULT_CODE = 200;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, CashActivity.class));
     }
@@ -82,11 +90,24 @@ public class CashActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ZhugeSDK.getInstance().track(this, "cash",  eventObject);
+        ZhugeSDK.getInstance().track(this, "cash", eventObject);
     }
 
     private void setListener() {
-
+        //如何获取现金啊
+        svGetRule.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                startActivity(new Intent(CashActivity.this,GetCashRule.class).putExtra("from","getCash"));
+            }
+        });
+        //现金提取规则
+        svExtractionRule.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                GetCashRule.launch(CashActivity.this);
+            }
+        });
 
     }
 
@@ -96,7 +117,9 @@ public class CashActivity extends BaseActivity {
         cashRecycler.setAdapter(cashAdapter);
 
     }
+
     private KProgressHUD hud;
+
     private void getDate() {
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -119,8 +142,8 @@ public class CashActivity extends BaseActivity {
                             cashBean = gson.fromJson(s, CashBean.class);
                             account.setText(cashBean.getData().getAccount());
                             total.setText(cashBean.getData().getTotal());
-                                cashAdapter.setNewData(cashBean.getData().getCashRecord());
-                            if (cashBean.getData().getAccount().length()>1) {
+                            cashAdapter.setNewData(cashBean.getData().getCashRecord());
+                            if (cashBean.getData().getAccount().length() > 1) {
                                 btVisiable.setVisibility(View.GONE);
                                 btWithdrawal.setVisibility(View.VISIBLE);
                             }
@@ -134,14 +157,14 @@ public class CashActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 hud.dismiss();
-                                ToastUtils.showToast(CashActivity.this,"服务器异常");
+                                ToastUtils.showToast(CashActivity.this, "服务器异常");
                             }
                         });
                     }
                 });
     }
 
-    @OnClick({R.id.cash_back, R.id.cash_data, R.id.bt_visiable, R.id.bt_withdrawal})
+    @OnClick({R.id.cash_back, R.id.cash_data, R.id.bt_visiable, R.id.bt_withdrawal, R.id.tv_rule})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cash_back:
@@ -153,13 +176,16 @@ public class CashActivity extends BaseActivity {
             case R.id.bt_visiable:
                 ToastUtils.showToast(this, "请先完善资料");
                 break;
+            case R.id.tv_rule:
+                RuleDescActivity.launch(this);
+                break;
             case R.id.bt_withdrawal:
                 //WithdrawalCashActivity.launch(this);
-                Intent intent=new Intent();
-                intent.putExtra("cash",cashBean);
-                intent.setClass(this,WithdrawalCashActivity.class);
-                startActivityForResult(intent,REQUEST_CODE);
-               // startActivity(new Intent(this,WithdrawalCashActivity.class).putExtra("cash",cashBean));
+                Intent intent = new Intent();
+                intent.putExtra("cash", cashBean);
+                intent.setClass(this, WithdrawalCashActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                // startActivity(new Intent(this,WithdrawalCashActivity.class).putExtra("cash",cashBean));
                 break;
         }
     }
@@ -167,13 +193,13 @@ public class CashActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            switch (requestCode){
-                case REQUEST_CODE:
-                    if(resultCode==RESULT_CODE){
-                        getDate();
-                    }
-                    break;
-            }
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_CODE) {
+                    getDate();
+                }
+                break;
+        }
 
 
     }

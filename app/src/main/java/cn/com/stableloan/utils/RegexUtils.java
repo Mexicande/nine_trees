@@ -110,9 +110,17 @@ public final class RegexUtils {
     }
 
     /**
+     * 验证密码
+     * @param input
+     * @return
+     */
+    public static  boolean isPW(CharSequence input){
+        return isMatch(RegexConstants.PASS_WORD,input);
+    }
+
+    /**
      * 验证用户名
      * <p>取值范围为a-z,A-Z,0-9,"_",汉字，不能以"_"结尾,用户名必须是6-20位</p>
-     *
      * @param input 待验证文本
      * @return {@code true}: 匹配<br>{@code false}: 不匹配
      */

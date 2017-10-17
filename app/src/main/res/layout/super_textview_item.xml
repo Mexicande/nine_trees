@@ -37,11 +37,5 @@
         android:textColor="@color/white"
         android:textSize="@dimen/information_textSize"
         />
-    <View
-        android:layout_marginRight="@dimen/_10dp"
-        android:layout_marginLeft="@dimen/_10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:background="@color/frame_color"
-        android:layout_height="@dimen/_1dp"/>
+
 </RelativeLayout>

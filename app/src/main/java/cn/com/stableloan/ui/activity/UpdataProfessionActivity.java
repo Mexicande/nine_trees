@@ -14,7 +14,6 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,17 +25,13 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.SelfDialog;
 import cn.com.stableloan.view.dialog.IdentityDialog;
 import cxy.com.validate.IValidateResult;
 import cxy.com.validate.Validate;
-import cxy.com.validate.ValidateAnimation;
 import cxy.com.validate.annotation.Index;
 import cxy.com.validate.annotation.NotNull;
 import cxy.com.validate.annotation.RE;

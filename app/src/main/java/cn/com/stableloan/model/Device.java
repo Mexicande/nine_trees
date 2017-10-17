@@ -1,6 +1,7 @@
 package cn.com.stableloan.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by apple on 2017/10/13.
@@ -8,14 +9,13 @@ import java.io.Serializable;
 
 public class Device implements Serializable {
 
-
     /**
      * code : 200
      * message : 0
-     * data : {"device":{"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"},"is_device":1}
+     * data : {"list":[{"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"}],"is_device":1}
      * error_code : 0
      * error_message :
-     * time : 2017-10-15 22:27:59
+     * time : 2017-10-16 10:21:32
      */
 
     private int code;
@@ -75,20 +75,12 @@ public class Device implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
-         * device : {"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"}
+         * list : [{"id":1,"user_id":242,"device":"swewe","version_number":"sdgs"}]
          * is_device : 1
          */
 
-        private DeviceBean device;
         private int is_device;
-
-        public DeviceBean getDevice() {
-            return device;
-        }
-
-        public void setDevice(DeviceBean device) {
-            this.device = device;
-        }
+        private List<ListBean> list;
 
         public int getIs_device() {
             return is_device;
@@ -98,7 +90,15 @@ public class Device implements Serializable {
             this.is_device = is_device;
         }
 
-        public static class DeviceBean implements Serializable{
+        public List<ListBean> getList() {
+            return list;
+        }
+
+        public void setList(List<ListBean> list) {
+            this.list = list;
+        }
+
+        public static class ListBean implements Serializable{
             /**
              * id : 1
              * user_id : 242

@@ -26,7 +26,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.dialog.SelfDialog;
 import cn.com.stableloan.view.lock.LockPatternIndicator;
 import cn.com.stableloan.view.lock.LockPatternUtil;
 import cn.com.stableloan.view.lock.LockPatternView;
@@ -164,6 +164,7 @@ public class CreateGestureActivity extends BaseActivity {
      * 成功设置了手势密码(跳到首页)
      */
     private void setLockPatternSuccess() {
+        EventBus.getDefault().post(new MsgEvent("ok"));
 
         aCache.put("lock","on");
         if(getIntent().getStringExtra("ok")!=null){
@@ -183,7 +184,6 @@ public class CreateGestureActivity extends BaseActivity {
         final TinyDB tinyDB = new TinyDB(this);
         UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
         String userphone = user.getUserphone();
-
         aCache.put(userphone, bytes);
     }
     private SelfDialog selfDialog;

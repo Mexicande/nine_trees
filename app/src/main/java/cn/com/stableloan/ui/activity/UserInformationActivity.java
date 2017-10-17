@@ -43,6 +43,10 @@ import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * 申请材料
+ *
+ */
 public class UserInformationActivity extends Activity {
 
     @Bind(R.id.title_name)
@@ -82,7 +86,7 @@ public class UserInformationActivity extends Activity {
 
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
-        titleName.setText("我的资料");
+        titleName.setText("申请材料");
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("mymaterials", "");
@@ -90,7 +94,7 @@ public class UserInformationActivity extends Activity {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(this, "我的资料", eventObject);
+        ZhugeSDK.getInstance().track(this, "申请材料", eventObject);
 
 
     }

@@ -1,4 +1,4 @@
-package cn.com.stableloan.view;
+package cn.com.stableloan.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,12 +8,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.com.stableloan.R;
+import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.view.RoundButton;
+import cn.com.stableloan.view.SmoothCheckBox;
 
 /**
  * Created by apple on 2017/5/25.
  */
 
-public class SelfDialog extends Dialog {
+public class DescDialog extends Dialog {
+    private SmoothCheckBox checkbox;
+    private RoundButton btKnow;
     private Button yes;//确定按钮
     private Button no;//取消按钮
     private TextView titleTv;//消息标题文本
@@ -52,53 +57,49 @@ public class SelfDialog extends Dialog {
         this.yesOnclickListener = onYesOnclickListener;
     }
 
-    public SelfDialog(Context context) {
+    public DescDialog(Context context) {
         super(context, R.style.MyDialog);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.free_exercise_sure_dialog_layout);
+        setContentView(R.layout.desc_dialog);
         //按空白处不能取消动画
-        setCanceledOnTouchOutside(false);
-
-        //初始化界面控件
-        initView();
+        setCanceledOnTouchOutside(true);
         //初始化界面数据
-        initData();
+        //initData();
         //初始化界面控件的事件
+        initView();
+
         initEvent();
 
     }
-
+    private void initView() {
+        btKnow= (RoundButton) findViewById(R.id.bt_know);
+        checkbox= (SmoothCheckBox) findViewById(R.id.checkbox);
+    }
     /**
      * 初始化界面的确定和取消监听器
      */
     private void initEvent() {
         //设置确定按钮被点击后，向外界提供监听
-        yes.setOnClickListener(new View.OnClickListener() {
+        btKnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (yesOnclickListener != null) {
+                    if(checkbox.isChecked()){
+                        SPUtils.put(getContext(),"dialog",true);
+                    }
                     yesOnclickListener.onYesClick();
-                }
-            }
-        });
-        //设置取消按钮被点击后，向外界提供监听
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (noOnclickListener != null) {
-                    noOnclickListener.onNoClick();
                 }
             }
         });
     }
 
-    /**
+ /*   *//**
      * 初始化界面控件的显示数据
-     */
+     *//*
     private void initData() {
         //如果用户自定了title和message
         if (titleStr != null) {
@@ -114,18 +115,7 @@ public class SelfDialog extends Dialog {
         if (noStr != null) {
             no.setText(noStr);
         }
-    }
-
-    /**
-     * 初始化界面控件
-     */
-    private void initView() {
-        yes = (Button) findViewById(R.id.yes);
-        no = (Button) findViewById(R.id.no);
-        titleTv = (TextView) findViewById(R.id.title);
-        messageTv = (TextView) findViewById(R.id.message);
-
-    }
+    }*/
 
     /**
      * 从外界Activity为Dialog设置标题

@@ -235,9 +235,11 @@ public class UpImageIdentityActivity extends BaseActivity {
         if (!picturePath.isEmpty()) {
             RequestOptions options = new RequestOptions()
                     .centerInside()
-                    .placeholder(R.mipmap.iv_default_picture)
+                    .error(R.mipmap.iv_error_image)
+                    .placeholder(R.mipmap.iv_holder_image)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             Glide.with(mContext).load(picturePath).apply(options).into(imageView);
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -257,7 +259,7 @@ public class UpImageIdentityActivity extends BaseActivity {
 
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
-        titleName.setText("信用证明");
+        titleName.setText("图片材料");
         setTextViewColor(tvIdentificationCard, tvIdentificationCard.getText().toString());
         setTextViewColor(tvBusinessCard, tvBusinessCard.getText().toString());
         setTextViewColor(tvJobCard, tvJobCard.getText().toString());

@@ -64,8 +64,8 @@
     <string name="splash_activity">SplashActivity</string>
 
     <!-- Gesture login activity -->
-    <string name="gesture_forget_gesture">忘记手势,密码解锁</string>
-    <string name="gesture_default">请输入手势密码</string>
+    <string name="gesture_forget_gesture">忘记手势？</string>
+    <string name="gesture_default">请验证手势</string>
     <string name="gesture_error">手势密码输入错误</string>
     <string name="gesture_correct">输入正确</string>
 

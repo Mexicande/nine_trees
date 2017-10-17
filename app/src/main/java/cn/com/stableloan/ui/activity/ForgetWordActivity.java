@@ -217,9 +217,7 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         hud.dismiss();
-
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
-
                         if(infromBean.getError_code()==0){
                             ToastUtils.showToast(ForgetWordActivity.this, "设置成功");
                             finish();

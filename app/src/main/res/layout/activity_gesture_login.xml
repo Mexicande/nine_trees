@@ -6,28 +6,26 @@
     android:orientation="vertical">
     <include layout="@layout/goback_toolbar"/>
     <TextView
-        android:layout_marginTop="@dimen/_50dp"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="19sp"
         android:textColor="@color/text_setting"
         android:layout_gravity="center_horizontal"
-        android:text="您正在读取个人隐私"/>
-    <TextView
-        android:layout_marginTop="@dimen/_5dp"
+        android:text="您正在通过安全验证"/>
+    <ImageView
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/text_setting"
-        android:layout_gravity="center_horizontal"
-        android:text="请输入密码证明您本人操作"/>
+        android:src="@mipmap/iv_userheader"/>
 
     <TextView
         android:id="@+id/messageTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_30dp"
+        android:layout_marginTop="@dimen/_10dp"
         android:textSize="@dimen/_16sp" />
 
     <LinearLayout
@@ -43,23 +41,27 @@
             android:layout_height="@dimen/_270dp"
             android:layout_gravity="center_horizontal" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40dp"
-            android:layout_marginTop="@dimen/_20dp">
-
-            <Button
-                android:id="@+id/forgetGestureBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/layout_grey_bg"
-                android:paddingLeft="@dimen/_5dp"
-                android:paddingRight="@dimen/_5dp"
-                android:text="@string/gesture_forget_gesture"
-                android:textSize="@dimen/_14sp" />
-
-        </RelativeLayout>
+        <TextView
+            android:layout_gravity="right"
+            android:id="@+id/forgetGestureBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="@drawable/layout_grey_bg"
+            android:paddingLeft="@dimen/_5dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_setting"
+            android:text="@string/gesture_forget_gesture"
+            android:textSize="@dimen/_14sp" />
+        <TextView
+            android:layout_marginTop="@dimen/_30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="可在安全设置中取消或变更验证设定"
+            android:textColor="@color/gay"
+            android:textSize="15sp"
+            />
 
     </LinearLayout>
 </LinearLayout>

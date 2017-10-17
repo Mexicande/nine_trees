@@ -109,7 +109,7 @@
                     android:layout_above="@id/bt_Offical"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@mipmap/logo"/>
+                    android:src="@mipmap/iv_userheader"/>
             </RelativeLayout>
         </LinearLayout>
         <net.lucode.hackware.magicindicator.MagicIndicator

@@ -194,7 +194,7 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     }
 
     private void initToolbar() {
-        titleName.setText("身份信息");
+        titleName.setText("身份材料");
         slideUp = new SlideUp.Builder(slideView)
                 .withListeners(new SlideUp.Listener.Slide() {
                     @Override

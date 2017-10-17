@@ -117,7 +117,7 @@ public class CollectionActivity extends BaseActivity {
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         JSONObject jsonObject = new JSONObject(parms1);
-        OkGo.<String>post(Urls.Ip_url + Urls.product.ProductCollectionList)
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.product.ProductCollectionList)
                 .tag(this)
                 .upJson(jsonObject)
                 .execute(new StringCallback() {

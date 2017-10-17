@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,23 +21,23 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
-import cn.com.stableloan.ui.activity.SafeActivity11111;
-import cn.com.stableloan.ui.activity.Setting1Activity;
 import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
+import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
+import cn.com.stableloan.ui.activity.settingdate.SwitchPassWordActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
-import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.WaitTimeUtils;
-import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.utils.cache.ACache;
+import cn.com.stableloan.view.dialog.SelfDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -72,6 +71,7 @@ public class SafeSettingActivity extends BaseActivity {
     private SaveBean saveBean;
     private String[] managedList;
     private Context mContext;
+    private ACache aCache;
 
     private static final int REQUEST_CODE=110;
 
@@ -84,6 +84,8 @@ public class SafeSettingActivity extends BaseActivity {
         setContentView(R.layout.activity_safe_setting_activty);
         ButterKnife.bind(this);
         mContext=this;
+        aCache = ACache.get(this);
+
         initToolbar();
         initDate();
         getDate();
@@ -127,6 +129,25 @@ public class SafeSettingActivity extends BaseActivity {
             @Override
             public void onClickListener(SuperTextView superTextView) {
                 DeviceActivity.launch(SafeSettingActivity.this);
+            }
+        });
+
+        svChangePW.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                AppApplication.addDestoryActivity(SafeSettingActivity.this,"SafeSetting");
+
+                startActivity(new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class).putExtra("from","updatePassword"));
+
+            }
+        });
+        /**
+         * 手势密码
+         */
+        svChangeGesture.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                SwitchPassWordActivity.launch(SafeSettingActivity.this);
             }
         });
     }
@@ -205,7 +226,7 @@ public class SafeSettingActivity extends BaseActivity {
                 SPUtils.clear(SafeSettingActivity.this);
                 TinyDB tinyDB = new TinyDB(SafeSettingActivity.this);
                 tinyDB.clear();
-                //aCache.remove(userphone);
+                aCache.remove(userphone);
                 startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();
             }
@@ -236,8 +257,6 @@ public class SafeSettingActivity extends BaseActivity {
                     String month = data.getStringExtra("month");
                     String period = data.getStringExtra("time");
                     saveBean.setPeriod(period);
-
-
                     String var = "";
                     for (int i = 0; i < managedList.length; i++) {
                         if (managedList[i].equals(month)) {
@@ -245,10 +264,10 @@ public class SafeSettingActivity extends BaseActivity {
                         }
                     }
                     saveBean.setManaged(var);
-
-
                     svDateTime.setRightString(month);
                     svDateTime.setLeftBottomString("自动清档时间:"+period);
+                    break;
+
 
             }
         }

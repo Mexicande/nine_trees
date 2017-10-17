@@ -18,9 +18,9 @@ import cn.com.stableloan.view.supertextview.SuperTextView;
  * Created by apple on 2017/10/13.
  */
 
-public class DeviceAdapter extends BaseQuickAdapter<Device.DataBean.DeviceBean,BaseViewHolder> {
+public class DeviceAdapter extends BaseQuickAdapter<Device.DataBean.ListBean,BaseViewHolder> {
     private  boolean flag;
-    public DeviceAdapter( List<Device.DataBean.DeviceBean> data) {
+    public DeviceAdapter( List<Device.DataBean.ListBean> data) {
         super(R.layout.super_textview_item);
     }
 
@@ -30,18 +30,15 @@ public class DeviceAdapter extends BaseQuickAdapter<Device.DataBean.DeviceBean,B
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Device.DataBean.DeviceBean item) {
-
+    protected void convert(BaseViewHolder helper, Device.DataBean.ListBean item) {
         helper.setText(R.id.tv_device,item.getDevice())
-                .setText(R.id.tv_version_number,item.getVersion_number());
-
+                .setText(R.id.tv_version_number,item.getVersion_number())
+                .addOnClickListener(R.id.bt_delete);
         Button delete = helper.getView(R.id.bt_delete);
-
         if(flag){
             delete.setVisibility(View.VISIBLE);
         }else {
             delete.setVisibility(View.GONE);
-            helper.addOnClickListener(R.id.bt_delete);
         }
 /*
 

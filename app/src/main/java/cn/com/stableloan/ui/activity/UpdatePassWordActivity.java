@@ -2,79 +2,42 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.view.animation.Animation;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.kaopiz.kprogresshud.KProgressHUD;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.EncryptUtils;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.RoundButton;
-import cxy.com.validate.IValidateResult;
+import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cxy.com.validate.Validate;
-import cxy.com.validate.ValidateAnimation;
-import cxy.com.validate.annotation.Index;
-import cxy.com.validate.annotation.NotNull;
-import cxy.com.validate.annotation.Password1;
-import cxy.com.validate.annotation.Password2;
-import cxy.com.validate.annotation.RE;
-import okhttp3.Call;
-import okhttp3.Response;
 
-public class UpdatePassWordActivity extends BaseActivity implements IValidateResult {
+public class UpdatePassWordActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
-    @Bind(R.id.iv_back)
-    ImageView ivBack;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
-    @Index(1)
-    @NotNull(msg = "验证码不能为空！")
-    @Bind(R.id.up_password)
-    EditText upPassword;
-
-    @Index(2)
-    @NotNull(msg = "密码一不为能空！")
-    @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
-    @Password1()
-    @Bind(R.id.et_password)
-    EditText etPassword;
-
-    @Index(3)
-    @NotNull(msg = "密码二不为能空！")
-    @Password2(msg = "两次密码不一致！！！")
-    @RE(re = RE.number_letter_underline, msg = "密码格式不正确")
-    @Bind(R.id.et_Confirm_Password)
-    EditText etConfirmPassword;
-    @Bind(R.id.bt_update)
-    RoundButton btUpdate;
-    @Bind(R.id.bt_visiable)
-    RoundButton btVisiable;
+    @Bind(R.id.iv_cancel)
+    TextView ivCancel;
+    @Bind(R.id.tv_save)
+    TextView tvSave;
+    @Bind(R.id.prompting)
+    TextView prompting;
+    @Bind(R.id.et_passWord)
+    PowerfulEditText etPassWord;
+    @Bind(R.id.main)
+    LinearLayout main;
 
 
     public static void launch(Context context) {
@@ -86,188 +49,82 @@ public class UpdatePassWordActivity extends BaseActivity implements IValidateRes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_pass_word);
         ButterKnife.bind(this);
-        Validate.reg(this);
+
         initToolbar();
         setListener();
     }
 
     private void setListener() {
-
-        upPassword.addTextChangedListener(new TextWatcher() {
+     /*   main.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                Rect rect=new Rect();
+                    //1.获取main在窗体的可视区域
+                main.getWindowVisibleDisplayFrame(rect);
+                //2.获取main在窗体的不可见视区域高度，在键盘没有弹起时
+                //main.getRootView().getHeight()调节度应该和rect.bottom高度一样
+                int hight = main.getRootView().getHeight() - rect.bottom;
 
-            }
+                //3.不可见区域大于100；说明键盘弹出来了，
+                if(hight>100){
+                    int[] ints = new int[2];
+                    //4.获取etPassWord的窗体坐标，算出main需要滚动的高度
+                    etPassWord.getLocationInWindow(ints);
+                    int i = (ints[1] + etPassWord.getHeight()) - rect.bottom;
+                    // 5.让界面整体上移键盘的高度
+                    main.scrollBy(0,i);
+                }else {
+                    //6.不可见区域小于100，说明键盘隐藏了，把界面下移，移动到原有高度
+                    main.scrollBy(0,0);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(s.length()>=6&&etPassword.getText().toString().length()>=6&&etConfirmPassword.getText().toString()
-                            .length()>=6){
-                        btVisiable.setVisibility(View.GONE);
-                        btUpdate.setVisibility(View.VISIBLE);
-                    }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        etConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()>=6&&etPassword.getText().toString().length()>=6&&upPassword.getText().toString()
-                        .length()>=6){
-                    btVisiable.setVisibility(View.GONE);
-                    btUpdate.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()>=6&&upPassword.getText().toString().length()>=6&&etConfirmPassword.getText().toString()
-                        .length()>=6){
-                    btVisiable.setVisibility(View.GONE);
-                    btUpdate.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        });*/
 
     }
 
     private void initToolbar() {
-        titleName.setText("密码修改");
-        ivBack.setVisibility(View.VISIBLE);
-        upPassword.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
-        etPassword.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
-        etConfirmPassword.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
+        titleName.setText("修改密码");
+        ivCancel.setText("取消");
+        tvSave.setText("下一步");
+
 
     }
 
-
-    @OnClick({R.id.iv_back, R.id.bt_update})
+    @OnClick({R.id.iv_cancel, R.id.tv_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_cancel:
                 finish();
                 break;
-            case R.id.bt_update:
-                Validate.check(UpdatePassWordActivity.this, UpdatePassWordActivity.this);
-                break;
-            default:
+            case R.id.tv_save:
+                String pw = etPassWord.getText().toString();
+                if (!pw.isEmpty()) {
+                    validationPW(pw);
+                } else {
+                    ToastUtils.showToast(this, "请输入新密码");
+                }
                 break;
         }
     }
 
-    private KProgressHUD hud;
+    private void validationPW(String pw) {
 
-    private void updatewWord() {
-        hud = KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("加载中.....")
-                .setCancellable(true)
-                .show();
-        String token = (String) SPUtils.get(this, "token", "1");
+        String md5ToString = EncryptUtils.encryptMD5ToString(pw);
 
-        final String oldWord = upPassword.getText().toString();
+        boolean passWord = RegexUtils.isPW(pw);
+        String password = getIntent().getStringExtra("password");
 
-        final String newWord = etPassword.getText().toString();
-
-        if (!oldWord.equals(newWord)) {
-
-            if (token != null) {
-                String old = EncryptUtils.encryptMD5ToString(oldWord);
-                String news = EncryptUtils.encryptMD5ToString(newWord);
-
-                HashMap<String, String> params = new HashMap<>();
-                params.put("oldpassword", old);
-                params.put("password", news);
-                params.put("token", token);
-                params.put("status", "0");
-                JSONObject jsonObject = new JSONObject(params);
-                OkGo.post(Urls.puk_URL + Urls.update.UPDATE_Word)
-                        .tag(this)
-                        .upJson(jsonObject.toString())
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                LogUtils.i("密码修改", s);
-                                try {
-                                    JSONObject object = new JSONObject(s);
-                                    String success = object.getString("isSuccess");
-                                    if (success.equals("1")) {
-                                        ToastUtils.showToast(UpdatePassWordActivity.this, "修改成功");
-                                        startActivity(new Intent(UpdatePassWordActivity.this, LoginActivity.class).putExtra("from", "user"));
-                                        hud.dismiss();
-                                        // LoginActivity.launch(UpdatePassWordActivity.this);
-                                        finish();
-                                    } else {
-                                        hud.dismiss();
-                                        String string = object.getString("msg");
-                                        ToastUtils.showToast(UpdatePassWordActivity.this, string);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onError(Call call, Response response, Exception e) {
-                                super.onError(call, response, e);
-                                hud.dismiss();
-                                ToastUtils.showToast(UpdatePassWordActivity.this, "网络异常，请检测网络");
-
-                            }
-                        });
+        if (passWord) {
+            if (password != null && !md5ToString.equals(password)) {
+                AppApplication.addDestoryActivity(this, "password");
+                startActivity(new Intent(this, UpdatePWActivity.class).putExtra("password", pw));
             } else {
-                ToastUtils.showToast(UpdatePassWordActivity.this, "系统异常,请稍后再试");
+                prompting.setText("请输入其他密码，不能再次使用旧密码");
             }
         } else {
-            ToastUtils.showToast(UpdatePassWordActivity.this, "新密码与原密码不能相同");
-
+            prompting.setText("密码格式不正确,请重新输入");
         }
 
-
-    }
-
-    @Override
-    public void onValidateSuccess() {
-        updatewWord();
-    }
-
-    @Override
-    public void onValidateError(String msg, EditText editText) {
-        if (editText != null)
-            editText.setFocusable(true);
-        ToastUtils.showToast(this, msg);
-    }
-
-    @Override
-    public Animation onValidateErrorAnno() {
-        return ValidateAnimation.horizontalTranslate();
     }
 }

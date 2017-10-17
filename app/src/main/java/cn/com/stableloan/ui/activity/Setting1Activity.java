@@ -17,7 +17,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.view.SelfDialog;
+import cn.com.stableloan.view.dialog.SelfDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 
 /**
