@@ -82,14 +82,10 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         UpdateManager.create(this).setUrl(Urls.Update.APP_UPDATA).setPostData(Urls.Update.value+channel).setParser(new IUpdateParser() {
             @Override
             public UpdateInfo parse(String source) throws Exception {
-
-                LogUtils.i("source",source);
                 UpdateInfo info = new UpdateInfo();
                 Gson gson=new Gson();
                 UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
-                LogUtils.i("Update",infoBean.toString());
                 int code =Integer.parseInt(getVersionCode(MainActivity.this));
-                LogUtils.i("code",code);
                 if(Integer.parseInt(infoBean.getVersionCode())>code){
                     info.hasUpdate = true;
                 }else {
@@ -112,7 +108,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
             @Override
             public void onFailure(UpdateError error) {
 
-                LogUtils.i("update",error.getMessage());
             }
         }).check();
 
@@ -155,7 +150,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         }else if(event.message.equals("user4")){
             navigationController.setSelect(3);
         }else if(event.message.equals("user3")){
-           // switchMenu(getFragmentName(3));
             int selected = navigationController.getSelected();
             switchMenu(getFragmentName(selected+1));
         }else if(event.message.equals("userinform")){
@@ -170,8 +164,8 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         public void onSelected(int index, int old) {
 
             if(index==3){
-                Boolean login = (Boolean) SPUtils.get(MainActivity.this, "login", false);
-                if (!login) {
+                String token = (String) SPUtils.get(MainActivity.this, "token", null);
+                if (token!=null) {
                     startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
                 }else {
                     switchMenu(getFragmentName(4));

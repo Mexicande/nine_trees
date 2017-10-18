@@ -173,6 +173,7 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zhy:autolayout:+'
+
     compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
     compile 'cn.yipianfengye.android:ad-library:1.0'
     compile 'com.meituan.android.walle:library:1.1.5'

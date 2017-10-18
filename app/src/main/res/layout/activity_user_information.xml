@@ -50,7 +50,7 @@
         stv:sLeftIconRes="@mipmap/iv_identity_date"
         stv:sLeftTextColor="@android:color/black"
         stv:sLeftTextSize="16sp"
-        stv:sLeftTextString="身份信息"
+        stv:sLeftTextString="身份材料"
         stv:sLeftTvDrawableWidth="30dp"
         stv:sRightTextString="未完成"
         stv:sLeftViewMarginLeft="15dp"

@@ -221,7 +221,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:text="3000~300000元"
                     android:textColor="@color/select_text_color"
                     />
                 <TextView
@@ -245,7 +244,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="1~6个月"
                     android:textColor="@color/select_text_color"
                     />
                 <TextView
@@ -291,7 +289,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:text="516元"
+                    android:text="0元"
                     android:textColor="@color/select_text_color"
                     />
             </RelativeLayout>

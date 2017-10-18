@@ -1,6 +1,7 @@
 package cn.com.stableloan.ui.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -38,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +71,9 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
 import cn.com.stableloan.view.countdownview.CountdownView;
+import cn.com.stableloan.view.countdownview.EasyCountDownView;
 import cn.com.stableloan.view.countdownview.SimpleCountDownTimer;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -90,8 +95,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private ListProductAdapter productAdapter;
     private Seckill_Bean seckillBean;
     int ACTION = 1;
-    private SimpleCountDownTimer simpleCountDownTimer;
-
+    private List<String> list;
     public HomeFragment() {
 
     }
@@ -118,6 +122,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         setListener();
         return view;
     }
+
+
 
     /**
      * 秒杀活动
@@ -151,15 +157,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     long time12 = h + m + se + (1000 - millisecond);
 
                                     LogUtils.i("time21===", time12);
+                                    mSeckill_layout.setVisibility(View.VISIBLE);
                                     mCountdownView.start(time12);
-                                    mCountdownView.updateShow(time12);
+                                    countdownhour.setTime(time12);
 
-                                    simpleCountDownTimer = new SimpleCountDownTimer(time12, tvDisplay);
-                                    simpleCountDownTimer.start();
 
-                                    //mSeckill_layout.setVisibility(View.VISIBLE);
-
-                                    //  mCountdownView.updateShow(time12);
+                                    //mCountdownView.updateShow(time12);
                                     // 总时间
                                     // 初始化并启动倒计时
                                 }
@@ -203,7 +206,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initDialog() {
-
+        String[] stringArray = getResources().getStringArray(R.array.home_money);
+        list = Arrays.asList(stringArray);
 
         HashMap<String, String> params = new HashMap<>();
         params.put("position", "1");
@@ -283,7 +287,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         selectMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setPickerView( );
             }
         });
 
@@ -365,15 +369,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         recylerview.setAdapter(productAdapter);
         View view = setHeaderView();
-        productAdapter.addHeaderView(view, 0);
-        //productAdapter.addFooterView(view, 0);
-
-
-
-
-       // productAdapter.setCountDownView(mCountdownView,100000000);
+        productAdapter.addHeaderView(view);
 
     }
+
+
 
     private BGABanner banner;
 
@@ -391,7 +391,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private Banner_HotBean hotBean;
 
     private ImageView product_logo;
-
+    private EasyCountDownView countdownhour;
     private SpecialClassBean specialClassBean;
     private CountdownView  mCountdownView;
     private View setHeaderView() {
@@ -403,9 +403,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tv_activity_desc = (TextView) view.findViewById(R.id.activity_desc);
         tv_amout = (TextView) view.findViewById(R.id.amount);
         mCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
-        mCountdownView.start(100000);
         mCardView = (CardView) view.findViewById(R.id.seckill_item_one);
-        tvDisplay = (TextView) view.findViewById(R.id.tv_display);
+        countdownhour = (EasyCountDownView) view.findViewById(R.id.countdownhour);
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
@@ -524,7 +523,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     }
                 });
 
-        getSeckill();
 
         OkGo.post(Urls.NEW_Ip_url + Urls.HOME_FRAGMENT.HOT_NEW_PRODUCT)
                 .tag(this)
@@ -536,6 +534,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
                             if (hotNewProduct.getError_code() == 0) {
                                 productAdapter.setNewData(hotNewProduct.getData());
+                              /*  LinearLayout headerLayout = productAdapter.getHeaderLayout();
+                                CountdownView  mCountdownView = (CountdownView) headerLayout.findViewById(R.id.cv_countdownViewTest1);
+                                mCountdownView.start(100000);
+                                mCountdownView.updateShow(100000);*/
+
                             }
                         }
                     }
@@ -561,8 +564,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             ToastUtils.showToast(getActivity(), "网络异常");
                         }
                     }
-
                 });
+        getSeckill();
+
 
     }
 
@@ -581,22 +585,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.iv_free:
                 professional = "xiaoyaoke";
-                EventBus.getDefault().post(new IdentityProduct(3));
+                EventBus.getDefault().post(new IdentityProduct(3,100));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_other:
                 professional = "xueshengdang";
-                EventBus.getDefault().post(new IdentityProduct(2));
+                EventBus.getDefault().post(new IdentityProduct(2,100));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.iv_work:
                 professional = "shangbanzu";
-                EventBus.getDefault().post(new IdentityProduct(1));
+                EventBus.getDefault().post(new IdentityProduct(1,100));
                 MainActivity.navigationController.setSelect(1);
                 break;
             case R.id.bussiones:
                 professional = "qiyezhu";
-                EventBus.getDefault().post(new IdentityProduct(4));
+                EventBus.getDefault().post(new IdentityProduct(4,100));
                 MainActivity.navigationController.setSelect(1);
                 break;
 
@@ -615,10 +619,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (simpleCountDownTimer != null) {
-            simpleCountDownTimer.cancel();
+        if (countdownhour != null) {
+            countdownhour.cancelTime();
+            mCountdownView.stop();
         }
     }
+    private  void setPickerView( ){
+        int color = getActivity().getResources().getColor(R.color.colorPrimary);
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(getActivity(), new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                if(options1==list.size()-1){
+                    EventBus.getDefault().post(new IdentityProduct(0,10000));
+                    MainActivity.navigationController.setSelect(1);
+                }else {
+                    String s = list.get(options1);
+                    String substring = s.substring(0, s.length() - 1);
+                    int i = Integer.parseInt(substring);
+                    EventBus.getDefault().post(new IdentityProduct(0,i));
+                    MainActivity.navigationController.setSelect(1);
+                }
+            }
+        })
 
+                .setTitleText("我要借多少钱")
+                .setTitleColor(color)//标题文字颜色
+                .setDividerColor(color)
+                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                .setContentTextSize(20)
+                .setSubmitColor(color)
+                .setCancelColor(color)
+                .build();
+        pvOptions.setPicker(list);//一级选择器
+        pvOptions.show();
+    }
 
 }

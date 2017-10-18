@@ -147,6 +147,8 @@ public class UpImageIdentityActivity extends BaseActivity {
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         parms1.put("signature", signature);
+        parms1.put("source", "");
+
         JSONObject json = new JSONObject(parms1);
         OkGo.<String>post(Urls.Ip_url + Urls.Pictrue.Get_Pictrue)
                 .tag(this)

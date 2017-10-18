@@ -40,4 +40,13 @@
     <string-array name="cash_way">
         <item>转至支付宝/n15600575837@163.com</item>
     </string-array>
+
+    <string-array name="home_money">
+        <item>500元</item>
+        <item>1000元</item>
+        <item>2000元</item>
+        <item>5000元</item>
+        <item>8000元</item>
+        <item>大于1万元</item>
+    </string-array>
 </resources>

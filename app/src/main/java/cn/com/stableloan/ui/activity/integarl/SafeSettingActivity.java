@@ -5,12 +5,19 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.mancj.slideup.SlideUp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,12 +37,12 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
-import cn.com.stableloan.ui.activity.UpdatePassWordActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
 import cn.com.stableloan.ui.activity.settingdate.SwitchPassWordActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.WaitTimeUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.dialog.SelfDialog;
@@ -69,24 +76,63 @@ public class SafeSettingActivity extends BaseActivity {
     SuperTextView svSafeNurse;
     @Bind(R.id.sv_QuitLogin)
     SuperTextView svQuitLogin;
+    @Bind(R.id.cat_SlideImage)
+    RelativeLayout catSlideImage;
+    @Bind(R.id.RB_NO)
+    RadioButton RBNO;
+    @Bind(R.id.RB_PW)
+    RadioButton RBPW;
+    @Bind(R.id.RB_GE)
+    RadioButton RBGE;
+    @Bind(R.id.slide_title)
+    TextView slideTitle;
+    @Bind(R.id.apply_title)
+    TextView applyTitle;
+    @Bind(R.id.apply_NO)
+    RadioButton applyNO;
+    @Bind(R.id.apply_PW)
+    RadioButton applyPW;
+    @Bind(R.id.apply_GE)
+    RadioButton applyGE;
+    @Bind(R.id.apply_ViewImage)
+    LinearLayout applyViewImage;
+    @Bind(R.id.login_NO)
+    RadioButton loginNO;
+    @Bind(R.id.login_PW)
+    RadioButton loginPW;
+    @Bind(R.id.login_GE)
+    RadioButton loginGE;
+    @Bind(R.id.login_ViewImage)
+    LinearLayout loginViewImage;
+    @Bind(R.id.login_SlideImage)
+    RelativeLayout loginSlideImage;
+    @Bind(R.id.apply_SlideImage)
+    RelativeLayout applySlideImage;
     private SaveBean saveBean;
     private String[] managedList;
     private Context mContext;
     private ACache aCache;
+    private UserBean user;
+    private SlideUp cat_SlideUp;
+    private SlideUp apply_SlideUp;
+    private SlideUp login_SlideUp;
+    private TinyDB tinyDB;
 
-    private static final int REQUEST_CODE=110;
+    private TinyDB tinyuser;
+
+    private static final int REQUEST_CODE = 110;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeSettingActivity.class));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_safe_setting_activty);
         ButterKnife.bind(this);
-        mContext=this;
+        mContext = this;
         aCache = ACache.get(this);
-
         initToolbar();
         initDate();
         getDate();
@@ -97,20 +143,53 @@ public class SafeSettingActivity extends BaseActivity {
     private void initToolbar() {
 
         titleName.setText("安全设置");
+
+        cat_SlideUp = new SlideUp.Builder(catSlideImage)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
+        apply_SlideUp = new SlideUp.Builder(applySlideImage)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
+        login_SlideUp = new SlideUp.Builder(loginSlideImage)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
+
+        RBNO.setChecked(true);
+
     }
 
     private void setListener() {
-
 
         svDateTime.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
                 if (WaitTimeUtils.isFastDoubleClick()) {
                     return;
-                }else {
-                    Intent intent=new Intent(mContext,SafeActivity.class);
-                    intent.putExtra("save",saveBean);
-                    startActivityForResult(intent,REQUEST_CODE);
+                } else {
+                    Intent intent = new Intent(mContext, SafeActivity.class);
+                    intent.putExtra("save", saveBean);
+                    startActivityForResult(intent, REQUEST_CODE);
                 }
             }
         });
@@ -131,9 +210,9 @@ public class SafeSettingActivity extends BaseActivity {
         svChangePW.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
-                AppApplication.addDestoryActivity(SafeSettingActivity.this,"SafeSetting");
+                AppApplication.addDestoryActivity(SafeSettingActivity.this, "SafeSetting");
 
-                startActivity(new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class).putExtra("from","updatePassword"));
+                startActivity(new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class).putExtra("from", "updatePassword"));
 
             }
         });
@@ -146,28 +225,55 @@ public class SafeSettingActivity extends BaseActivity {
                 SwitchPassWordActivity.launch(mContext);
             }
         });
+        //贴心小护士
         svSafeNurse.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
-                startActivity(new Intent(mContext, HtmlActivity.class).putExtra("safe","#/minTips"));
+                startActivity(new Intent(mContext, HtmlActivity.class).putExtra("safe", "#/minTips"));
             }
         });
+
+
+        //资料查看
+        svUnLockCat.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                cat_SlideUp.show();
+
+            }
+        });
+        //登陆方式
+        svUnLockLogin.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                    login_SlideUp.show();
+            }
+        });
+        //申请方式
+        svUnLockApply.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
+            @Override
+            public void onClickListener(SuperTextView superTextView) {
+                    apply_SlideUp.show();
+            }
+        });
+
+
     }
 
     private void initDate() {
         String versionName = getVersionCode(this);
-        stVersionCode.setRightString("v"+versionName);
+        stVersionCode.setRightString("v" + versionName);
         managedList = getResources().getStringArray(R.array.times);
 
     }
 
-    public String getVersionCode(Context context){
-        PackageManager packageManager=context.getPackageManager();
+    public String getVersionCode(Context context) {
+        PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
-        String versionCode="";
+        String versionCode = "";
         try {
-            packageInfo=packageManager.getPackageInfo(context.getPackageName(),0);
-            versionCode=packageInfo.versionName+"";
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            versionCode = packageInfo.versionName + "";
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -175,50 +281,127 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
     private void getDate() {
-            String token = (String) SPUtils.get(this, "token", "1");
-            Map<String, String> parms = new HashMap<>();
-            parms.put("token", token);
-            JSONObject jsonObject = new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Getsetting)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                String isSuccess = object.getString("isSuccess");
-                                if ("1".equals(isSuccess)) {
-                                    Gson gson = new Gson();
-                                    saveBean = gson.fromJson(s, SaveBean.class);
-                                    String managed = saveBean.getManaged();
-                                    if (managed != null && managed.length() == 1) {
-                                        int i = Integer.parseInt(managed);
 
-                                        svDateTime.setRightString(managedList[i]);
-                                    }
-                                    if (saveBean.getPeriod().length() < 2) {
-                                        svDateTime.setLeftBottomString("自动清档时间:无数据");
-                                        svDateTime.setRightString("无数据");
-                                    } else {
-                                        svDateTime.setLeftBottomString("自动清档时间:"+saveBean.getPeriod());
-                                    }
-                                } else {
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-                        }
-                    });
+        RBGE.setEnabled(false);
+        applyGE.setEnabled(false);
+        loginGE.setEnabled(false);
 
 
+
+        tinyuser = new TinyDB(this);
+        tinyDB = new TinyDB(this);
+        user = (UserBean) tinyDB.getObject("user", UserBean.class);
+
+        String userPhone = user.getUserphone();
+
+        String gesturePassword = aCache.getAsString(userPhone);
+        int cat = (int) SPUtils.get(this, "cat", 0);
+        switch (cat) {
+            case Urls.lock.NO_VERIFICATION:
+                RBNO.setChecked(true);
+                break;
+            case Urls.lock.PW_VERIFICATION:
+                RBPW.setChecked(true);
+
+                break;
+            case Urls.lock.GESTURE_VERIFICATION:
+                if (gesturePassword == null) {
+                    RBGE.setEnabled(false);
+                } else {
+                    RBGE.setChecked(true);
+                }
+                break;
         }
-    private  SelfDialog selfDialog;
+        int apply = (int) SPUtils.get(this, "apply", 0);
+        switch (apply) {
+            case Urls.lock.NO_VERIFICATION:
+                applyNO.setChecked(true);
+                break;
+            case Urls.lock.PW_VERIFICATION:
+                applyPW.setChecked(true);
+                break;
+            case Urls.lock.GESTURE_VERIFICATION:
+                if (gesturePassword == null) {
+                    applyGE.setEnabled(false);
+                } else {
+                    applyGE.setChecked(true);
+                }
+                break;
+        }
+        int login = (int) SPUtils.get(this, "loginLock", 6);
+        switch (login) {
+            case Urls.lock.NO_VERIFICATION:
+                loginNO.setChecked(true);
+                break;
+            case Urls.lock.PW_VERIFICATION:
+                loginPW.setChecked(true);
+                break;
+            case Urls.lock.GESTURE_VERIFICATION:
+                if (gesturePassword == null) {
+                    loginGE.setEnabled(false);
+                } else {
+                    loginGE.setChecked(true);
+                }
+                break;
+            default:
+                loginPW.setChecked(true);
+                break;
+        }
+
+
+        String lock = aCache.getAsString("lock");
+
+        if (gesturePassword != null && !"".equals(gesturePassword)) {
+            svChangeGesture.setRightString("已设置");
+        } else {
+            svChangeGesture.setRightString("未设置");
+        }
+
+
+        String token = (String) SPUtils.get(this, "token", "1");
+        Map<String, String> parms = new HashMap<>();
+        parms.put("token", token);
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Getsetting)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String isSuccess = object.getString("isSuccess");
+                            if ("1".equals(isSuccess)) {
+                                Gson gson = new Gson();
+                                saveBean = gson.fromJson(s, SaveBean.class);
+                                String managed = saveBean.getManaged();
+                                if (managed != null && managed.length() == 1) {
+                                    int i = Integer.parseInt(managed);
+
+                                    svDateTime.setRightString(managedList[i]);
+                                }
+                                if (saveBean.getPeriod().length() < 2) {
+                                    svDateTime.setLeftBottomString("自动清档时间:无数据");
+                                    svDateTime.setRightString("无数据");
+                                } else {
+                                    svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
+                                }
+                            } else {
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                });
+
+
+    }
+
+    private SelfDialog selfDialog;
+
     private void exit() {
-        final TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        String userphone = user.getUserphone();
+
 
         selfDialog = new SelfDialog(this);
         selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
@@ -242,19 +425,12 @@ public class SafeSettingActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        finish();
-    }
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CODE){
-            switch (resultCode){
-                case  Urls.SettingResultCode.SAFE_DATE:
+        if (requestCode == REQUEST_CODE) {
+            switch (resultCode) {
+                case Urls.SettingResultCode.SAFE_DATE:
                     String month = data.getStringExtra("month");
                     String period = data.getStringExtra("time");
                     saveBean.setPeriod(period);
@@ -266,11 +442,131 @@ public class SafeSettingActivity extends BaseActivity {
                     }
                     saveBean.setManaged(var);
                     svDateTime.setRightString(month);
-                    svDateTime.setLeftBottomString("自动清档时间:"+period);
+                    svDateTime.setLeftBottomString("自动清档时间:" + period);
                     break;
 
 
             }
         }
     }
+
+    @OnClick({R.id.RB_NO, R.id.RB_PW, R.id.RB_GE, R.id.image_Visiable
+            , R.id.iv_back, R.id.Apply_Visiable, R.id.login_NO, R.id.login_PW,
+            R.id.login_GE, R.id.login_image_Visiable, R.id.apply_NO, R.id.apply_PW, R.id.apply_GE, R.id.apply_ViewImage})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            //查看个人资料
+            case R.id.RB_NO:
+                if (!RBNO.isChecked()) {
+                    SPUtils.put(this, "cat", Urls.lock.NO_VERIFICATION);
+                }
+                svUnLockCat.setRightString("无验证");
+                cat_SlideUp.hide();
+                break;
+            case R.id.RB_PW:
+                if (!RBPW.isChecked()) {
+                    SPUtils.put(this, "cat", Urls.lock.PW_VERIFICATION);
+                }
+                svUnLockCat.setRightString("密码验证");
+                cat_SlideUp.hide();
+                tinyuser.putObject("user", user);
+                break;
+            case R.id.RB_GE:
+                String userPhone = user.getUserphone();
+                String gesturePassword = aCache.getAsString(userPhone);
+                if (gesturePassword == null) {
+                    ToastUtils.showToast(this, "请先设置手势密码");
+                } else {
+                    if (!RBGE.isChecked()) {
+                        SPUtils.put(this, "cat", Urls.lock.GESTURE_VERIFICATION);
+                    }
+                    svUnLockCat.setRightString("手势验证");
+                    cat_SlideUp.hide();
+                }
+                break;
+            case R.id.image_Visiable:
+                cat_SlideUp.hide();
+                break;
+            case R.id.apply_NO:
+                if (!applyNO.isChecked()) {
+                    SPUtils.put(this, "apply", Urls.lock.NO_VERIFICATION);
+                }
+                svUnLockApply.setRightString("无验证");
+                apply_SlideUp.hide();
+
+                break;
+            case R.id.apply_PW:
+                if (!applyPW.isChecked()) {
+                    SPUtils.put(this, "apply", Urls.lock.PW_VERIFICATION);
+                }
+                svUnLockApply.setRightString("无验证");
+                apply_SlideUp.hide();
+                break;
+            case R.id.apply_GE:
+                String userPhone1 = user.getUserphone();
+                String gesturePassword2 = aCache.getAsString(userPhone1);
+                if (gesturePassword2 == null) {
+                    ToastUtils.showToast(this, "请先设置手势密码");
+                } else {
+                    if (!applyGE.isChecked()) {
+                        SPUtils.put(this, "apply", Urls.lock.GESTURE_VERIFICATION);
+                    }
+                    svUnLockApply.setRightString("手势验证");
+                    apply_SlideUp.hide();
+                }
+
+                break;
+            case R.id.Apply_Visiable:
+                apply_SlideUp.hide();
+                break;
+            case R.id.login_NO:
+                if (!loginNO.isChecked()) {
+                    SPUtils.put(this, "loginLock", Urls.lock.NO_VERIFICATION);
+                }
+                svUnLockLogin.setRightString("无验证");
+                login_SlideUp.hide();
+
+                break;
+            case R.id.login_PW:
+                if (!loginPW.isChecked()) {
+                    SPUtils.put(this, "loginLock", Urls.lock.PW_VERIFICATION);
+                }
+                svUnLockLogin.setRightString("无验证");
+                login_SlideUp.hide();
+                break;
+            case R.id.login_GE:
+                String userPhone2 = user.getUserphone();
+                String gesturePassword3 = aCache.getAsString(userPhone2);
+                if (gesturePassword3 == null) {
+                    ToastUtils.showToast(this, "请先设置手势密码");
+                } else {
+                    if (!loginGE.isChecked()) {
+                        SPUtils.put(this, "loginLock", Urls.lock.GESTURE_VERIFICATION);
+                    }
+                    svUnLockLogin.setRightString("手势验证");
+                    login_SlideUp.hide();
+                }
+
+                break;
+            case R.id.login_image_Visiable:
+                login_SlideUp.hide();
+                break;
+
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (cat_SlideUp.isVisible()) {
+            cat_SlideUp.hide();
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+        return false;
+    }
+
+
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import cn.com.stableloan.R;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.home.Hot_New_Product;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.view.countdownview.CountdownView;
 
 
@@ -25,15 +26,14 @@ import cn.com.stableloan.view.countdownview.CountdownView;
  */
 
 public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBean,BaseViewHolder>{
-
+    private CountdownView mCountdownView;
     public ListProductAdapter(List<Hot_New_Product.DataBean> data) {
         super(R.layout.news_product_trem, data);
     }
 
+
     @Override
     protected void convert(BaseViewHolder helper, Hot_New_Product.DataBean item) {
-
-
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()

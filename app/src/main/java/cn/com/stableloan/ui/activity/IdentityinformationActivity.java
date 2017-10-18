@@ -125,7 +125,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                                     initToolbar();
                                     initMagicIndicator();
                                     mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
-
                                 } else {
                                     Intent intent = new Intent(IdentityinformationActivity.this, Verify_PasswordActivity.class)
                                             .putExtra("from", "integarl");

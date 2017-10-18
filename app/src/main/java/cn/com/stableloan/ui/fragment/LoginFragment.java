@@ -11,8 +11,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -113,40 +115,29 @@ public class LoginFragment extends Fragment {
             llBtnType.setVisibility(View.GONE);
         }
         setListener();
+        setVisibleInput(view);
         return view;
 
     }
- /*   @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (hidden) {
-            //相当于Fragment的onPause
+    private void setVisibleInput(View view) {
 
+        view.setOnTouchListener(new View.OnTouchListener() {
 
-        } else {
-          *//*  gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
-            setGt3GeetestUtilsListener();*//*
-            // 相当于Fragment的onResume
-        }
+                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if(getActivity().getCurrentFocus()!=null && getActivity().getCurrentFocus().getWindowToken()!=null){
+                        manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+                return false;
+            }
+        });
     }
-*/
-/* private boolean isFirst = true;
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser && isFirst){
-            //在这里加载数据
-            isFirst = false;
-            gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
-            setGt3GeetestUtilsListener();
-            setListener();
 
 
-        }
-
-    }*/
 
     @Override
     public void onResume() {
@@ -556,7 +547,6 @@ public class LoginFragment extends Fragment {
                             .permission(Manifest.permission.READ_PHONE_STATE)
                             .callback(listener)
                             .start();
-
 
                 } else {
                     ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");

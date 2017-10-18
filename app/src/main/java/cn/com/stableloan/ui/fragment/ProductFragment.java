@@ -124,9 +124,6 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
-
-        EventBus.getDefault().register(this);
-
         stateLayout = (StateLayout) view.findViewById(R.id.stateLayout);
         stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
         initViewTitle();
@@ -142,6 +139,7 @@ public class ProductFragment extends ImmersionFragment {
         }
         //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "loanpage", eventObject);
+        EventBus.getDefault().register(this);
 
         return view;
     }
@@ -250,11 +248,18 @@ public class ProductFragment extends ImmersionFragment {
 
     @Subscribe
     public void onPicSatus(IdentityProduct event) {
+        LogUtils.i("amount",event.amount);
         int msg = event.msg;
         String[] s = new String[]{String.valueOf(msg)};
         idFlowlayout.getAdapter().setSelectedList(msg - 1);
-        selectProduct(s);
+        AMOUT=0;
 
+        if(event.amount!=100){
+            selectProduct(s, event.amount);
+        }else {
+            selectProduct(s, 0);
+
+        }
     }
 
    /*
@@ -414,7 +419,7 @@ public class ProductFragment extends ImmersionFragment {
                 Set<Integer> selectedList = idFlowlayout.getSelectedList();
                 Set<Integer> selectedList1 = tagFlowlayout.getSelectedList();
                 if (selectedList.size() > 0 || selectedList1.size() > 0) {
-                    selectProduct(null);
+                    selectProduct(null,0);
                 }
                 break;
             case R.id.layoutGo:
@@ -435,7 +440,7 @@ public class ProductFragment extends ImmersionFragment {
      *
      */
     private List<Integer> amount=new ArrayList<>();
-    private void selectProduct(String[] ident) {
+    private void selectProduct(String[] ident,int money) {
 
         ProductList_Param param=new ProductList_Param();
         amount.add(500);
@@ -444,7 +449,12 @@ public class ProductFragment extends ImmersionFragment {
         amount.add(5000);
         amount.add(8000);
         amount.add(10000);
+
         param.setAmount(amount.get(AMOUT));
+
+        if(AMOUT==0){
+            param.setAmount(money);
+        }
 
         if (ident == null) {
             stateLayout.showProgressView();

@@ -19,9 +19,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
+import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.dialog.CashDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
@@ -60,11 +63,16 @@ public class SwitchPassWordActivity extends BaseActivity {
 
 
     private void setListener() {
+        final TinyDB tinyDB = new TinyDB(this);
+        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+
+        userPhone=user.getUserphone();
+
 
         String gesturePassword = aCache.getAsString(userPhone);
         String lock = aCache.getAsString("lock");
 
-        if (gesturePassword != null && !"".equals(gesturePassword) && !"off".equals(lock)) {
+        if (gesturePassword != null && !"".equals(gesturePassword)) {
             stGestureOpen.setSwitchIsChecked(true);
             stCreateGesture.setVisibility(View.VISIBLE);
         } else {
@@ -82,13 +90,14 @@ public class SwitchPassWordActivity extends BaseActivity {
                         RuleDialog();
                     } else {
                         startActivity(new Intent(SwitchPassWordActivity.this, Verify_PasswordActivity.class).putExtra("from", "CreateGesture"));
-
+                        flag=1;
+                        stGestureOpen.setSwitchIsChecked(false);
+                        flag=0;
                     }
                 }
 
             }
         });
-
 
 
         stCreateGesture.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
@@ -133,6 +142,9 @@ public class SwitchPassWordActivity extends BaseActivity {
                 cashDialog.dismiss();
                 flag = 1;
                 aCache.remove(userPhone);
+                final TinyDB tinyDB = new TinyDB(SwitchPassWordActivity.this);
+                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                user.setCat(Urls.lock.NO_VERIFICATION);
                 stGestureOpen.setSwitchIsChecked(false);
                 flag=0;
                 stCreateGesture.setVisibility(View.GONE);
@@ -159,6 +171,7 @@ public class SwitchPassWordActivity extends BaseActivity {
 
         }
     }
+
 
     @Override
     protected void onDestroy() {

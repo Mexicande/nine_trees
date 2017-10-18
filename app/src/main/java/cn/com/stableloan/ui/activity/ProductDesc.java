@@ -12,6 +12,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,12 +47,13 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
-import cn.com.stableloan.view.dialog.DescDialog;
 import cn.com.stableloan.view.SpacesItemDecoration;
+import cn.com.stableloan.view.dialog.DescDialog;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXManager;
@@ -129,6 +131,14 @@ public class ProductDesc extends BaseActivity {
     EditText etMaxTime;
     @Bind(R.id.tv_platform)
     TextView tvPlatform;
+    @Bind(R.id.tv_Desccharge)
+    TextView tvDesccharge;
+    @Bind(R.id.zero_algorithm)
+    TextView zeroAlgorithm;
+    @Bind(R.id.out_view)
+    RelativeLayout outView;
+    @Bind(R.id.tv_DescTerminally)
+    TextView tvDescTerminally;
     private int pid;
 
     private Product_DescBean descBean;
@@ -138,6 +148,7 @@ public class ProductDesc extends BaseActivity {
     private static final int COLLECTION = 2000;
 
     private boolean flag = false;
+
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
@@ -154,16 +165,23 @@ public class ProductDesc extends BaseActivity {
         if (pid != 0) {
             getProductDate();
         }
-
         setListener();
 
     }
+
 
     /**
      * 微信分享
      * ediText
      */
     private void setListener() {
+
+        outView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+            }
+        });
 
         TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
         wxManager = new WXManager(this);
@@ -185,72 +203,69 @@ public class ProductDesc extends BaseActivity {
         };
 
         wxManager.setListener(wxStateListener);
-
-        etMaxLimit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String limite = etMaxLimit.getText().toString();
-                int lim = Integer.parseInt(limite);
-                String minimum_amount = descBean.getData().getMinimum_amount();
-                String maximum_amount = descBean.getData().getMaximum_amount();
-                if(lim<Integer.parseInt(minimum_amount)){
-                    etMaxLimit.setText(minimum_amount);
-                }
-                if(lim>Integer.parseInt(maximum_amount)){
-                    etMaxLimit.setText(maximum_amount);
-                }
-            }
-        });
         //贷款金额
-        etMaxLimit.addTextChangedListener(new TextWatcher() {
+
+        etMaxTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    computations();
+                }
             }
         });
-        //贷款期限
-        etMaxTime.addTextChangedListener(new TextWatcher() {
+
+        etMaxLimit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    computations();
+                }
             }
         });
+
+
 
     }
 
+    private  void computations(){
 
+        String hint = etMaxTime.getText().toString();
+        String str = etMaxLimit.getText().toString();
+        String minimum_amount = descBean.getData().getMinimum_amount();
+        String maximum_amount = descBean.getData().getMaximum_amount();
+        if (!hint.isEmpty() && !str.isEmpty()&&minimum_amount!=null&&maximum_amount!=null) {
+            int lim = Integer.parseInt(str);
+            if (lim < Integer.parseInt(minimum_amount)) {
+                etMaxLimit.setText(minimum_amount);
+            }
+            if (lim > Integer.parseInt(maximum_amount)) {
+                etMaxLimit.setText(maximum_amount);
+            }
+            int time = Integer.parseInt(hint);
+
+            int mony = Integer.parseInt(str);
+            String min_algorithm = descBean.getData().getMin_algorithm();
+
+            Double aDouble = Double.valueOf(min_algorithm);
+
+            LogUtils.i("aDouble====", aDouble / 100 + "");
+            double v1 = aDouble * time / 100 * mony + descBean.getData().getFee();
+            int zeroRate=(int)v1;
+
+            String valueOf = String.valueOf(zeroRate);
+
+
+            zeroAlgorithm.setText(valueOf+"元");
+
+
+            double v2 = (mony + v1) / time;
+
+            int everyRate=(int)v2;
+            String everyTime = String.valueOf(everyRate);
+
+            tvDescTerminally.setText(everyTime+"元");
+        }
+    }
     private void getProductDate() {
         Boolean login = (Boolean) SPUtils.get(this, "login", false);
         String token = (String) SPUtils.get(this, "token", "1");
@@ -451,6 +466,13 @@ public class ProductDesc extends BaseActivity {
             String aaa = details.replace("aaa", "\n");
             productDetails.setText(aaa);
         }
+        if (product.getFee() != 0) {
+            tvDesccharge.setText(product.getFee() + "元");
+        }
+
+
+        computations();
+
     }
 
     private void setTextViewColor(TextView view, String s) {
@@ -488,6 +510,15 @@ public class ProductDesc extends BaseActivity {
                         sendIO();
                         startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                     } else {
+                        int apply = (int) SPUtils.get(this, "apply", 0);
+
+
+
+
+
+
+
+
                         descDialog = new DescDialog(this);
                         descDialog.setTitle("提示");
                         descDialog.setMessage("确定退出登陆?");
@@ -579,7 +610,6 @@ public class ProductDesc extends BaseActivity {
     private void CollectionProduct(final String status) {
 
         String token = (String) SPUtils.get(this, "token", "1");
-
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         parms1.put("status", status);
@@ -677,5 +707,6 @@ public class ProductDesc extends BaseActivity {
         }
 
     }
+
 
 }

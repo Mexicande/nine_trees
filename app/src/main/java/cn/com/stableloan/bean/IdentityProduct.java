@@ -9,9 +9,13 @@ import java.io.Serializable;
 public class IdentityProduct implements Serializable {
 
     public final int msg;
+    public final int amount;
 
-    public IdentityProduct(int message) {
+
+
+    public IdentityProduct(int message,int amount) {
         this.msg = message;
+        this.amount = amount;
     }
 
 }

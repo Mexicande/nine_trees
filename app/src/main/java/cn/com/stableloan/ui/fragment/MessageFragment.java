@@ -14,8 +14,10 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -134,8 +136,30 @@ public class MessageFragment extends Fragment {
         gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
 
         setListener();
+        setVisibleInput(view);
+
         return view;
     }
+
+
+    private void setVisibleInput(View view) {
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if(getActivity().getCurrentFocus()!=null && getActivity().getCurrentFocus().getWindowToken()!=null){
+                        manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {

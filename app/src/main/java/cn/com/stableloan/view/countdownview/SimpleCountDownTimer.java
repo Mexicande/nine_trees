@@ -76,10 +76,7 @@ public class SimpleCountDownTimer extends CountDownTimer {
         long lMin = (millisUntilFinished - lHr * hr) / min;
         long lSec = (millisUntilFinished - lHr * hr - lMin * min) / sec;
         long lMs = millisUntilFinished - lHr * hr - lMin * min - lSec * sec;
-        String h = getTime(lHr);
-        String m = getTime(lMin);
-        String s = getTime(lSec);
-        String strLMs = getMs(lMs);
+        String strLMs = getMs(millisUntilFinished);
 
    /*     String time=lHr+":"+lMin+":"+lSec+":"+strLMs;
         // 依次拼接时间 时:分:秒:毫秒
@@ -112,7 +109,7 @@ public class SimpleCountDownTimer extends CountDownTimer {
      */
     private String getMs(long time) {
         String strMs = String.valueOf(time);
-        return time > 100 ? strMs.substring(0, strMs.length() - 1) : "00";
+        return time > 100 ? strMs.substring(strMs.length() - 3, strMs.length() - 2)+strMs.substring(strMs.length() - 3, strMs.length() - 2) : "00";
     }
 
     /**

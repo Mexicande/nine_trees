@@ -126,6 +126,7 @@ public class HtmlActivity extends BaseActivity {
 
             String safe = getIntent().getStringExtra("safe");
             if(safe!=null){
+                titleName.setText("安全小贴士");
                 getDate(Urls.HTML_URL+safe);
             }
         } else {

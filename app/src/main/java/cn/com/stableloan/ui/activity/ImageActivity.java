@@ -92,6 +92,8 @@ public class ImageActivity extends BaseActivity {
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         parms.put("signature", signature);
+        parms.put("source", "");
+
         JSONObject jsonObject = new JSONObject(parms);
 
         OkGo.<String>post(Urls.Ip_url + Urls.STATUS.GetPictrueStatus)

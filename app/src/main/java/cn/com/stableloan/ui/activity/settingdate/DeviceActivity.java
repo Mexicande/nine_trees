@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -90,22 +91,6 @@ public class DeviceActivity extends BaseActivity {
                                     }else {
                                         stProtect.setSwitchIsChecked(true);
                                     }
-                                    Device.DataBean.ListBean bean = new Device.DataBean.ListBean();
-                                    bean.setDevice("pixel");
-                                    bean.setVersion_number("Android-8.0");
-
-                                    Device.DataBean.ListBean bean1 = new Device.DataBean.ListBean();
-                                    bean1.setDevice("pixel2");
-                                    bean1.setVersion_number("Android-7.0");
-
-                                    device.getData().getList().add(bean);
-                                    device.getData().getList().add(bean1);
-                                    device.getData().getList().add(bean1);
-                                    device.getData().getList().add(bean1);
-                                    device.getData().getList().add(bean1);
-                                    device.getData().getList().add(bean1);
-
-
                                     mDeviceAdapter.addData(device.getData().getList());
                                 }else {
                                     ToastUtils.showToast(DeviceActivity.this,device.getError_message());
@@ -113,7 +98,52 @@ public class DeviceActivity extends BaseActivity {
                             }
                     }
                 });
+        stProtect.setSwitchCheckedChangeListener(new SuperTextView.OnSwitchCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(!isChecked){
+                            offDevice(0);
+                        }else {
+                            offDevice(1);
+                        }
+            }
+        });
 
+    }
+
+    /**
+     * 关闭设备
+     */
+    private void offDevice(int offOr) {
+
+        Map<String, String> parms = new HashMap<>();
+        parms.put("token", token);
+        parms.put("is_device",String.valueOf(offOr));
+        JSONObject jsonObject = new JSONObject(parms);
+        OkGo.<String>post(Urls.NEW_Ip_url+Urls.user.OPEN_DEVICE)
+                .tag(this)
+                .upJson(jsonObject)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if(s!=null){
+                            try {
+                                JSONObject object=new JSONObject(s);
+                                int error_code = object.getInt("error_code");
+                                if(error_code==0){
+
+                                }else {
+                                    String error_message = object.getString("error_message");
+                                    ToastUtils.showToast(DeviceActivity.this,error_message);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    }
+                });
 
     }
 

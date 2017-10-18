@@ -206,6 +206,8 @@ public class User_Bank_Fragment extends Fragment {
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         parms.put("token", token);
         parms.put("signature", signature);
+        parms.put("source", "");
+
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.Ip_url + Urls.Identity.Getbank)
                 .tag(getActivity())

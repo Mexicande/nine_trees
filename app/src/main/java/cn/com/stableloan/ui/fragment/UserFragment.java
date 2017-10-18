@@ -40,6 +40,7 @@ import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
+import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
@@ -53,6 +54,7 @@ import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -122,6 +124,11 @@ public class UserFragment extends ImmersionFragment {
     }
 
     private void getUserInfo() {
+        SPUtils.put(getActivity(),"cat",Urls.lock.NO_VERIFICATION);
+        SPUtils.put(getActivity(),"apply",Urls.lock.NO_VERIFICATION);
+
+
+
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("我的", "");
@@ -297,9 +304,31 @@ public class UserFragment extends ImmersionFragment {
 
     private KProgressHUD hud;
 
-    private void TextUser() {
+                                private void TextUser() {
+                                    int cat = (int) SPUtils.get(getActivity(), "cat", 0);
 
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
+                                            LogUtils.i("cat======",cat+"");
+
+                                            switch (cat){
+                                            case Urls.lock.NO_VERIFICATION:
+                                                LogUtils.i("cat======",Urls.lock.NO_VERIFICATION+"");
+
+                                                UserInformationActivity.launch(getActivity());
+                                                break;
+                                            case Urls.lock.GESTURE_VERIFICATION:
+                                                LogUtils.i("cat======",Urls.lock.GESTURE_VERIFICATION+"");
+
+                                                Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
+                                                startActivity(intent);
+                                                break;
+                                            case Urls.lock.PW_VERIFICATION:
+                                                LogUtils.i("cat======",Urls.lock.PW_VERIFICATION+"");
+                                                Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                                                startActivity(intent2);
+                                                break;
+                                        }
+
+       /* String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
@@ -352,7 +381,7 @@ public class UserFragment extends ImmersionFragment {
                     }
                 });
 
-
+*/
     }
     private SaveBean saveBean;
 

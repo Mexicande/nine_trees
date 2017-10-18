@@ -96,7 +96,7 @@ public class CountdownView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        stop();
+        //stop();
 
 
     }

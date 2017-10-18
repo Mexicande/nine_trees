@@ -21,21 +21,51 @@ public class UserBean implements Serializable {
     private int identity;
     private String nickname;
     private String token;
-
     private String credits;  //integral
     private String total;   //amount
-
+    private int  cat;
+    private int  login;
+    private int  apply;
     public UserBean() {
     }
 
-    public UserBean(String userphone, int identity, String nickname, String token, String credits, String total) {
+    public UserBean(int apply,int login,int cat,String userphone, int identity, String nickname, String token, String credits, String total) {
         this.userphone = userphone;
         this.identity = identity;
         this.nickname = nickname;
         this.token = token;
         this.credits = credits;
         this.total = total;
+        this.cat=cat;
+        this.login=login;
+        this.apply=apply;
     }
+
+    public int getCat() {
+        return cat;
+    }
+
+    public void setCat(int cat) {
+        this.cat = cat;
+    }
+
+    public int getLogin() {
+        return login;
+    }
+
+    public void setLogin(int login) {
+        this.login = login;
+    }
+
+    public int getApply() {
+        return apply;
+    }
+
+    public void setApply(int apply) {
+        this.apply = apply;
+    }
+
+
 
     public String getCredits() {
         return credits;
@@ -92,6 +122,11 @@ public class UserBean implements Serializable {
                 ", identity=" + identity +
                 ", nickname='" + nickname + '\'' +
                 ", token='" + token + '\'' +
+                ", credits='" + credits + '\'' +
+                ", total='" + total + '\'' +
+                ", cat=" + cat +
+                ", login=" + login +
+                ", apply=" + apply +
                 '}';
     }
 }

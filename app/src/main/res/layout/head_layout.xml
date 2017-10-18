@@ -23,65 +23,39 @@
                 android:layout_width="match_parent"
                 android:background="@color/white"
                 android:layout_height="30dp">
-               <LinearLayout
-                   android:layout_gravity="center_vertical"
-                   android:layout_marginLeft="13dp"
-                   android:layout_weight="1"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
-                   <ImageView
-                       android:layout_gravity="center_vertical"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:src="@mipmap/iv_hook"/>
                    <TextView
-                       android:layout_marginLeft="@dimen/_5dp"
+                       android:layout_marginLeft="@dimen/_10dp"
                        android:layout_gravity="center_vertical"
+                       android:drawablePadding="3dp"
+                       android:paddingRight="@dimen/_10dp"
+                       android:drawableLeft="@mipmap/iv_hook"
                        android:textColor="@color/select_text_color"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:textSize="30px"
                        android:text="放款审核快"/>
-               </LinearLayout>
-               <LinearLayout
-                   android:layout_weight="1"
-                   android:layout_gravity="center_vertical"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
-                   <ImageView
-                       android:layout_gravity="center_vertical"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:src="@mipmap/iv_hook"/>
                    <TextView
+                       android:paddingRight="3dp"
+                       android:drawablePadding="3dp"
+                       android:drawableLeft="@mipmap/iv_hook"
                        android:layout_gravity="center_vertical"
                        android:textColor="@color/select_text_color"
                        android:layout_marginLeft="@dimen/_5dp"
                        android:textSize="30px"
-
+                       android:layout_marginRight="@dimen/_5dp"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="甄选品质产品"/>
-               </LinearLayout>
-               <LinearLayout
-                   android:layout_gravity="center_vertical"
-                   android:layout_weight="1"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
-                   <ImageView
-                       android:layout_gravity="center_vertical"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:src="@mipmap/iv_hook"/>
+
                    <TextView
-                       android:layout_marginLeft="@dimen/_5dp"
+                       android:drawablePadding="3dp"
+                       android:drawableLeft="@mipmap/iv_hook"
                        android:textSize="30px"
                        android:layout_gravity="center_vertical"
                         android:textColor="@color/select_text_color"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="AWs加密严防泄露"/>
-               </LinearLayout>
             </LinearLayout>
             <View
                 android:background="@color/base_white"

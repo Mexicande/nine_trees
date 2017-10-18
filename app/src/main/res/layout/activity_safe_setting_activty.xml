@@ -198,6 +198,8 @@
                 />
         </LinearLayout>
     </ScrollView>
-
+    <include layout="@layout/setting_cat_slide"/>
+    <include layout="@layout/setting_apply_slide"/>
+    <include layout="@layout/setting_login_slide"/>
 
 </RelativeLayout>

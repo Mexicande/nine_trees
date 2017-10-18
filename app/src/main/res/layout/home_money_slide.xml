@@ -4,9 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginRight="50dp"
-    android:layout_marginLeft="50dp"
-    tools:showIn="@layout/fragment_home"
    >
     <RelativeLayout
         android:id="@+id/slide_Safe_Time"
@@ -21,12 +18,10 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tv_OneWeek"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/tv_FiveHundred"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:text="500元"
                 android:textColor="@color/blacktext"
                 android:textSize="@dimen/_16sp"/>
@@ -36,12 +31,10 @@
                 android:background="#EEEEEE"
                 />
             <TextView
-                android:id="@+id/tv_OneMonth"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/tv_OneThousand"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:text="1000元"
                 android:textColor="@color/blacktext"
                 android:textSize="@dimen/_16sp"/>
@@ -51,12 +44,10 @@
                 android:background="#EEEEEE"
                 />
             <TextView
-                android:id="@+id/tv_ThreeMonth"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/tv_TwoThousand"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:textColor="@color/blacktext"
 
                 android:text="2000元"
@@ -67,12 +58,10 @@
                 android:background="#EEEEEE"
                 />
             <TextView
-                android:id="@+id/tv_SixMonth"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/tv_FiveThousand"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:textColor="@color/blacktext"
 
                 android:text="5000元"
@@ -83,13 +72,24 @@
                 android:background="#EEEEEE"
                 />
             <TextView
-                android:id="@+id/tv_forever"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/tv_EightThousand"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:text="8000元"
+                android:textColor="@color/blacktext"
+                android:textSize="@dimen/_16sp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1dp"
+                android:background="#EEEEEE"
+                />
+            <TextView
+                android:id="@+id/tv_TenThousand"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="大于1万元"
                 android:textColor="@color/blacktext"
                 android:textSize="@dimen/_16sp"/>
             <View

@@ -169,6 +169,9 @@ public class BaseActivity extends AppCompatActivity {
                 hideKeyboard(v.getWindowToken());
             }
         }
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -185,6 +188,9 @@ public class BaseActivity extends AppCompatActivity {
                 // 点击EditText的事件，忽略它。
                 return false;
             } else {
+                v.setFocusable(false);
+                v.setFocusableInTouchMode(true);
+
                 return true;
             }
         }

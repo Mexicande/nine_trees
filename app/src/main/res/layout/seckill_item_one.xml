@@ -24,7 +24,7 @@
                    android:id="@+id/product_logo"
                    android:layout_width="50dp"
                    android:layout_height="50dp"
-                   android:src="@mipmap/logo"/>
+                   />
                <RelativeLayout
                    android:layout_centerVertical="true"
                    android:layout_marginLeft="@dimen/_10dp"
@@ -37,7 +37,7 @@
                            android:textColor="@color/select_text_color"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="小花钱包"/>
+                           android:text=""/>
                        <TextView
                            android:id="@+id/amount"
                            android:layout_alignParentBottom="true"
@@ -45,7 +45,7 @@
                            android:textColor="@color/text_setting"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="最高3000元"/>
+                           android:text=""/>
                        <TextView
                            android:id="@+id/activity_desc"
                            android:layout_marginRight="@dimen/_40dp"
@@ -55,7 +55,7 @@
                            android:textColor="@color/text_setting"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="放款速度：2小时"/>
+                           android:text=""/>
                </RelativeLayout>
                <ImageView
                    android:id="@+id/right_arrow"

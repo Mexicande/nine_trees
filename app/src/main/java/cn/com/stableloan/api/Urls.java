@@ -141,6 +141,7 @@ public interface Urls {
         String FEEDBACK="feedback/opinion";
         String DEVICE="set/getComDevice";
         String DELETE_DEVICE="set/delComDevice";
+        String OPEN_DEVICE="set/fetchComDevice";
     }
     interface  notice{
         String Announcement="Announcement";
@@ -221,4 +222,11 @@ public interface Urls {
     String NUMBER_ZERO=                                                                             "0";
     String NUMBER_ONE=                                                                              "1";
     String NUMBER_TWO=                                                                              "2";
+    interface lock{
+
+        int  NO_VERIFICATION =                                                                            0;
+        int  PW_VERIFICATION =                                                                            2;
+        int  GESTURE_VERIFICATION =                                                                       3;
+    }
+
 }
