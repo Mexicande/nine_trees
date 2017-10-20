@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="#f9f9f9"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
             <cn.bingoogolapple.bgabanner.BGABanner
@@ -11,7 +11,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 style="@style/BannerDefaultStyle"
-                android:layout_marginBottom="5dp"
                 app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
                 app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
                 app:banner_pointAutoPlayAble="true"
@@ -19,9 +18,13 @@
                 app:banner_transitionEffect="defaultEffect"
                 >
             </cn.bingoogolapple.bgabanner.BGABanner>
+
             <LinearLayout
+                android:elevation="@dimen/_0.5dp"
                 android:layout_width="match_parent"
                 android:background="@color/white"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_marginLeft="@dimen/_5dp"
                 android:layout_height="30dp">
                    <TextView
                        android:layout_marginLeft="@dimen/_10dp"
@@ -32,7 +35,7 @@
                        android:textColor="@color/select_text_color"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:textSize="30px"
+                       android:textSize="14sp"
                        android:text="放款审核快"/>
                    <TextView
                        android:paddingRight="3dp"
@@ -40,22 +43,27 @@
                        android:drawableLeft="@mipmap/iv_hook"
                        android:layout_gravity="center_vertical"
                        android:textColor="@color/select_text_color"
-                       android:layout_marginLeft="@dimen/_5dp"
-                       android:textSize="30px"
-                       android:layout_marginRight="@dimen/_5dp"
+                       android:textSize="14sp"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="甄选品质产品"/>
-
-                   <TextView
-                       android:drawablePadding="3dp"
-                       android:drawableLeft="@mipmap/iv_hook"
-                       android:textSize="30px"
-                       android:layout_gravity="center_vertical"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_centerHorizontal="true"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@mipmap/iv_hook"
+                        android:textSize="14sp"
+                        android:maxLines="1"
                         android:textColor="@color/select_text_color"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="AWs加密严防泄露"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AWs加密严防泄露"/>
+                </RelativeLayout>
             </LinearLayout>
             <View
                 android:background="@color/base_white"
@@ -98,12 +106,14 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_special"
                 android:layout_marginTop="@dimen/_20dp"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </android.support.v7.widget.RecyclerView>
             <RelativeLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
+                android:background="@color/white"
                 android:layout_height="45dp">
                 <ImageView
                     android:id="@+id/iv_fire"
@@ -126,7 +136,7 @@
                     />
             </RelativeLayout>
     <View
-        android:background="@color/base_white"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1dp"/>
             <android.support.v7.widget.RecyclerView

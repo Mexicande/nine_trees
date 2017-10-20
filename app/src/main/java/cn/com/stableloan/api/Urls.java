@@ -227,6 +227,11 @@ public interface Urls {
         int  NO_VERIFICATION =                                                                            0;
         int  PW_VERIFICATION =                                                                            2;
         int  GESTURE_VERIFICATION =                                                                       3;
+        String  CAT =                                                                                     "cat";
+        String  LOGIN =                                                                                     "login";
+        String  APPLY =                                                                                     "apply";
+        String  TOKEN =                                                                                     "token";
+        String  USER_PHONE =                                                                                "phone";
     }
 
 }

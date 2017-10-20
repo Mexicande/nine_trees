@@ -184,7 +184,8 @@ public class CertificationActivity extends BaseActivity {
                 .start();
 
         TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
+        UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
         phone = user.getUserphone();
         HashMap<String, String> params = new HashMap<>();
         params.put("user_id", phone);

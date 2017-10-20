@@ -7,7 +7,7 @@
     android:background="#f2f3f5"
     tools:context="cn.com.stableloan.ui.fragment.UserFragment">
     <RelativeLayout
-        android:background="@color/colorStatus"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="160dp">
         <ImageView
@@ -35,6 +35,8 @@
             android:layout_width="40dp"
             android:layout_height="35dp"
             android:src="@mipmap/iv_edit"/>
+
+
         <ImageView
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
@@ -49,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/iv_userheader"/>
+
         <TextView
             android:id="@+id/tv_nick"
             android:textSize="17sp"
@@ -152,7 +155,7 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
+        stv:sRightIconHeight="14dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/inivte" />
@@ -167,7 +170,7 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
+        stv:sRightIconHeight="14dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/information" />
@@ -182,7 +185,7 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
+        stv:sRightIconHeight="14dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/collection" />
@@ -197,7 +200,7 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
+        stv:sRightIconHeight="14dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/setting" />
@@ -212,7 +215,7 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
+        stv:sRightIconHeight="14dp"
         stv:sRightIconWidth="17dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/feedback" />

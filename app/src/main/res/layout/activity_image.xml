@@ -111,7 +111,7 @@
         stv:sLeftTvDrawableWidth="30dp"
         stv:sRightTextString="未完成"
         stv:sLeftViewMarginLeft="15dp"
-        stv:sLeftIconMarginLeft="20dp"
+        stv:sLeftIconMarginLeft="15dp"
         stv:sRightTextColor="@color/white"
         stv:sRightTextSize="17sp"
         stv:sRightTvDrawableWidth="20dp"

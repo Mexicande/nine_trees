@@ -449,30 +449,31 @@ public class LoginFragment extends Fragment {
         final Gson gson = new Gson();
         String json = gson.toJson(bean);
 
-        OkGo.<String>post(Urls.Ip_url + Urls.Login.LOGIN)
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.Login.LOGIN)
                 .tag(this)
                 .headers("sign", sign)
                 .upJson(json)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtils.i("login",s);
+
                         hud.dismiss();
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
                         if (infromBean.getError_code() == 0) {
-                            SPUtils.put(getActivity(), "token", infromBean.getData().getToken());
-                            SPUtils.put(getActivity(), "login", true);
+                            SPUtils.put(getActivity(), Urls.lock.TOKEN, infromBean.getData().getToken());
                             UserBean userBean = new UserBean();
                             userBean.setNickname(infromBean.getData().getNickname());
                             userBean.setUserphone(infromBean.getData().getUserphone());
+                            SPUtils.put(getActivity(),Urls.lock.USER_PHONE,infromBean.getData().getUserphone());
                             userBean.setIdentity(infromBean.getData().getIdentity());
                             EventBus.getDefault().post(new UserEvent(infromBean));
                           //  EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
                             TinyDB tinyDB = new TinyDB(getActivity());
-                            tinyDB.putObject("user", userBean);
+                            tinyDB.putObject(infromBean.getData().getUserphone(), userBean);
                             String from = getActivity().getIntent().getStringExtra("from");
                             WelfareBean.DataBean welfare = (WelfareBean.DataBean) getActivity().getIntent().getSerializableExtra("welfare");
                             if (from != null) {
-                                Log.i("from------", "from");
                                 if (from.equals("user")) {
                                     getActivity().setResult(Flag_User, new Intent().putExtra("user", userBean));
                                     getActivity().finish();

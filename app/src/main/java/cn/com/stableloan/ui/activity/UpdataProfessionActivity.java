@@ -227,7 +227,9 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                                     SPUtils.put(UpdataProfessionActivity.this,"identity",identity);
                                     ToastUtils.showToast(UpdataProfessionActivity.this,"保存成功");
                                     TinyDB tinyDB=new TinyDB(UpdataProfessionActivity.this);
-                                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                                    String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
+
+                                    UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
                                     user.setIdentity(Integer.parseInt(identity));
                                     user.setNickname(etNick.getText().toString());
                                     if(getIntent().getStringExtra("from")!=null){

@@ -48,7 +48,7 @@
                         android:textColor="@color/product_name_color"
                         android:textSize="14sp"
                         android:layout_marginLeft="3dp"
-                        android:text="安稳钱包"
+                        android:text=""
                         />
                     <ImageView
                         android:id="@+id/special_news"

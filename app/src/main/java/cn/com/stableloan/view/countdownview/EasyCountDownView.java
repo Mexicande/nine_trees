@@ -57,12 +57,12 @@ public class EasyCountDownView extends LinearLayout {
         addView(milLowView);
 
 
-        milview =new TextView(context);
+       /* milview =new TextView(context);
         milview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         milview.setText("");
         milview.setTextColor(textCorlor);
         milview.setTextSize(textSize);
-        addView(milview);
+        addView(milview);*/
     }
     //毫秒倒计时
     public void setTime(Long time){

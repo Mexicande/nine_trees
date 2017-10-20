@@ -173,15 +173,17 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                     UserInfromBean fromJson = gson.fromJson(s, UserInfromBean.class);
                                     int error_code = fromJson.getError_code();
                                     if (error_code == 0) {
-                                        SPUtils.put(SettingPassWordActivity.this, "token", fromJson.getData().getToken());
-                                        SPUtils.put(SettingPassWordActivity.this, "login", true);
+                                        SPUtils.put(SettingPassWordActivity.this, Urls.lock.TOKEN, fromJson.getData().getToken());
+
                                         UserBean userBean = new UserBean();
                                         userBean.setNickname(fromJson.getData().getNickname());
                                         userBean.setUserphone(fromJson.getData().getUserphone());
                                         userBean.setIdentity(fromJson.getData().getIdentity());
+                                        SPUtils.put(SettingPassWordActivity.this,Urls.lock.USER_PHONE,fromJson.getData().getUserphone());
+
                                         EventBus.getDefault().post(new MessageEvent(userBean.getNickname(),userBean.getUserphone()));
                                         TinyDB tinyDB = new TinyDB(SettingPassWordActivity.this);
-                                        tinyDB.putObject("user", userBean);
+                                        tinyDB.putObject(fromJson.getData().getUserphone(), userBean);
                                         AppApplication.destoryActivity("login");
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         finish();

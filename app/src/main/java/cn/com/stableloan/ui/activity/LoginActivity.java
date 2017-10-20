@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
+import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.interfaceutils.Touch_login;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
@@ -46,7 +47,7 @@ import cn.com.stableloan.ui.fragment.LoginFragment;
 import cn.com.stableloan.ui.fragment.MessageFragment;
 import cn.com.stableloan.utils.LogUtils;
 
-public class LoginActivity extends AppCompatActivity implements Touch_login {
+public class LoginActivity extends BaseActivity implements Touch_login {
 
 
     private static final String[] CHANNELS = new String[]{"短信快捷登录", "账号登录"};
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements Touch_login {
         mFragmentContainerHelper.attachMagicIndicator(loginMagicindicator);
     }
 
-    private void transparentStatusBar() {
+     protected void transparentStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }

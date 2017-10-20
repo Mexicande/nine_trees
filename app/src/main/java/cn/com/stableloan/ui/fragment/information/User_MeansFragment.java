@@ -321,10 +321,10 @@ public class User_MeansFragment extends Fragment {
     }
 
     private void getDate() {
+        String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
 
         TinyDB tinyDB = new TinyDB(getActivity());
-        user = (UserBean) tinyDB.getObject("user", UserBean.class);
-
+        user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
         userPhone.setRightString(user.getUserphone());
 
         Map<String, String> parms = new HashMap<>();

@@ -20,10 +20,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.dialog.SelfDialog;
@@ -179,10 +181,12 @@ public class CreateGestureActivity extends BaseActivity {
 
         LogUtils.i("SavePattern===",cells.toArray());
         byte[] bytes = LockPatternUtil.patternToHash(cells);
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
+
         final TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        String userphone = user.getUserphone();
-        aCache.put(userphone, bytes);
+        UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
+        String phone = user.getUserphone();
+        aCache.put(phone, bytes);
     }
     private SelfDialog selfDialog;
     @OnClick(R.id.iv_back)

@@ -53,6 +53,8 @@
                 stv:sLeftTextSize="@dimen/information_textSize"
                 stv:sLeftTextString="更改密码"
                 stv:sRightIconRes="@mipmap/iv_left"
+                stv:sRightIconHeight="14dp"
+
                 stv:sRightTextColor="@color/text_setting"
                 stv:sLeftTextColor="@color/select_text_color"
                 stv:sRightTextSize="@dimen/information_textSize"
@@ -66,6 +68,8 @@
                 stv:sLeftTextSize="@dimen/information_textSize"
                 stv:sLeftTextString="更改手势"
                 stv:sRightTextString="未设置"
+                stv:sRightIconHeight="14dp"
+
                 stv:sRightIconRes="@mipmap/iv_left"
                 stv:sRightTextColor="@color/text_setting"
                 stv:sLeftTextColor="@color/select_text_color"
@@ -88,6 +92,8 @@
                 stv:sLeftTextSize="@dimen/information_textSize"
                 stv:sLeftTextString="登陆解锁"
                 stv:sRightIconRes="@mipmap/iv_left"
+                stv:sRightIconHeight="14dp"
+
                 stv:sRightTextColor="@color/text_setting"
                 stv:sLeftTextColor="@color/select_text_color"
                 stv:sRightTextSize="@dimen/information_textSize"
@@ -103,6 +109,8 @@
                 stv:sLeftTextString="点击申请按钮"
                 stv:sRightTextString="无验证"
                 stv:sRightIconRes="@mipmap/iv_left"
+                stv:sRightIconHeight="14dp"
+
                 stv:sRightTextColor="@color/text_setting"
                 stv:sLeftTextColor="@color/select_text_color"
                 stv:sRightTextSize="@dimen/information_textSize"
@@ -138,6 +146,8 @@
                 stv:sLeftTextSize="@dimen/information_textSize"
                 stv:sLeftTextString="常用设备管理"
                 stv:sRightIconRes="@mipmap/iv_left"
+                stv:sRightIconHeight="14dp"
+
                 stv:sRightTextColor="@color/text_setting"
                 stv:sLeftTextColor="@color/select_text_color"
                 stv:sRightTextSize="@dimen/information_textSize"
@@ -153,6 +163,8 @@
                 stv:sLeftViewGravity="left_center"
                 stv:sLeftBottomTextString="自动清档时间:"
                 stv:sLeftBottomTextSize="14sp"
+                stv:sRightIconHeight="14dp"
+
                 stv:sLeftBottomTextColor="@color/text_setting"
                 stv:sRightIconRes="@mipmap/iv_left"
                 stv:sRightTextColor="@color/text_setting"
@@ -168,6 +180,8 @@
                 android:layout_height="50dp"
                 stv:sLeftTextSize="@dimen/information_textSize"
                 stv:sLeftTextString="安全小贴士"
+                stv:sRightIconHeight="14dp"
+
                 stv:sRightIconRes="@mipmap/iv_left"
                 stv:sRightTextColor="@color/text_setting"
                 stv:sLeftTextColor="@color/select_text_color"
@@ -188,6 +202,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 stv:sLeftTextSize="@dimen/information_textSize"
+                stv:sRightIconHeight="14dp"
+
                 stv:sLeftTextString="安全退出"
                 stv:sRightIconRes="@mipmap/iv_left"
                 stv:sRightTextColor="@color/text_setting"

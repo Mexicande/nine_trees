@@ -142,7 +142,7 @@ public class UpImageIdentityActivity extends BaseActivity {
         WIDTH = ivBusiness.getMeasuredWidth();
         LogUtils.i("ivBusiness===", "\n" + HEIGHT + "," + WIDTH);
 
-        token = (String) SPUtils.get(this, "token", "1");
+        token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         String signature = (String) SPUtils.get(this, "signature", "1");
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
@@ -192,13 +192,11 @@ public class UpImageIdentityActivity extends BaseActivity {
                                         fillImageView(am_photo, ivIdentityHead, "手持身份证");
                                     }
                                 } else {
-
+                                    String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
                                     final TinyDB tinyDB = new TinyDB(getApplicationContext());
-                                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                                    String userphone = user.getUserphone();
-                                    String gesturePassword = aCache.getAsString(userphone);
-
-
+                                    UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
+                                    String phone = user.getUserphone();
+                                    String gesturePassword = aCache.getAsString(phone);
                                     String lock = aCache.getAsString("lock");
 
                                     if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
@@ -208,9 +206,6 @@ public class UpImageIdentityActivity extends BaseActivity {
                                         Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
                                         startActivity(intent);
                                     }
-
-
-
                                 }
                             } else {
                                 ToastUtils.showToast(mContext, imageDataBean.getError_message());
@@ -393,10 +388,11 @@ public class UpImageIdentityActivity extends BaseActivity {
                     }
                     RequestOptions options = new RequestOptions()
                             .centerCrop()
+                            .error(R.mipmap.iv_error_image)
+                            .placeholder(R.mipmap.iv_holder_image)
                             .override(WIDTH, HEIGHT)
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                     Glide.with(getApplicationContext()).load(path).apply(options).into(iv);
-                    LogUtils.i("onActivityResult", selectList.size());
                     iv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -493,11 +489,12 @@ public class UpImageIdentityActivity extends BaseActivity {
     }
 
     private void getToken() {
-        token = (String) SPUtils.get(this, "token", "1");
+        token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         String signature = (String) SPUtils.get(this, "signature", "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         parms.put("signature", signature);
+        parms.put("source", "");
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_URL + Urls.Pictrue.GET_QINIUTOKEN)
                 .tag(this)

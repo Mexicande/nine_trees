@@ -24,6 +24,7 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.dialog.CashDialog;
@@ -63,8 +64,11 @@ public class SwitchPassWordActivity extends BaseActivity {
 
 
     private void setListener() {
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
+
         final TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+
+        UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
 
         userPhone=user.getUserphone();
 
@@ -142,9 +146,10 @@ public class SwitchPassWordActivity extends BaseActivity {
                 cashDialog.dismiss();
                 flag = 1;
                 aCache.remove(userPhone);
-                final TinyDB tinyDB = new TinyDB(SwitchPassWordActivity.this);
-                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                user.setCat(Urls.lock.NO_VERIFICATION);
+                String userphone = (String) SPUtils.get(SwitchPassWordActivity.this, Urls.lock.USER_PHONE, "1");
+                SPUtils.put(SwitchPassWordActivity.this,userphone+Urls.lock.CAT,Urls.lock.NO_VERIFICATION);
+                SPUtils.put(SwitchPassWordActivity.this,userphone+Urls.lock.APPLY,Urls.lock.NO_VERIFICATION);
+                SPUtils.put(SwitchPassWordActivity.this,userphone+Urls.lock.LOGIN,Urls.lock.PW_VERIFICATION);
                 stGestureOpen.setSwitchIsChecked(false);
                 flag=0;
                 stCreateGesture.setVisibility(View.GONE);

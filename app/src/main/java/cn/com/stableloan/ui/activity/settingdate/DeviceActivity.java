@@ -53,6 +53,7 @@ public class DeviceActivity extends BaseActivity {
     private Device device;
     private String token;
     private  boolean flag=false;
+    private  int deviceInt=0;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, DeviceActivity.class));
@@ -66,7 +67,6 @@ public class DeviceActivity extends BaseActivity {
         ButterKnife.bind(this);
         initToolbar();
         getDate();
-
 
     }
 
@@ -87,9 +87,13 @@ public class DeviceActivity extends BaseActivity {
                                 if(device.getError_code()==0){
                                     int is_device = device.getData().getIs_device();
                                     if(is_device==0){
+                                        deviceInt=1;
                                         stProtect.setSwitchIsChecked(false);
+                                        deviceInt=0;
                                     }else {
+                                        deviceInt=1;
                                         stProtect.setSwitchIsChecked(true);
+                                        deviceInt=0;
                                     }
                                     mDeviceAdapter.addData(device.getData().getList());
                                 }else {
@@ -101,11 +105,14 @@ public class DeviceActivity extends BaseActivity {
         stProtect.setSwitchCheckedChangeListener(new SuperTextView.OnSwitchCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!isChecked){
-                            offDevice(0);
-                        }else {
-                            offDevice(1);
-                        }
+                if(deviceInt==0){
+                    if(!isChecked){
+                        offDevice(0);
+                    }else {
+                        offDevice(1);
+                    }
+                }
+
             }
         });
 

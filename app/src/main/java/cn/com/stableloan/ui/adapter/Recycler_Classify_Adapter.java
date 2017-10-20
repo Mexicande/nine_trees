@@ -146,10 +146,18 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_Special.Da
             view4.setVisibility(View.GONE);
         }
         int interest_algorithm = item.getInterest_algorithm();
+        String maximum_amount = item.getMaximum_amount();
+        if(maximum_amount.length()>4){
+            String substring = maximum_amount.substring(0, maximum_amount.length() - 4);
+            helper.setText(R.id.min_max_Special,item.getMinimum_amount()+"-"+substring+"万");
+        }else {
+            helper.setText(R.id.min_max_Special,item.getMinimum_amount()+"-"+maximum_amount);
+        }
+
         helper.setText(R.id.special__desc,item.getProduct_introduction())
+                .setText(R.id.special_Pname,item.getPname())
                 .setText(R.id.min_algorithm_Special,item.getMin_algorithm()+"%")
-                .setText(R.id.average_time_Special,item.getFastest_time())
-        .setText(R.id.min_max_Special,item.getMinimum_amount()+"-"+item.getMaximum_amount());
+                .setText(R.id.average_time_Special,item.getFastest_time());
         if(interest_algorithm==0){
             helper.setText(R.id.special_rate,"参考日利率");
         }else {

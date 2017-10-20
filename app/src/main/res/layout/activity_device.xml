@@ -19,7 +19,7 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sRightTextSize="@dimen/information_textSize"
         stv:sRightViewType="switchBtn"
-        stv:sSwitchIsChecked="true"
+        stv:sSwitchIsChecked="false"
         stv:sSwitchMinWidth="40dp"
         stv:sThumbResource="@drawable/thumb"
         stv:sTrackResource="@drawable/track"

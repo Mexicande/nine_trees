@@ -5,13 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.pm.ActivityInfoCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
@@ -23,18 +24,22 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.integarl.StatusBean;
+import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -45,7 +50,6 @@ import okhttp3.Response;
 
 /**
  * 申请材料
- *
  */
 public class UserInformationActivity extends Activity {
 
@@ -59,9 +63,11 @@ public class UserInformationActivity extends Activity {
     SuperTextView UserAuthorization;
     @Bind(R.id.User_Pic)
     SuperTextView UserPic;
+    private List<View> views;
 
     /**
      * #17326b
+     *
      * @param context
      */
     public static void launch(Context context) {
@@ -78,15 +84,22 @@ public class UserInformationActivity extends Activity {
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();
-
         EventBus.getDefault().register(this);
-        getStatus();
         initToolbar();
+        getStatus();
     }
 
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("申请材料");
+
+        views = new ArrayList<>();
+
+        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1));
+        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1));
+        BGABanner viewById = (BGABanner) findViewById(R.id.informationBgabanner);
+        viewById.setData(views);
+
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("mymaterials", "");
@@ -99,11 +112,11 @@ public class UserInformationActivity extends Activity {
 
     }
 
-    @Override
+   /* @Override
     protected void onRestart() {
         super.onRestart();
         getStatus();
-    }
+    }*/
 
     private void getStatus() {
         Map<String, String> parms = new HashMap<>();
@@ -126,7 +139,7 @@ public class UserInformationActivity extends Activity {
                                     Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
                                     UserInformation.setTextBackground(drawable);
                                     UserInformation.setRightString("已完成");
-                                }else {
+                                } else {
                                     Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
                                     UserInformation.setTextBackground(drawable);
                                     UserInformation.setRightString("未完成");
@@ -135,7 +148,7 @@ public class UserInformationActivity extends Activity {
                                     Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
                                     UserAuthorization.setTextBackground(drawable);
                                     UserAuthorization.setRightString("已完成");
-                                }else {
+                                } else {
                                     Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
                                     UserAuthorization.setTextBackground(drawable);
                                     UserAuthorization.setRightString("未完成");
@@ -144,7 +157,7 @@ public class UserInformationActivity extends Activity {
                                     Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
                                     UserPic.setTextBackground(drawable);
                                     UserPic.setRightString("已完成");
-                                }else {
+                                } else {
                                     Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
                                     UserPic.setTextBackground(drawable);
                                     UserPic.setRightString("未完成");
@@ -174,13 +187,14 @@ public class UserInformationActivity extends Activity {
                 finish();
                 break;
             case R.id.User_information:
+                String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
                 TinyDB tinyDB = new TinyDB(this);
-                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
+                UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
                 int identity = user.getIdentity();
                 if (identity == 0) {
                     startActivity(new Intent(this, UpdataProfessionActivity.class).putExtra("from", "identity"));
-                    //UpdataProfessionActivity.launch(this);
                 } else {
+
                     IdentityinformationActivity.launch(this);
                 }
                 break;
@@ -188,7 +202,7 @@ public class UserInformationActivity extends Activity {
                 CertificationActivity.launch(this);
                 break;
             case R.id.User_Pic:
-                ImageActivity.launch(this);
+                UpImageIdentityActivity.launch(this);
                 break;
         }
     }

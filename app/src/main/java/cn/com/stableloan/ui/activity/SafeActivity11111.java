@@ -59,12 +59,13 @@ public class SafeActivity11111 extends BaseActivity {
                 finish();
                 break;
             case R.id.safe:
+                String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
 
                 final TinyDB tinyDB = new TinyDB(this);
-                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                String userphone = user.getUserphone();
+                UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
+                String phone = user.getUserphone();
 
-                String gesturePassword = aCache.getAsString(userphone);
+                String gesturePassword = aCache.getAsString(phone);
                 String lock = aCache.getAsString("lock");
 
                 if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {

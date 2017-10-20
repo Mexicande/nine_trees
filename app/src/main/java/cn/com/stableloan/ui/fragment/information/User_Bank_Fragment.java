@@ -244,11 +244,12 @@ public class User_Bank_Fragment extends Fragment {
                                     etValidityTime2.setRightString(bankBean.getBank().getCredit().getCperiod());
 
                                 } else {
+                                    String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
 
                                     final TinyDB tinyDB = new TinyDB(getActivity());
-                                    UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                                    String userphone = user.getUserphone();
-                                    String gesturePassword = aCache.getAsString(userphone);
+                                    UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
+                                    String phone = user.getUserphone();
+                                    String gesturePassword = aCache.getAsString(phone);
                                     String lock = aCache.getAsString("lock");
 
                                     if (gesturePassword == null || "".equals(gesturePassword) || "off".equals(lock)) {

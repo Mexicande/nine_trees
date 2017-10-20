@@ -639,10 +639,9 @@ public class MessageFragment extends Fragment {
                         LogUtils.i("CodeMessage",codeMessage);
                         if(codeMessage.getError_code()==0){
                             if("1".equals(codeMessage.getData().getStatus())){
-                                SPUtils.put(getActivity(), "token", codeMessage.getData().getToken());
+                                SPUtils.put(getActivity(), Urls.lock.TOKEN, codeMessage.getData().getToken());
                                 String from = getActivity().getIntent().getStringExtra("from");
                                 Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
-                                SPUtils.put(getActivity(), "login", true);
                                 if (from != null) {
                                     if(from.equals("user")){
                                         EventBus.getDefault().post(new InformationEvent("user3"));

@@ -67,10 +67,11 @@ public class GestureLoginActivity extends BaseActivity {
 
 
         //得到当前用户的手势密码
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
 
         final TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        String userphone = user.getUserphone();
+        UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
+        String phone = user.getUserphone();
         gesturePassword = aCache.getAsBinary(userphone);
         lockPatternView.setOnPatternListener(patternListener);
         updateStatus(Status.DEFAULT);
@@ -260,6 +261,11 @@ public class GestureLoginActivity extends BaseActivity {
                             }
                         });
 
+            }else if("apply".equals(from)){
+                Intent intent=new Intent();
+                intent.putExtra("ok","ok");
+                setResult(1000,intent);
+                finish();
             }
         }else  {
             String token = (String) SPUtils.get(this, "token", "1");
@@ -292,7 +298,6 @@ public class GestureLoginActivity extends BaseActivity {
 
         }
 
-        //Toast.makeText(GestureLoginActivity.this, "success", Toast.LENGTH_SHORT).show();
     }
 
     /**

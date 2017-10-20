@@ -220,9 +220,7 @@ public class ProductFragment extends ImmersionFragment {
                                             classify_recycler_adapter.loadMoreComplete();
                                             break;
                                     }
-                                    if (var == 1) {
 
-                                    }
                                 } else {
                                     classify_recycler_adapter.loadMoreEnd();
                                 }

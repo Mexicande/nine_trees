@@ -206,6 +206,11 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             } else if("CreateGesture".equals(from)){
                                                 CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
+                                            }else if("apply".equals(from)){
+                                                Intent intent=new Intent();
+                                                intent.putExtra("ok","ok");
+                                                setResult(1000,intent);
+                                                finish();
                                             }
                                         }
 

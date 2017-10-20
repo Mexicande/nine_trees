@@ -117,8 +117,7 @@ public class SafeSettingActivity extends BaseActivity {
     private SlideUp apply_SlideUp;
     private SlideUp login_SlideUp;
     private TinyDB tinyDB;
-
-    private TinyDB tinyuser;
+    private String userPhone;
 
     private static final int REQUEST_CODE = 110;
 
@@ -175,7 +174,9 @@ public class SafeSettingActivity extends BaseActivity {
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
 
+/*
         RBNO.setChecked(true);
+*/
 
     }
 
@@ -282,20 +283,26 @@ public class SafeSettingActivity extends BaseActivity {
 
     private void getDate() {
 
-        RBGE.setEnabled(false);
-        applyGE.setEnabled(false);
-        loginGE.setEnabled(false);
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
 
+        tinyDB=new TinyDB(this);
 
+        user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
 
-        tinyuser = new TinyDB(this);
-        tinyDB = new TinyDB(this);
-        user = (UserBean) tinyDB.getObject("user", UserBean.class);
-
-        String userPhone = user.getUserphone();
+        userPhone = user.getUserphone();
 
         String gesturePassword = aCache.getAsString(userPhone);
-        int cat = (int) SPUtils.get(this, "cat", 0);
+
+        if(gesturePassword!=null){
+            RBGE.setEnabled(true);
+            loginGE.setEnabled(true);
+            applyGE.setEnabled(true);
+        }else {
+            RBGE.setEnabled(false);
+            applyGE.setEnabled(false);
+            loginGE.setEnabled(false);
+        }
+        int cat = (int) SPUtils.get(this,userPhone+Urls.lock.CAT, 0);
         switch (cat) {
             case Urls.lock.NO_VERIFICATION:
                 RBNO.setChecked(true);
@@ -312,7 +319,7 @@ public class SafeSettingActivity extends BaseActivity {
                 }
                 break;
         }
-        int apply = (int) SPUtils.get(this, "apply", 0);
+        int apply = (int) SPUtils.get(this, userPhone+Urls.lock.APPLY, 0);
         switch (apply) {
             case Urls.lock.NO_VERIFICATION:
                 applyNO.setChecked(true);
@@ -328,7 +335,7 @@ public class SafeSettingActivity extends BaseActivity {
                 }
                 break;
         }
-        int login = (int) SPUtils.get(this, "loginLock", 6);
+        int login = (int) SPUtils.get(this, userPhone+Urls.lock.LOGIN, 6);
         switch (login) {
             case Urls.lock.NO_VERIFICATION:
                 loginNO.setChecked(true);
@@ -377,7 +384,6 @@ public class SafeSettingActivity extends BaseActivity {
                                 String managed = saveBean.getManaged();
                                 if (managed != null && managed.length() == 1) {
                                     int i = Integer.parseInt(managed);
-
                                     svDateTime.setRightString(managedList[i]);
                                 }
                                 if (saveBean.getPeriod().length() < 2) {
@@ -408,9 +414,8 @@ public class SafeSettingActivity extends BaseActivity {
             @Override
             public void onYesClick() {
                 selfDialog.dismiss();
-                SPUtils.clear(SafeSettingActivity.this);
-                TinyDB tinyDB = new TinyDB(SafeSettingActivity.this);
-                tinyDB.clear();
+                String userphone = (String) SPUtils.get(SafeSettingActivity.this, Urls.lock.USER_PHONE, "1");
+                SPUtils.remove(mContext,Urls.lock.TOKEN);
                 startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();
             }
@@ -461,27 +466,25 @@ public class SafeSettingActivity extends BaseActivity {
             //查看个人资料
             case R.id.RB_NO:
                 if (!RBNO.isChecked()) {
-                    SPUtils.put(this, "cat", Urls.lock.NO_VERIFICATION);
+                    SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.NO_VERIFICATION);
                 }
                 svUnLockCat.setRightString("无验证");
                 cat_SlideUp.hide();
                 break;
             case R.id.RB_PW:
                 if (!RBPW.isChecked()) {
-                    SPUtils.put(this, "cat", Urls.lock.PW_VERIFICATION);
+                    SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.PW_VERIFICATION);
                 }
                 svUnLockCat.setRightString("密码验证");
                 cat_SlideUp.hide();
-                tinyuser.putObject("user", user);
                 break;
             case R.id.RB_GE:
-                String userPhone = user.getUserphone();
                 String gesturePassword = aCache.getAsString(userPhone);
                 if (gesturePassword == null) {
                     ToastUtils.showToast(this, "请先设置手势密码");
                 } else {
                     if (!RBGE.isChecked()) {
-                        SPUtils.put(this, "cat", Urls.lock.GESTURE_VERIFICATION);
+                        SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.GESTURE_VERIFICATION);
                     }
                     svUnLockCat.setRightString("手势验证");
                     cat_SlideUp.hide();
@@ -492,7 +495,7 @@ public class SafeSettingActivity extends BaseActivity {
                 break;
             case R.id.apply_NO:
                 if (!applyNO.isChecked()) {
-                    SPUtils.put(this, "apply", Urls.lock.NO_VERIFICATION);
+                    SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
                 }
                 svUnLockApply.setRightString("无验证");
                 apply_SlideUp.hide();
@@ -500,19 +503,18 @@ public class SafeSettingActivity extends BaseActivity {
                 break;
             case R.id.apply_PW:
                 if (!applyPW.isChecked()) {
-                    SPUtils.put(this, "apply", Urls.lock.PW_VERIFICATION);
+                    SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.PW_VERIFICATION);
                 }
-                svUnLockApply.setRightString("无验证");
+                svUnLockApply.setRightString("密码验证");
                 apply_SlideUp.hide();
                 break;
             case R.id.apply_GE:
-                String userPhone1 = user.getUserphone();
-                String gesturePassword2 = aCache.getAsString(userPhone1);
+                String gesturePassword2 = aCache.getAsString(userPhone);
                 if (gesturePassword2 == null) {
                     ToastUtils.showToast(this, "请先设置手势密码");
                 } else {
                     if (!applyGE.isChecked()) {
-                        SPUtils.put(this, "apply", Urls.lock.GESTURE_VERIFICATION);
+                        SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.GESTURE_VERIFICATION);
                     }
                     svUnLockApply.setRightString("手势验证");
                     apply_SlideUp.hide();
@@ -524,7 +526,7 @@ public class SafeSettingActivity extends BaseActivity {
                 break;
             case R.id.login_NO:
                 if (!loginNO.isChecked()) {
-                    SPUtils.put(this, "loginLock", Urls.lock.NO_VERIFICATION);
+                    SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.NO_VERIFICATION);
                 }
                 svUnLockLogin.setRightString("无验证");
                 login_SlideUp.hide();
@@ -532,19 +534,18 @@ public class SafeSettingActivity extends BaseActivity {
                 break;
             case R.id.login_PW:
                 if (!loginPW.isChecked()) {
-                    SPUtils.put(this, "loginLock", Urls.lock.PW_VERIFICATION);
+                    SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
                 }
-                svUnLockLogin.setRightString("无验证");
+                svUnLockLogin.setRightString("密码验证");
                 login_SlideUp.hide();
                 break;
             case R.id.login_GE:
-                String userPhone2 = user.getUserphone();
-                String gesturePassword3 = aCache.getAsString(userPhone2);
+                String gesturePassword3 = aCache.getAsString(userPhone);
                 if (gesturePassword3 == null) {
                     ToastUtils.showToast(this, "请先设置手势密码");
                 } else {
                     if (!loginGE.isChecked()) {
-                        SPUtils.put(this, "loginLock", Urls.lock.GESTURE_VERIFICATION);
+                        SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.GESTURE_VERIFICATION);
                     }
                     svUnLockLogin.setRightString("手势验证");
                     login_SlideUp.hide();
@@ -562,7 +563,11 @@ public class SafeSettingActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (cat_SlideUp.isVisible()) {
             cat_SlideUp.hide();
-        } else {
+        } else if(apply_SlideUp.isVisible()){
+            apply_SlideUp.hide();
+        }else if(login_SlideUp.isVisible()){
+            login_SlideUp.hide();
+        }else {
             return super.onKeyDown(keyCode, event);
         }
         return false;

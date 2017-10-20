@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -139,6 +137,8 @@ public class ProductDesc extends BaseActivity {
     RelativeLayout outView;
     @Bind(R.id.tv_DescTerminally)
     TextView tvDescTerminally;
+    @Bind(R.id.desc_advertising)
+    ImageView descAdvertising;
     private int pid;
 
     private Product_DescBean descBean;
@@ -146,6 +146,7 @@ public class ProductDesc extends BaseActivity {
     private boolean shareFlag = false;
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
+    private static final int APPLY_VAIL = 1000;
 
     private boolean flag = false;
 
@@ -224,16 +225,15 @@ public class ProductDesc extends BaseActivity {
         });
 
 
-
     }
 
-    private  void computations(){
+    private void computations() {
 
         String hint = etMaxTime.getText().toString();
         String str = etMaxLimit.getText().toString();
         String minimum_amount = descBean.getData().getMinimum_amount();
         String maximum_amount = descBean.getData().getMaximum_amount();
-        if (!hint.isEmpty() && !str.isEmpty()&&minimum_amount!=null&&maximum_amount!=null) {
+        if (!hint.isEmpty() && !str.isEmpty() && minimum_amount != null && maximum_amount != null) {
             int lim = Integer.parseInt(str);
             if (lim < Integer.parseInt(minimum_amount)) {
                 etMaxLimit.setText(minimum_amount);
@@ -250,22 +250,23 @@ public class ProductDesc extends BaseActivity {
 
             LogUtils.i("aDouble====", aDouble / 100 + "");
             double v1 = aDouble * time / 100 * mony + descBean.getData().getFee();
-            int zeroRate=(int)v1;
+            int zeroRate = (int) v1;
 
             String valueOf = String.valueOf(zeroRate);
 
 
-            zeroAlgorithm.setText(valueOf+"元");
+            zeroAlgorithm.setText(valueOf + "元");
 
 
             double v2 = (mony + v1) / time;
 
-            int everyRate=(int)v2;
+            int everyRate = (int) v2;
             String everyTime = String.valueOf(everyRate);
 
-            tvDescTerminally.setText(everyTime+"元");
+            tvDescTerminally.setText(everyTime + "元");
         }
     }
+
     private void getProductDate() {
         Boolean login = (Boolean) SPUtils.get(this, "login", false);
         String token = (String) SPUtils.get(this, "token", "1");
@@ -370,8 +371,14 @@ public class ProductDesc extends BaseActivity {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
+
         Glide.with(this).load(product.getProduct_logo()).apply(options)
                 .into(productLogo);
+
+        Glide.with(this).load(product.getAd_image())
+                .apply(options).into(descAdvertising);
+
+
         //averageTime.setText(product.getAverage_time());
         tvPname.setText(product.getPname());
         productIntroduction.setText(product.getProduct_introduction());
@@ -413,6 +420,7 @@ public class ProductDesc extends BaseActivity {
         } else {
             substringmax = maximum_amount;
         }
+
 
         etMaxLimit.setText(maximum_amount);
         etMaxTime.setText(product.getMax_cycle());
@@ -501,37 +509,34 @@ public class ProductDesc extends BaseActivity {
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
                 break;
             case R.id.apply:
-                Boolean login = (Boolean) SPUtils.get(this, "login", false);
-                if (!login) {
+                String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
+                if ("1".equals(token)) {
                     LoginActivity.launch(this);
                 } else {
                     Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                    if (dialog) {
+                    if (dialog != null && dialog) {
                         sendIO();
                         startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                     } else {
-                        int apply = (int) SPUtils.get(this, "apply", 0);
+                        String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
+                        int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
+                        switch (apply) {
+                            case Urls.lock.NO_VERIFICATION:
+                                showApplyDialog();
+                                break;
+                            case Urls.lock.PW_VERIFICATION:
+                                Intent intent = new Intent(this, Verify_PasswordActivity.class);
+                                intent.putExtra("from", "apply");
+                                startActivityForResult(intent, APPLY_VAIL);
+                                break;
+                            case Urls.lock.GESTURE_VERIFICATION:
+                                Intent intent1 = new Intent(this, GestureLoginActivity.class);
+                                intent1.putExtra("from", "apply");
+                                startActivityForResult(intent1, APPLY_VAIL);
+                                break;
+                        }
 
 
-
-
-
-
-
-
-                        descDialog = new DescDialog(this);
-                        descDialog.setTitle("提示");
-                        descDialog.setMessage("确定退出登陆?");
-                        descDialog.setYesOnclickListener("确定", new DescDialog.onYesOnclickListener() {
-                            @Override
-                            public void onYesClick() {
-                                descDialog.dismiss();
-                                sendIO();
-                                startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-                            }
-                        });
-
-                        descDialog.show();
                     }
                 }
                 break;
@@ -541,6 +546,23 @@ public class ProductDesc extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    private void showApplyDialog() {
+
+        descDialog = new DescDialog(this);
+        descDialog.setTitle("提示");
+        descDialog.setMessage("确定退出登陆?");
+        descDialog.setYesOnclickListener("确定", new DescDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                descDialog.dismiss();
+                sendIO();
+                startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+            }
+        });
+
+        descDialog.show();
     }
 
     private void setShared_Collection() {
@@ -570,8 +592,9 @@ public class ProductDesc extends BaseActivity {
                                 shareWechat(WXShareContent.WXTimeline);
                                 break;
                             case 2:
-                                Boolean login1 = (Boolean) SPUtils.get(ProductDesc.this, "login", false);
-                                if (!login1) {
+                                String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
+
+                                if (token != null) {
                                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
                                 } else {
                                     if (shareFlag) {
@@ -700,6 +723,14 @@ public class ProductDesc extends BaseActivity {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }
                         startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                    }
+                }
+                break;
+            case APPLY_VAIL:
+                if (resultCode == 1000) {
+                    String ok = data.getStringExtra("ok");
+                    if ("ok".equals(ok)) {
+                        showApplyDialog();
                     }
                 }
                 break;

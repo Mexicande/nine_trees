@@ -153,7 +153,6 @@ public class User_Professional_Fragment extends Fragment {
         parms.put("token", token);
         parms.put("signature", signature);
         parms.put("source", "");
-
         JSONObject object = new JSONObject(parms);
         OkGo.<String>post(Urls.Ip_url + Urls.Identity.GetOccupation)
                 .tag(this)

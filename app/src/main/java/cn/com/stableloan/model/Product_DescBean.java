@@ -119,10 +119,19 @@ public class Product_DescBean implements Serializable {
          * platformdetail : {"pl_name":"钱有路","introduction":"钱有路一款为用户提供小额短期借款的APP。2016年11月拿米金融在小额贷款行业推出移动互联网应用\u201c钱有路\u201dAPP。钱有路始终坚持为用户提供稳定快速的小额现金贷款服务。aaa钱有路始终坚持为用户提供稳定快速的小额现金贷款服务，以信用转换价值，解决急需小额现金用户的燃眉之急。从创立之初，钱有路小额贷款的初衷就一直没有变过，这个信条也一直贯穿钱有路产品研发与服务的始终。","registered_time":"2016-12-17"}
          * crowds : ["0","1","2","3"]
          */
-
+        private String ad_image;
         private int id;
         private String pname;
         private int pl_id;
+
+        public String getAd_image() {
+            return ad_image;
+        }
+
+        public void setAd_image(String ad_image) {
+            this.ad_image = ad_image;
+        }
+
         private String link;
         private int abbreviation;
         private String minimum_amount;

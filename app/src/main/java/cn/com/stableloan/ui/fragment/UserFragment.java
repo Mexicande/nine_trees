@@ -85,7 +85,7 @@ public class UserFragment extends ImmersionFragment {
     private ACache aCache;
     private String userPhone="";
 
-
+    private String nick;
     private Wechat_dialog wechat_dialog;
     public UserFragment() {
 
@@ -124,9 +124,6 @@ public class UserFragment extends ImmersionFragment {
     }
 
     private void getUserInfo() {
-        SPUtils.put(getActivity(),"cat",Urls.lock.NO_VERIFICATION);
-        SPUtils.put(getActivity(),"apply",Urls.lock.NO_VERIFICATION);
-
 
 
         JSONObject eventObject = new JSONObject();
@@ -153,11 +150,14 @@ public class UserFragment extends ImmersionFragment {
                                 Gson gson=new Gson();
                                 Personal personal = gson.fromJson(s, Personal.class);
                                 if(personal.getError_code()==0){
-                                    tinyDB.putObject("user", personal.getData());
+                                    String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
+
+                                    tinyDB.putObject(userphone, personal.getData());
                                     tvNick.setText(personal.getData().getNickname());
                                     tvIntegral.setText(personal.getData().getCredits());
                                     btMoney.setText(personal.getData().getTotal());
                                     userPhone=personal.getData().getUserphone();
+
                                 }else {
                                     ToastUtils.showToast(getActivity(),personal.getError_message());
                                 }
@@ -248,7 +248,7 @@ public class UserFragment extends ImmersionFragment {
                 CashActivity.launch(getActivity());
                 break;
             case R.id.invite:
-                InviteFriendsActivity.launch(getActivity());
+                startActivity(new Intent(getActivity(),InviteFriendsActivity.class).putExtra("nick",tvNick.getText().toString()));
                 break;
             case R.id.layout_attention:
                 wechat_dialog = new Wechat_dialog(getActivity());
@@ -302,30 +302,22 @@ public class UserFragment extends ImmersionFragment {
         return false;
     }
 
-    private KProgressHUD hud;
+    private void TextUser() {
+             String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
+                    int cat = (int) SPUtils.get(getActivity(), userphone+Urls.lock.CAT, 0);
+                       switch (cat){
+                           case Urls.lock.NO_VERIFICATION:
+                               UserInformationActivity.launch(getActivity());
+                               break;
+                           case Urls.lock.GESTURE_VERIFICATION:
 
-                                private void TextUser() {
-                                    int cat = (int) SPUtils.get(getActivity(), "cat", 0);
-
-                                            LogUtils.i("cat======",cat+"");
-
-                                            switch (cat){
-                                            case Urls.lock.NO_VERIFICATION:
-                                                LogUtils.i("cat======",Urls.lock.NO_VERIFICATION+"");
-
-                                                UserInformationActivity.launch(getActivity());
-                                                break;
-                                            case Urls.lock.GESTURE_VERIFICATION:
-                                                LogUtils.i("cat======",Urls.lock.GESTURE_VERIFICATION+"");
-
-                                                Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
-                                                startActivity(intent);
-                                                break;
-                                            case Urls.lock.PW_VERIFICATION:
-                                                LogUtils.i("cat======",Urls.lock.PW_VERIFICATION+"");
-                                                Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                                startActivity(intent2);
-                                                break;
+                               Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
+                               startActivity(intent);
+                               break;
+                           case Urls.lock.PW_VERIFICATION:
+                               Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                               startActivity(intent2);
+                               break;
                                         }
 
        /* String token = (String) SPUtils.get(getActivity(), "token", "1");

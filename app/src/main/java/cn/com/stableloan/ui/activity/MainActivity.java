@@ -162,10 +162,10 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
         @Override
         public void onSelected(int index, int old) {
-
             if(index==3){
-                String token = (String) SPUtils.get(MainActivity.this, "token", null);
-                if (token!=null) {
+                String token = (String) SPUtils.get(MainActivity.this, Urls.lock.TOKEN, "1");
+                LogUtils.i("token",token+"---");
+                if ("1".equals(token)) {
                     startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
                 }else {
                     switchMenu(getFragmentName(4));

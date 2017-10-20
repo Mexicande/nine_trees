@@ -38,6 +38,8 @@
         stv:sLeftTextSize="@dimen/information_textSize"
         stv:sLeftTextString="重设手势"
         stv:sRightIconRes="@mipmap/iv_left"
+        stv:sRightIconHeight="14dp"
+
         stv:sRightTextColor="@color/text_setting"
         stv:sLeftTextColor="@color/select_text_color"
         stv:sRightTextSize="@dimen/information_textSize"

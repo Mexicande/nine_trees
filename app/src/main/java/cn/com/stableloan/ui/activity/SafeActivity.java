@@ -282,7 +282,6 @@ public class SafeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-
                 if (tv_time.getText().toString().equals(period) && selectTime.getRightString().equals(manage)) {
                     finish();
                 } else {
@@ -395,7 +394,7 @@ public class SafeActivity extends BaseActivity {
                             String msg = object.getString("error_message");
                             if (code == 0) {
                                 ToastUtils.showToast(SafeActivity.this, "清除成功,档案将在一天后清除");
-                                long l = System.currentTimeMillis() + 86400000;
+                                long l = System.currentTimeMillis();
                                 String date = stampToDate(String.valueOf(l));
                                 tv_time.setText(date);
                                 saveBean.setPeriod(date);
@@ -415,8 +414,7 @@ public class SafeActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            if (tv_time.getText().toString().equals(saveBean.getPeriod()) && selectTime.getRightString().equals(manage)) {
+            if (tv_time.getText().toString().equals(period) && selectTime.getRightString().equals(manage)) {
                 finish();
             } else {
                 Intent intent = new Intent();

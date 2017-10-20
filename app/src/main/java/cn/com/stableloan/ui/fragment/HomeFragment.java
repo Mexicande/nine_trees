@@ -69,6 +69,7 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
+import cn.com.stableloan.view.MyDecoration;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
 import cn.com.stableloan.view.countdownview.CountdownView;
 import cn.com.stableloan.view.countdownview.EasyCountDownView;
@@ -183,19 +184,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         mCardView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(0).getId()));
+                                                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(0).getProduct_id()));
                                             }
                                         });
                                         break;
                                     case 2:
+                                        mCardView.setVisibility(View.GONE);
                                         re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.HORIZONTAL, false));
+                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
                                         re_View.setAdapter(rc_adapter);
+                                        rc_adapter.setNewData(seckillBean.getData());
                                         break;
                                     case 3:
+                                        mCardView.setVisibility(View.GONE);
                                         re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new ScrollSpeedLinearLayoutManger(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                                        re_View.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
                                         re_View.setAdapter(rc_adapter);
+                                        rc_adapter.setNewData(seckillBean.getData());
                                         break;
                                 }
                             }
@@ -306,17 +311,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         getBannerDate(ACTION);
                     }
                 }, 1000);
-                //horizontal 水平 滑动位置
-              /*  re_View.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!rc_adapter.getData().isEmpty()) {
-                            if (rc_adapter.getData().size() > 2) {
-                                re_View.smoothScrollToPosition(rc_adapter.getData().size() - 1);
-                            }
-                        }
-                    }
-                }, 100);*/
+
             }
         });
         easylayout.setEnableLoadMore(false);
@@ -333,7 +328,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 }
                 ZhugeSDK.getInstance().track(getActivity(), "新上线产品", eventObject);
 
-                // HtmlActivity.launch(getActivity());
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
             }
@@ -368,6 +362,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         productAdapter = new ListProductAdapter(null);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         recylerview.setAdapter(productAdapter);
+        recylerview.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
         View view = setHeaderView();
         productAdapter.addHeaderView(view);
 
@@ -438,16 +433,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         re_View.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String app = hotBean.getRecommends().get(position).getApp();
+
                 JSONObject eventObject = new JSONObject();
                 try {
-                    eventObject.put("miaosha", hotBean.getRecommends().get(position).getName());
+                    eventObject.put("miaosha", seckillBean.getData().get(position).getProduct_name());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 ZhugeSDK.getInstance().track(getActivity(), "rementuijian", eventObject);
-                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getId()));
+                startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getProduct_id()));
             }
         });
 
@@ -534,10 +529,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
                             if (hotNewProduct.getError_code() == 0) {
                                 productAdapter.setNewData(hotNewProduct.getData());
-                              /*  LinearLayout headerLayout = productAdapter.getHeaderLayout();
-                                CountdownView  mCountdownView = (CountdownView) headerLayout.findViewById(R.id.cv_countdownViewTest1);
-                                mCountdownView.start(100000);
-                                mCountdownView.updateShow(100000);*/
+
 
                             }
                         }

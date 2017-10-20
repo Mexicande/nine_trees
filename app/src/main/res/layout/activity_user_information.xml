@@ -3,15 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/base_white"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.activity.UserInformationActivity">
-
     <RelativeLayout
-        android:background="@drawable/user_formation_top_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/informationBgabanner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            style="@style/BannerDefaultStyle"
+            android:layout_marginBottom="5dp"
+            app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
+            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointAutoPlayAble="true"
+            app:banner_pointContainerBackground="@android:color/transparent"
+            app:banner_transitionEffect="defaultEffect"
+            >
+        </cn.bingoogolapple.bgabanner.BGABanner>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
@@ -24,6 +36,7 @@
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 />
+
             <ImageView
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
@@ -54,7 +67,7 @@
         stv:sLeftTvDrawableWidth="30dp"
         stv:sRightTextString="未完成"
         stv:sLeftViewMarginLeft="15dp"
-        stv:sLeftIconMarginLeft="15dp"
+        stv:sLeftIconMarginLeft="18dp"
         stv:sRightTextColor="@color/white"
         stv:sRightTextSize="15sp"
         stv:sRightTvDrawableWidth="20dp"
