@@ -27,6 +27,7 @@ import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -39,6 +40,7 @@ import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.WelfareShutBean;
+import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.js.JsInteration;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -123,7 +125,11 @@ public class HtmlActivity extends BaseActivity {
                 ivBack.setVisibility(View.VISIBLE);
                 getUrl(welfare.getId());
             }
-
+            Class_Special.DataBean.MdseBean aClass = (Class_Special.DataBean.MdseBean) getIntent().getSerializableExtra("class");
+            if(aClass!=null){
+                titleName.setText(aClass.getMdse_name());
+                getDate(aClass.getMdse_h5_link());
+            }
             String safe = getIntent().getStringExtra("safe");
             if(safe!=null){
                 titleName.setText("安全小贴士");

@@ -3,6 +3,7 @@ package cn.com.stableloan.utils.editext;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,7 +15,7 @@ import android.widget.EditText;
 
 import cn.com.stableloan.R;
 
-public class PowerfulEditText extends EditText {
+public class PowerfulEditText extends AppCompatEditText {
 
     private static final String TAG = PowerfulEditText.class.getSimpleName();
 

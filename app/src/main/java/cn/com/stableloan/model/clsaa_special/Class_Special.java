@@ -77,6 +77,15 @@ public class Class_Special implements Serializable {
         private List<ProjectBean> project;
         private List<ProductBean> product;
         private List<MdseBean> mdse;
+        private String tenant_name;
+
+        public String getTitle() {
+            return tenant_name;
+        }
+
+        public void setTitle(String title) {
+            this.tenant_name = title;
+        }
 
         public List<ProjectBean> getProject() {
             return project;
@@ -405,9 +414,17 @@ public class Class_Special implements Serializable {
              * mdse_h5_link : http://www.baidu.com
              * id : 1
              */
-
+            private String mdse_name;
             private String mdse_ad;
             private String mdse_h5_link;
+            public String getMdse_name() {
+                return mdse_name;
+            }
+
+            public void setMdse_name(String mdse_name) {
+                this.mdse_name = mdse_name;
+            }
+
             private int id;
 
             public String getMdse_ad() {

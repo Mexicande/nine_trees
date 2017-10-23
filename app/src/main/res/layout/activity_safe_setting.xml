@@ -96,35 +96,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp">
+
             <TextView
-                android:id="@+id/tv1"
+                android:id="@+id/time"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:textSize="13sp"
-                android:text="当前档案将于"/>
+                android:text=""/>
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_marginLeft="@dimen/_2dp"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp"
-                android:text="2007/07/07"/>
 
-            <TextView
-                android:id="@+id/tv2"
-                android:layout_marginLeft="@dimen/_2dp"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp"
-                android:text="日后自动清除。"/>
         </LinearLayout>
     </LinearLayout>
     <cn.com.stableloan.view.supertextview.SuperTextView

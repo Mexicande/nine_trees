@@ -39,27 +39,25 @@ public class Classify_Recycler_Adapter extends BaseQuickAdapter<SpecialClassBean
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .error(R.drawable.iv_special_bg)
-                .placeholder(R.drawable.iv_special_bg)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 ;
         helper.setText(R.id.project_name, item.getProject_name())
                 .setText(R.id.title, item.getTitle())
                 .setText(R.id.preface,item.getPreface())
-                .setText(R.id.total_amount,"共"+item.getTotal_amount()+"款产品");
+                .setText(R.id.total_amount,"共"+item.getProduct_amount()+"款产品");
 
 
 
 
-        TextView view = helper.getView(R.id.product_amount);
-        view.setText("总额度"+item.getProduct_amount()+"元");
+      /*  TextView view = helper.getView(R.id.product_amount);
+       view.setText("总额度"+item.getProduct_amount()+"元");
         String s = view.getText().toString();
         SpannableString spanString = new SpannableString(s);
 
         ForegroundColorSpan span = new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorPrimary));
         spanString.setSpan(span, 3, s.length()-1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spanString.setSpan(new AbsoluteSizeSpan(14, true), 3, s.length()-1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        view.setText(spanString);
+        view.setText(spanString);*/
 
 
         Glide.with(mContext).load(item.getProject_logo()).apply(options).into((ImageView)helper.getView(R.id.project_logo));

@@ -147,16 +147,11 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="41551e9365727dbf1b539c5c8e36557a" />
-
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.Setting1Activity" />
-        <!-- 存储设置 -->
-        <activity android:name=".ui.activity.SafeActivity11111" />
-        <!-- 我的资料 -->
         <activity
             android:name=".ui.activity.UserInformationActivity"
             android:windowSoftInputMode="adjustResize" />

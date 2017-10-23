@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -19,7 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Checkable;
 
-public abstract class SmoothCompoundButton extends Button implements Checkable {
+public abstract class SmoothCompoundButton extends AppCompatButton implements Checkable {
 
 	final String TAG = "SmoothCompoundButton";
 	private static final int ANIMATION_DURATION = 240;

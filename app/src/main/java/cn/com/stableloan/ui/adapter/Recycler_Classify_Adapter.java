@@ -30,7 +30,6 @@ public class Recycler_Classify_Adapter extends BaseQuickAdapter<Class_Special.Da
     public Recycler_Classify_Adapter(int layoutResId,ArrayList<Class_Special.DataBean.ProductBean> data) {
         super(layoutResId, data);
 
-
     }
     @Override
     protected void convert(BaseViewHolder helper,Class_Special.DataBean.ProductBean item) {

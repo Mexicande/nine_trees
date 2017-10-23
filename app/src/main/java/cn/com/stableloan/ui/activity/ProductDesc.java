@@ -3,6 +3,7 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -50,6 +54,8 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
+import cn.com.stableloan.view.MyLayoutManager;
+import cn.com.stableloan.view.RecyclerViewDecoration;
 import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.dialog.DescDialog;
 import cn.com.stableloan.view.share.StateListener;
@@ -139,6 +145,10 @@ public class ProductDesc extends BaseActivity {
     TextView tvDescTerminally;
     @Bind(R.id.desc_advertising)
     ImageView descAdvertising;
+    @Bind(R.id.iv_news)
+    ImageView ivNews;
+    @Bind(R.id.iv_hots)
+    ImageView ivHots;
     private int pid;
 
     private Product_DescBean descBean;
@@ -268,22 +278,18 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void getProductDate() {
-        Boolean login = (Boolean) SPUtils.get(this, "login", false);
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
 
         HashMap<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(pid));
-        if (login != null) {
-            if (login) {
-                params.put("token", token);
-            }
+        if (!"1".equals(token)) {
+            params.put("token", token);
         }
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
                 .setCancellable(true)
                 .show();
-
         final JSONObject jsonObject = new JSONObject(params);
         OkGo.post(Urls.NEW_Ip_url + Urls.product.Productdetail)
                 .tag(this)
@@ -350,6 +356,15 @@ public class ProductDesc extends BaseActivity {
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
 
+      /*  FlexboxLayoutManager manager = new FlexboxLayoutManager();
+        //设置主轴排列方式
+        manager.setFlexDirection(FlexDirection.ROW);
+        //设置是否换行
+        manager.setFlexWrap(FlexWrap.WRAP);
+        flowRecyclerView.setLayoutManager(manager);
+        flowRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+*/
 
        /* FlexboxLayoutManager manager = new FlexboxLayoutManager();
 
@@ -361,25 +376,31 @@ public class ProductDesc extends BaseActivity {
         flowRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         flowRecyclerView.setLayoutManager(manager);*/
 
-        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
-        SpacesItemDecoration decoration = new SpacesItemDecoration(5);
+       /* MyLayoutManager layout = new MyLayoutManager();
+        flowRecyclerView.setLayoutManager(layout);*/
+        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5,StaggeredGridLayoutManager.VERTICAL));
+        RecyclerViewDecoration decoration = new RecyclerViewDecoration(0,0);
         flowRecyclerView.addItemDecoration(decoration);
-        superTextAdapter = new SuperTextAdapter(labels);
+        superTextAdapter = new SuperTextAdapter(null);
         flowRecyclerView.setAdapter(superTextAdapter);
-        //superTextAdapter.addData(labels);
+        superTextAdapter.setNewData(labels);
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-
-
         Glide.with(this).load(product.getProduct_logo()).apply(options)
                 .into(productLogo);
-
         Glide.with(this).load(product.getAd_image())
                 .apply(options).into(descAdvertising);
-
-
-        //averageTime.setText(product.getAverage_time());
+        if(product.getActivity()==1){
+            ivHots.setVisibility(View.VISIBLE);
+        }else {
+            ivHots.setVisibility(View.GONE);
+        }
+        if(product.getOnline()==1){
+            ivNews.setVisibility(View.VISIBLE);
+        }else {
+            ivNews.setVisibility(View.GONE);
+        }        //averageTime.setText(product.getAverage_time());
         tvPname.setText(product.getPname());
         productIntroduction.setText(product.getProduct_introduction());
         String minAl = product.getMin_algorithm();
@@ -396,10 +417,12 @@ public class ProductDesc extends BaseActivity {
         int interest_algorithm = product.getInterest_algorithm();
         if (interest_algorithm == 0) {
             tvInterestAlgorithm.setText("参考日利率");
+            tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle()+"日");
         } else {
             tvInterestAlgorithm.setText("参考月利率");
+            tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle()+"月");
+
         }
-        tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle());
         if (minimum_amount.length() > 4) {
             substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
             substringmin = substringmin + "万";
@@ -430,7 +453,7 @@ public class ProductDesc extends BaseActivity {
         } else {
             arrive.setVisibility(View.GONE);
         }
-        tvDescAmount.setText(substringmin + "~" + substringmax);
+        tvDescAmount.setText(substringmin + "~" + substringmax+"元");
         if (product_crowd != null) {
             setTextViewColor(crowd, "面向人群: " + product_crowd);
         } else {
@@ -471,29 +494,26 @@ public class ProductDesc extends BaseActivity {
 
         if (product.getProduct_details() != null) {
             String details = product.getProduct_details();
-            String aaa = details.replace("aaa", "\n");
-            productDetails.setText(aaa);
+            String replace = details.replace("aaa", "\n");
+            productDetails.setText(replace);
         }
         if (product.getFee() != 0) {
             tvDesccharge.setText(product.getFee() + "元");
         }
-
-
         computations();
 
     }
 
     private void setTextViewColor(TextView view, String s) {
-        SpannableString spanString = new SpannableString(s);
-        ForegroundColorSpan span = new ForegroundColorSpan(getResources().getColor(R.color.select_text_color));
-        spanString.setSpan(span, 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
+        SpannableString spanString = new SpannableString(s);
+        ForegroundColorSpan span = new ForegroundColorSpan(getResources().getColor(R.color.gay));
+        spanString.setSpan(span, 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         view.setText(spanString);
     }
 
     private void initToolbar() {
         titleName.setText("产品详情");
-
     }
 
     private DescDialog descDialog;
@@ -551,7 +571,7 @@ public class ProductDesc extends BaseActivity {
     private void showApplyDialog() {
 
         descDialog = new DescDialog(this);
-        descDialog.setTitle("提示");
+        descDialog.setTitle("提示", descBean.getData().getProduct_logo());
         descDialog.setMessage("确定退出登陆?");
         descDialog.setYesOnclickListener("确定", new DescDialog.onYesOnclickListener() {
             @Override
@@ -593,8 +613,7 @@ public class ProductDesc extends BaseActivity {
                                 break;
                             case 2:
                                 String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-
-                                if (token != null) {
+                                if (token == null||"1".equals(token)) {
                                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
                                 } else {
                                     if (shareFlag) {
@@ -722,7 +741,7 @@ public class ProductDesc extends BaseActivity {
                         } else {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }
-                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                       // startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                     }
                 }
                 break;

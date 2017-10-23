@@ -26,8 +26,6 @@ public class Special_FootAdapter extends BaseQuickAdapter<Class_Special.DataBean
     protected void convert(BaseViewHolder helper, Class_Special.DataBean.MdseBean item) {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .error(R.drawable.iv_special_bg)
-                .placeholder(R.drawable.iv_special_bg)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
         Glide.with(mContext).load(item.getMdse_ad()).apply(options).into((ImageView) helper.getView(R.id.specila_foot));

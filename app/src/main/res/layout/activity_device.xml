@@ -28,11 +28,12 @@
     <TextView
         android:textSize="@dimen/_16sp"
         android:paddingLeft="@dimen/_10dp"
+        android:layout_marginRight="@dimen/_10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:textStyle="bold"
-        android:text="开启账号保护后，在不常用的设备上登录安稳钱包，需要验证你的手机号码，地理位置,和真人\n"
+        android:text="@string/device_rule"
         android:textColor="@color/text_setting"
         />
 

@@ -8,6 +8,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -122,7 +123,13 @@ public class SwitchPassWordActivity extends BaseActivity {
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
+        if(!stGestureOpen.getSwitchIsChecked()){
+            setResult(100,new Intent().putExtra("lock",1));
+        }else {
+            setResult(100,new Intent().putExtra("lock",2));
+        }
         finish();
+
     }
 
 
@@ -177,6 +184,18 @@ public class SwitchPassWordActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(!stGestureOpen.getSwitchIsChecked()){
+                setResult(100,new Intent().putExtra("lock",1));
+            }else {
+                setResult(100,new Intent().putExtra("lock",2));
+            }
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     protected void onDestroy() {

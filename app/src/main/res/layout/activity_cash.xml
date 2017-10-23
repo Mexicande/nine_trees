@@ -69,7 +69,6 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$388.00"
                     android:textColor="@color/white"
                     android:textSize="22sp"/>
             </LinearLayout>
@@ -115,8 +114,8 @@
                 <ImageView
                     android:layout_marginLeft="@dimen/_10dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="14dp"
-                    android:layout_height="18dp"
+                    android:layout_width="13dp"
+                    android:layout_height="15dp"
                     android:src="@mipmap/to_right"/>
             </LinearLayout>
         </RelativeLayout>
@@ -147,6 +146,8 @@
             stv:sRightTextColor="@color/text_setting"
             stv:sLeftTextColor="@color/select_text_color"
             stv:sRightTextSize="@dimen/information_textSize"
+            stv:sRightIconHeight="13dp"
+            stv:sRightIconWidth="15dp"
             stv:sBottomDividerLineMarginLeft="10dp"
             stv:sBottomDividerLineMarginRight="10dp"
             />
@@ -160,6 +161,8 @@
             stv:sRightTextColor="@color/text_setting"
             stv:sLeftTextColor="@color/select_text_color"
             stv:sRightTextSize="@dimen/information_textSize"
+            stv:sRightIconHeight="13dp"
+            stv:sRightIconWidth="15dp"
             stv:sBottomDividerLineMarginLeft="10dp"
             stv:sBottomDividerLineMarginRight="10dp"
             />

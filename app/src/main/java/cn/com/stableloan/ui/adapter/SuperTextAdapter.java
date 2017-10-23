@@ -29,7 +29,5 @@ public class SuperTextAdapter extends BaseQuickAdapter<Product_DescBean.DataBean
         view4.setStrokeColor(Color.parseColor(item.getFont()));
         view4.setTextColor(Color.parseColor(item.getFont()));
         view4.setText(item.getName());
-
-
     }
 }

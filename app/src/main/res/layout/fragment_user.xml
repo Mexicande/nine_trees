@@ -101,7 +101,7 @@
                 <TextView
                     android:textSize="15sp"
                     android:textColor="@color/text_setting"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的积分"
@@ -137,6 +137,8 @@
                     android:text="我的现金"
                     android:textColor="@color/text_setting"
                     />
+
+
             </LinearLayout>
 
         </RelativeLayout>
@@ -155,8 +157,8 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="14dp"
-        stv:sRightIconWidth="17dp"
+        stv:sRightIconHeight="13dp"
+        stv:sRightIconWidth="15dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/inivte" />
     <cn.com.stableloan.view.supertextview.SuperTextView
@@ -170,8 +172,8 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="14dp"
-        stv:sRightIconWidth="17dp"
+        stv:sRightIconHeight="13dp"
+        stv:sRightIconWidth="15dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/information" />
     <cn.com.stableloan.view.supertextview.SuperTextView
@@ -185,8 +187,8 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="14dp"
-        stv:sRightIconWidth="17dp"
+        stv:sRightIconHeight="13dp"
+        stv:sRightIconWidth="15dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/collection" />
     <cn.com.stableloan.view.supertextview.SuperTextView
@@ -200,8 +202,8 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="14dp"
-        stv:sRightIconWidth="17dp"
+        stv:sRightIconHeight="13dp"
+        stv:sRightIconWidth="15dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/setting" />
     <cn.com.stableloan.view.supertextview.SuperTextView
@@ -215,8 +217,8 @@
         stv:sLeftTextColor="@color/select_text_color"
         stv:sLeftIconWidth="20dp"
         stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="14dp"
-        stv:sRightIconWidth="17dp"
+        stv:sRightIconHeight="13dp"
+        stv:sRightIconWidth="15dp"
         stv:sLeftTextSize="16dp"
         stv:sLeftTextString="@string/feedback" />
 

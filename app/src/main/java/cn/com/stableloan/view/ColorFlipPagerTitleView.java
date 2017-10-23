@@ -1,6 +1,7 @@
 package cn.com.stableloan.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -12,7 +13,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
  * Created by apple on 2017/8/9.
  */
 
-public class ColorFlipPagerTitleView extends TextView implements IPagerTitleView {
+public class ColorFlipPagerTitleView extends AppCompatTextView implements IPagerTitleView {
     private int mNormalColor;
     private int mSelectedColor;
     private float mChangePercent = 0.45f;

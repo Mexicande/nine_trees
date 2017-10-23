@@ -256,7 +256,6 @@ public class ProductFragment extends ImmersionFragment {
             selectProduct(s, event.amount);
         }else {
             selectProduct(s, 0);
-
         }
     }
 
@@ -416,9 +415,9 @@ public class ProductFragment extends ImmersionFragment {
                 slideUp.hide();
                 Set<Integer> selectedList = idFlowlayout.getSelectedList();
                 Set<Integer> selectedList1 = tagFlowlayout.getSelectedList();
-                if (selectedList.size() > 0 || selectedList1.size() > 0) {
-                    selectProduct(null,0);
-                }
+             /*   if (selectedList.size() > 0 || selectedList1.size() > 0) {
+                }*/
+                selectProduct(null,0);
                 break;
             case R.id.layoutGo:
                 slideUp.hide();

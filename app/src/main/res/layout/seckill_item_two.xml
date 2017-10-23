@@ -3,11 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_marginLeft="@dimen/_10dp"
-    android:layout_marginRight="@dimen/_10dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    card_view:cardElevation="1dp"
+    card_view:cardElevation="0.5dp"
     card_view:cardCornerRadius="3dp"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardBackgroundColor="@color/white"
@@ -25,7 +23,7 @@
                android:textColor="@color/select_text_color"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="headline"/>
+               android:text=""/>
            <View
                android:layout_marginTop="@dimen/_2dp"
                android:layout_width="match_parent"
@@ -45,7 +43,7 @@
                    android:id="@+id/product_logo"
                    android:layout_width="40dp"
                    android:layout_height="40dp"
-                   android:src="@mipmap/logo"/>
+                   />
                 <LinearLayout
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/_20dp"
@@ -61,21 +59,21 @@
                         android:textSize="@dimen/_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="小花钱包"/>
+                        android:text=""/>
                     <TextView
                         android:id="@+id/amount"
                         android:textColor="@color/text_setting"
                         android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="最高3000元"/>
+                        android:text=""/>
                     <TextView
                         android:id="@+id/activity_desc"
                         android:textColor="@color/text_setting"
                         android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="下单立减50元"/>
+                        android:text=""/>
 
                 </LinearLayout>
            </LinearLayout>

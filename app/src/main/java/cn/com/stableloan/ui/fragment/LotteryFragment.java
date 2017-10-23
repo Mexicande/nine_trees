@@ -35,6 +35,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.WelfareAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -60,6 +61,8 @@ public class LotteryFragment extends ImmersionFragment {
     SwipeRefreshLayout swip;
     @Bind(R.id.iv_back)
     ImageView ivBack;
+    @Bind(R.id.iv_default)
+    ImageView ivDefault;
 
     private WelfareAdapter welfareAdapter;
 
@@ -107,16 +110,13 @@ public class LotteryFragment extends ImmersionFragment {
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                Boolean login = (Boolean) SPUtils.get(getActivity(), "login", false);
-                if (login != null) {
-                    if (!login) {
+                String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, "1");
+                if ("1".equals(token)||token == null) {
                         startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
                     } else {
                         startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
                     }
 
-                }
             }
         });
 
@@ -153,10 +153,18 @@ public class LotteryFragment extends ImmersionFragment {
                         LogUtils.i("福利", s);
                         Gson gson = new Gson();
                         WelfareBean bean = gson.fromJson(s, WelfareBean.class);
-                        welfareAdapter = new WelfareAdapter(bean.getData());
-                        welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        welfareRecycler.setAdapter(welfareAdapter);
+                        if(bean.getData().size()==0){
+                            ivDefault.setVisibility(View.VISIBLE);
+                        }else {
+                            ivDefault.setVisibility(View.GONE);
+                            welfareAdapter = new WelfareAdapter(bean.getData());
+                            welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            welfareRecycler.setAdapter(welfareAdapter);
+
+                        }
+
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

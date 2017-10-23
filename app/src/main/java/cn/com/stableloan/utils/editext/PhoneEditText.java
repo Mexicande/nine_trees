@@ -3,6 +3,7 @@ package cn.com.stableloan.utils.editext;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -15,7 +16,7 @@ import android.widget.EditText;
 
 import cn.com.stableloan.R;
 
-public class PhoneEditText extends EditText implements View.OnFocusChangeListener {
+public class PhoneEditText extends AppCompatEditText implements View.OnFocusChangeListener {
     private int lastLength = 0;
     private TextWatcher mTextWatcher;
     /**

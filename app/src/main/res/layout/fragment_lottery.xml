@@ -5,6 +5,15 @@
     android:orientation="vertical"
     tools:context="cn.com.stableloan.ui.fragment.LotteryFragment">
         <include layout="@layout/toolbar_layout"/>
+        <ImageView
+            android:id="@+id/iv_default"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lottery_default"/>
         <cn.com.stableloan.view.statuslayout.StateLayout
             android:id="@+id/stateLayout"
             android:layout_width="match_parent"

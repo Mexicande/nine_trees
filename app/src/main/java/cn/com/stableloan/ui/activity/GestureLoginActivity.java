@@ -234,7 +234,10 @@ public class GestureLoginActivity extends BaseActivity {
                         });
 
 
-            } else if (("bankinformation").equals(from)) {
+            } else if ("userinformation".equals(from)) {
+                UserInformationActivity.launch(GestureLoginActivity.this);
+                finish();
+            }else if (("bankinformation").equals(from)) {
                 String token = (String) SPUtils.get(this, "token", "1");
                 Map<String, String> parms = new HashMap<>();
                 parms.put("token", token);
@@ -266,6 +269,9 @@ public class GestureLoginActivity extends BaseActivity {
                 intent.putExtra("ok","ok");
                 setResult(1000,intent);
                 finish();
+            }else if ("splash".equals(from)){
+                MainActivity.launch(GestureLoginActivity.this);
+               finish();
             }
         }else  {
             String token = (String) SPUtils.get(this, "token", "1");

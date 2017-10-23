@@ -96,7 +96,7 @@ public class UserInformationActivity extends Activity {
         views = new ArrayList<>();
 
         views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1));
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1));
+        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_information_top_bg));
         BGABanner viewById = (BGABanner) findViewById(R.id.informationBgabanner);
         viewById.setData(views);
 
@@ -194,7 +194,6 @@ public class UserInformationActivity extends Activity {
                 if (identity == 0) {
                     startActivity(new Intent(this, UpdataProfessionActivity.class).putExtra("from", "identity"));
                 } else {
-
                     IdentityinformationActivity.launch(this);
                 }
                 break;

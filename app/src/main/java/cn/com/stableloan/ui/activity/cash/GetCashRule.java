@@ -42,6 +42,7 @@ public class GetCashRule extends BaseActivity {
             layoutGetCash.setVisibility(View.VISIBLE);
         } else {
             titleName.setText("如何提取现金");
+            layoutGetCash.setVisibility(View.GONE);
             layoutExtractCash.setVisibility(View.VISIBLE);
         }
 

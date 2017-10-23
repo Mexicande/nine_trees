@@ -12,6 +12,8 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import java.lang.ref.WeakReference;
 
+import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
 
 
@@ -52,8 +54,24 @@ public class SplashActivity extends AppCompatActivity {
             if (activity != null) {
                 switch (msg.what){
                     case 1:
-                        MainActivity.launch(activity);
-                        activity.finish();
+                        String userphone = (String) SPUtils.get(activity, Urls.lock.USER_PHONE, "1");
+                        int  loginCode = (int) SPUtils.get(activity, userphone + Urls.lock.LOGIN, 0);
+                        switch (loginCode){
+                            case Urls.lock.NO_VERIFICATION:
+                                MainActivity.launch(activity);
+                                activity.finish();
+                                break;
+                            case Urls.lock.PW_VERIFICATION:
+                                activity.startActivity(new Intent(activity,Verify_PasswordActivity.class).putExtra("from","splash"));
+                                activity.finish();
+                                break;
+                            case Urls.lock.GESTURE_VERIFICATION:
+                                activity.startActivity(new Intent(activity,GestureLoginActivity.class).putExtra("from","splash"));
+                                activity.finish();
+                                break;
+                        }
+                      /*  MainActivity.launch(activity);
+                        activity.finish();*/
                         break;
 
                 }

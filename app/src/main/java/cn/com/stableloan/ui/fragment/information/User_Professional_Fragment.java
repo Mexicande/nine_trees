@@ -578,7 +578,9 @@ public class User_Professional_Fragment extends Fragment {
                 EventBus.getDefault().post(new ProfessionalSelectEvent(0));
                 break;
             case R.id.save:
-                saveInformation();
+                if(work!=null){
+                    saveInformation();
+                }
                 break;
         }
     }

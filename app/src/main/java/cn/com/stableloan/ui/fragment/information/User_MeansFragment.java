@@ -324,7 +324,9 @@ public class User_MeansFragment extends Fragment {
         String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
 
         TinyDB tinyDB = new TinyDB(getActivity());
+
         user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
+
         userPhone.setRightString(user.getUserphone());
 
         Map<String, String> parms = new HashMap<>();
@@ -495,7 +497,9 @@ public class User_MeansFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.save:
-                saveDate();
+                if(identityBean!=null){
+                    saveDate();
+                }
                 break;
         }
     }
@@ -669,6 +673,7 @@ public class User_MeansFragment extends Fragment {
         String contactName1 = etContactName.getRightString();
         String contactName2 = etContactName2.getRightString();
 
+
         Identity.DataBean.IdentityBean.ContactBean identity2 = new Identity.DataBean.IdentityBean.ContactBean();
         identity2.setUserphone(contact1);
         identity2.setContact(contactName1);
@@ -752,7 +757,10 @@ public class User_MeansFragment extends Fragment {
         Identity.DataBean date=new Identity.DataBean();
         date.setIdentity(identity1);
         date.setToken(token);
-        identity1.setUserphone(user.getUserphone());
+
+        if(user!=null){
+            identity1.setUserphone(user.getUserphone());
+        }
         JSONObject object=new JSONObject();
         try {
             object.put("identity",identity1);
@@ -770,8 +778,6 @@ public class User_MeansFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
-
                         try {
                             JSONObject object = new JSONObject(s);
                             int isSuccess = object.getInt("error_code");

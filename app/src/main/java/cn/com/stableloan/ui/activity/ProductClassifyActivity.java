@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.model.home.SpecialClassBean;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.ui.adapter.Special_FootAdapter;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
@@ -56,8 +58,6 @@ public class ProductClassifyActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.SwipeRefreshLayout)
     SwipeRefreshLayout SwipeRefreshLayout;
-    @Bind(R.id.stateLayout)
-    StateLayout stateLayout;
     private Recycler_Classify_Adapter classify_recycler_adapter;
 
     private Class_Special classBean;
@@ -65,7 +65,7 @@ public class ProductClassifyActivity extends BaseActivity {
     private SpecialClassBean.DataBean specialClassBean;
     private ImageView mImageView;
     private Class_ListProductBean class_List;
-
+    private Context mContext;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductClassifyActivity.class));
     }
@@ -79,8 +79,7 @@ public class ProductClassifyActivity extends BaseActivity {
                 .navigationBarColor(R.color.mask)
                 .barAlpha(0.2f)
                 .init();*/
-        stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
-
+        mContext=this;
         specialClassBean = (SpecialClassBean.DataBean) getIntent().getSerializableExtra("class_product");
 
         initView();
@@ -93,7 +92,6 @@ public class ProductClassifyActivity extends BaseActivity {
             int id = specialClassBean.getId();
             titleName.setText(specialClassBean.getProject_name());
             ivBack.setVisibility(View.VISIBLE);
-            stateLayout.showProgressView();
             if (specialClassBean != null && id !=0) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("id",String.valueOf( id));
@@ -107,22 +105,38 @@ public class ProductClassifyActivity extends BaseActivity {
                                 if (s != null) {
                                     Gson gson=new Gson();
                                     classBean = gson.fromJson(s, Class_Special.class);
-
                                     if(classBean.getError_code()==0){
-                                        stateLayout.showContentView();
                                         RequestOptions options = new RequestOptions()
-                                                .centerCrop()
-                                                .error(R.drawable.iv_special_bg)
-                                                .placeholder(R.drawable.iv_special_bg)
+                                                .fitCenter()
                                                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-
                                         Glide.with(ProductClassifyActivity.this).load(classBean.getData().getProject().get(0).getProject_logo()).apply(options).into(mImageView);
                                         mProject_name.setText(classBean.getData().getProject().get(0).getTitle());
-                                        mBody_Project.setText(classBean.getData().getProject().get(0).getBody_project());
+                                        mBody_Project.setText(classBean.getData().getProject().get(0).getBody());
                                         classify_recycler_adapter.setNewData(classBean.getData().getProduct());
-                                        mSpecial_footAdapter.setNewData(classBean.getData().getMdse());
+                                        if(classBean.getData().getMdse().size()!=0){
+                                            mSpecial_footAdapter.setNewData(classBean.getData().getMdse());
+                                            View foot = getLayoutInflater().inflate(R.layout.special_foot_layout, null);
+                                            mFootRecycler= (RecyclerView) foot.findViewById(R.id.foot_recycler);
+                                            TextView viewById = (TextView) foot.findViewById(R.id.list_title);
+                                            classify_recycler_adapter.removeAllFooterView();
+                                            classify_recycler_adapter.addFooterView(foot);
+                                            viewById.setText(classBean.getData().getTitle());
+                                            mFootRecycler.setLayoutManager(new LinearLayoutManager(ProductClassifyActivity.this));
+                                            mFootRecycler.setAdapter(mSpecial_footAdapter);
+                                            mFootRecycler.addOnItemTouchListener(new OnItemClickListener() {
+                                                @Override
+                                                public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                                    String token = (String) SPUtils.get(mContext, Urls.lock.TOKEN, "1");
+                                                    if ("1".equals(token)||token == null) {
+                                                        startActivity(new Intent(mContext, LoginActivity.class).putExtra("ProductClassifyActivity", classBean.getData().getMdse().get(position)));
+                                                    } else {
+                                                        startActivity(new Intent(ProductClassifyActivity.this, HtmlActivity.class).putExtra("class", classBean.getData().getMdse().get(position)));
+                                                    }
+
+                                                }
+                                            });
+                                        }
                                     }else {
-                                            stateLayout.showEmptyView();
                                     }
                                 }
                             }
@@ -131,7 +145,6 @@ public class ProductClassifyActivity extends BaseActivity {
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
-                                stateLayout.showErrorView();
                             }
                         });
             }
@@ -159,8 +172,16 @@ public class ProductClassifyActivity extends BaseActivity {
                 // ProductDesc.launch(getActivity());
                 startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", classBean.getData().getProduct().get(position).getId()));
 
+              /*  String token = (String) SPUtils.get(mContext, Urls.lock.TOKEN, "1");
+                if ("1".equals(token)||token == null) {
+                    startActivity(new Intent(mContext, LoginActivity.class).putExtra("ProductClassifyActivity", classBean.getData().getMdse().get(position)));
+                } else {
+                    startActivity(new Intent(ProductClassifyActivity.this, HtmlActivity.class).putExtra("class", classBean.getData().getMdse().get(position)));
+                }*/
+
             }
         });
+
     }
 
     private RecyclerView mFootRecycler;
@@ -174,30 +195,38 @@ public class ProductClassifyActivity extends BaseActivity {
         mProject_name= (TextView) view.findViewById(R.id.project_name);
         mBody_Project= (TextView) view.findViewById(R.id.body_project);
 
-        View foot = getLayoutInflater().inflate(R.layout.special_foot_layout, null);
+     /*   View foot = getLayoutInflater().inflate(R.layout.special_foot_layout, null);
 
-        mFootRecycler= (RecyclerView) foot.findViewById(R.id.foot_recycler);
+        mFootRecycler= (RecyclerView) foot.findViewById(R.id.foot_recycler);*/
     /*    imageView = new ImageView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(lp);*/
-
-
         classify_recycler_adapter = new Recycler_Classify_Adapter(R.layout.special_product_item,null);
         classifyRecycl.setLayoutManager(new LinearLayoutManager(this));
-        SpacesItemDecoration decoration = new SpacesItemDecoration(2);
-
-        classifyRecycl.addItemDecoration(decoration);
-
+      /*  SpacesItemDecoration decoration = new SpacesItemDecoration(2);
+        classifyRecycl.addItemDecoration(decoration);*/
         classify_recycler_adapter.addHeaderView(view, 0);
-
-        classify_recycler_adapter.addFooterView(foot);
+       // classify_recycler_adapter.addFooterView(foot);
         mSpecial_footAdapter=new Special_FootAdapter(null);
 
-        mFootRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mFootRecycler.setAdapter(mSpecial_footAdapter);
         classifyRecycl.setAdapter(classify_recycler_adapter);
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+       /* if(requestCode==10000){
+            switch (resultCode){
+                case 1:
+                    int id1 = data.getIntExtra("id", -1);
+                    if(id1!=-1){
+                        startActivity(new Intent(ProductClassifyActivity.this, HtmlActivity.class).putExtra("pid", classBean.getData().getMdse().get(id1)));
+                    }
+                    break;
+            }
+        }*/
     }
 
     @OnClick(R.id.iv_back)

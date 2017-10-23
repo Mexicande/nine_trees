@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import cn.com.stableloan.R;
  * Created by apple on 2017/7/9.
  */
 
-public class RoundButton extends TextView {
+public class RoundButton extends AppCompatTextView {
 
 
     public RoundButton(Context context) {

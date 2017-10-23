@@ -40,6 +40,7 @@ import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
 import cn.com.stableloan.ui.activity.settingdate.SwitchPassWordActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -223,7 +224,9 @@ public class SafeSettingActivity extends BaseActivity {
         svChangeGesture.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
-                SwitchPassWordActivity.launch(mContext);
+                //SwitchPassWordActivity.launch(mContext);
+                startActivityForResult(new Intent(mContext,SwitchPassWordActivity.class),REQUEST_CODE);
+
             }
         });
         //贴心小护士
@@ -263,9 +266,8 @@ public class SafeSettingActivity extends BaseActivity {
 
     private void initDate() {
         String versionName = getVersionCode(this);
-        stVersionCode.setRightString("v" + versionName);
+        stVersionCode.setRightString("V" + versionName);
         managedList = getResources().getStringArray(R.array.times);
-
     }
 
     public String getVersionCode(Context context) {
@@ -292,6 +294,7 @@ public class SafeSettingActivity extends BaseActivity {
         userPhone = user.getUserphone();
 
         String gesturePassword = aCache.getAsString(userPhone);
+        SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
 
         if(gesturePassword!=null){
             RBGE.setEnabled(true);
@@ -303,15 +306,19 @@ public class SafeSettingActivity extends BaseActivity {
             loginGE.setEnabled(false);
         }
         int cat = (int) SPUtils.get(this,userPhone+Urls.lock.CAT, 0);
+
+        LogUtils.i("cat===",cat+"");
         switch (cat) {
             case Urls.lock.NO_VERIFICATION:
+                svUnLockCat.setRightString("无验证");
                 RBNO.setChecked(true);
                 break;
             case Urls.lock.PW_VERIFICATION:
+                svUnLockCat.setRightString("密码验证");
                 RBPW.setChecked(true);
-
                 break;
             case Urls.lock.GESTURE_VERIFICATION:
+                svUnLockCat.setRightString("手势验证");
                 if (gesturePassword == null) {
                     RBGE.setEnabled(false);
                 } else {
@@ -322,12 +329,15 @@ public class SafeSettingActivity extends BaseActivity {
         int apply = (int) SPUtils.get(this, userPhone+Urls.lock.APPLY, 0);
         switch (apply) {
             case Urls.lock.NO_VERIFICATION:
+                svUnLockApply.setRightString("无验证");
                 applyNO.setChecked(true);
                 break;
             case Urls.lock.PW_VERIFICATION:
+                svUnLockApply.setRightString("密码验证");
                 applyPW.setChecked(true);
                 break;
             case Urls.lock.GESTURE_VERIFICATION:
+                svUnLockApply.setRightString("手势验证");
                 if (gesturePassword == null) {
                     applyGE.setEnabled(false);
                 } else {
@@ -338,12 +348,17 @@ public class SafeSettingActivity extends BaseActivity {
         int login = (int) SPUtils.get(this, userPhone+Urls.lock.LOGIN, 6);
         switch (login) {
             case Urls.lock.NO_VERIFICATION:
+                svUnLockLogin.setRightString("无验证");
                 loginNO.setChecked(true);
                 break;
             case Urls.lock.PW_VERIFICATION:
+                svUnLockLogin.setRightString("密码验证");
+
                 loginPW.setChecked(true);
                 break;
             case Urls.lock.GESTURE_VERIFICATION:
+                svUnLockLogin.setRightString("手势验证");
+
                 if (gesturePassword == null) {
                     loginGE.setEnabled(false);
                 } else {
@@ -449,6 +464,13 @@ public class SafeSettingActivity extends BaseActivity {
                     svDateTime.setRightString(month);
                     svDateTime.setLeftBottomString("自动清档时间:" + period);
                     break;
+                case 100:
+                    int lock = data.getIntExtra("lock", 0);
+                    if(lock==1){
+                        svChangeGesture.setRightString("未设置");
+                    }else if(lock==2){
+                        svChangeGesture.setRightString("已设置");
+                    }
 
 
             }
@@ -465,16 +487,12 @@ public class SafeSettingActivity extends BaseActivity {
                 break;
             //查看个人资料
             case R.id.RB_NO:
-                if (!RBNO.isChecked()) {
-                    SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.NO_VERIFICATION);
-                }
+                SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.NO_VERIFICATION);
                 svUnLockCat.setRightString("无验证");
                 cat_SlideUp.hide();
                 break;
             case R.id.RB_PW:
-                if (!RBPW.isChecked()) {
                     SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.PW_VERIFICATION);
-                }
                 svUnLockCat.setRightString("密码验证");
                 cat_SlideUp.hide();
                 break;
@@ -483,9 +501,7 @@ public class SafeSettingActivity extends BaseActivity {
                 if (gesturePassword == null) {
                     ToastUtils.showToast(this, "请先设置手势密码");
                 } else {
-                    if (!RBGE.isChecked()) {
                         SPUtils.put(this, userPhone+Urls.lock.CAT, Urls.lock.GESTURE_VERIFICATION);
-                    }
                     svUnLockCat.setRightString("手势验证");
                     cat_SlideUp.hide();
                 }
@@ -494,17 +510,13 @@ public class SafeSettingActivity extends BaseActivity {
                 cat_SlideUp.hide();
                 break;
             case R.id.apply_NO:
-                if (!applyNO.isChecked()) {
-                    SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
-                }
+                SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
                 svUnLockApply.setRightString("无验证");
                 apply_SlideUp.hide();
 
                 break;
             case R.id.apply_PW:
-                if (!applyPW.isChecked()) {
-                    SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.PW_VERIFICATION);
-                }
+                SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.PW_VERIFICATION);
                 svUnLockApply.setRightString("密码验证");
                 apply_SlideUp.hide();
                 break;
@@ -513,9 +525,7 @@ public class SafeSettingActivity extends BaseActivity {
                 if (gesturePassword2 == null) {
                     ToastUtils.showToast(this, "请先设置手势密码");
                 } else {
-                    if (!applyGE.isChecked()) {
                         SPUtils.put(this, userPhone+Urls.lock.APPLY, Urls.lock.GESTURE_VERIFICATION);
-                    }
                     svUnLockApply.setRightString("手势验证");
                     apply_SlideUp.hide();
                 }
@@ -525,17 +535,13 @@ public class SafeSettingActivity extends BaseActivity {
                 apply_SlideUp.hide();
                 break;
             case R.id.login_NO:
-                if (!loginNO.isChecked()) {
                     SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.NO_VERIFICATION);
-                }
                 svUnLockLogin.setRightString("无验证");
                 login_SlideUp.hide();
 
                 break;
             case R.id.login_PW:
-                if (!loginPW.isChecked()) {
-                    SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
-                }
+                SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
                 svUnLockLogin.setRightString("密码验证");
                 login_SlideUp.hide();
                 break;
@@ -544,9 +550,7 @@ public class SafeSettingActivity extends BaseActivity {
                 if (gesturePassword3 == null) {
                     ToastUtils.showToast(this, "请先设置手势密码");
                 } else {
-                    if (!loginGE.isChecked()) {
                         SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.GESTURE_VERIFICATION);
-                    }
                     svUnLockLogin.setRightString("手势验证");
                     login_SlideUp.hide();
                 }
@@ -555,7 +559,6 @@ public class SafeSettingActivity extends BaseActivity {
             case R.id.login_image_Visiable:
                 login_SlideUp.hide();
                 break;
-
         }
     }
 
@@ -572,6 +575,5 @@ public class SafeSettingActivity extends BaseActivity {
         }
         return false;
     }
-
 
 }

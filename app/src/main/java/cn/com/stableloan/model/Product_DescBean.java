@@ -171,6 +171,24 @@ public class Product_DescBean implements Serializable {
         private PlatformdetailBean platformdetail;
         private List<LabelsBean> labels;
         private List<String> crowds;
+        private int activity;
+        private int online;
+
+        public int getActivity() {
+            return activity;
+        }
+
+        public void setActivity(int activity) {
+            this.activity = activity;
+        }
+
+        public int getOnline() {
+            return online;
+        }
+
+        public void setOnline(int online) {
+            this.online = online;
+        }
 
         public int getId() {
             return id;

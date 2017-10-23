@@ -19,52 +19,71 @@
                 >
             </cn.bingoogolapple.bgabanner.BGABanner>
 
-            <LinearLayout
-                android:elevation="@dimen/_0.5dp"
-                android:layout_width="match_parent"
+            <RelativeLayout
                 android:background="@color/white"
-                android:layout_marginRight="@dimen/_10dp"
-                android:layout_marginLeft="@dimen/_5dp"
-                android:layout_height="30dp">
-                   <TextView
-                       android:layout_marginLeft="@dimen/_10dp"
-                       android:layout_gravity="center_vertical"
-                       android:drawablePadding="3dp"
-                       android:paddingRight="@dimen/_10dp"
-                       android:drawableLeft="@mipmap/iv_hook"
-                       android:textColor="@color/select_text_color"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:textSize="14sp"
-                       android:text="放款审核快"/>
-                   <TextView
-                       android:paddingRight="3dp"
-                       android:drawablePadding="3dp"
-                       android:drawableLeft="@mipmap/iv_hook"
-                       android:layout_gravity="center_vertical"
-                       android:textColor="@color/select_text_color"
-                       android:textSize="14sp"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="甄选品质产品"/>
-                <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:elevation="@dimen/_0.5dp"
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_marginLeft="@dimen/_10dp"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_centerHorizontal="true"
-                        android:drawablePadding="3dp"
-                        android:layout_centerVertical="true"
-                        android:drawableLeft="@mipmap/iv_hook"
-                        android:textSize="14sp"
-                        android:maxLines="1"
-                        android:textColor="@color/select_text_color"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AWs加密严防泄露"/>
-                </RelativeLayout>
-            </LinearLayout>
+                    android:layout_height="30dp">
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_gravity="center_vertical"
+                            android:drawablePadding="3dp"
+                            android:drawableLeft="@mipmap/iv_hook"
+                            android:textColor="@color/select_text_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text=" 放款审核快"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:paddingRight="3dp"
+                            android:drawablePadding="3dp"
+                            android:layout_centerHorizontal="true"
+                            android:drawableLeft="@mipmap/iv_hook"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/select_text_color"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="甄选品质产品"/>
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_alignParentRight="true"
+                            android:drawablePadding="3dp"
+                            android:layout_centerHorizontal="true"
+                            android:drawableLeft="@mipmap/iv_hook"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:textColor="@color/select_text_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AWs加密保护"/>
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
             <View
                 android:background="@color/base_white"
                 android:layout_width="match_parent"
@@ -72,52 +91,75 @@
             <include layout="@layout/home_header_item"
                />
             <LinearLayout
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="@dimen/_20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
+                <RelativeLayout
                     android:layout_weight="1"
-                    android:id="@+id/iv_work"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/iv_job_identity"/>
-                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_work"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/iv_job_identity"/>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_weight="1"
-                    android:id="@+id/bussiones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/iv_bussines_identity"/>
-                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/bussiones"
+                        android:layout_centerHorizontal="true"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/iv_bussines_identity"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_weight="1"
-                    android:id="@+id/iv_free"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/iv_free_identity"/>
-                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/iv_free"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/iv_free_identity"/>
+                </RelativeLayout>
+                <RelativeLayout
                     android:layout_weight="1"
-                    android:id="@+id/iv_other"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/iv_other_identity"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_other"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/iv_other_identity"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_special"
                 android:layout_marginTop="@dimen/_20dp"
-                android:background="@color/white"
+                android:background="#f9f9f9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </android.support.v7.widget.RecyclerView>
             <RelativeLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="45dp">
+                android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/iv_fire"
-                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginLeft="@dimen/_10dp"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,10 +177,7 @@
                     android:textColor="@color/select_text_color"
                     />
             </RelativeLayout>
-    <View
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1dp"/>
+
             <android.support.v7.widget.RecyclerView
                 android:background="@color/white"
                 android:id="@+id/linear_recyclerView"

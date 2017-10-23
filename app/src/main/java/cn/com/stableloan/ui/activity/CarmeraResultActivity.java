@@ -252,12 +252,13 @@ public class CarmeraResultActivity extends AppCompatActivity {
 
         private void UpLoadImage(final Activity activity, String tolen, String url, String var, String photo) {
             Map<String, String> parms = new HashMap<>();
-            parms.put("var", var);
             parms.put(photo, url);
-            parms.put("token", tolen);
+            parms.put("type", "1");
+            parms.put("token",tolen);
+            parms.put("source", "");
             // parms.put("signature",signature);
             JSONObject jsonObject = new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL + Urls.Pictrue.UpLoadImage)
+            OkGo.<String>post(Urls.Ip_url + Urls.Pictrue.UpLoadImage)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
@@ -265,9 +266,11 @@ public class CarmeraResultActivity extends AppCompatActivity {
                         public void onSuccess(String s, Call call, Response response) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                                String isSuccess = object.getString("isSuccess");
-                                if ("1".equals(isSuccess)) {
-                                    String msg = object.getString("msg");
+                                int error_code = object.getInt("error_code");
+                                if (error_code==0) {
+                                    String data = object.getString("data");
+                                    JSONObject json=new JSONObject(data);
+                                    String msg = json.getString("msg");
                                     ToastUtils.showToast(activity, msg);
                                     if (flag) {
                                         EventBus.getDefault().post(new CameraEvent(value));
@@ -275,7 +278,7 @@ public class CarmeraResultActivity extends AppCompatActivity {
                                     ToastUtils.showToast(activity, "保存成功");
                                     activity.finish();
                                 } else {
-                                    String msg = object.getString("msg");
+                                    String msg = object.getString("error_message");
                                     ToastUtils.showToast(activity, msg);
                                 }
                             } catch (JSONException e) {

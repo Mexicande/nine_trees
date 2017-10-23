@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.Button;
@@ -17,7 +18,7 @@ import cn.com.stableloan.R;
  * 超级按钮  实现shape所有的属性
  */
 
-public class SuperButton extends Button {
+public class SuperButton extends AppCompatButton {
 
     private Context mContext;
 

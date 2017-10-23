@@ -25,15 +25,6 @@
                 android:textColor="@color/select_text_color"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:textSize="17sp"/>
-            <TextView
-                android:layout_toRightOf="@id/title"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/select_text_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:text=" (填写得红包)"/>
             <Button
                 android:id="@+id/bt_SelectProfession"
                 android:layout_marginRight="@dimen/_30dp"

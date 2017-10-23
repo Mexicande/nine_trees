@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +22,7 @@ import cn.com.stableloan.R;
  * Created by apple on 2017/6/27.
  */
 
-public class BetterSpinner  extends AutoCompleteTextView implements AdapterView.OnItemClickListener  {
+public class BetterSpinner  extends AppCompatAutoCompleteTextView implements AdapterView.OnItemClickListener  {
 
     private static final int MAX_CLICK_DURATION = 200;
     private long startClickTime;

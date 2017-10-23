@@ -211,6 +211,9 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                 intent.putExtra("ok","ok");
                                                 setResult(1000,intent);
                                                 finish();
+                                            }else if ("splash".equals(from)){
+                                                MainActivity.launch(Verify_PasswordActivity.this);
+                                                finish();
                                             }
                                         }
 

@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="10dp"
             />
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
@@ -91,13 +91,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:textSize="@dimen/product_desc"
             android:layout_marginTop="5dp"
             />
         <TextView
             android:id="@+id/prepayment"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/desc_left"

@@ -301,7 +301,8 @@ public class InviteFriendsActivity extends BaseActivity {
                     if (num != null) {
                         num = num.replaceAll("-", "");//替换的操作,555-6 -> 5556
                         Log.i("num", "联系人：" + num + "---" + name);
-                        inviteFriends(num);
+                        String replace = num.replace(" ", "");
+                        inviteFriends(replace);
                     }
                     break;
                 }

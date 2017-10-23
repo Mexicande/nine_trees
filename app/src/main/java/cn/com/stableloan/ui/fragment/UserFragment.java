@@ -40,7 +40,6 @@ import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.SaveBean;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
@@ -48,13 +47,11 @@ import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
-import cn.com.stableloan.ui.activity.SafeActivity11111;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -310,12 +307,11 @@ public class UserFragment extends ImmersionFragment {
                                UserInformationActivity.launch(getActivity());
                                break;
                            case Urls.lock.GESTURE_VERIFICATION:
-
-                               Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
+                               Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userInformation");
                                startActivity(intent);
                                break;
                            case Urls.lock.PW_VERIFICATION:
-                               Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
+                               Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userInformation");
                                startActivity(intent2);
                                break;
                                         }

@@ -58,7 +58,6 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
             news.setVisibility(View.VISIBLE);
             }else {
             news.setVisibility(View.GONE);
-
         }
 
 

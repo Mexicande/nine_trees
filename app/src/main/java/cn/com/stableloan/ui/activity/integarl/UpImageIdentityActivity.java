@@ -116,6 +116,8 @@ public class UpImageIdentityActivity extends BaseActivity {
     private int HEIGHT;
     private int WIDTH;
 
+    private RequestOptions options;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UpImageIdentityActivity.class));
     }
@@ -230,7 +232,7 @@ public class UpImageIdentityActivity extends BaseActivity {
      */
     private void fillImageView(String picturePath, ImageView imageView, String title) {
         if (!picturePath.isEmpty()) {
-            RequestOptions options = new RequestOptions()
+             options = new RequestOptions()
                     .centerInside()
                     .error(R.mipmap.iv_error_image)
                     .placeholder(R.mipmap.iv_holder_image)
@@ -255,6 +257,16 @@ public class UpImageIdentityActivity extends BaseActivity {
     }
 
     private void initToolbar() {
+
+         options = new RequestOptions()
+                .centerCrop()
+                .error(R.mipmap.iv_error_image)
+                .placeholder(R.mipmap.iv_holder_image)
+                .override(WIDTH, HEIGHT)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+
+
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("图片材料");
         setTextViewColor(tvIdentificationCard, tvIdentificationCard.getText().toString());
@@ -386,12 +398,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    RequestOptions options = new RequestOptions()
-                            .centerCrop()
-                            .error(R.mipmap.iv_error_image)
-                            .placeholder(R.mipmap.iv_holder_image)
-                            .override(WIDTH, HEIGHT)
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
                     Glide.with(getApplicationContext()).load(path).apply(options).into(iv);
                     iv.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -400,6 +407,14 @@ public class UpImageIdentityActivity extends BaseActivity {
                         }
                     });
                 } else {
+                    RequestOptions options = new RequestOptions()
+                            .centerCrop()
+                            .error(R.mipmap.iv_error_image)
+                            .placeholder(R.mipmap.iv_holder_image)
+                            .override(WIDTH, HEIGHT)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                    Glide.with(getApplicationContext()).load(R.mipmap.iv_error_image).apply(options).into(iv);
+
                     ToastUtils.showToast(getApplicationContext(), "上传失败");
                 }
             }

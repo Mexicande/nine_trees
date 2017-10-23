@@ -12,18 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginLeft="@dimen/_10dp"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/iv_flash"/>
         <TextView
-            android:textSize="18sp"
             android:layout_marginLeft="@dimen/_10dp"
             android:layout_gravity="center_vertical"
             android:textColor="@color/select_text_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="17sp"
             android:text="安稳秒杀"/>
         <cn.com.stableloan.view.countdownview.CountdownView
             android:id="@+id/cv_countdownViewTest1"
@@ -81,6 +82,7 @@
        />
   <android.support.v7.widget.RecyclerView
       android:visibility="gone"
+      android:layout_marginLeft="@dimen/_10dp"
       android:id="@+id/speckill_recycyler"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">

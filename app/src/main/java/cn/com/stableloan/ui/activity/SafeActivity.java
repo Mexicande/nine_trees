@@ -57,10 +57,6 @@ public class SafeActivity extends BaseActivity {
     SuperTextView selectTime;
     @Bind(R.id.st_deleteDate)
     SuperTextView stDeleteDate;
-    @Bind(R.id.tv1)
-    TextView tv1;
-    @Bind(R.id.tv2)
-    TextView tv2;
 
     private String[] list;
     private String[] list1;
@@ -135,8 +131,7 @@ public class SafeActivity extends BaseActivity {
             if (saveBean.getPeriod().length() < 2) {
                 tv_time.setText("无数据");
             } else {
-
-                tv_time.setText(saveBean.getPeriod());
+                tv_time.setText("当前档案将于 "+saveBean.getPeriod()+" 日后自动清除");
             }
             period=saveBean.getPeriod();
 
@@ -197,7 +192,7 @@ public class SafeActivity extends BaseActivity {
             String of = String.valueOf(l1);
             String date = stampToDate(of);
             saveBean.setPeriod(date);
-            tv_time.setText(date);
+            tv_time.setText("当前档案将于 "+date+" 日后自动清除");
             Save(index, date);
         }
     }
@@ -252,7 +247,7 @@ public class SafeActivity extends BaseActivity {
                             if ("1".equals(isSuccess)) {
                                 saveBean.setPeriod(date);
                                 saveBean.setManaged(man);
-                                tv_time.setText(date);
+                                tv_time.setText("当前档案将于 "+date+" 日后自动清除");
                                 selectTime.setRightString(list1[managed]);
                                 ToastUtils.showToast(SafeActivity.this, "修改清档日期成功");
                             } else {
@@ -373,7 +368,7 @@ public class SafeActivity extends BaseActivity {
         safeSettingDialog.show();
 
     }
-
+    private String dateTime;
     /**
      * 资料清除
      */
@@ -395,9 +390,11 @@ public class SafeActivity extends BaseActivity {
                             if (code == 0) {
                                 ToastUtils.showToast(SafeActivity.this, "清除成功,档案将在一天后清除");
                                 long l = System.currentTimeMillis();
-                                String date = stampToDate(String.valueOf(l));
-                                tv_time.setText(date);
-                                saveBean.setPeriod(date);
+                                dateTime = stampToDate(String.valueOf(l));
+                                tv_time.setText("当前档案将于 "+dateTime+" 日后自动清除");
+                                saveBean.setPeriod(dateTime);
+                                selectTime.setRightString("无数据");
+
                             } else {
                                 ToastUtils.showToast(SafeActivity.this, msg);
                             }
@@ -419,7 +416,7 @@ public class SafeActivity extends BaseActivity {
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("month", selectTime.getRightString());
-                intent.putExtra("time", tv_time.getText().toString());
+                intent.putExtra("time", dateTime);
                 setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                 finish();
             }

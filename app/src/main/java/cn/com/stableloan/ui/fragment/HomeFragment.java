@@ -27,6 +27,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.uuch.adlibrary.AdConstant;
@@ -71,6 +72,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.MyDecoration;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
+import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.countdownview.CountdownView;
 import cn.com.stableloan.view.countdownview.EasyCountDownView;
 import cn.com.stableloan.view.countdownview.SimpleCountDownTimer;
@@ -191,7 +193,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     case 2:
                                         mCardView.setVisibility(View.GONE);
                                         re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
+                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
                                         re_View.setAdapter(rc_adapter);
                                         rc_adapter.setNewData(seckillBean.getData());
                                         break;
@@ -249,7 +252,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             advList.add(adInfo);
             AdManager adManager = new AdManager(getActivity(), advList);
             adManager.setOverScreen(true)
-                    .setWidthPerHeight(1f)
+                    .setWidthPerHeight(0.9f)
                     .setPageTransformer(new DepthPageTransformer());
             adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
 
@@ -450,7 +453,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // 分类
         classify_recyclView = (RecyclerView) view.findViewById(R.id.recycler_special);
         classify_recycler_adapter = new Classify_Recycler_Adapter(null);
+
         classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+           SpacesItemDecoration decoration = new SpacesItemDecoration(10);
+        classify_recyclView.addItemDecoration(decoration);
         classify_recyclView.setAdapter(classify_recycler_adapter);
 
         // 职业选择
@@ -512,8 +518,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         //easylayout.setRefreshing(false);
-                        easylayout.refreshComplete();
-                        ToastUtils.showToast(getActivity(), "网络异常");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                easylayout.refreshComplete();
+                                ToastUtils.showToast(getActivity(), "网络异常");
+                            }
+                        });
                         super.onError(call, response, e);
                     }
                 });
@@ -526,11 +537,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     public void onSuccess(String s, Call call, Response response) {
                         if (s != null) {
                             Gson gson = new Gson();
-                            Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
-                            if (hotNewProduct.getError_code() == 0) {
-                                productAdapter.setNewData(hotNewProduct.getData());
-
-
+                            try {
+                                Hot_New_Product hotNewProduct = gson.fromJson(s, Hot_New_Product.class);
+                                if (hotNewProduct.getError_code() == 0) {
+                                    productAdapter.setNewData(hotNewProduct.getData());
+                                }
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
                             }
                         }
                     }

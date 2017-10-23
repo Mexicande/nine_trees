@@ -1,6 +1,7 @@
 package cn.com.stableloan.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import cn.com.stableloan.R;
  * Created by apple on 2017/6/26.
  */
 
-public class EmailAutoCompleteTextView extends AutoCompleteTextView {
+public class EmailAutoCompleteTextView extends AppCompatAutoCompleteTextView {
     private static final String TAG = "EmailAutoCompleteTextView";
 
     private String[] emailSufixs = new String[]{"@qq.com", "@163.com", "@126.com", "@gmail.com", "@sina.com", "@hotmail.com",

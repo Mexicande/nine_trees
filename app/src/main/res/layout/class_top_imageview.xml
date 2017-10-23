@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ic_default_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:adjustViewBounds="true"
+        android:layout_gravity="top"
         android:src="@mipmap/ic_defalut_class"/>
     <RelativeLayout
+        android:layout_marginTop="@dimen/_10dp"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <View
             android:id="@+id/line"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/_10dp"
-            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginLeft="@dimen/_10dp"
             android:layout_width="4dp"
             android:background="@color/colorStatus"
             android:layout_height="20dp"/>
         <TextView
             android:layout_toRightOf="@id/line"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/_10dp"
             android:layout_marginLeft="@dimen/_10dp"
             android:layout_gravity="center_vertical"
             android:id="@+id/project_name"
@@ -35,19 +36,29 @@
             android:text="分类专题"
             android:textStyle="bold"
             android:textColor="@color/select_text_color"/>
-
     </RelativeLayout>
     <TextView
         android:id="@+id/body_project"
         android:textSize="14sp"
         android:textColor="@color/text_setting"
         android:layout_marginTop="@dimen/_10dp"
-        android:layout_marginRight="@dimen/_20dp"
-        android:layout_marginLeft="@dimen/_20dp"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_marginLeft="@dimen/_10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <android.support.v4.widget.Space
-        android:layout_below="@id/body_project"
+    <View
+        android:layout_marginTop="@dimen/_10dp"
+        android:background="@color/base_white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_20dp" />
+        android:layout_height="@dimen/_1dp" />
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/select_text_color"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_marginLeft="@dimen/_10dp"
+        android:text="推荐贷款产品"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

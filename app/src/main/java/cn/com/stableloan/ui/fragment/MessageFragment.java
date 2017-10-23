@@ -55,7 +55,9 @@ import cn.com.stableloan.model.CodeMessage;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
+import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.CaptchaTimeCount;
@@ -66,6 +68,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.Utils;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.view.RoundButton;
+import cn.com.stableloan.view.dialog.Login_DeviceDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -97,7 +100,7 @@ public class MessageFragment extends Fragment {
     @Bind(R.id.bt_getCode)
     Button btGetCode;
     private CaptchaTimeCount captchaTimeCount;
-
+    private Login_DeviceDialog dialog;
     private String AdressIp = "";
 
     private String times = "";
@@ -120,9 +123,7 @@ public class MessageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
 
-
-
-
+        intView();
         String unique = (String) SPUtils.get(getActivity(), "unique", null);
         if(unique!=null){
             times=unique;
@@ -139,6 +140,17 @@ public class MessageFragment extends Fragment {
         setVisibleInput(view);
 
         return view;
+    }
+
+    private void intView() {
+
+        dialog=new Login_DeviceDialog(getActivity());
+        dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+
+            }
+        });
     }
 
 
@@ -513,7 +525,6 @@ public class MessageFragment extends Fragment {
                             MessageCode body = gson.fromJson(s, MessageCode.class);
                                 if (0==body.getError_code()) {
                                     Atest=false;
-
                                     ToastUtils.showToast(getActivity(), "发送成功");
                                     String phone = etPhone.getText().toString();
                                     if (phone.length() == 11) {
@@ -642,6 +653,8 @@ public class MessageFragment extends Fragment {
                                 SPUtils.put(getActivity(), Urls.lock.TOKEN, codeMessage.getData().getToken());
                                 String from = getActivity().getIntent().getStringExtra("from");
                                 Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
+                                Class_Special.DataBean.MdseBean id = (Class_Special.DataBean.MdseBean) getActivity().getIntent().getSerializableExtra("ProductClassifyActivity");
+
                                 if (from != null) {
                                     if(from.equals("user")){
                                         EventBus.getDefault().post(new InformationEvent("user3"));
@@ -666,7 +679,12 @@ public class MessageFragment extends Fragment {
                                                                     setResult(4000, new Intent().putExtra("user", bean));
                                                                     finish();
                                                                 }*/
-                                } else if(welfare!=null){
+                                } else if (id!=null){
+                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class",id));
+                                    getActivity().finish();
+
+                                }
+                                else if(welfare!=null){
                                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
                                     getActivity().finish();
                                 } else{
@@ -677,7 +695,10 @@ public class MessageFragment extends Fragment {
                                 LogUtils.i("status",codeMessage.getData().getStatus());
                                 startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
                             }
-                        }else {
+                        }else if(codeMessage.getError_code()==1129){
+                            dialog.show();
+                        }
+                        else {
                             ToastUtils.showToast(getActivity(),codeMessage.getError_message());
                         }
                     }

@@ -296,7 +296,6 @@ public class User_Bank_Fragment extends Fragment {
         debitBean.setDperiod(etValidityTime1.getRightString());
         debitBean.setDphone(etBankPhone1.getRightString());
 
-
         if (bankBean.getBank().getCredit().equals(creditBean) && bankBean.getBank().getDebit().equals(debitBean)) {
             ToastUtils.showToast(getActivity(), "无修改内容");
 
@@ -427,6 +426,8 @@ public class User_Bank_Fragment extends Fragment {
 
     @OnClick(R.id.save)
     public void onViewClicked() {
-        Save();
+        if(bankBean!=null){
+            Save();
+        }
     }
 }

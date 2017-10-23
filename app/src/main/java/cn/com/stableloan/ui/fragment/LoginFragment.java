@@ -48,8 +48,11 @@ import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.WelfareBean;
+import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.ProductClassifyActivity;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -60,6 +63,7 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.aes.Des4;
 import cn.com.stableloan.utils.ras.RSA;
 import cn.com.stableloan.view.RoundButton;
+import cn.com.stableloan.view.dialog.Login_DeviceDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -82,6 +86,7 @@ public class LoginFragment extends Fragment {
     GT3GeetestButton llBtnType;
     @Bind(R.id.bt_VisiableButton)
     RoundButton btVisiableButton;
+    private  Login_DeviceDialog dialog;
     private boolean Atest = false;
     private boolean PowerfulEditText = false;
 
@@ -104,6 +109,7 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
        gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
         ButterKnife.bind(this, view);
+        initView();
         setGt3GeetestUtilsListener();
         long date = (long) SPUtils.get(getActivity(), "date", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
@@ -119,6 +125,19 @@ public class LoginFragment extends Fragment {
         return view;
 
     }
+
+    private void initView() {
+
+        dialog=new Login_DeviceDialog(getActivity());
+        dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+
+            }
+        });
+
+    }
+
     private void setVisibleInput(View view) {
 
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -204,6 +223,9 @@ public class LoginFragment extends Fragment {
     }
 
     private void setGt3GeetestUtilsListener() {
+
+
+
         gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
         gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
         String ip = (String) SPUtils.get(getActivity(), "ip", "");
@@ -473,6 +495,9 @@ public class LoginFragment extends Fragment {
                             tinyDB.putObject(infromBean.getData().getUserphone(), userBean);
                             String from = getActivity().getIntent().getStringExtra("from");
                             WelfareBean.DataBean welfare = (WelfareBean.DataBean) getActivity().getIntent().getSerializableExtra("welfare");
+
+                            Class_Special.DataBean.MdseBean id = (Class_Special.DataBean.MdseBean) getActivity().getIntent().getSerializableExtra("ProductClassifyActivity");
+
                             if (from != null) {
                                 if (from.equals("user")) {
                                     getActivity().setResult(Flag_User, new Intent().putExtra("user", userBean));
@@ -496,10 +521,17 @@ public class LoginFragment extends Fragment {
                             } else if (welfare != null) {
                                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));
                                 getActivity().finish();
-                            } else {
+
+                            } else if (id!=null){
+                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class",id));
+                                getActivity().finish();
+
+                            }else {
                                 getActivity().finish();
                             }
-                        } else {
+                        }else if(infromBean.getError_code()==1129){
+                            dialog.show();
+                        } else{
                             long timeMillis = System.currentTimeMillis();
                             SPUtils.put(getActivity(), "date", timeMillis);
                             llBtnType.setVisibility(View.VISIBLE);
@@ -548,7 +580,6 @@ public class LoginFragment extends Fragment {
                             .permission(Manifest.permission.READ_PHONE_STATE)
                             .callback(listener)
                             .start();
-
                 } else {
                     ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");
                 }
