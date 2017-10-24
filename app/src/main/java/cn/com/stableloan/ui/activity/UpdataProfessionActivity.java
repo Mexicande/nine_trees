@@ -14,6 +14,8 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +27,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.UpdateEvent;
+import cn.com.stableloan.bean.UpdateProfessionEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -88,24 +92,11 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updata_profession);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         Validate.reg(this);
-
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("个人资料");
         getIdentity();
-
-        /*TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-        LogUtils.i("identity", user.toString());
-        String identity1 = (String) SPUtils.get(this, "identity", "");
-        if (!identity1.isEmpty()) {
-            Userid = Integer.parseInt(identity1);
-        } else {
-            if (user.getIdentity() != 0) {
-                Userid = user.getIdentity();
-            }
-        }*/
-
 
     }
 
@@ -150,6 +141,13 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                                         tickCompany.setVisibility(View.VISIBLE);
                                         break;
                                 }
+                            }else if(error_code==2){
+                                int error_message = object.getInt("error_message");
+
+                                Intent intent=new Intent(UpdataProfessionActivity.this,LoginActivity.class);
+                                intent.putExtra("message",error_message);
+                                intent.putExtra("from","UpdataProfessionError");
+                                startActivity(intent);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -162,6 +160,15 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
 
     }
 
+    @Subscribe
+    public  void updateEvent(UpdateProfessionEvent msg){
+        if(msg!=null){
+            if(msg.updateProfession==1){
+                getIdentity();
+            }
+        }
+
+    }
 
     @OnClick({R.id.iv_work, R.id.iv_free, R.id.iv_student, R.id.iv_company, R.id.iv_back,R.id.bt_Save})
     public void onViewClicked(View view) {
@@ -311,5 +318,12 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
     @Override
     public Animation onValidateErrorAnno() {
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
     }
 }

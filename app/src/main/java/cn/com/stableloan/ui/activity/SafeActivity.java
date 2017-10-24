@@ -138,7 +138,6 @@ public class SafeActivity extends BaseActivity {
             int i = Integer.parseInt(saveBean.getManaged());
             manage = list1[i];
             selectTime.setRightString(manage);
-
         }
     }
 

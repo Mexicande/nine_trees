@@ -57,9 +57,11 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
+import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
@@ -393,47 +395,8 @@ public class User_MeansFragment extends Fragment {
                                             etBetween2.setRightString(list[i1]);
                                         }
                                     } else {
-/*                                        final TinyDB tinyDB = new TinyDB(getActivity());
-                                        UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                                       // String userphone = user.getUserphone();
-                                        int cat = user.getCat();
-                                        switch (cat){
-                                            case Urls.lock.NO_VERIFICATION:
-                                                String token = (String) SPUtils.get(getActivity(), "token", "1");
-                                                Map<String, String> parms = new HashMap<>();
-                                                parms.put("token", token);
-                                                JSONObject jsonObject = new JSONObject(parms);
-                                                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
-                                                        .tag(this)
-                                                        .upJson(jsonObject)
-                                                        .execute(new StringCallback() {
-                                                            @Override
-                                                            public void onSuccess(String s, Call call, Response response) {
-                                                                try {
-                                                                    JSONObject jsonObject1 = new JSONObject(s);
-                                                                    String isSuccess = jsonObject1.getString("isSuccess");
-                                                                    if ("1".equals(isSuccess)) {
-                                                                        String signature = jsonObject1.getString("signature");
-                                                                        SPUtils.put(getActivity(), "signature", signature);
-                                                                        getDate();
-                                                                    }
-                                                                } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                }
 
-                                                            }
-                                                        });
-                                                break;
-                                            case Urls.lock.GESTURE_VERIFICATION:
-                                                Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
-                                                startActivity(intent);
-                                                break;
-                                            case Urls.lock.PW_VERIFICATION:
-                                                Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                                startActivity(intent2);
-                                                break;
-                                        }*/
-                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
+                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
                                         startActivity(intent);
 
                                       /*  if (gesturePassword == null || "".equals(gesturePassword)) {
@@ -446,6 +409,12 @@ public class User_MeansFragment extends Fragment {
 
                                     }
                                 }
+                            }else if(identity.getError_code()==2){
+                                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                                intent.putExtra("message",identity.getError_message());
+                                intent.putExtra("from","IdentityError");
+                                startActivity(intent);
+
                             } else {
                                 ToastUtils.showToast(getActivity(), identity.getError_message());
                             }

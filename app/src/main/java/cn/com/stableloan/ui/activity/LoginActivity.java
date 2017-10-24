@@ -46,6 +46,7 @@ import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.fragment.LoginFragment;
 import cn.com.stableloan.ui.fragment.MessageFragment;
 import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.ToastUtils;
 
 public class LoginActivity extends BaseActivity implements Touch_login {
 
@@ -87,6 +88,10 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         transparentStatusBar();
         initView();
         initFragments();
+        String message = getIntent().getStringExtra("message");
+        if(message!=null){
+            ToastUtils.showToast(this,message);
+        }
         mFragmentContainerHelper.attachMagicIndicator(loginMagicindicator);
     }
 
@@ -233,6 +238,7 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         mCurrentFragment = fragment;
     }
 
+    private long mLastBackTime = 0;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -255,6 +261,13 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 } else if (from.equals("user2")) {
                     EventBus.getDefault().post(new InformationEvent("user2"));
                     finish();
+                }else if("error".equals(from)){
+                    if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                        finish();
+                    } else {
+                        mLastBackTime = System.currentTimeMillis();
+                        ToastUtils.showToast(this, "再按一次退出");
+                    }
                 }
             }
         }

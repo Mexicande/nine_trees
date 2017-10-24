@@ -55,6 +55,7 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.PictureActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.LogUtils;
@@ -150,7 +151,6 @@ public class UpImageIdentityActivity extends BaseActivity {
         parms1.put("token", token);
         parms1.put("signature", signature);
         parms1.put("source", "");
-
         JSONObject json = new JSONObject(parms1);
         OkGo.<String>post(Urls.Ip_url + Urls.Pictrue.Get_Pictrue)
                 .tag(this)
@@ -193,7 +193,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                                     if (!am_photo.isEmpty()) {
                                         fillImageView(am_photo, ivIdentityHead, "手持身份证");
                                     }
-                                } else {
+                                } else{
                                     String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
                                     final TinyDB tinyDB = new TinyDB(getApplicationContext());
                                     UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
@@ -209,6 +209,12 @@ public class UpImageIdentityActivity extends BaseActivity {
                                         startActivity(intent);
                                     }
                                 }
+                            }else if(imageDataBean.getError_code()==2){
+                                Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
+                                intent.putExtra("message",imageDataBean.getError_message());
+                                intent.putExtra("from","UpImageError");
+                                startActivity(intent);
+
                             } else {
                                 ToastUtils.showToast(mContext, imageDataBean.getError_message());
                             }

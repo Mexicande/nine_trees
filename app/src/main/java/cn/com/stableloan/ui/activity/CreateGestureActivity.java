@@ -23,6 +23,7 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.MsgEvent;
+import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -69,7 +70,7 @@ public class CreateGestureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_gesture);
         ButterKnife.bind(this);
-        titleName.setText("解锁手势");
+        titleName.setText("创建手势");
         ivBack.setVisibility(View.VISIBLE);
         this.init();
     }
@@ -171,6 +172,17 @@ public class CreateGestureActivity extends BaseActivity {
       /*  if(getIntent().getStringExtra("ok")!=null){
             EventBus.getDefault().post(new MsgEvent("ok"));
         }*/
+        String from = getIntent().getStringExtra("from");
+        if(from!=null){
+            if("main".equals(from)){
+                MainActivity.launch(this);
+            }else if("Createuserinformation".equals(from)){
+                UserInformationActivity.launch(this);
+            }else if("Createapply".equals(from)){
+                Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
+                startActivity(new Intent(this, HtmlActivity.class).putExtra("product", desc));
+            }
+        }
         finish();
     }
 

@@ -41,10 +41,12 @@
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/iv_identity_up"/>
                 <ImageView
                     android:id="@+id/iv_IdentityDown"
                     android:layout_marginLeft="@dimen/_20dp"
+                    android:scaleType="centerCrop"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -53,6 +55,7 @@
                     android:id="@+id/iv_IdentityHead"
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
+                    android:scaleType="centerCrop"
 
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_identity_head"/>
@@ -78,6 +81,8 @@
                 <ImageView
                     android:id="@+id/iv_business"
                     android:layout_marginLeft="@dimen/_20dp"
+                    android:scaleType="centerCrop"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_business_card"/>
@@ -105,6 +110,7 @@
                     android:id="@+id/iv_job"
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
+                    android:scaleType="centerCrop"
 
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_job"/>
@@ -130,6 +136,8 @@
                 <ImageView
                     android:id="@+id/iv_debit"
                     android:layout_marginLeft="@dimen/_20dp"
+                    android:scaleType="centerCrop"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_debit"/>
@@ -155,6 +163,7 @@
                 <ImageView
                     android:id="@+id/iv_credit"
                     android:layout_marginLeft="@dimen/_20dp"
+                    android:scaleType="centerCrop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_credit"/>

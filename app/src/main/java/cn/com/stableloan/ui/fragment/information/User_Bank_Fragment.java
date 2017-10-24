@@ -97,6 +97,7 @@ public class User_Bank_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user__bank, container, false);
         ButterKnife.bind(this, view);
         aCache = ACache.get(getActivity());
+
         EventBus.getDefault().register(this);
 
         initTime();
@@ -346,7 +347,6 @@ public class User_Bank_Fragment extends Fragment {
                         }
                     });
         }
-
     }
 
     @Override
@@ -363,7 +363,6 @@ public class User_Bank_Fragment extends Fragment {
                             String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
                             etSelectBank1.setRightString(name);
                         }
-
                     }
                     break;
                 case Urls.DateChange.CREDIT_CARD:
@@ -407,7 +406,6 @@ public class User_Bank_Fragment extends Fragment {
                     break;
             }
         }
-
 
     }
 

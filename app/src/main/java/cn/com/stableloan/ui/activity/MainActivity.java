@@ -291,6 +291,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                     }
                 }
         }else {
+
             if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
                 finish();
             } else {

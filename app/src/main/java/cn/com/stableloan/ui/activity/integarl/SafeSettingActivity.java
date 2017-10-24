@@ -293,8 +293,7 @@ public class SafeSettingActivity extends BaseActivity {
 
         userPhone = user.getUserphone();
 
-        String gesturePassword = aCache.getAsString(userPhone);
-        SPUtils.put(this, userPhone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
+        String gesturePassword = aCache.getAsString(userphone);
 
         if(gesturePassword!=null){
             RBGE.setEnabled(true);
@@ -307,7 +306,6 @@ public class SafeSettingActivity extends BaseActivity {
         }
         int cat = (int) SPUtils.get(this,userPhone+Urls.lock.CAT, 0);
 
-        LogUtils.i("cat===",cat+"");
         switch (cat) {
             case Urls.lock.NO_VERIFICATION:
                 svUnLockCat.setRightString("无验证");
@@ -468,8 +466,30 @@ public class SafeSettingActivity extends BaseActivity {
                     int lock = data.getIntExtra("lock", 0);
                     if(lock==1){
                         svChangeGesture.setRightString("未设置");
+                        if(RBGE.isChecked()){
+                            RBGE.setChecked(false);
+                            RBNO.setChecked(true);
+                            svUnLockCat.setRightString("无验证");
+
+                        }
+                        if(loginGE.isChecked()){
+                            loginGE.setChecked(false);
+                            loginPW.setChecked(true);
+                            svUnLockLogin.setRightString("密码验证");
+                        }
+                        if(applyGE.isChecked()){
+                            applyGE.setChecked(false);
+                            applyNO.setChecked(true);
+                            svUnLockApply.setRightString("无验证");
+                        }
+                        RBGE.setEnabled(false);
+                        loginGE.setEnabled(false);
+                        applyGE.setEnabled(false);
                     }else if(lock==2){
                         svChangeGesture.setRightString("已设置");
+                        RBGE.setEnabled(true);
+                        loginGE.setEnabled(true);
+                        applyGE.setEnabled(true);
                     }
 
 

@@ -1,7 +1,11 @@
 package cn.com.stableloan.ui.activity.integarl;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -52,7 +56,7 @@ public class DateChangeActivity extends BaseActivity {
         setContentView(R.layout.activity_date_change);
         ButterKnife.bind(this);
         initToolbar();
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
     }
 
@@ -91,7 +95,6 @@ public class DateChangeActivity extends BaseActivity {
                 break;
             case Urls.DateChange.ADDRESS:
                 titleName.setText("身份证地址");
-
                 etAddress.setVisibility(View.VISIBLE);
                 if(hint!=null){
                     etAddress.setHint(hint);
@@ -302,7 +305,7 @@ public class DateChangeActivity extends BaseActivity {
                 bundle2.putString("are", etTelePhoneArea.getText().toString());
                 bundle2.putString("telephone", etTelePhone.getText().toString());
                 if (allValid2) {
-                    setResult(Urls.DateChange.COMPANY_TELEPHONE, this.getIntent().putExtra("type", bundle2));
+                    setResult(Urls.DateChange.BUSSINESS_TELEPHONE, this.getIntent().putExtra("type", bundle2));
                     finish();
                 }
                 break;
@@ -330,8 +333,6 @@ public class DateChangeActivity extends BaseActivity {
                 } else {
                     ToastUtils.showToast(this, "邮箱地址格式错误");
                 }
-
-
                 break;
             case Urls.DateChange.BUSSINESS_EMAIL:
                 String bussiness_emailStr = etEmail.getText().toString();

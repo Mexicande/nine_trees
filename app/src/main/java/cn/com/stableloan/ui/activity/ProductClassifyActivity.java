@@ -64,7 +64,6 @@ public class ProductClassifyActivity extends BaseActivity {
     private List<ProductListBean.ProductBean> list2;
     private SpecialClassBean.DataBean specialClassBean;
     private ImageView mImageView;
-    private Class_ListProductBean class_List;
     private Context mContext;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductClassifyActivity.class));

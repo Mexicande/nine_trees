@@ -147,6 +147,7 @@ public class CarmeraResultActivity extends AppCompatActivity {
         Map<String, String> parms = new HashMap<>();
         parms.put("token", userToken);
         parms.put("signature", signature);
+
         parms.put("source", "");
 
         JSONObject jsonObject = new JSONObject(parms);

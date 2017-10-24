@@ -51,6 +51,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.CashEvent;
+import cn.com.stableloan.bean.DescEvent;
+import cn.com.stableloan.bean.IntegarlEvent;
+import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.bean.UpdateEvent;
+import cn.com.stableloan.bean.UpdateProfessionEvent;
 import cn.com.stableloan.model.CodeMessage;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
@@ -148,7 +154,7 @@ public class MessageFragment extends Fragment {
         dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-
+                dialog.dismiss();
             }
         });
     }
@@ -654,6 +660,7 @@ public class MessageFragment extends Fragment {
                                 String from = getActivity().getIntent().getStringExtra("from");
                                 Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
                                 Class_Special.DataBean.MdseBean id = (Class_Special.DataBean.MdseBean) getActivity().getIntent().getSerializableExtra("ProductClassifyActivity");
+                                SPUtils.put(getActivity(), phone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
 
                                 if (from != null) {
                                     if(from.equals("user")){
@@ -671,18 +678,47 @@ public class MessageFragment extends Fragment {
                                         intent.putExtra("ok", "ok");
                                         getActivity().setResult(2000, intent);
                                         getActivity().finish();
+                                    }else if("error".equals(from)){
+                                        MainActivity.launch(getActivity());
+                                        getActivity().finish();
+                                    }else if("error_UserFragment".equals(from)){
+                                        EventBus.getDefault().post(new UpdateEvent("user"));
+                                        getActivity().finish();
+                                    }else if("CollectionError".equals(from)){
+                                        EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
+                                        getActivity().finish();
+                                    }else if("UserInformationError".equals(from)){
+                                        EventBus.getDefault().post(new InformationEvent("informationStatus"));
+                                        getActivity().finish();
+                                    }else if("ProductDescError".equals(from)){
+                                        String collection = getActivity().getIntent().getStringExtra("collection");
+                                        EventBus.getDefault().post(new DescEvent(collection));
+                                        getActivity().finish();
+                                    }else if("CashError".equals(from)){
+                                        EventBus.getDefault().post(new CashEvent(1));
+                                        getActivity().finish();
+                                    }else if("IntegarlError".equals(from)){
+                                        EventBus.getDefault().post(new IntegarlEvent(1));
+                                        getActivity().finish();
+                                    }else if("UpImageError".equals(from)){
+                                        EventBus.getDefault().post(new  InformationEvent("CardUpload"));
+                                        getActivity().finish();
+                                    }else if("IdentityError".equals(from)){
+                                        EventBus.getDefault().post(new  InformationEvent("ok"));
+                                        getActivity().finish();
+                                    }else if("UpdataProfessionError".equals(from)){
+                                        EventBus.getDefault().post(new UpdateProfessionEvent(1));
+                                        getActivity().finish();
+                                    }else if("DeviceError".equals(from)){
+                                        Intent intent=new Intent();
+                                        intent.putExtra("device",1);
+                                        getActivity().setResult(100,intent);
+                                        getActivity().finish();
                                     }
-                                            /*else if(from.equals("user1")){
-                                                                    setResult(4000, new Intent().putExtra("user", bean));
-                                                                    finish();
-                                                                }else if(from.equals("user2")){
-                                                                    setResult(4000, new Intent().putExtra("user", bean));
-                                                                    finish();
-                                                                }*/
+
                                 } else if (id!=null){
                                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class",id));
                                     getActivity().finish();
-
                                 }
                                 else if(welfare!=null){
                                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
@@ -695,7 +731,7 @@ public class MessageFragment extends Fragment {
                                 LogUtils.i("status",codeMessage.getData().getStatus());
                                 startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
                             }
-                        }else if(codeMessage.getError_code()==1129){
+                        }else if(codeMessage.getError_code()==1130){
                             dialog.show();
                         }
                         else {

@@ -32,6 +32,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +47,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
@@ -170,6 +173,8 @@ public class ProductDesc extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desc);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+
         ZhugeSDK.getInstance().init(getApplicationContext());
         initToolbar();
         pid = getIntent().getIntExtra("pid", 0);
@@ -285,6 +290,7 @@ public class ProductDesc extends BaseActivity {
         if (!"1".equals(token)) {
             params.put("token", token);
         }
+        params.put("terminal", "1");
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
@@ -530,14 +536,10 @@ public class ProductDesc extends BaseActivity {
                 break;
             case R.id.apply:
                 String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-                if ("1".equals(token)) {
+                if (token==null||"1".equals(token)) {
                     LoginActivity.launch(this);
+
                 } else {
-                    Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                    if (dialog != null && dialog) {
-                        sendIO();
-                        startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
-                    } else {
                         String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
                         int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
                         switch (apply) {
@@ -552,12 +554,10 @@ public class ProductDesc extends BaseActivity {
                             case Urls.lock.GESTURE_VERIFICATION:
                                 Intent intent1 = new Intent(this, GestureLoginActivity.class);
                                 intent1.putExtra("from", "apply");
+                                intent1.putExtra("product", descBean);
                                 startActivityForResult(intent1, APPLY_VAIL);
                                 break;
                         }
-
-
-                    }
                 }
                 break;
             case R.id.bt_share:
@@ -586,6 +586,7 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void setShared_Collection() {
+
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
         menuItems.add(new MenuItem(R.mipmap.iv_share_friend, "分享到朋友圈"));
@@ -653,6 +654,7 @@ public class ProductDesc extends BaseActivity {
 
         String token = (String) SPUtils.get(this, "token", "1");
         Map<String, String> parms1 = new HashMap<>();
+
         parms1.put("token", token);
         parms1.put("status", status);
         parms1.put("product_id", String.valueOf(pid));
@@ -678,7 +680,13 @@ public class ProductDesc extends BaseActivity {
                                         shareFlag = false;
                                         ToastUtils.showToast(ProductDesc.this, "取消成功");
                                     }
-                                } else {
+                                }else if(error_code==2){
+                                    Intent intent=new Intent(ProductDesc.this,LoginActivity.class);
+                                    intent.putExtra("message",json.getString("error_message"));
+                                    intent.putExtra("from","ProductDescError");
+                                    intent.putExtra("collection",status);
+                                    startActivity(intent);
+                                }else {
                                     String error_message = json.getString("error_message");
                                     ToastUtils.showToast(ProductDesc.this, error_message);
                                 }
@@ -716,9 +724,20 @@ public class ProductDesc extends BaseActivity {
         }
     }
 
+    @Subscribe
+    public  void updateEvent(DescEvent msg){
+        if(msg!=null){
+            CollectionProduct(msg.collection);
+        }
+
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
         ZhugeSDK.getInstance().flush(getApplicationContext());
         if (flag) {
             EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
@@ -749,14 +768,17 @@ public class ProductDesc extends BaseActivity {
                 if (resultCode == 1000) {
                     String ok = data.getStringExtra("ok");
                     if ("ok".equals(ok)) {
-                        showApplyDialog();
+                        Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
+                        if (dialog != null && dialog) {
+                            sendIO();
+                            startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
+                        } else {
+                            showApplyDialog();
+                        }
                     }
                 }
                 break;
-
         }
-
     }
-
 
 }

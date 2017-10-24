@@ -24,6 +24,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.PicStatusEvent;
+import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -68,10 +69,6 @@ public class GestureLoginActivity extends BaseActivity {
 
         //得到当前用户的手势密码
         String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
-
-        final TinyDB tinyDB = new TinyDB(this);
-        UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-        String phone = user.getUserphone();
         gesturePassword = aCache.getAsBinary(userphone);
         lockPatternView.setOnPatternListener(patternListener);
         updateStatus(Status.DEFAULT);
@@ -271,7 +268,7 @@ public class GestureLoginActivity extends BaseActivity {
                 finish();
             }else if ("splash".equals(from)){
                 MainActivity.launch(GestureLoginActivity.this);
-               finish();
+                finish();
             }
         }else  {
             String token = (String) SPUtils.get(this, "token", "1");
@@ -312,19 +309,26 @@ public class GestureLoginActivity extends BaseActivity {
     @OnClick(R.id.forgetGestureBtn)
     void forgetGesturePasswrod() {
         String from = getIntent().getStringExtra("from");
-
         if(from.equals("SettingSafe")){
             Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class).putExtra("from","safe");
             startActivity(intent);
             this.finish();
         }else if(from.equals("userinformation")){
-            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class) .putExtra("from", "userinformation");
+            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class) .putExtra("from", "Createuserinformation");
+            startActivity(intent);
+            this.finish();
+        }else if("apply".equals(from)){
+
+            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class) .putExtra("from", "Createapply");
+            Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
+            intent.putExtra("product", desc);
             startActivity(intent);
             this.finish();
         }else {
-            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class);
+            Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class).putExtra("from","CreateGesture");
             startActivity(intent);
-            this.finish();
+
+            finish();
         }
     }
 

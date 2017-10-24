@@ -27,11 +27,14 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IntegarUpEvent;
+import cn.com.stableloan.bean.IntegarlEvent;
 import cn.com.stableloan.bean.IntregarlEvent;
 import cn.com.stableloan.bean.ShareEvent;
 import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.integarl.IntegarlBean;
+import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.IdentityinformationActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.adapter.Integarl_taskAdapter;
 import cn.com.stableloan.utils.LogUtils;
@@ -82,11 +85,16 @@ public class IntegarlTaskFragment extends Fragment {
                         if (s != null) {
                             Gson gson = new Gson();
                             IntegarlBean bean = gson.fromJson(s, IntegarlBean.class);
-                            if (bean.getCode() == 200) {
+                            if (bean.getError_code() == 0) {
                                 adapter.addData(bean.getData().getCode());
                                 integar.setText(bean.getData().getStatus());
                                 EventBus.getDefault().post(new IntregarlEvent(bean.getData().getOffical(), bean.getData().getCredits(),bean.getData().getTopCredits()));
-                            } else {
+                            } else if(bean.getCode()==0){
+                                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                                intent.putExtra("message",bean.getError_message());
+                                intent.putExtra("from","IntegarlError");
+                                startActivity(intent);
+                            } else{
                                 ToastUtils.showToast(getActivity(), bean.getError_message());
                             }
                         }
@@ -142,6 +150,14 @@ public class IntegarlTaskFragment extends Fragment {
         if (event != null) {
             if(event.up.equals("integar")) {
                 initRecyclerView();
+            }
+        }
+    }
+    @Subscribe
+    public void onUpdate(IntegarlEvent event) {
+        if (event != null) {
+            if(event.integarl==1) {
+                getInDate();
             }
         }
     }

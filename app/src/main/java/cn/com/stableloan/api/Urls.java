@@ -54,7 +54,7 @@ public interface Urls {
         String SettingPassWord="set/password";
         //验证码发送
         String LOGIN="login/login";
-        String USER_INFOMATION="Mine/Locking";
+        String USER_INFOMATION="person/lockPassword";
         String GET_SIGNATURE="Mine/GetSignature";
         String Immunity="Mine/Immunity";
         String QUICK_LOGIN="quick/login";
@@ -223,7 +223,6 @@ public interface Urls {
     String NUMBER_ONE=                                                                              "1";
     String NUMBER_TWO=                                                                              "2";
     interface lock{
-
         int  NO_VERIFICATION =                                                                            0;
         int  PW_VERIFICATION =                                                                            2;
         int  GESTURE_VERIFICATION =                                                                       3;

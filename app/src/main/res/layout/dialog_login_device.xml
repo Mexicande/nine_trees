@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="账号安全保护中！"
+            android:text="账号安全保护中!"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
         <TextView

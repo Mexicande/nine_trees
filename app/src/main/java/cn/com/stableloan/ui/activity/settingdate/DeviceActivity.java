@@ -30,6 +30,7 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Device;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.ui.adapter.DeviceAdapter;
 import cn.com.stableloan.utils.SPUtils;
@@ -96,6 +97,12 @@ public class DeviceActivity extends BaseActivity {
                                         deviceInt=0;
                                     }
                                     mDeviceAdapter.addData(device.getData().getList());
+                                }else if(device.getError_code()==2){
+                                    Intent intent=new Intent(DeviceActivity.this,LoginActivity.class);
+                                    intent.putExtra("message",device.getError_message());
+                                    intent.putExtra("from","DeviceError");
+                                    startActivityForResult(intent,1000);
+
                                 }else {
                                     ToastUtils.showToast(DeviceActivity.this,device.getError_message());
                                 }
@@ -193,8 +200,7 @@ public class DeviceActivity extends BaseActivity {
                                     mDeviceAdapter.remove(position-1);
                                     ToastUtils.showToast(DeviceActivity.this,"成功删除");
 
-                                }else {
-
+                                } else{
                                     String error_message = object.getString("error_message");
                                     ToastUtils.showToast(DeviceActivity.this,error_message);
                                 }
@@ -231,5 +237,17 @@ public class DeviceActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            if(requestCode==1000){
+                if(resultCode==100){
+                    int device = data.getIntExtra("device", 0);
+                    if(device==1){
+                        getDate();
+                    }
 
+                }
+            }
+    }
 }

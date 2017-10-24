@@ -37,6 +37,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.PicStatusEvent;
+import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -62,12 +63,13 @@ public class Verify_PasswordActivity extends BaseActivity {
     @Bind(R.id.main)
     LinearLayout main;
     private int FILD_NU = 0;
-
+    private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify__password);
         ButterKnife.bind(this);
+        mContext=this;
         initToolbar();
         setListener();
 
@@ -122,6 +124,11 @@ public class Verify_PasswordActivity extends BaseActivity {
         titleName.setText("身份验证");
         etPassWord.setTransformationMethod(PasswordTransformationMethod
                 .getInstance());
+       String from= getIntent().getStringExtra("from");
+        if("splash".equals(from)){
+            titleName.setText("登录");
+            layoutGo.setVisibility(View.GONE);
+        }
 
     }
 
@@ -157,7 +164,7 @@ public class Verify_PasswordActivity extends BaseActivity {
             parms.put("token", token);
             parms.put("password", md5ToString);
             JSONObject jsonObject = new JSONObject(parms);
-            OkGo.<String>post(Urls.NEW_URL + Urls.Login.USER_INFOMATION)
+            OkGo.<String>post(Urls.NEW_Ip_url + Urls.Login.USER_INFOMATION)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
@@ -167,12 +174,10 @@ public class Verify_PasswordActivity extends BaseActivity {
                             if (s != null) {
                                 try {
                                     JSONObject json = new JSONObject(s);
-                                    String isSuccess = json.getString("isSuccess");
-                                    if ("1".equals(isSuccess)) {
+                                    int error_code = json.getInt("error_code");
+                                    if (error_code==0) {
                                         String from = getIntent().getStringExtra("from");
                                         if (from != null) {
-                                            String signature = json.getString("signature");
-                                            SPUtils.put(Verify_PasswordActivity.this, "signature", signature);
                                             if ("unLock".equals(from)) {
                                                 CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
@@ -204,7 +209,8 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                 startActivity(new Intent(Verify_PasswordActivity.this, UpdatePassWordActivity.class).putExtra("password", md5ToString));
                                                 finish();
                                             } else if("CreateGesture".equals(from)){
-                                                CreateGestureActivity.launch(Verify_PasswordActivity.this);
+                                                startActivity(new Intent(mContext,CreateGestureActivity.class).putExtra("from","main"));
+                                                //CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
                                             }else if("apply".equals(from)){
                                                 Intent intent=new Intent();
@@ -214,13 +220,30 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             }else if ("splash".equals(from)){
                                                 MainActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
+                                            }else if("Createuserinformation".equals(from)){
+                                                startActivity(new Intent(mContext,CreateGestureActivity.class).putExtra("from","Createuserinformation"));
+                                                //CreateGestureActivity.launch(Verify_PasswordActivity.this);
+                                                finish();
+                                            }else if("Createapply".equals(from)){
+
+                                                Intent intent=new Intent(mContext,CreateGestureActivity.class).putExtra("from","Createapply");
+                                                Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
+                                                intent.putExtra("product", desc);
+                                                startActivity(intent);
+                                                //CreateGestureActivity.launch(Verify_PasswordActivity.this);
+                                                finish();
                                             }
                                         }
-
-                                    } else {
+                                    } else if(error_code==2){
+                                        Intent intent=new Intent(mContext,LoginActivity.class);
+                                        intent.putExtra("message",json.getString("error_message"));
+                                        intent.putExtra("from","error");
+                                        startActivity(intent);
+                                        finish();
+                                    }else {
                                         FILD_NU++;
                                         tvFail.setText(FILD_NU + "次密码输入错误");
-                                        String msg = json.getString("msg");
+                                        String msg = json.getString("error_message");
                                         ToastUtils.showToast(Verify_PasswordActivity.this, msg);
                                     }
                                 } catch (JSONException e) {

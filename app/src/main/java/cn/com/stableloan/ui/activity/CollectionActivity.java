@@ -138,7 +138,12 @@ public class CollectionActivity extends BaseActivity {
                                     classify_recycler_adapter.setNewData(Arrays.asList(productBeen));
                                     recyclerView.smoothScrollToPosition(0);
                                 }
-                            } else {
+                            }else if(error_code==2){
+                                Intent intent=new Intent(CollectionActivity.this,LoginActivity.class);
+                                intent.putExtra("message",json.getString("error_message"));
+                                intent.putExtra("from","CollectionError");
+                                startActivity(intent);
+                            } else{
                                 classify_recycler_adapter.setNewData(null);
                                 classify_recycler_adapter.setEmptyView(notDataView);
                                 String error_message = json.getString("error_message");

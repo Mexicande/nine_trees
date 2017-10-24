@@ -185,7 +185,7 @@ public class User_Professional_Fragment extends Fragment {
                                             id = BUSINESS;
                                             break;
                                         case FREE:
-                                            title.setText("自由职业");
+                                            title.setText("逍遥客");
                                             setVisibilityProfession(layoutFreelancer);
                                             id = FREE;
                                             break;
@@ -205,7 +205,7 @@ public class User_Professional_Fragment extends Fragment {
                                     etLocation.setRightString(company.getLocation());
                                     etEmail.setRightString(company.getEmail());
                                     String years = company.getYears();
-                                    if (!years.isEmpty()) {
+                                    if (years.length()==1) {
                                         int year = Integer.parseInt(company.getYears());
                                         etYears.setRightString(list2[year]);
                                     }
@@ -225,7 +225,7 @@ public class User_Professional_Fragment extends Fragment {
                                     }
 
                                     BusinessLocation.setRightString( business.getBlocation());
-                                    if (business.getByears().length() > 1) {
+                                    if (business.getByears().length() ==1) {
                                         int year1 = Integer.parseInt(business.getByears());
                                         BusinessYears.setRightString(list2[year1]);
                                     }
@@ -429,18 +429,24 @@ public class User_Professional_Fragment extends Fragment {
         companyBean.setCincome(cCincome);
         companyBean.setFixedline(cCompanyFixedline);
 
-
         String BusinessName = BusinessCompany.getRightString();
         String BusinessLocation = this.BusinessLocation.getRightString();
         String BusinessFixedLine = etBusinessFixedline.getRightString();
-        String BusinessYears = this.BusinessYears.getRightString();
         String BusinessEmail = this.BusinessEmail.getRightString();
         String BusinessCincome = this.BusinessCincome.getRightString();
 
+        String BusinessYears = this.BusinessYears.getRightString();
         businessBean.setBcompany(BusinessName);
         businessBean.setBlocation(BusinessLocation);
         businessBean.setBfixedline(BusinessFixedLine);
-        businessBean.setByears(BusinessYears);
+
+        businessBean.setByears("");
+        for (int i = 0; i < list2.length; i++) {
+            if (list2[i].equals(BusinessYears)) {
+                String s = String.valueOf(i);
+                businessBean.setByears(s);
+            }
+        }
         businessBean.setBemail(BusinessEmail);
         businessBean.setBcincome(BusinessCincome);
 

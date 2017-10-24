@@ -41,9 +41,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.CashEvent;
+import cn.com.stableloan.bean.DescEvent;
+import cn.com.stableloan.bean.IntegarlEvent;
+import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.bean.UpdateEvent;
+import cn.com.stableloan.bean.UpdateProfessionEvent;
 import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.interfaceutils.Touch_login;
 import cn.com.stableloan.model.DesBean;
+import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
@@ -51,8 +58,10 @@ import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.ProductClassifyActivity;
+import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -132,7 +141,7 @@ public class LoginFragment extends Fragment {
         dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-
+                dialog.dismiss();
             }
         });
 
@@ -487,6 +496,8 @@ public class LoginFragment extends Fragment {
                             UserBean userBean = new UserBean();
                             userBean.setNickname(infromBean.getData().getNickname());
                             userBean.setUserphone(infromBean.getData().getUserphone());
+                            SPUtils.put(getActivity(), infromBean.getData().getUserphone()+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
+
                             SPUtils.put(getActivity(),Urls.lock.USER_PHONE,infromBean.getData().getUserphone());
                             userBean.setIdentity(infromBean.getData().getIdentity());
                             EventBus.getDefault().post(new UserEvent(infromBean));
@@ -517,7 +528,47 @@ public class LoginFragment extends Fragment {
                                     intent.putExtra("ok", "ok");
                                     getActivity().setResult(2000, intent);
                                     getActivity().finish();
+                                }else if("error".equals(from)){
+                                    MainActivity.launch(getActivity());
+                                    getActivity().finish();
+                                }else if("error_UserFragment".equals(from)){
+                                    EventBus.getDefault().post(new UpdateEvent("user"));
+                                    getActivity().finish();
+                                }else if("CollectionError".equals(from)){
+                                    EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
+                                    getActivity().finish();
+                                }else if("UserInformationError".equals(from)){
+                                    EventBus.getDefault().post(new InformationEvent("informationStatus"));
+                                    getActivity().finish();
+
+                                }else if("ProductDescError".equals(from)){
+                                    String collection = getActivity().getIntent().getStringExtra("collection");
+                                    EventBus.getDefault().post(new DescEvent(collection));
+                                    getActivity().finish();
+                                }else if("CashError".equals(from)){
+                                    EventBus.getDefault().post(new CashEvent(1));
+                                    getActivity().finish();
+                                }else if("IntegarlError".equals(from)){
+                                    EventBus.getDefault().post(new IntegarlEvent(1));
+                                    getActivity().finish();
+                                }else if("UpImageError".equals(from)){
+                                    EventBus.getDefault().post(new  InformationEvent("CardUpload"));
+                                    getActivity().finish();
+
+                                } else if("IdentityError".equals(from)){
+                                    EventBus.getDefault().post(new  InformationEvent("ok"));
+                                    getActivity().finish();
+
+                                }else if("UpdataProfessionError".equals(from)){
+                                    EventBus.getDefault().post(new UpdateProfessionEvent(1));
+                                    getActivity().finish();
+                                }else if("DeviceError".equals(from)){
+                                    Intent intent=new Intent();
+                                    intent.putExtra("device",1);
+                                    getActivity().setResult(100,intent);
+                                    getActivity().finish();
                                 }
+
                             } else if (welfare != null) {
                                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));
                                 getActivity().finish();
@@ -529,7 +580,7 @@ public class LoginFragment extends Fragment {
                             }else {
                                 getActivity().finish();
                             }
-                        }else if(infromBean.getError_code()==1129){
+                        }else if(infromBean.getError_code()==1130){
                             dialog.show();
                         } else{
                             long timeMillis = System.currentTimeMillis();

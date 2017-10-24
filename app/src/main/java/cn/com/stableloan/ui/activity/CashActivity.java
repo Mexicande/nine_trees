@@ -14,6 +14,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +27,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.CashEvent;
+import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.ui.activity.cash.GetCashRule;
 import cn.com.stableloan.ui.activity.integarl.RuleDescActivity;
@@ -74,6 +78,8 @@ public class CashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cash);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+
         zhuGe();
         initRecyclerView();
         getDate();
@@ -82,7 +88,6 @@ public class CashActivity extends BaseActivity {
     }
 
     private void zhuGe() {
-
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("cash", "");
@@ -127,7 +132,7 @@ public class CashActivity extends BaseActivity {
                 .setCancellable(true)
                 .show();
 
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         JSONObject object = new JSONObject(params);
@@ -140,13 +145,24 @@ public class CashActivity extends BaseActivity {
                         if (s != null) {
                             Gson gson = new Gson();
                             cashBean = gson.fromJson(s, CashBean.class);
-                            account.setText(cashBean.getData().getAccount());
-                            total.setText(cashBean.getData().getTotal());
-                            cashAdapter.setNewData(cashBean.getData().getCashRecord());
-                            if (cashBean.getData().getAccount().length() > 1) {
-                                btVisiable.setVisibility(View.GONE);
-                                btWithdrawal.setVisibility(View.VISIBLE);
+                            if(cashBean.getError_code()==0){
+                                account.setText(cashBean.getData().getAccount());
+                                total.setText("¥"+cashBean.getData().getTotal());
+                                cashAdapter.setNewData(cashBean.getData().getCashRecord());
+                                if (cashBean.getData().getAccount().length() > 1) {
+                                    btVisiable.setVisibility(View.GONE);
+                                    btWithdrawal.setVisibility(View.VISIBLE);
+                                }
+                            }else if(cashBean.getError_code()==2){
+                                Intent intent=new Intent(CashActivity.this,LoginActivity.class);
+                                intent.putExtra("message",cashBean.getError_message());
+                                intent.putExtra("from","CashError");
+                                startActivity(intent);
+
+                            }else {
+                                ToastUtils.showToast(CashActivity.this,cashBean.getError_message());
                             }
+
                         }
                     }
 
@@ -189,6 +205,14 @@ public class CashActivity extends BaseActivity {
                 break;
         }
     }
+    @Subscribe
+    public  void updateEvent(CashEvent msg){
+        if(msg!=null){
+            if(msg.cash==1){
+                getDate();
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -200,7 +224,12 @@ public class CashActivity extends BaseActivity {
                 }
                 break;
         }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
 
     }
 }

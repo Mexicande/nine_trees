@@ -163,7 +163,12 @@ public class UserInformationActivity extends Activity {
                                     UserPic.setRightString("未完成");
                                 }
 
-                            } else {
+                            }else if(statusBean.getError_code()==2){
+                                Intent intent=new Intent(UserInformationActivity.this,LoginActivity.class);
+                                intent.putExtra("message",statusBean.getError_message());
+                                intent.putExtra("from","UserInformationError");
+                                startActivity(intent);
+                            } else{
                                 ToastUtils.showToast(UserInformationActivity.this, statusBean.getError_message());
                             }
 

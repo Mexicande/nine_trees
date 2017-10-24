@@ -47,6 +47,7 @@ import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
@@ -95,6 +96,7 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
+
         EventBus.getDefault().register(this);
         aCache = ACache.get(getActivity());
         getUserInfo();
@@ -155,7 +157,13 @@ public class UserFragment extends ImmersionFragment {
                                     btMoney.setText(personal.getData().getTotal());
                                     userPhone=personal.getData().getUserphone();
 
-                                }else {
+                                }else if(personal.getError_code()==2){
+                                    Intent intent=new Intent(getActivity(),LoginActivity.class);
+                                    intent.putExtra("message",personal.getError_message());
+                                    intent.putExtra("from","error_UserFragment");
+                                    startActivity(intent);
+
+                                } else {
                                     ToastUtils.showToast(getActivity(),personal.getError_message());
                                 }
                             }
@@ -307,121 +315,14 @@ public class UserFragment extends ImmersionFragment {
                                UserInformationActivity.launch(getActivity());
                                break;
                            case Urls.lock.GESTURE_VERIFICATION:
-                               Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userInformation");
+                               Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userinformation");
                                startActivity(intent);
                                break;
                            case Urls.lock.PW_VERIFICATION:
-                               Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userInformation");
+                               Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
                                startActivity(intent2);
                                break;
-                                        }
-
-       /* String token = (String) SPUtils.get(getActivity(), "token", "1");
-        String signature = (String) SPUtils.get(getActivity(), "signature", "1");
-        HashMap<String, String> params = new HashMap<>();
-        params.put("token", token);
-        params.put("signature", signature);
-        JSONObject jsonObject = new JSONObject(params);
-        OkGo.<String>post(Urls.NEW_URL + Urls.Login.Immunity)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String status = object.getString("status");
-                                if ("1".equals(status)) {
-                                    UserInformationActivity.launch(getActivity());
-                                } else {
-                                    String gesturePassword = aCache.getAsString(userPhone);
-                                    String lock = aCache.getAsString("lock");
-
-                                    if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
-                                        startActivity(intent);
-                                    } else {
-                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class);
-                                        startActivity(intent);
-                                    }
-                                }
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showToast(getActivity(), "网络异常，请稍后再试");
-                            }
-                        });
-                    }
-                });
-
-*/
-    }
-    private SaveBean saveBean;
-
-    private void getDate() {
-
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
-
-        Map<String, String> parms = new HashMap<>();
-        parms.put("token", token);
-        JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Getsetting)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                Gson gson = new Gson();
-                                saveBean = gson.fromJson(s, SaveBean.class);
-                                String way1 = saveBean.getWay();
-                                String gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
-                                if (way1 != null) {
-                                    if ("0".equals(way1)) {
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
-                                        startActivity(intent);
-
-                                    } else {
-                                        if (gesturePassword == null || "".equals(gesturePassword)) {
-                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userinformation");
-                                            startActivity(intent);
-                                        } else {
-                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
-                                            startActivity(intent);
-                                        }
-
-                                    }
-                                }
-
-                            } else {
-                                String msg = object.getString("msg");
-                                ToastUtils.showToast(getActivity(), msg);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
-                    }
-                });
-
+                       }
 
     }
 

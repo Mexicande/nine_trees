@@ -38,8 +38,8 @@ public class Classify_Recycler_Adapter extends BaseQuickAdapter<SpecialClassBean
 
 
         RequestOptions options = new RequestOptions()
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                 ;
         helper.setText(R.id.project_name, item.getProject_name())
                 .setText(R.id.title, item.getTitle())

@@ -95,7 +95,7 @@ public class ProductFragment extends ImmersionFragment {
     private int AMOUT=0;
     private int MORE = 1;
     private String[] mVals = new String[]
-            {"上班族", "学生党", "逍遥客 ", "企业主"};
+            {"上班族", "其他", "逍遥客 ", "企业主"};
 
     private List<TagFlowBean.DataBean> tagData = new ArrayList<>();
 

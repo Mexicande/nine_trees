@@ -99,10 +99,6 @@
         <activity
             android:name=".ui.activity.UpdatePassWordActivity"
             android:screenOrientation="portrait" />
-        <!-- 昵称修改 -->
-        <activity
-            android:name=".ui.activity.UpdateNickActivity"
-            android:screenOrientation="portrait" />
         <!-- 职业修改 -->
         <activity
             android:name=".ui.activity.UpdataProfessionActivity"
@@ -188,9 +184,13 @@
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <!-- 密码设置 -->
 
-        <activity android:name=".ui.activity.SettingPassWordActivity" />
+        <activity android:name=".ui.activity.SettingPassWordActivity"
+            android:screenOrientation="portrait"
+            />
         <!-- 三方认证 -->
-        <activity android:name=".ui.activity.CertificationActivity" />
+        <activity android:name=".ui.activity.CertificationActivity"
+            android:screenOrientation="portrait"
+            />
         <!-- 反馈意见 -->
 
         <activity
@@ -225,25 +225,55 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <!-- Cash Running water -->
-        <activity android:name=".ui.activity.IntegralActivity" />
+        <activity android:name=".ui.activity.IntegralActivity"
+            android:screenOrientation="portrait"
+            />
         <!-- Cash desc -->
-        <activity android:name=".ui.activity.CashActivity" />
+        <activity android:name=".ui.activity.CashActivity"
+            android:screenOrientation="portrait"
+            />
 
         <!-- Cash withdrawals rule -->
-        <activity android:name=".ui.activity.integarl.RuleDescActivity" />
+        <activity android:name=".ui.activity.integarl.RuleDescActivity"
+            android:screenOrientation="portrait"
+            />
         <!-- Cash withdrawals -->
 
-        <activity android:name=".ui.activity.integarl.WithdrawalCashActivity" />
+        <activity android:name=".ui.activity.integarl.WithdrawalCashActivity"
+            android:screenOrientation="portrait"
+            />
         <!-- 好友邀请 -->
-        <activity android:name=".ui.activity.integarl.InviteFriendsActivity" />
-        <activity android:name=".ui.activity.integarl.UpImageIdentityActivity" />
-        <activity android:name=".ui.activity.integarl.DateChangeActivity" />
-        <activity android:name=".ui.activity.integarl.SafeSettingActivity" />
-        <activity android:name=".ui.activity.integarl.SettingChangDateActivity" />
-        <activity android:name=".ui.activity.settingdate.DeviceActivity" />
-        <activity android:name=".ui.activity.UpdatePWActivity" />
-        <activity android:name=".ui.activity.cash.GetCashRule" />
-        <activity android:name=".ui.activity.settingdate.SwitchPassWordActivity"></activity>
+        <activity android:name=".ui.activity.integarl.InviteFriendsActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--图片信息上传-->
+        <activity android:name=".ui.activity.integarl.UpImageIdentityActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".ui.activity.integarl.DateChangeActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--安全设置-->
+        <activity android:name=".ui.activity.integarl.SafeSettingActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--设备管理-->
+        <activity android:name=".ui.activity.settingdate.DeviceActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--密码修改-->
+        <activity android:name=".ui.activity.UpdatePWActivity"
+            android:screenOrientation="portrait"
+            />
+       <!-- 现金规则-->
+        <activity android:name=".ui.activity.cash.GetCashRule"
+            android:screenOrientation="portrait"
+            />
+        <!--设置手势密码-->
+        <activity android:name=".ui.activity.settingdate.SwitchPassWordActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

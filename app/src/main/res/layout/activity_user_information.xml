@@ -59,7 +59,7 @@
         android:layout_height="55dp"
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftBottomTextSize="15sp"
-        stv:sLeftBottomTextString="申请人必填信息"
+        stv:sLeftBottomTextString="申请人必填材料"
         stv:sLeftIconRes="@mipmap/iv_identity_date"
         stv:sLeftTextColor="@android:color/black"
         stv:sLeftTextSize="16sp"

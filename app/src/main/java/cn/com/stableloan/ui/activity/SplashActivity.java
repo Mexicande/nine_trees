@@ -55,20 +55,26 @@ public class SplashActivity extends AppCompatActivity {
                 switch (msg.what){
                     case 1:
                         String userphone = (String) SPUtils.get(activity, Urls.lock.USER_PHONE, "1");
-                        int  loginCode = (int) SPUtils.get(activity, userphone + Urls.lock.LOGIN, 0);
-                        switch (loginCode){
-                            case Urls.lock.NO_VERIFICATION:
-                                MainActivity.launch(activity);
-                                activity.finish();
-                                break;
-                            case Urls.lock.PW_VERIFICATION:
-                                activity.startActivity(new Intent(activity,Verify_PasswordActivity.class).putExtra("from","splash"));
-                                activity.finish();
-                                break;
-                            case Urls.lock.GESTURE_VERIFICATION:
-                                activity.startActivity(new Intent(activity,GestureLoginActivity.class).putExtra("from","splash"));
-                                activity.finish();
-                                break;
+                        String token = (String) SPUtils.get(activity, Urls.lock.TOKEN, "0");
+                        if(token==null||"0".equals(token)){
+                            MainActivity.launch(activity);
+                            activity.finish();
+                        }else {
+                            int  loginCode = (int) SPUtils.get(activity, userphone + Urls.lock.LOGIN, 5);
+                            switch (loginCode){
+                                case Urls.lock.PW_VERIFICATION:
+                                    activity.startActivity(new Intent(activity,Verify_PasswordActivity.class).putExtra("from","splash"));
+                                    activity.finish();
+                                    break;
+                                case Urls.lock.GESTURE_VERIFICATION:
+                                    activity.startActivity(new Intent(activity,GestureLoginActivity.class).putExtra("from","splash"));
+                                    activity.finish();
+                                    break;
+                                default:
+                                    MainActivity.launch(activity);
+                                    activity.finish();
+                                    break;
+                            }
                         }
                       /*  MainActivity.launch(activity);
                         activity.finish();*/
