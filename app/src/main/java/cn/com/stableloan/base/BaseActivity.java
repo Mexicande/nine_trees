@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.gyf.barlibrary.ImmersionBar;
 
 import cn.com.stableloan.R;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.keyboard.KeyBoardUtils;
 
 /**
@@ -32,12 +33,18 @@ public class BaseActivity extends AppCompatActivity {
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();
+            ActivityStackManager.getInstance().pushActivity(this);
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        boolean contains = ActivityStackManager.getInstance().isContains(this);
+        if(contains){
+            ActivityStackManager.getInstance().popActivity(this);
+        }
+
     }
 
 

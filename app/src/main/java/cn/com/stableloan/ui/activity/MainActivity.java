@@ -62,6 +62,9 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     private static final int LOTTERY_SNED = 5000;
 
     String content="1231313";
+
+    public static final String EXIST = "exist";
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -75,6 +78,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         VisionTest();
         initView();
     }
+
 
     private void VisionTest() {
       String  channel = WalleChannelReader.getChannel(this.getApplicationContext());

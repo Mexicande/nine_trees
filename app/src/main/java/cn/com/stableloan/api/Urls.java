@@ -215,6 +215,10 @@ public interface Urls {
         int      STUHENT_TELEPHONE =                                                                28;
 
     }
+
+    interface DataStatistics{
+        String APPLY            =                                                                   "product/apply";
+    }
     interface SettingResultCode{
         int     SAFE_DATE   =                                                                       200;
     }

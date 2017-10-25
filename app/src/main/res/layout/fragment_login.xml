@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:stv="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/view_passWord"
     android:layout_width="match_parent"
@@ -85,13 +86,14 @@
         android:layout_height="50dp"
         android:text="开始"
         app:btnCornerRadius="5dp"
-
         app:btnPressedRatio="0.9"
         app:btnSolidColor="@color/Normal_Button"
         android:gravity="center"
         android:textSize="24sp"
         android:textColor="#ffffff"
         />
+
+
     <RelativeLayout
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"

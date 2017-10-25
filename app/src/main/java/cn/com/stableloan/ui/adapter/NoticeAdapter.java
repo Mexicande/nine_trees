@@ -29,7 +29,7 @@ public class NoticeAdapter extends BaseQuickAdapter<NoticeBean.AnnouncementsBean
     @Override
     protected void convert(BaseViewHolder helper, NoticeBean.AnnouncementsBean item) {
         RequestOptions options = new RequestOptions()
-                .centerCrop()
+                .fitCenter()
                 .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 

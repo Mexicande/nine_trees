@@ -14,6 +14,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiniu.android.storage.UploadManager;
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.uuch.adlibrary.utils.DisplayUtil;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -27,6 +28,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import cn.com.stableloan.utils.SPUtils;
+
+import static com.tencent.bugly.beta.tinker.TinkerManager.getApplication;
 
 
 /**
@@ -94,7 +97,8 @@ public class AppApplication extends Application {
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
 
         ZhugeSDK.getInstance().init(this,"24520d39b750437b97f026353aa80aea",channel);
-
+        Bugly.setAppChannel(this, channel);
+        Bugly.init(getApplication(), "e0e8b8baa1", true);
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
 
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
@@ -173,5 +177,7 @@ public class AppApplication extends Application {
             activity.finish();
         }
     }
+
+
 }
 

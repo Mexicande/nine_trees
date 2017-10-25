@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/Fragmeng_Message"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.MessageFragment">
     <LinearLayout
@@ -42,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center_horizontal" />
-        <cn.com.stableloan.view.RoundButton
+    <!--    <cn.com.stableloan.view.RoundButton
             android:id="@+id/bt_getCodeLogin"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="30dp"
@@ -56,7 +58,39 @@
             android:gravity="center"
             android:textSize="20sp"
             android:textColor="#ffffff"
-            />
+            />-->
+<!--        <cn.com.stableloan.view.RoundButton
+            android:id="@+id/bt_VisiableButton"
+            android:layout_marginTop="50dp"
+            android:enabled="false"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="获取手机验证码  "
+            app:btnCornerRadius="5dp"
+            app:btnPressedRatio="0.8"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            app:btnSolidColor="@color/Normal_Button"
+            />-->
+        <cn.com.stableloan.view.supertextview.SuperButton
+            android:id="@+id/bt_getCodeLogin"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:enabled="false"
+            android:text="获取手机验证码"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            stv:sCornersRadius="5dp"
+            stv:sSelectorDisableColor="@color/Normal_Button"
+            stv:sSelectorNormalColor="@color/colorPrimary"
+            stv:sSelectorPressedColor="@color/normalcolorPrimary"
+            stv:sUseSelector="true" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_code"

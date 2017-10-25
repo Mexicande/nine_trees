@@ -124,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 stv:sLeftTextSize="@dimen/information_textSize"
-                stv:sLeftTextString="查询个人材料"
+                stv:sLeftTextString="查询申请材料"
                 stv:sRightTextString="无验证"
                 stv:sRightIconHeight="13dp"
                 stv:sRightIconWidth="15dp"

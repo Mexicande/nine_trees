@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.fragment;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +9,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,8 +27,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
-import com.yanzhenjie.permission.PermissionNo;
-import com.yanzhenjie.permission.PermissionYes;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -71,10 +67,10 @@ import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.Utils;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.dialog.Login_DeviceDialog;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -87,8 +83,6 @@ public class MessageFragment extends Fragment {
     GT3GeetestUtils gt3GeetestUtils;
     @Bind(R.id.et_phone)
     PowerfulEditText etPhone;
-    @Bind(R.id.bt_getCodeLogin)
-    RoundButton btGetCodeLogin;
     @Bind(R.id.layout_phoe)
     LinearLayout layoutPhoe;
     @Bind(R.id.layout_code)
@@ -105,6 +99,8 @@ public class MessageFragment extends Fragment {
     RoundButton btMessageLogin;
     @Bind(R.id.bt_getCode)
     Button btGetCode;
+    @Bind(R.id.bt_getCodeLogin)
+    SuperButton btGetCodeLogin;
     private CaptchaTimeCount captchaTimeCount;
     private Login_DeviceDialog dialog;
     private String AdressIp = "";
@@ -112,11 +108,12 @@ public class MessageFragment extends Fragment {
     private String times = "";
     private Context context;
 
-    private String unique="";
-    private String gtcode="";
-    private String status="1";
+    private String unique = "";
+    private String gtcode = "";
+    private String status = "1";
 
     private boolean Atest = false;
+    private static final int TOKEN_FAIL = 120;
 
     public MessageFragment() {
         // Required empty public constructor
@@ -128,18 +125,17 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
-
         intView();
         String unique = (String) SPUtils.get(getActivity(), "unique", null);
-        if(unique!=null){
-            times=unique;
-        }else {
+        if (unique != null) {
+            times = unique;
+        } else {
             Random random = new Random();
             int i = random.nextInt(99999) + 10000;
             long l = System.currentTimeMillis();
             times = String.valueOf(i) + String.valueOf(l);
         }
-        captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL,btGetCode , getActivity());
+        captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, getActivity());
         gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
 
         setListener();
@@ -150,7 +146,7 @@ public class MessageFragment extends Fragment {
 
     private void intView() {
 
-        dialog=new Login_DeviceDialog(getActivity());
+        dialog = new Login_DeviceDialog(getActivity());
         dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
@@ -167,8 +163,8 @@ public class MessageFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    if(getActivity().getCurrentFocus()!=null && getActivity().getCurrentFocus().getWindowToken()!=null){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (getActivity().getCurrentFocus() != null && getActivity().getCurrentFocus().getWindowToken() != null) {
                         manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
@@ -178,19 +174,18 @@ public class MessageFragment extends Fragment {
     }
 
 
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             //相当于Fragment的onPause
-            Atest=false;
+            Atest = false;
 
-          //  gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+            //  gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
 
-           // setGt3GeetestUtilsListener();
+            // setGt3GeetestUtilsListener();
 
         } else {
-           // gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+            // gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
 
             // 相当于Fragment的onResume
         }
@@ -209,6 +204,7 @@ public class MessageFragment extends Fragment {
                 layoutCode.setVisibility(View.GONE);
                 layoutPhoe.setVisibility(View.VISIBLE);
                 btGetCodeLogin.setEnabled(false);
+                btGetCodeLogin.setUseShape();
             }
         });
 
@@ -223,6 +219,8 @@ public class MessageFragment extends Fragment {
                 if (etPhone.getText().length() == 11) {
                     GT3GeetestListener();
                     btGetCodeLogin.setEnabled(true);
+                    btGetCodeLogin.setUseShape();
+
                     btGetCodeLogin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -234,6 +232,9 @@ public class MessageFragment extends Fragment {
 
                         }
                     });
+                }else {
+                    btGetCodeLogin.setEnabled(false);
+                    btGetCodeLogin.setUseShape();
                 }
 
             }
@@ -266,9 +267,9 @@ public class MessageFragment extends Fragment {
 
 
     private void GT3GeetestListener() {
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
 
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
         changePhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         changePhone.getPaint().setAntiAlias(true);
         AdressIp = getIpAddress();
@@ -347,24 +348,26 @@ public class MessageFragment extends Fragment {
                         e.printStackTrace();
                     }
                     JSONObject object = new JSONObject(params);
-                    OkGo.post(Urls.Ip_url+ Urls.Login.validateURL)
+                    OkGo.post(Urls.Ip_url + Urls.Login.validateURL)
                             .tag(this)
                             .upJson(object)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
                                     LogUtils.i("自定义二次验证", s);
-                                    Gson gson=new Gson();
+                                    Gson gson = new Gson();
                                     MessageCode messageCode = gson.fromJson(s, MessageCode.class);
                                     LogUtils.i("自定义二次验证", messageCode);
 
-                                    if(messageCode.getError_code()==0){
+                                    if (messageCode.getError_code() == 0) {
                                         Atest = true;
                                         btGetCodeLogin.setEnabled(true);
+                                        btGetCodeLogin.setUseShape();
+
                                         gt3GeetestUtils.gt3TestFinish();
                                         gt3GeetestUtils.gt3TestFinish();
-                                        gtcode=messageCode.getData().getGtcode();
-                                    }else {
+                                        gtcode = messageCode.getData().getGtcode();
+                                    } else {
                                         gt3DialogOnError("验证失败，请重新验证");
 
                                     }
@@ -513,14 +516,14 @@ public class MessageFragment extends Fragment {
      * Get the verification code
      */
     private void getMessage() {
-        if (etPhone.getText().toString().length()==11) {
+        if (etPhone.getText().toString().length() == 11) {
 
             HashMap<String, String> params = new HashMap<>();
             params.put("userphone", etPhone.getText().toString());
-            params.put("terminal","1");
+            params.put("terminal", "1");
 
             JSONObject jsonObject = new JSONObject(params);
-            OkGo.<MessageCode>post(Urls.Ip_url+ Urls.times.MESSAGE_SEND)
+            OkGo.<MessageCode>post(Urls.Ip_url + Urls.times.MESSAGE_SEND)
                     .tag(this)
                     .upJson(jsonObject)
                     .execute(new StringCallback() {
@@ -529,26 +532,26 @@ public class MessageFragment extends Fragment {
 
                             Gson gson = new Gson();
                             MessageCode body = gson.fromJson(s, MessageCode.class);
-                                if (0==body.getError_code()) {
-                                    Atest=false;
-                                    ToastUtils.showToast(getActivity(), "发送成功");
-                                    String phone = etPhone.getText().toString();
-                                    if (phone.length() == 11) {
-                                        StringBuffer str = new StringBuffer(phone);
-                                        str.insert(3, " ");
-                                        str.insert(8, " ");
-                                        tvPhone.setText("+86 " + str);
-                                        captchaTimeCount.start();
-                                    }
-                                    btGetCodeLogin.setEnabled(true);
-                                    layoutPhoe.setVisibility(View.GONE);
-                                    layoutCode.setVisibility(View.VISIBLE);
-
-                                } else {
-                                    ToastUtils.showToast(getActivity(), body.getError_message());
+                            if (0 == body.getError_code()) {
+                                Atest = false;
+                                ToastUtils.showToast(getActivity(), "发送成功");
+                                String phone = etPhone.getText().toString();
+                                if (phone.length() == 11) {
+                                    StringBuffer str = new StringBuffer(phone);
+                                    str.insert(3, " ");
+                                    str.insert(8, " ");
+                                    tvPhone.setText("+86 " + str);
+                                    captchaTimeCount.start();
                                 }
+                                btGetCodeLogin.setEnabled(true);
+                                btGetCodeLogin.setUseShape();
 
+                                layoutPhoe.setVisibility(View.GONE);
+                                layoutCode.setVisibility(View.VISIBLE);
 
+                            } else {
+                                ToastUtils.showToast(getActivity(), body.getError_message());
+                            }
 
 
                         }
@@ -604,7 +607,7 @@ public class MessageFragment extends Fragment {
 
             // 这里的requestCode就是申请时设置的requestCode。
             // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
-            if(requestCode == 300) {
+            if (requestCode == 300) {
                 // TODO ...
                 loginPassWord();
 
@@ -614,17 +617,15 @@ public class MessageFragment extends Fragment {
         @Override
         public void onFailed(int requestCode, List<String> deniedPermissions) {
             // 权限申请失败回调。
-            ToastUtils.showToast(getActivity(),"为了您的账号安全,请打开设备权限");
-            if(requestCode == 300) {
-                if((AndPermission.hasAlwaysDeniedPermission(getActivity(), deniedPermissions))){
+            ToastUtils.showToast(getActivity(), "为了您的账号安全,请打开设备权限");
+            if (requestCode == 300) {
+                if ((AndPermission.hasAlwaysDeniedPermission(getActivity(), deniedPermissions))) {
                     AndPermission.defaultSettingDialog(getActivity(), 400).show();
 
                 }
             }
         }
     };
-
-
 
 
     /**
@@ -639,113 +640,116 @@ public class MessageFragment extends Fragment {
         params.put("userphone", etPhone.getText().toString());
         params.put("code", etCode.getText().toString());
         params.put("gtcode", gtcode);
-        params.put("status",status);
-        params.put("unique",times);
-        params.put("validatePhone",phone);
-        params.put("device",model);
-        params.put("version_number","android "+androidVersion);
-        JSONObject object=new JSONObject(params);
-        OkGo.<String>post(Urls.NEW_Ip_url+ Urls.Login.QUICK_LOGIN)
+        params.put("status", status);
+        params.put("unique", times);
+        params.put("validatePhone", phone);
+        params.put("device", model);
+        params.put("version_number", "android " + androidVersion);
+        JSONObject object = new JSONObject(params);
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.Login.QUICK_LOGIN)
                 .tag(this)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Gson gson=new Gson();
+                        Gson gson = new Gson();
                         CodeMessage codeMessage = gson.fromJson(s, CodeMessage.class);
-                        LogUtils.i("CodeMessage",codeMessage);
-                        if(codeMessage.getError_code()==0){
-                            if("1".equals(codeMessage.getData().getStatus())){
+                        LogUtils.i("CodeMessage", codeMessage);
+                        if (codeMessage.getError_code() == 0) {
+                            if ("1".equals(codeMessage.getData().getStatus())) {
                                 SPUtils.put(getActivity(), Urls.lock.TOKEN, codeMessage.getData().getToken());
                                 String from = getActivity().getIntent().getStringExtra("from");
                                 Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
                                 Class_Special.DataBean.MdseBean id = (Class_Special.DataBean.MdseBean) getActivity().getIntent().getSerializableExtra("ProductClassifyActivity");
-                                SPUtils.put(getActivity(), phone+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
+                                SPUtils.put(getActivity(), phone + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
 
                                 if (from != null) {
-                                    if(from.equals("user")){
+                                    if (from.equals("user")) {
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         getActivity().finish();
-                                    }else if(from.equals("123")){
+                                    } else if (from.equals("123")) {
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         getActivity().finish();
-                                    }else if(from.equals("user2")){
+                                    } else if (from.equals("user2")) {
                                         EventBus.getDefault().post(new InformationEvent("userinfor"));
-                                        EventBus.getDefault().post(new MessageEvent("","1"));
+                                        EventBus.getDefault().post(new MessageEvent("", "1"));
                                         getActivity().finish();
-                                    }else if(from.equals("collection")){
+                                    } else if (from.equals("collection")) {
                                         Intent intent = new Intent();
                                         intent.putExtra("ok", "ok");
                                         getActivity().setResult(2000, intent);
                                         getActivity().finish();
-                                    }else if("error".equals(from)){
+                                    } else if ("error".equals(from)) {
                                         MainActivity.launch(getActivity());
                                         getActivity().finish();
-                                    }else if("error_UserFragment".equals(from)){
+                                    } else if ("error_UserFragment".equals(from)) {
                                         EventBus.getDefault().post(new UpdateEvent("user"));
                                         getActivity().finish();
-                                    }else if("CollectionError".equals(from)){
+                                    } else if ("CollectionError".equals(from)) {
                                         EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                         getActivity().finish();
-                                    }else if("UserInformationError".equals(from)){
+                                    } else if ("UserInformationError".equals(from)) {
                                         EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                         getActivity().finish();
-                                    }else if("ProductDescError".equals(from)){
+                                    } else if ("ProductDescError".equals(from)) {
                                         String collection = getActivity().getIntent().getStringExtra("collection");
                                         EventBus.getDefault().post(new DescEvent(collection));
                                         getActivity().finish();
-                                    }else if("CashError".equals(from)){
+                                    } else if ("CashError".equals(from)) {
                                         EventBus.getDefault().post(new CashEvent(1));
                                         getActivity().finish();
-                                    }else if("IntegarlError".equals(from)){
+                                    } else if ("IntegarlError".equals(from)) {
                                         EventBus.getDefault().post(new IntegarlEvent(1));
                                         getActivity().finish();
-                                    }else if("UpImageError".equals(from)){
-                                        EventBus.getDefault().post(new  InformationEvent("CardUpload"));
+                                    } else if ("UpImageError".equals(from)) {
+                                        EventBus.getDefault().post(new InformationEvent("CardUpload"));
                                         getActivity().finish();
-                                    }else if("IdentityError".equals(from)){
-                                        EventBus.getDefault().post(new  InformationEvent("ok"));
+                                    } else if ("IdentityError".equals(from)) {
+                                        EventBus.getDefault().post(new InformationEvent("ok"));
                                         getActivity().finish();
-                                    }else if("UpdataProfessionError".equals(from)){
+                                    } else if ("UpdataProfessionError".equals(from)) {
                                         EventBus.getDefault().post(new UpdateProfessionEvent(1));
                                         getActivity().finish();
-                                    }else if("DeviceError".equals(from)){
-                                        Intent intent=new Intent();
-                                        intent.putExtra("device",1);
-                                        getActivity().setResult(100,intent);
+                                    } else if ("DeviceError".equals(from)) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra("device", 1);
+                                        getActivity().setResult(100, intent);
+                                        getActivity().finish();
+                                    } else if ("DescError".equals(from)) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra("desc", 1);
+                                        getActivity().setResult(3000, intent);
+                                        getActivity().finish();
+                                    } else if ("SafeDate".equals(from)) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra(Urls.TOKEN, 1);
+                                        getActivity().setResult(TOKEN_FAIL, intent);
                                         getActivity().finish();
                                     }
 
-                                } else if (id!=null){
-                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class",id));
+                                } else if (id != null) {
+                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class", id));
+                                    getActivity().finish();
+                                } else if (welfare != null) {
+                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));
+                                    getActivity().finish();
+                                } else {
+                                    EventBus.getDefault().post(new MessageEvent("", "1"));
                                     getActivity().finish();
                                 }
-                                else if(welfare!=null){
-                                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare",welfare));
-                                    getActivity().finish();
-                                } else{
-                                    EventBus.getDefault().post(new MessageEvent("","1"));
-                                    getActivity().finish();
-                                }
-                            }else {
-                                LogUtils.i("status",codeMessage.getData().getStatus());
-                                startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone",etPhone.getText().toString()));
+                            } else {
+                                LogUtils.i("status", codeMessage.getData().getStatus());
+                                startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone", etPhone.getText().toString()));
                             }
-                        }else if(codeMessage.getError_code()==1130){
+                        } else if (codeMessage.getError_code() == 1130) {
                             dialog.show();
-                        }
-                        else {
-                            ToastUtils.showToast(getActivity(),codeMessage.getError_message());
+                        } else {
+                            ToastUtils.showToast(getActivity(), codeMessage.getError_message());
                         }
                     }
                 });
 
     }
-
-
-
-
-
 
 
     @Override
@@ -754,12 +758,12 @@ public class MessageFragment extends Fragment {
         switch (requestCode) {
             case 400: // 这个400就是上面defineSettingDialog()的第二个参数。
                 // 你可以在这里检查你需要的权限是否被允许，并做相应的操作。
-                if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                     loginPassWord();
-                }else {
-                    ToastUtils.showToast(getActivity(),"获取权限失败");
+                } else {
+                    ToastUtils.showToast(getActivity(), "获取权限失败");
                 }
                 break;
-            }
         }
+    }
 }

@@ -34,6 +34,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.DateStatisticsUtils;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Banner_HotBean;
@@ -91,6 +92,7 @@ public class HtmlActivity extends BaseActivity {
         if (available) {
             Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
             if (desc != null) {
+                DateStatisticsUtils.addApplyDate(this,String.valueOf(desc.getData().getId()));
                 titleName.setText(desc.getData().getPname());
                 ivBack.setVisibility(View.VISIBLE);
                 String link = desc.getData().getLink();
@@ -98,12 +100,14 @@ public class HtmlActivity extends BaseActivity {
             }
             Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
             if (extra != null) {
+
                 titleName.setText(extra.getAdvername());
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(extra.getApp());
             }
             Banner_HotBean.RecommendsBean hotbean = (Banner_HotBean.RecommendsBean) getIntent().getSerializableExtra("hotbean");
             if (hotbean != null) {
+
                 titleName.setText(hotbean.getName());
                 ivBack.setVisibility(View.VISIBLE);
                 getDate(hotbean.getApp());
@@ -127,6 +131,8 @@ public class HtmlActivity extends BaseActivity {
             }
             Class_Special.DataBean.MdseBean aClass = (Class_Special.DataBean.MdseBean) getIntent().getSerializableExtra("class");
             if(aClass!=null){
+                DateStatisticsUtils.addApplyDate(this,String.valueOf(aClass.getId()));
+
                 titleName.setText(aClass.getMdse_name());
                 getDate(aClass.getMdse_h5_link());
             }

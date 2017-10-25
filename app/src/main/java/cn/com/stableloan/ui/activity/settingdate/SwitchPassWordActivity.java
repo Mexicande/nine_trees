@@ -94,7 +94,7 @@ public class SwitchPassWordActivity extends BaseActivity {
                         flag=0;
                         RuleDialog();
                     } else {
-                        startActivity(new Intent(SwitchPassWordActivity.this, Verify_PasswordActivity.class).putExtra("from", "CreateGesture"));
+                        startActivity(new Intent(SwitchPassWordActivity.this, Verify_PasswordActivity.class).putExtra("from", "SettingCreateGesture"));
                         flag=1;
                         stGestureOpen.setSwitchIsChecked(false);
                         flag=0;

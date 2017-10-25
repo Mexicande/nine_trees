@@ -121,6 +121,7 @@ public class SafeSettingActivity extends BaseActivity {
     private String userPhone;
 
     private static final int REQUEST_CODE = 110;
+    private static final int TOKEN_FAIL=120;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeSettingActivity.class));
@@ -236,7 +237,6 @@ public class SafeSettingActivity extends BaseActivity {
                 startActivity(new Intent(mContext, HtmlActivity.class).putExtra("safe", "#/minTips"));
             }
         });
-
 
         //资料查看
         svUnLockCat.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
@@ -392,6 +392,13 @@ public class SafeSettingActivity extends BaseActivity {
                             JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
                             if ("1".equals(isSuccess)) {
+                                String token = object.getString("token");
+                                if(token!=null&&"0".equals(token)){
+                                    Intent intent=new Intent(mContext,LoginActivity.class);
+                                    intent.putExtra("message","登陆失效,请重新登陆");
+                                    intent.putExtra("from","SafeDate");
+                                    startActivityForResult(intent,REQUEST_CODE);
+                                }
                                 Gson gson = new Gson();
                                 saveBean = gson.fromJson(s, SaveBean.class);
                                 String managed = saveBean.getManaged();
@@ -491,6 +498,14 @@ public class SafeSettingActivity extends BaseActivity {
                         loginGE.setEnabled(true);
                         applyGE.setEnabled(true);
                     }
+                    break;
+                case TOKEN_FAIL:
+                        int token = data.getIntExtra(Urls.TOKEN, 0);
+                        if(token==1){
+                            getDate();
+                        }
+
+                    break;
 
 
             }

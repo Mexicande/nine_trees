@@ -7,10 +7,82 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.CashActivity">
     <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/_50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content">
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/sv_GetRule"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            stv:sLeftTextSize="@dimen/information_textSize"
+            stv:sLeftTextString="如何获得现金奖励？"
+            stv:sRightIconRes="@mipmap/iv_left"
+            stv:sRightTextColor="@color/text_setting"
+            stv:sLeftTextColor="@color/select_text_color"
+            stv:sRightTextSize="@dimen/information_textSize"
+            stv:sRightIconHeight="13dp"
+            stv:sRightIconWidth="15dp"
+            stv:sBottomDividerLineMarginLeft="10dp"
+            stv:sBottomDividerLineMarginRight="10dp"
+            />
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/sv_ExtractionRule"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            stv:sLeftTextSize="@dimen/information_textSize"
+            stv:sLeftTextString="现金提取规则"
+            stv:sRightIconRes="@mipmap/iv_left"
+            stv:sRightTextColor="@color/text_setting"
+            stv:sLeftTextColor="@color/select_text_color"
+            stv:sRightTextSize="@dimen/information_textSize"
+            stv:sRightIconHeight="13dp"
+            stv:sRightIconWidth="15dp"
+            stv:sBottomDividerLineMarginLeft="10dp"
+            stv:sBottomDividerLineMarginRight="10dp"
+            />
+    </LinearLayout>
+    <cn.com.stableloan.view.RoundButton
+        android:id="@+id/bt_visiable"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="我要提现"
+        app:btnCornerRadius="0dp"
+        app:btnPressedRatio="1"
+        app:btnSolidColor="#FF8A80"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#ccffffff"
+        style="?android:attr/borderlessButtonStyle"
+        />
+    <cn.com.stableloan.view.RoundButton
+        android:id="@+id/bt_withdrawal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="我要提现"
+        app:btnPressedRatio="0.9"
+        app:btnSolidColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#ccffffff"
+        style="?android:attr/borderlessButtonStyle"
+        />
+    <LinearLayout
+        android:layout_above="@id/button_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:background="@drawable/integral_bg"
@@ -128,78 +200,8 @@
             android:id="@+id/cash_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5dp"
             >
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/_50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
-        <cn.com.stableloan.view.supertextview.SuperTextView
-            android:id="@+id/sv_GetRule"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            stv:sLeftTextSize="@dimen/information_textSize"
-            stv:sLeftTextString="如何获得现金奖励？"
-            stv:sRightIconRes="@mipmap/iv_left"
-            stv:sRightTextColor="@color/text_setting"
-            stv:sLeftTextColor="@color/select_text_color"
-            stv:sRightTextSize="@dimen/information_textSize"
-            stv:sRightIconHeight="13dp"
-            stv:sRightIconWidth="15dp"
-            stv:sBottomDividerLineMarginLeft="10dp"
-            stv:sBottomDividerLineMarginRight="10dp"
-            />
-        <cn.com.stableloan.view.supertextview.SuperTextView
-            android:id="@+id/sv_ExtractionRule"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            stv:sLeftTextSize="@dimen/information_textSize"
-            stv:sLeftTextString="现金提取规则"
-            stv:sRightIconRes="@mipmap/iv_left"
-            stv:sRightTextColor="@color/text_setting"
-            stv:sLeftTextColor="@color/select_text_color"
-            stv:sRightTextSize="@dimen/information_textSize"
-            stv:sRightIconHeight="13dp"
-            stv:sRightIconWidth="15dp"
-            stv:sBottomDividerLineMarginLeft="10dp"
-            stv:sBottomDividerLineMarginRight="10dp"
-            />
-    </LinearLayout>
-    <cn.com.stableloan.view.RoundButton
-        android:id="@+id/bt_visiable"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="我要提现"
-        app:btnCornerRadius="0dp"
-        app:btnPressedRatio="1"
-        app:btnSolidColor="#FF8A80"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="#ccffffff"
-        style="?android:attr/borderlessButtonStyle"
-        />
-    <cn.com.stableloan.view.RoundButton
-        android:id="@+id/bt_withdrawal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="我要提现"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/colorPrimary"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="#ccffffff"
-        style="?android:attr/borderlessButtonStyle"
-        />
 </RelativeLayout>

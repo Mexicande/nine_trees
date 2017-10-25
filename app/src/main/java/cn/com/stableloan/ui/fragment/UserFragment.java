@@ -99,10 +99,9 @@ public class UserFragment extends ImmersionFragment {
 
         EventBus.getDefault().register(this);
         aCache = ACache.get(getActivity());
-        getUserInfo();
         return view;
     }
-    @Override
+ /*   @Override
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             //相当于Fragment的onPause
@@ -111,15 +110,13 @@ public class UserFragment extends ImmersionFragment {
         } else {
             // 相当于Fragment的onResume
         }
-    }
+    }*/
 
 
     @Override
     public void onResume() {
         super.onResume();
         getUserInfo();
-
-
     }
 
     private void getUserInfo() {
@@ -150,13 +147,11 @@ public class UserFragment extends ImmersionFragment {
                                 Personal personal = gson.fromJson(s, Personal.class);
                                 if(personal.getError_code()==0){
                                     String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
-
                                     tinyDB.putObject(userphone, personal.getData());
                                     tvNick.setText(personal.getData().getNickname());
                                     tvIntegral.setText(personal.getData().getCredits());
                                     btMoney.setText(personal.getData().getTotal());
                                     userPhone=personal.getData().getUserphone();
-
                                 }else if(personal.getError_code()==2){
                                     Intent intent=new Intent(getActivity(),LoginActivity.class);
                                     intent.putExtra("message",personal.getError_message());

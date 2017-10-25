@@ -34,6 +34,7 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
@@ -185,6 +186,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         TinyDB tinyDB = new TinyDB(SettingPassWordActivity.this);
                                         tinyDB.putObject(fromJson.getData().getUserphone(), userBean);
                                         AppApplication.destoryActivity("login");
+                                        ActivityStackManager.getInstance().popActivity(LoginActivity.class);
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         finish();
                                     } else {

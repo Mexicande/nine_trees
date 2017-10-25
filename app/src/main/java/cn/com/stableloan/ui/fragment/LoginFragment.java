@@ -106,6 +106,7 @@ public class LoginFragment extends Fragment {
     private String times = "";
     private final int Flag_User = 3000;
     private final int LOTTERY_CODE = 500;
+    private static final int TOKEN_FAIL=120;
 
 
     public LoginFragment() {
@@ -540,7 +541,6 @@ public class LoginFragment extends Fragment {
                                 }else if("UserInformationError".equals(from)){
                                     EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                     getActivity().finish();
-
                                 }else if("ProductDescError".equals(from)){
                                     String collection = getActivity().getIntent().getStringExtra("collection");
                                     EventBus.getDefault().post(new DescEvent(collection));
@@ -566,6 +566,17 @@ public class LoginFragment extends Fragment {
                                     Intent intent=new Intent();
                                     intent.putExtra("device",1);
                                     getActivity().setResult(100,intent);
+                                    getActivity().finish();
+                                } else if("DescError".equals(from)){
+                                    Intent intent=new Intent();
+                                    intent.putExtra("desc",1);
+                                    getActivity().setResult(3000,intent);
+                                    getActivity().finish();
+                                }
+                                else if("SafeDate".equals(from)){
+                                    Intent intent=new Intent();
+                                    intent.putExtra(Urls.TOKEN,1);
+                                    getActivity().setResult(TOKEN_FAIL,intent);
                                     getActivity().finish();
                                 }
 

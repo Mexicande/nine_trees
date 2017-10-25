@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -45,6 +46,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.DateStatisticsUtils;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.DescEvent;
@@ -160,6 +162,9 @@ public class ProductDesc extends BaseActivity {
     private KProgressHUD hud;
     private static final int COLLECTION = 2000;
     private static final int APPLY_VAIL = 1000;
+    private static final int Token_Fail = 3000;
+
+
 
     private boolean flag = false;
 
@@ -307,15 +312,20 @@ public class ProductDesc extends BaseActivity {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 int error_code = object.getInt("error_code");
+                                String error_message = object.getString("error_message");
+
                                 if (error_code == 0) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
                                     if (descBean != null) {
                                         dateInset(descBean);
                                     }
-
+                                } else if(error_code==2){
+                                    Intent intent=new Intent(ProductDesc.this,LoginActivity.class);
+                                    intent.putExtra("message",error_message);
+                                    intent.putExtra("from","DescError");
+                                    startActivity(intent);
                                 } else {
-                                    String error_message = object.getString("error_message");
                                     ToastUtils.showToast(ProductDesc.this, error_message);
                                 }
                             } catch (JSONException e) {
@@ -544,7 +554,16 @@ public class ProductDesc extends BaseActivity {
                         int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
                         switch (apply) {
                             case Urls.lock.NO_VERIFICATION:
-                                showApplyDialog();
+                                Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
+                                if (dialog != null && dialog) {
+                                    sendIO();
+                                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                                }else {
+                                    showApplyDialog();
+
+
+                                }
+
                                 break;
                             case Urls.lock.PW_VERIFICATION:
                                 Intent intent = new Intent(this, Verify_PasswordActivity.class);
@@ -772,13 +791,30 @@ public class ProductDesc extends BaseActivity {
                         if (dialog != null && dialog) {
                             sendIO();
                             startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
+
+                            addDateApply();
                         } else {
                             showApplyDialog();
                         }
                     }
                 }
                 break;
+            case Token_Fail:
+                if(resultCode==3000){
+                    int desc = data.getIntExtra("desc", 0);
+                    if(desc==1){
+                        if(pid!=0){
+                            getProductDate();
+                        }
+                    }
+                }
+                break;
         }
+    }
+
+    private void addDateApply() {
+
+
     }
 
 }

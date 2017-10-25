@@ -45,6 +45,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.fragment.LoginFragment;
 import cn.com.stableloan.ui.fragment.MessageFragment;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.ToastUtils;
 
@@ -84,7 +85,7 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
-        AppApplication.addDestoryActivity(this, "login");
+        //AppApplication.addDestoryActivity(this, "login");
         transparentStatusBar();
         initView();
         initFragments();
@@ -244,6 +245,8 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //返回事件
+            String message = getIntent().getStringExtra("message");
+
             String from = getIntent().getStringExtra("from");
             if (from != null) {
                 if (from.equals("user")) {
@@ -261,22 +264,27 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 } else if (from.equals("user2")) {
                     EventBus.getDefault().post(new InformationEvent("user2"));
                     finish();
-                }else if("error".equals(from)){
-                    if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                }else {
+                    if(message!=null){
+                        int count = ActivityStackManager.getInstance().getCount();
+                        LogUtils.i("ActivityStackManager===",count+"");
+                        ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
+                        MainActivity.launch(this);
                         finish();
-                    } else {
-                        mLastBackTime = System.currentTimeMillis();
-                        ToastUtils.showToast(this, "再按一次退出");
+                    }else {
+                        finish();
                     }
                 }
             }
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event) ;
     }
 
     @OnClick(R.id.layout)
     public void onViewClicked() {
         String from = getIntent().getStringExtra("from");
+        String message = getIntent().getStringExtra("message");
+
         if (from != null) {
             if (from.equals("user")) {
                 UserBean userBean = new UserBean();
@@ -294,7 +302,16 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 EventBus.getDefault().post(new InformationEvent("user2"));
                 finish();
             }else {
-                finish();
+                if(message!=null){
+                   /* ActivityStackManager.getInstance().popAllActivity();
+                    MainActivity.launch(this);*/
+                    ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
+                    MainActivity.launch(this);
+                    finish();
+
+                }else {
+                    finish();
+                }
             }
         } else {
             finish();

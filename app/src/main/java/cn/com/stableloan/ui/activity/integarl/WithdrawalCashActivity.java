@@ -80,7 +80,6 @@ public class WithdrawalCashActivity extends BaseActivity {
     private EditText textAmount;
 
     private Animation enterAnim;
-
     private Animation exitAnim;
     private CashBean cashBean;
 
@@ -206,11 +205,20 @@ public class WithdrawalCashActivity extends BaseActivity {
                                     JSONObject object1=new JSONObject(data);
                                     String isSucess = object1.getString("isSucess");
                                     if("1".equals(isSucess)){
+                                        //finish();
+                                        String money = tvBalance.getText().toString();
+                                        String substring = money.substring(0, money.length() - 3);
+                                        String replace = substring.replace(",","");
+                                        int size = Integer.parseInt(replace);
+                                        int i1 = size - i;
+                                        tvBalance.setText(String.valueOf(i1)+".00");
+                                        Intent intent=new Intent();
+                                        setResult(RESULT_CODE,intent);
                                         ToastUtils.showToast(WithdrawalCashActivity.this,"提现成功,稍后请查看结果");
+                                        finish();
                                     }else {
                                         String error_message = jsonObject.getString("error_message");
                                         ToastUtils.showToast(WithdrawalCashActivity.this,error_message);
-
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -410,7 +418,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                 if (i != 0) {
                     textAmount.setText(i + "");
                 } else if (i == 0) {
-                    ToastUtils.showToast(this, "账户余额不足");
+                    ToastUtils.showToast(this, "余额不足");
                 }
                 break;
             case R.id.bt_visiableDrawal:

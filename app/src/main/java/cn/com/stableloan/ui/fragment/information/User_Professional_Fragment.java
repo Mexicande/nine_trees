@@ -436,6 +436,7 @@ public class User_Professional_Fragment extends Fragment {
         String BusinessCincome = this.BusinessCincome.getRightString();
 
         String BusinessYears = this.BusinessYears.getRightString();
+
         businessBean.setBcompany(BusinessName);
         businessBean.setBlocation(BusinessLocation);
         businessBean.setBfixedline(BusinessFixedLine);
@@ -450,50 +451,6 @@ public class User_Professional_Fragment extends Fragment {
         businessBean.setBemail(BusinessEmail);
         businessBean.setBcincome(BusinessCincome);
 
-        switch (id) {
-            case STUDENT:
-
-                if (!school.isEmpty() && !teather.isEmpty() && !address.isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(STUDENT));
-
-                break;
-            case COMPANY:
-
-                if (!cComPanyName.isEmpty() && !cCompanyLocation.isEmpty() && !cCompanyEmail.isEmpty()
-                        && !cCincome.isEmpty() && !cCompanyFixedline.isEmpty()
-                        && !string.isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(COMPANY));
-                break;
-            case BUSINESS:
-
-                if (!BusinessName.isEmpty() && !BusinessCincome.isEmpty() && BusinessEmail.isEmpty()
-                        && !BusinessFixedLine.isEmpty() && !BusinessLocation.isEmpty()
-                        && !BusinessYears.isEmpty() && !businessBean.getLicense().isEmpty() && !businessBean.getOperations().isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(BUSINESS));
-
-                break;
-            case FREE:
-                String freeCincome = etCincome.getRightString();
-                if (!freeCincome.isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(FREE));
-                break;
-        }
 
         occupationBean.setStudent(studentBean);
         occupationBean.setBusiness(businessBean);
@@ -525,6 +482,52 @@ public class User_Professional_Fragment extends Fragment {
             freelancerBean.setSource("1");
         }
 
+        switch (id) {
+            case STUDENT:
+
+                if (!school.isEmpty() && !teather.isEmpty() && !address.isEmpty()) {
+                    occupationBean.setStatus("1");
+                } else {
+                    occupationBean.setStatus("0");
+                }
+                workBean.setIdentity(String.valueOf(STUDENT));
+
+                break;
+            case COMPANY:
+
+                if (!cComPanyName.isEmpty() && !cCompanyLocation.isEmpty() && !cCompanyEmail.isEmpty()
+                        && !cCincome.isEmpty() && !cCompanyFixedline.isEmpty()
+                        && !string.isEmpty()) {
+                    occupationBean.setStatus("1");
+                } else {
+                    occupationBean.setStatus("0");
+                }
+                workBean.setIdentity(String.valueOf(COMPANY));
+                break;
+            case BUSINESS:
+
+                if (!BusinessName.isEmpty() && !BusinessCincome.isEmpty() && !BusinessEmail.isEmpty()
+                        && !BusinessFixedLine.isEmpty() && !BusinessLocation.isEmpty()
+                        && !BusinessYears.isEmpty() && !businessBean.getLicense().isEmpty() && !businessBean.getOperations().isEmpty()) {
+                    occupationBean.setStatus("1");
+                } else {
+                    occupationBean.setStatus("0");
+                }
+                workBean.setIdentity(String.valueOf(BUSINESS));
+
+                break;
+            case FREE:
+                String freeCincome = etCincome.getRightString();
+                if (!freeCincome.isEmpty()) {
+                    occupationBean.setStatus("1");
+                } else {
+                    occupationBean.setStatus("0");
+                }
+                workBean.setIdentity(String.valueOf(FREE));
+                break;
+        }
+
+
         workBean.setOccupation(occupationBean);
         Gson gson = new Gson();
         String json = gson.toJson(workBean);
@@ -534,7 +537,6 @@ public class User_Professional_Fragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         try {
                             JSONObject object = new JSONObject(s);
                             int isSuccess = object.getInt("error_code");
