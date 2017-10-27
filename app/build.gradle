@@ -36,18 +36,18 @@ android {
         release {
             v1SigningEnabled true
             v2SigningEnabled true
-            storeFile file("/Users/apple/Documents/文件/安卓.jks")
-            keyAlias "安卓"
-            keyPassword "000000"
-            storePassword "000000"
+            storeFile file("/Users/apple/Documents/文件/****.jks")
+            storePassword "*****"
+            keyAlias "****"
+            keyPassword "*****"
         }
         debug {
             v1SigningEnabled true
             v2SigningEnabled true
-            storeFile file("/Users/apple/Documents/文件/安卓.jks")
-            storePassword "000000"
-            keyAlias "安卓"
-            keyPassword "000000"
+            storeFile file("/Users/apple/Documents/文件/****.jks")
+            storePassword "*****"
+            keyAlias "****"
+            keyPassword "*****"
         }
     /*    config {
             v1SigningEnabled true
