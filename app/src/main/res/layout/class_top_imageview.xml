@@ -11,7 +11,7 @@
         android:scaleType="fitXY"
         android:layout_gravity="top"
         android:adjustViewBounds="true"
-        android:src="@mipmap/ic_defalut_class"/>
+        />
     <RelativeLayout
         android:layout_marginTop="@dimen/_10dp"
         android:background="@color/white"

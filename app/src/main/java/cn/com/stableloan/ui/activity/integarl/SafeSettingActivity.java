@@ -392,25 +392,29 @@ public class SafeSettingActivity extends BaseActivity {
                             JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
                             if ("1".equals(isSuccess)) {
-                                String token = object.getString("token");
+                                Gson gson = new Gson();
+                                saveBean = gson.fromJson(s, SaveBean.class);
+
+                                String token = saveBean.getToken();
+
                                 if(token!=null&&"0".equals(token)){
                                     Intent intent=new Intent(mContext,LoginActivity.class);
                                     intent.putExtra("message","登陆失效,请重新登陆");
                                     intent.putExtra("from","SafeDate");
                                     startActivityForResult(intent,REQUEST_CODE);
-                                }
-                                Gson gson = new Gson();
-                                saveBean = gson.fromJson(s, SaveBean.class);
-                                String managed = saveBean.getManaged();
-                                if (managed != null && managed.length() == 1) {
-                                    int i = Integer.parseInt(managed);
-                                    svDateTime.setRightString(managedList[i]);
-                                }
-                                if (saveBean.getPeriod().length() < 2) {
-                                    svDateTime.setLeftBottomString("自动清档时间:无数据");
-                                    svDateTime.setRightString("无数据");
-                                } else {
-                                    svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
+                                }else {
+                                    String managed = saveBean.getManaged();
+                                    if (managed != null && managed.length() == 1) {
+                                        int i = Integer.parseInt(managed);
+                                        svDateTime.setRightString(managedList[i]);
+                                    }
+
+                                    if (saveBean.getPeriod().length() < 2) {
+                                        svDateTime.setLeftBottomString("自动清档时间:无数据");
+                                        svDateTime.setRightString("无数据");
+                                    } else {
+                                        svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
+                                    }
                                 }
                             } else {
                             }
@@ -456,18 +460,7 @@ public class SafeSettingActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE) {
             switch (resultCode) {
                 case Urls.SettingResultCode.SAFE_DATE:
-                    String month = data.getStringExtra("month");
-                    String period = data.getStringExtra("time");
-                    saveBean.setPeriod(period);
-                    String var = "";
-                    for (int i = 0; i < managedList.length; i++) {
-                        if (managedList[i].equals(month)) {
-                            var = String.valueOf(i);
-                        }
-                    }
-                    saveBean.setManaged(var);
-                    svDateTime.setRightString(month);
-                    svDateTime.setLeftBottomString("自动清档时间:" + period);
+                    getDate();
                     break;
                 case 100:
                     int lock = data.getIntExtra("lock", 0);

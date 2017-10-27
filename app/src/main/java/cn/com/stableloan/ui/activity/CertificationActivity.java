@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +75,7 @@ public class CertificationActivity extends BaseActivity {
     SuperTextView loction;
     /* @Bind(R.id.jd)
      SuperTextView jd;*/
+    private static  final  int IMAGE_RESULT=110;
 
     private String phone;
     private KProgressHUD hud;
@@ -233,6 +235,9 @@ public class CertificationActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_go:
+                Intent intent=new Intent();
+                intent.putExtra("ok", 1);
+                setResult(IMAGE_RESULT,intent);
                 finish();
                 break;
             case R.id.mobile:
@@ -310,12 +315,21 @@ public class CertificationActivity extends BaseActivity {
                 break;
         }
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent=new Intent();
+            intent.putExtra("ok", 1);
+            setResult(IMAGE_RESULT,intent);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
 
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         CrawlerManager.getInstance(this.getApplication()).unregistAllCallBack();
-
     }
 
 }

@@ -44,8 +44,8 @@ import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.aes.Des4;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.utils.ras.RSA;
-import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.dialog.SettingPassWordDialog;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -55,14 +55,13 @@ public class SettingPassWordActivity extends AppCompatActivity {
     RelativeLayout layout;
     @Bind(R.id.et_SettingPassWord)
     PowerfulEditText etSettingPassWord;
-    @Bind(R.id.bt_login)
-    RoundButton btLogin;
     @Bind(R.id.phone)
     TextView phone;
-    @Bind(R.id.bt_button)
-    RoundButton btButton;
+    @Bind(R.id.bt_login)
+    SuperButton btLogin;
     private String userPhone;
     private SettingPassWordDialog selfDialog;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SettingPassWordActivity.class));
     }
@@ -100,13 +99,12 @@ public class SettingPassWordActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(etSettingPassWord.getText().toString().length()>5){
-                    btLogin.setVisibility(View.VISIBLE);
-                    btButton.setVisibility(View.GONE);
-
-                }else {
-                    btLogin.setVisibility(View.GONE);
-                    btButton.setVisibility(View.VISIBLE);
+                if (etSettingPassWord.getText().toString().length() > 5) {
+                    btLogin.setEnabled(true);
+                    btLogin.setUseShape();
+                } else {
+                    btLogin.setEnabled(false);
+                    btLogin.setUseShape();
 
                 }
             }
@@ -117,7 +115,9 @@ public class SettingPassWordActivity extends AppCompatActivity {
             }
         });
     }
+
     private KProgressHUD hud;
+
     @OnClick({R.id.layout, R.id.bt_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -125,7 +125,6 @@ public class SettingPassWordActivity extends AppCompatActivity {
                 exit();
                 break;
             case R.id.bt_login:
-
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setLabel("Please wait.....")
@@ -134,7 +133,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                 String strPassWord = etSettingPassWord.getText().toString();
                 boolean match = RegexUtils.isMatch(RegexUtils.number_letter_underline, strPassWord);
 
-                if (!strPassWord.isEmpty()&&match) {
+                if (!strPassWord.isEmpty() && match) {
                     HashMap<String, String> params = new HashMap<>();
                     String md5ToString = EncryptUtils.encryptMD5ToString(strPassWord);
                     params.put("userphone", userPhone);
@@ -149,9 +148,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                         LogUtils.i("random", random);
                         Deskey = Des4.encode(object.toString(), String.valueOf(random));
                         deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY);
-
                         sign = RSA.sign(deskey, Urls.PRIVATE_KEY);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -163,7 +160,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
 
                     String json = gson.toJson(bean);
 
-                    OkGo.<String>post(Urls.Ip_url+Urls.Login.SettingPassWord)
+                    OkGo.<String>post(Urls.Ip_url + Urls.Login.SettingPassWord)
                             .tag(this)
                             .headers("sign", sign)
                             .upJson(json)
@@ -180,9 +177,9 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         userBean.setNickname(fromJson.getData().getNickname());
                                         userBean.setUserphone(fromJson.getData().getUserphone());
                                         userBean.setIdentity(fromJson.getData().getIdentity());
-                                        SPUtils.put(SettingPassWordActivity.this,Urls.lock.USER_PHONE,fromJson.getData().getUserphone());
+                                        SPUtils.put(SettingPassWordActivity.this, Urls.lock.USER_PHONE, fromJson.getData().getUserphone());
 
-                                        EventBus.getDefault().post(new MessageEvent(userBean.getNickname(),userBean.getUserphone()));
+                                        EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
                                         TinyDB tinyDB = new TinyDB(SettingPassWordActivity.this);
                                         tinyDB.putObject(fromJson.getData().getUserphone(), userBean);
                                         AppApplication.destoryActivity("login");
@@ -199,22 +196,23 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                 public void onError(Call call, Response response, Exception e) {
                                     super.onError(call, response, e);
                                     SettingPassWordActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ToastUtils.showToast(SettingPassWordActivity.this,"服务器出错了，请稍后再试");
-                                        hud.dismiss();
-                                    }
-                                });
+                                        @Override
+                                        public void run() {
+                                            ToastUtils.showToast(SettingPassWordActivity.this, "服务器出错了，请稍后再试");
+                                            hud.dismiss();
+                                        }
+                                    });
                                 }
                             });
-                }else {
+                } else {
                     hud.dismiss();
-                    ToastUtils.showToast(this,"格式不正确,请重新输入");
+                    ToastUtils.showToast(this, "格式不正确,请重新输入");
                 }
 
                 break;
         }
     }
+
     private void exit() {
         selfDialog = new SettingPassWordDialog(this);
         selfDialog.setYesOnclickListener("否", new SettingPassWordDialog.onYesOnclickListener() {
@@ -236,7 +234,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             exit();
         }
         return super.onKeyDown(keyCode, event);

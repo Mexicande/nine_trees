@@ -148,34 +148,6 @@ public class GestureLoginActivity extends BaseActivity {
 
                             }
                         });
-            } else if (("PicStatus").equals(from)) {
-
-                String token = (String) SPUtils.get(this, "token", "1");
-                Map<String, String> parms = new HashMap<>();
-                parms.put("token", token);
-                JSONObject jsonObject = new JSONObject(parms);
-                OkGo.<String>post(Urls.NEW_URL + Urls.Login.GET_SIGNATURE)
-                        .tag(this)
-                        .upJson(jsonObject)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                try {
-                                    JSONObject jsonObject1 = new JSONObject(s);
-                                    String isSuccess = jsonObject1.getString("isSuccess");
-                                    if ("1".equals(isSuccess)) {
-                                        String signature = jsonObject1.getString("signature");
-                                        SPUtils.put(GestureLoginActivity.this, "signature", signature);
-                                        EventBus.getDefault().post(new PicStatusEvent("update"));
-                                        finish();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });
-
             } else if (("CardUpload").equals(from)) {
                 String token = (String) SPUtils.get(this, "token", "1");
                 Map<String, String> parms = new HashMap<>();

@@ -116,6 +116,7 @@ public class UpImageIdentityActivity extends BaseActivity {
     private Context mContext;
     private int HEIGHT;
     private int WIDTH;
+    private static  final  int IMAGE_RESULT=110;
 
     private RequestOptions options;
 
@@ -338,7 +339,9 @@ public class UpImageIdentityActivity extends BaseActivity {
                 ImageSlideUp.hide();
                 break;
             case R.id.iv_back:
-                EventBus.getDefault().post(new PicStatusEvent("update"));
+                Intent intent=new Intent();
+                intent.putExtra("ok", 1);
+                setResult(IMAGE_RESULT,intent);
                 finish();
                 break;
 
@@ -547,7 +550,10 @@ public class UpImageIdentityActivity extends BaseActivity {
             ImageSlideUp.hide();
             return false;
         } else {
-            EventBus.getDefault().post(new PicStatusEvent("update"));
+            Intent intent=new Intent();
+            intent.putExtra("ok", 1);
+            setResult(IMAGE_RESULT,intent);
+            finish();
         }
         return super.onKeyDown(keyCode, event);
 

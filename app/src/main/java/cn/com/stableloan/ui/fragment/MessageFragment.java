@@ -68,7 +68,6 @@ import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.editext.PowerfulEditText;
-import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.dialog.Login_DeviceDialog;
 import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
@@ -95,28 +94,21 @@ public class MessageFragment extends Fragment {
     GT3GeetestButton llBtnType1;
     @Bind(R.id.et_code)
     PowerfulEditText etCode;
-    @Bind(R.id.bt_message_login)
-    RoundButton btMessageLogin;
     @Bind(R.id.bt_getCode)
     Button btGetCode;
     @Bind(R.id.bt_getCodeLogin)
     SuperButton btGetCodeLogin;
+    @Bind(R.id.bt_message_login)
+    SuperButton btMessageLogin;
     private CaptchaTimeCount captchaTimeCount;
     private Login_DeviceDialog dialog;
     private String AdressIp = "";
-
     private String times = "";
-    private Context context;
-
-    private String unique = "";
     private String gtcode = "";
     private String status = "1";
-
     private boolean Atest = false;
     private static final int TOKEN_FAIL = 120;
-
     public MessageFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -179,14 +171,11 @@ public class MessageFragment extends Fragment {
         if (hidden) {
             //相当于Fragment的onPause
             Atest = false;
-
             //  gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
-
             // setGt3GeetestUtilsListener();
 
         } else {
             // gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
-
             // 相当于Fragment的onResume
         }
     }
@@ -232,7 +221,7 @@ public class MessageFragment extends Fragment {
 
                         }
                     });
-                }else {
+                } else {
                     btGetCodeLogin.setEnabled(false);
                     btGetCodeLogin.setUseShape();
                 }
@@ -255,6 +244,10 @@ public class MessageFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (etCode.getText().toString().length() == 4) {
                     btMessageLogin.setEnabled(true);
+                    btMessageLogin.setUseShape();
+                }else {
+                    btMessageLogin.setEnabled(false);
+                    btMessageLogin.setUseShape();
                 }
             }
 
@@ -331,7 +324,6 @@ public class MessageFragment extends Fragment {
              */
             @Override
             public void gt3GetDialogResult(boolean success, String result) {
-                LogUtils.i("result", result);
                 if (success) {
                     HashMap<String, String> params = null;
                     try {
@@ -372,43 +364,8 @@ public class MessageFragment extends Fragment {
 
                                     }
 
-                                   /* try {
-                                        JSONObject jsonObject = new JSONObject(s);
-                                        String data = jsonObject.getString("data");
-                                        int error_code = jsonObject.getInt("error_code");
-                                        if (error_code==0) {
-                                            btGetCodeLogin.setEnabled(true);
-                                            gt3GeetestUtils.gt3TestFinish();
-                                            Gson gson=new Gson();
-                                            GtDateBean bean = gson.fromJson(data, GtDateBean.class);
-                                            gt3GeetestUtils.gt3TestFinish();
-                                            gtcode=bean.getGtcode();
-                                        } else {
-                                            gt3DialogOnError("验证失败，请重新验证");
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }*/
-
                                 }
                             });
-                    /**
-                     *  利用异步进行解析这result进行二次验证，结果成功后调用gt3GeetestUtils.gt3TestFinish()方法调用成功后的动画，然后在gt3DialogSuccess执行成功之后的结果
-                     * //
-                     //          JSONObject res_json = new JSONObject(result);
-                     //
-                     //                Map<String, String> validateParams = new HashMap<>();
-                     //
-                     //                validateParams.put("geetest_challenge", res_json.getString("geetest_challenge"));
-                     //
-                     //                validateParams.put("geetest_validate", res_json.getString("geetest_validate"));
-                     //
-                     //                validateParams.put("geetest_seccode", res_json.getString("geetest_seccode"));
-                     在二次验证结果验证完成之后，执行gt3GeetestUtils.gt3TestFinish()方法进行动画执行
-                     */
-
-
                 }
             }
 
@@ -428,20 +385,6 @@ public class MessageFragment extends Fragment {
              */
             @Override
             public Map<String, String> gt3SecondResult() {
-               /* HashMap<String, String> params = null;
-                try {
-                    params = new HashMap<>();
-                    JSONObject jsonObject=new JSONObject(Atest);
-                    params.put("ip", AdressIp);
-                    params.put("type", "mobile");
-                    params.put("unique", times);
-                    params.put("g_challenge",jsonObject.getString("geetest_challenge"));
-                    params.put("g_seccode",jsonObject.getString("geetest_seccode"));
-                    params.put("g_validate",jsonObject.getString("geetest_validate"));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
 
                 return null;
             }
@@ -453,12 +396,6 @@ public class MessageFragment extends Fragment {
             //请求成功数据
             @Override
             public void gt3DialogSuccessResult(String result) {
-                LogUtils.i("验证全部走完的回调", result);
-
-               /* btGetCodeLogin.setEnabled(true);
-                ;*/
-
-                //Gt3GeetestTestMsg.setCandotouch(false);//这里设置验证成功后是否可以关闭
 
             }
 
@@ -471,8 +408,6 @@ public class MessageFragment extends Fragment {
 
                 return null;
             }
-
-
             /**
              * 设置是否自定义第二次验证ture为是 默认为false(不自定义)
              * 如果为false这边的的完成走gt3GetDialogResult(String result) ，后续流程SDK帮忙走完，不需要做操作
@@ -485,8 +420,6 @@ public class MessageFragment extends Fragment {
 
                 return true;
             }
-
-
             /**
              * 判断自定义按键是否被点击
              */
@@ -497,13 +430,11 @@ public class MessageFragment extends Fragment {
                     //被点击
                 }
             }
-
             /**
              * 当验证码放置10分钟后，重新启动验证码
              */
             @Override
             public void rege() {
-
 //                gt3GeetestUtils.getGeetest(captchaURL,validateURL,null);
 
             }
@@ -721,6 +652,11 @@ public class MessageFragment extends Fragment {
                                         getActivity().setResult(3000, intent);
                                         getActivity().finish();
                                     } else if ("SafeDate".equals(from)) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra(Urls.TOKEN, 1);
+                                        getActivity().setResult(TOKEN_FAIL, intent);
+                                        getActivity().finish();
+                                    } else if ("Friend".equals(from)) {
                                         Intent intent = new Intent();
                                         intent.putExtra(Urls.TOKEN, 1);
                                         getActivity().setResult(TOKEN_FAIL, intent);

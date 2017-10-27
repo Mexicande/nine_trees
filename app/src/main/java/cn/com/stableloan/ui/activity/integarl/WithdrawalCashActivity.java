@@ -205,7 +205,6 @@ public class WithdrawalCashActivity extends BaseActivity {
                                     JSONObject object1=new JSONObject(data);
                                     String isSucess = object1.getString("isSucess");
                                     if("1".equals(isSucess)){
-                                        //finish();
                                         String money = tvBalance.getText().toString();
                                         String substring = money.substring(0, money.length() - 3);
                                         String replace = substring.replace(",","");

@@ -126,15 +126,14 @@ public class SafeActivity extends BaseActivity {
                 .withLoggingEnabled(true)
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
-        saveBean = (SaveBean) getIntent().getSerializableExtra("save");
-        if (saveBean != null) {
-            if (saveBean.getPeriod().length() < 2) {
+             saveBean = (SaveBean) getIntent().getSerializableExtra("save");
+            if (saveBean != null) {
+            if (saveBean.getPeriod()==null||saveBean.getPeriod().isEmpty()) {
                 tv_time.setText("无数据");
             } else {
-                tv_time.setText("当前档案将于 "+saveBean.getPeriod()+" 日后自动清除");
+                tv_time.setText("当前档案将于 "+saveBean.getPeriod()+"日后自动清除");
             }
             period=saveBean.getPeriod();
-
             int i = Integer.parseInt(saveBean.getManaged());
             manage = list1[i];
             selectTime.setRightString(manage);
@@ -148,9 +147,9 @@ public class SafeActivity extends BaseActivity {
     }
 
     private void settingTime(int index) {
-        long l = 0l;
+       // long l = 0l;
 
-        l = dateToStamp(period);
+        //l = dateToStamp(period);
         long ls = 0;
         switch (index) {
             case 0:
@@ -410,15 +409,20 @@ public class SafeActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (tv_time.getText().toString().equals(period) && selectTime.getRightString().equals(manage)) {
-                finish();
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra("month", selectTime.getRightString());
-                intent.putExtra("time", dateTime);
-                setResult(Urls.SettingResultCode.SAFE_DATE, intent);
-                finish();
+            if(timeSlideUp.isVisible()){
+                timeSlideUp.hide();
+                return false;
+            }else {
+                if (tv_time.getText().toString().equals(period) && selectTime.getRightString().equals(manage)) {
+                    finish();
+                } else {
+                    Intent intent = new Intent();
+
+                    setResult(Urls.SettingResultCode.SAFE_DATE, intent);
+                    finish();
+                }
             }
+
         }
         return super.onKeyDown(keyCode, event);
     }

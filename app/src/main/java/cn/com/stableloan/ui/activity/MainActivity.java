@@ -48,16 +48,10 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     PageBottomTabLayout tab;
     // public  最好使用private /set get来获取
     public static NavigationController navigationController;
-
     private FragmentManager mFragmentManager;
-
     private Fragment mCurrentFragment;
-
-
-
     private static final int FLAG_LOGIN = 3;
     private static final int SEND_LOGIN = 3000;
-
     private static final int LOTTERY_CODE = 500;
     private static final int LOTTERY_SNED = 5000;
 
@@ -314,6 +308,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         super.onDestroy();
         ZhugeSDK.getInstance().flush(getApplicationContext());
         EventBus.getDefault().unregister(this);
+
 
     }
 

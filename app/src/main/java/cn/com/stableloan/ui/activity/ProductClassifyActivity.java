@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.util.Util;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
@@ -109,7 +110,7 @@ public class ProductClassifyActivity extends BaseActivity {
                                                 .fitCenter()
                                                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                                         Glide.with(ProductClassifyActivity.this).load(classBean.getData().getProject().get(0).getProject_logo()).apply(options).into(mImageView);
-                                        mProject_name.setText(classBean.getData().getProject().get(0).getTitle());
+                                        mProject_name.setText(classBean.getData().getProject().get(0).getBody_project());
                                         mBody_Project.setText(classBean.getData().getProject().get(0).getBody());
                                         classify_recycler_adapter.setNewData(classBean.getData().getProduct());
                                         if(classBean.getData().getMdse().size()!=0){
@@ -226,6 +227,16 @@ public class ProductClassifyActivity extends BaseActivity {
                     break;
             }
         }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(Util.isOnMainThread()&&!this.isFinishing())
+        {
+            Glide.with(this).pauseRequests();
+        }
+
     }
 
     @OnClick(R.id.iv_back)

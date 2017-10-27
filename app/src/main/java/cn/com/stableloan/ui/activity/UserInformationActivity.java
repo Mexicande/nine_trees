@@ -64,7 +64,8 @@ public class UserInformationActivity extends Activity {
     @Bind(R.id.User_Pic)
     SuperTextView UserPic;
     private List<View> views;
-
+    private static  final  int IMAGE_REQUEST=100;
+    private static  final  int IMAGE_RESULT=110;
     /**
      * #17326b
      *
@@ -199,14 +200,17 @@ public class UserInformationActivity extends Activity {
                 if (identity == 0) {
                     startActivity(new Intent(this, UpdataProfessionActivity.class).putExtra("from", "identity"));
                 } else {
-                    IdentityinformationActivity.launch(this);
+                    Intent identityintent=new Intent(this,IdentityinformationActivity.class);
+                    startActivityForResult(identityintent,IMAGE_REQUEST);
                 }
                 break;
             case R.id.User_Authorization:
-                CertificationActivity.launch(this);
+                Intent autointent=new Intent(this,CertificationActivity.class);
+                startActivityForResult(autointent,IMAGE_REQUEST);
                 break;
             case R.id.User_Pic:
-                UpImageIdentityActivity.launch(this);
+                Intent intent=new Intent(this,UpImageIdentityActivity.class);
+                startActivityForResult(intent,IMAGE_REQUEST);
                 break;
         }
     }
@@ -216,6 +220,22 @@ public class UserInformationActivity extends Activity {
         String message = event.message;
         if ("informationStatus".equals(message)) {
             getStatus();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==IMAGE_REQUEST){
+            switch (resultCode){
+                case IMAGE_RESULT:
+                    int ok = data.getIntExtra("ok", 0);
+                    if(ok==1){
+                        getStatus();
+                    }
+                    break;
+
+            }
         }
     }
 

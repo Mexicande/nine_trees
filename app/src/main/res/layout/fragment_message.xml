@@ -44,37 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center_horizontal" />
-    <!--    <cn.com.stableloan.view.RoundButton
-            android:id="@+id/bt_getCodeLogin"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:text="获取手机验证码  "
-            app:btnCornerRadius="5dp"
-            app:btnPressedRatio="0.8"
-            app:btnSolidColor="@color/colorPrimary"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#ffffff"
-            />-->
-<!--        <cn.com.stableloan.view.RoundButton
-            android:id="@+id/bt_VisiableButton"
-            android:layout_marginTop="50dp"
-            android:enabled="false"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:text="获取手机验证码  "
-            app:btnCornerRadius="5dp"
-            app:btnPressedRatio="0.8"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#ffffff"
-            app:btnSolidColor="@color/Normal_Button"
-            />-->
+
         <cn.com.stableloan.view.supertextview.SuperButton
             android:id="@+id/bt_getCodeLogin"
             android:layout_marginTop="50dp"
@@ -165,22 +135,23 @@
             android:textSize="@dimen/_14sp"
             android:text="更换手机号"/>
 
-        <cn.com.stableloan.view.RoundButton
+
+        <cn.com.stableloan.view.supertextview.SuperButton
             android:id="@+id/bt_message_login"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:text="递 交"
             android:enabled="false"
-            app:btnCornerRadius="5dp"
+            android:text="递 交"
             android:textStyle="bold"
-            app:btnPressedRatio="0.8"
-            app:btnSolidColor="@color/colorPrimary"
-            android:gravity="center"
             android:textSize="20sp"
-            android:textColor="#ffffff"
-            />
+            android:textColor="@color/white"
+            stv:sCornersRadius="5dp"
+            stv:sSelectorDisableColor="@color/Normal_Button"
+            stv:sSelectorNormalColor="@color/colorPrimary"
+            stv:sSelectorPressedColor="@color/normalcolorPrimary"
+            stv:sUseSelector="true" />
     </LinearLayout>
 </FrameLayout>

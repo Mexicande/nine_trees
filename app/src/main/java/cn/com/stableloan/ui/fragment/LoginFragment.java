@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,10 +57,7 @@ import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
-import cn.com.stableloan.ui.activity.ProductClassifyActivity;
-import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -70,9 +66,10 @@ import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.aes.Des4;
+import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.utils.ras.RSA;
-import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.dialog.Login_DeviceDialog;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -83,8 +80,6 @@ public class LoginFragment extends Fragment {
     cn.com.stableloan.utils.editext.PowerfulEditText etPhone;
     @Bind(R.id.et_passWord)
     cn.com.stableloan.utils.editext.PowerfulEditText etPassWord;
-    @Bind(R.id.bt_login)
-    RoundButton btLogin;
     @Bind(R.id.tv_messagelogin)
     TextView tv_messagelogin;
     @Bind(R.id.tv_forgetPassWord)
@@ -93,9 +88,9 @@ public class LoginFragment extends Fragment {
     LinearLayout viewPassWord;
     @Bind(R.id.ll_btn_type)
     GT3GeetestButton llBtnType;
-    @Bind(R.id.bt_VisiableButton)
-    RoundButton btVisiableButton;
-    private  Login_DeviceDialog dialog;
+    @Bind(R.id.bt_login)
+    SuperButton btLogin;
+    private Login_DeviceDialog dialog;
     private boolean Atest = false;
     private boolean PowerfulEditText = false;
 
@@ -106,7 +101,7 @@ public class LoginFragment extends Fragment {
     private String times = "";
     private final int Flag_User = 3000;
     private final int LOTTERY_CODE = 500;
-    private static final int TOKEN_FAIL=120;
+    private static final int TOKEN_FAIL = 120;
 
 
     public LoginFragment() {
@@ -117,7 +112,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-       gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
+        gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
         ButterKnife.bind(this, view);
         initView();
         setGt3GeetestUtilsListener();
@@ -138,7 +133,7 @@ public class LoginFragment extends Fragment {
 
     private void initView() {
 
-        dialog=new Login_DeviceDialog(getActivity());
+        dialog = new Login_DeviceDialog(getActivity());
         dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
@@ -156,8 +151,8 @@ public class LoginFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
 
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    if(getActivity().getCurrentFocus()!=null && getActivity().getCurrentFocus().getWindowToken()!=null){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (getActivity().getCurrentFocus() != null && getActivity().getCurrentFocus().getWindowToken() != null) {
                         manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
@@ -165,7 +160,6 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-
 
 
     @Override
@@ -187,20 +181,23 @@ public class LoginFragment extends Fragment {
                     if (!PowerfulEditText) {
                         PowerfulEditText = true;
                     } else {
-                        btVisiableButton.setVisibility(View.GONE);
-                        btLogin.setVisibility(View.VISIBLE);
+                        btLogin.setEnabled(true);
+                        btLogin.setUseShape();
+
                     }
-                }else {
-                    btVisiableButton.setVisibility(View.VISIBLE);
-                    btLogin.setVisibility(View.GONE);
+                } else {
+                    btLogin.setEnabled(false);
+                    btLogin.setUseShape();
+
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                    if(etPassWord.getText().toString().length() < 6){
-                        btVisiableButton.setVisibility(View.VISIBLE);
-                        btLogin.setVisibility(View.GONE);
-                    }
+                if (etPassWord.getText().toString().length() < 6) {
+                    btLogin.setEnabled(false);
+                    btLogin.setUseShape();
+                }
             }
         });
 
@@ -216,12 +213,12 @@ public class LoginFragment extends Fragment {
                     if (!PowerfulEditText) {
                         PowerfulEditText = true;
                     } else {
-                        btVisiableButton.setVisibility(View.GONE);
-                        btLogin.setVisibility(View.VISIBLE);
+                        btLogin.setEnabled(true);
+                        btLogin.setUseShape();
                     }
-                }else {
-                    btVisiableButton.setVisibility(View.VISIBLE);
-                    btLogin.setVisibility(View.GONE);
+                } else {
+                    btLogin.setEnabled(false);
+                    btLogin.setUseShape();
                 }
             }
 
@@ -235,9 +232,8 @@ public class LoginFragment extends Fragment {
     private void setGt3GeetestUtilsListener() {
 
 
-
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
-        gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
+        gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
         String ip = (String) SPUtils.get(getActivity(), "ip", "");
 
         if (ip != null) {
@@ -265,7 +261,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void gt3DialogOnError(String error) {
                 LogUtils.i("极验------", error);
-                gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+                gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
 
             }
 
@@ -317,7 +313,7 @@ public class LoginFragment extends Fragment {
                         e.printStackTrace();
                     }
                     JSONObject object = new JSONObject(params);
-                    OkGo.post(Urls.Ip_url+ Urls.Login.validateURL)
+                    OkGo.post(Urls.Ip_url + Urls.Login.validateURL)
                             .tag(this)
                             .upJson(object)
                             .execute(new StringCallback() {
@@ -458,9 +454,9 @@ public class LoginFragment extends Fragment {
         params.put("gtcode", gtcode);
         params.put("status", status);
         params.put("unique", times);
-        params.put("validatePhone",phone);
-        params.put("device",model);
-        params.put("version_number","android "+androidVersion);
+        params.put("validatePhone", phone);
+        params.put("device", model);
+        params.put("version_number", "android " + androidVersion);
         JSONObject object = new JSONObject(params);
         String Deskey = null;
         String sign = null;
@@ -488,7 +484,7 @@ public class LoginFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("login",s);
+                        LogUtils.i("login", s);
 
                         hud.dismiss();
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
@@ -497,12 +493,12 @@ public class LoginFragment extends Fragment {
                             UserBean userBean = new UserBean();
                             userBean.setNickname(infromBean.getData().getNickname());
                             userBean.setUserphone(infromBean.getData().getUserphone());
-                            SPUtils.put(getActivity(), infromBean.getData().getUserphone()+Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
+                            SPUtils.put(getActivity(), infromBean.getData().getUserphone() + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
 
-                            SPUtils.put(getActivity(),Urls.lock.USER_PHONE,infromBean.getData().getUserphone());
+                            SPUtils.put(getActivity(), Urls.lock.USER_PHONE, infromBean.getData().getUserphone());
                             userBean.setIdentity(infromBean.getData().getIdentity());
                             EventBus.getDefault().post(new UserEvent(infromBean));
-                          //  EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
+                            //  EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
                             TinyDB tinyDB = new TinyDB(getActivity());
                             tinyDB.putObject(infromBean.getData().getUserphone(), userBean);
                             String from = getActivity().getIntent().getStringExtra("from");
@@ -524,59 +520,63 @@ public class LoginFragment extends Fragment {
                                 } else if (from.equals("user2")) {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
-                                }else if(from.equals("collection")){
+                                } else if (from.equals("collection")) {
                                     Intent intent = new Intent();
                                     intent.putExtra("ok", "ok");
                                     getActivity().setResult(2000, intent);
                                     getActivity().finish();
-                                }else if("error".equals(from)){
+                                } else if ("error".equals(from)) {
                                     MainActivity.launch(getActivity());
                                     getActivity().finish();
-                                }else if("error_UserFragment".equals(from)){
+                                } else if ("error_UserFragment".equals(from)) {
                                     EventBus.getDefault().post(new UpdateEvent("user"));
                                     getActivity().finish();
-                                }else if("CollectionError".equals(from)){
+                                } else if ("CollectionError".equals(from)) {
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     getActivity().finish();
-                                }else if("UserInformationError".equals(from)){
+                                } else if ("UserInformationError".equals(from)) {
                                     EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                     getActivity().finish();
-                                }else if("ProductDescError".equals(from)){
+                                } else if ("ProductDescError".equals(from)) {
                                     String collection = getActivity().getIntent().getStringExtra("collection");
                                     EventBus.getDefault().post(new DescEvent(collection));
                                     getActivity().finish();
-                                }else if("CashError".equals(from)){
+                                } else if ("CashError".equals(from)) {
                                     EventBus.getDefault().post(new CashEvent(1));
                                     getActivity().finish();
-                                }else if("IntegarlError".equals(from)){
+                                } else if ("IntegarlError".equals(from)) {
                                     EventBus.getDefault().post(new IntegarlEvent(1));
                                     getActivity().finish();
-                                }else if("UpImageError".equals(from)){
-                                    EventBus.getDefault().post(new  InformationEvent("CardUpload"));
+                                } else if ("UpImageError".equals(from)) {
+                                    EventBus.getDefault().post(new InformationEvent("CardUpload"));
                                     getActivity().finish();
 
-                                } else if("IdentityError".equals(from)){
-                                    EventBus.getDefault().post(new  InformationEvent("ok"));
+                                } else if ("IdentityError".equals(from)) {
+                                    EventBus.getDefault().post(new InformationEvent("ok"));
                                     getActivity().finish();
 
-                                }else if("UpdataProfessionError".equals(from)){
+                                } else if ("UpdataProfessionError".equals(from)) {
                                     EventBus.getDefault().post(new UpdateProfessionEvent(1));
                                     getActivity().finish();
-                                }else if("DeviceError".equals(from)){
-                                    Intent intent=new Intent();
-                                    intent.putExtra("device",1);
-                                    getActivity().setResult(100,intent);
+                                } else if ("DeviceError".equals(from)) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("device", 1);
+                                    getActivity().setResult(100, intent);
                                     getActivity().finish();
-                                } else if("DescError".equals(from)){
-                                    Intent intent=new Intent();
-                                    intent.putExtra("desc",1);
-                                    getActivity().setResult(3000,intent);
+                                } else if ("DescError".equals(from)) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("desc", 1);
+                                    getActivity().setResult(3000, intent);
                                     getActivity().finish();
-                                }
-                                else if("SafeDate".equals(from)){
-                                    Intent intent=new Intent();
-                                    intent.putExtra(Urls.TOKEN,1);
-                                    getActivity().setResult(TOKEN_FAIL,intent);
+                                } else if ("SafeDate".equals(from)) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra(Urls.TOKEN, 1);
+                                    getActivity().setResult(TOKEN_FAIL, intent);
+                                    getActivity().finish();
+                                } else if ("Friend".equals(from)) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra(Urls.TOKEN, 1);
+                                    getActivity().setResult(TOKEN_FAIL, intent);
                                     getActivity().finish();
                                 }
 
@@ -584,21 +584,21 @@ public class LoginFragment extends Fragment {
                                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfare));
                                 getActivity().finish();
 
-                            } else if (id!=null){
-                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class",id));
+                            } else if (id != null) {
+                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class", id));
                                 getActivity().finish();
 
-                            }else {
+                            } else {
                                 getActivity().finish();
                             }
-                        }else if(infromBean.getError_code()==1130){
+                        } else if (infromBean.getError_code() == 1130) {
                             dialog.show();
-                        } else{
+                        } else {
                             long timeMillis = System.currentTimeMillis();
                             SPUtils.put(getActivity(), "date", timeMillis);
                             llBtnType.setVisibility(View.VISIBLE);
                             Atest = false;
-                            gt3GeetestUtils.getGeetest(Urls.Ip_url+ Urls.Login.captchaURL, Urls.Ip_url+ Urls.Login.validateURL, null);
+                            gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
                             ToastUtils.showToast(getActivity(), infromBean.getError_message());
                         }
                     }
@@ -648,6 +648,7 @@ public class LoginFragment extends Fragment {
                 break;
         }
     }
+
     private Touch_login mCallback;
 
 
@@ -658,7 +659,7 @@ public class LoginFragment extends Fragment {
 
             // 这里的requestCode就是申请时设置的requestCode。
             // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
-            if(requestCode == 200) {
+            if (requestCode == 200) {
                 // TODO ...
 
                 loginUser();
@@ -669,9 +670,9 @@ public class LoginFragment extends Fragment {
         @Override
         public void onFailed(int requestCode, List<String> deniedPermissions) {
             // 权限申请失败回调。
-            ToastUtils.showToast(getActivity(),"为了您的账号安全,请打开设备权限");
-            if(requestCode == 200) {
-                if((AndPermission.hasAlwaysDeniedPermission(getActivity(), deniedPermissions))){
+            ToastUtils.showToast(getActivity(), "为了您的账号安全,请打开设备权限");
+            if (requestCode == 200) {
+                if ((AndPermission.hasAlwaysDeniedPermission(getActivity(), deniedPermissions))) {
                     AndPermission.defaultSettingDialog(getActivity(), 500).show();
 
                 }
@@ -693,10 +694,10 @@ public class LoginFragment extends Fragment {
         switch (requestCode) {
             case 500: // 这个400就是上面defineSettingDialog()的第二个参数。
                 // 你可以在这里检查你需要的权限是否被允许，并做相应的操作。
-                if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                     loginUser();
-                }else {
-                    ToastUtils.showToast(getActivity(),"获取权限失败");
+                } else {
+                    ToastUtils.showToast(getActivity(), "获取权限失败");
                 }
                 break;
         }

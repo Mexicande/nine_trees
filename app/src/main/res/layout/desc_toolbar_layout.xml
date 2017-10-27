@@ -17,9 +17,13 @@
     <ImageView
         android:background="?attr/selectableItemBackgroundBorderless"
         android:id="@+id/iv_back"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_back"/>
+        android:layout_centerVertical="true"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:paddingRight="@dimen/_20dp"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp"
+        android:src="@mipmap/iv_back"/>
     <RelativeLayout
         android:layout_gravity="right"
         android:layout_marginRight="15dp"

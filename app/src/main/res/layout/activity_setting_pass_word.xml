@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
+
     tools:context="cn.com.stableloan.ui.activity.SettingPassWordActivity">
     <RelativeLayout
         android:id="@+id/layout"
@@ -59,37 +61,22 @@
         app:funcType="canWatchPwd"
         android:inputType="textPassword"
         />
-    <cn.com.stableloan.view.RoundButton
+    <cn.com.stableloan.view.supertextview.SuperButton
         android:id="@+id/bt_login"
-        android:visibility="gone"
-        android:layout_below="@id/et_SettingPassWord"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="去借款"
-        app:btnCornerRadius="10dp"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/colorPrimary"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:textColor="#ffffff"
-        />
-    <cn.com.stableloan.view.RoundButton
-        android:id="@+id/bt_button"
-        android:enabled="false"
         android:layout_below="@id/et_SettingPassWord"
         android:layout_marginTop="70dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:enabled="false"
         android:text="去借款"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="#FF8A80"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:textColor="#ffffff"
-        />
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        stv:sCornersRadius="5dp"
+        stv:sSelectorDisableColor="@color/Normal_Button"
+        stv:sSelectorNormalColor="@color/colorPrimary"
+        stv:sSelectorPressedColor="@color/normalcolorPrimary"
+        stv:sUseSelector="true" />
 </RelativeLayout>

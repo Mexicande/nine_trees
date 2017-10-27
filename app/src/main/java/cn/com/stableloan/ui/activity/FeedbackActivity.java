@@ -27,7 +27,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.RoundButton;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -42,15 +42,16 @@ public class FeedbackActivity extends BaseActivity {
     @Bind(R.id.et_message_phone)
     EditText etMessagePhone;
     @Bind(R.id.bt_login)
-    RoundButton btLogin;
-    @Bind(R.id.bt_visiableBt)
-    RoundButton btVisiableBt;
+    SuperButton btLogin;
 
     private boolean falg = false;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, FeedbackActivity.class));
     }
+
+    private static final int REQUEST_CODE=100;
+    private static final int RESULT_CODE=110;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +74,11 @@ public class FeedbackActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!etMessage.getText().toString().isEmpty()) {
-                    btVisiableBt.setVisibility(View.GONE);
-                    btLogin.setVisibility(View.VISIBLE);
                     btLogin.setEnabled(true);
-
+                    btLogin.setUseShape();
+                }else {
+                    btLogin.setEnabled(false);
+                    btLogin.setUseShape();
                 }
             }
 
@@ -126,10 +128,17 @@ public class FeedbackActivity extends BaseActivity {
                             public void onSuccess(String s, Call call, Response response) {
                                 try {
                                     JSONObject object = new JSONObject(s);
-                                    if ("0".equals(object.getString("error_code"))) {
+                                    int error_code = object.getInt("error_code");
+                                    if (error_code==0) {
                                         ToastUtils.showToast(FeedbackActivity.this, "提交成功");
                                         finish();
-                                    } else {
+                                    }else if(error_code==2){
+                                        Intent intent=new Intent(FeedbackActivity.this,LoginActivity.class);
+                                        intent.putExtra("message",object.getString("error_message"));
+                                        intent.putExtra("from","error_UserFragment");
+                                        startActivityForResult(intent,REQUEST_CODE);
+
+                                    } else{
                                         ToastUtils.showToast(FeedbackActivity.this, object.getString("error_message"));
                                     }
 
@@ -145,4 +154,15 @@ public class FeedbackActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE){
+            switch (resultCode){
+                case RESULT_CODE:
+                    sendMessageFeed();
+                    break;
+            }
+        }
+    }
 }

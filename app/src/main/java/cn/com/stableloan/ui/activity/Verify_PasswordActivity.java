@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Editable;
@@ -10,7 +9,6 @@ import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 
 import com.andreabaccega.widget.FormEditText;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.luck.picture.lib.tools.ScreenUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -36,13 +33,11 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.PicStatusEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.RoundButton;
-import cn.com.stableloan.view.supertextview.SuperTextView;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -58,26 +53,49 @@ public class Verify_PasswordActivity extends BaseActivity {
     TextView tvFail;
     @Bind(R.id.tv_forgetPW)
     TextView tvForgetPW;
-    @Bind(R.id.bt_Validation)
-    RoundButton btValidation;
     @Bind(R.id.main)
     LinearLayout main;
+    @Bind(R.id.bt_Validation)
+    SuperButton btValidation;
     private int FILD_NU = 0;
     private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify__password);
         ButterKnife.bind(this);
-        mContext=this;
+        mContext = this;
         initToolbar();
         setListener();
 
     }
+
     private int lastYPos = 0;
 
     private void setListener() {
+        etPassWord.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if(s.length()>=6){
+                            btValidation.setEnabled(true);
+                            btValidation.setUseShape();
+                        }else {
+                            btValidation.setEnabled(false);
+                            btValidation.setUseShape();
+                        }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 /*        main.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -124,8 +142,8 @@ public class Verify_PasswordActivity extends BaseActivity {
         titleName.setText("身份验证");
         etPassWord.setTransformationMethod(PasswordTransformationMethod
                 .getInstance());
-       String from= getIntent().getStringExtra("from");
-        if("splash".equals(from)){
+        String from = getIntent().getStringExtra("from");
+        if ("splash".equals(from)) {
             titleName.setText("登录");
             layoutGo.setVisibility(View.GONE);
         }
@@ -175,7 +193,7 @@ public class Verify_PasswordActivity extends BaseActivity {
                                 try {
                                     JSONObject json = new JSONObject(s);
                                     int error_code = json.getInt("error_code");
-                                    if (error_code==0) {
+                                    if (error_code == 0) {
                                         String from = getIntent().getStringExtra("from");
                                         if (from != null) {
                                             if ("unLock".equals(from)) {
@@ -189,9 +207,6 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                 finish();
                                             } else if ("UserInformation".equals(from)) {
                                                 EventBus.getDefault().post(new InformationEvent("ok"));
-                                                finish();
-                                            } else if ("PicStatus".equals(from)) {
-                                                EventBus.getDefault().post(new PicStatusEvent("update"));
                                                 finish();
                                             } else if ("CardUpload".equals(from)) {
                                                 EventBus.getDefault().post(new InformationEvent("CardUpload"));
@@ -208,42 +223,42 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             } else if ("updatePassword".equals(from)) {
                                                 startActivity(new Intent(Verify_PasswordActivity.this, UpdatePassWordActivity.class).putExtra("password", md5ToString));
                                                 finish();
-                                            } else if("CreateGesture".equals(from)){
-                                                startActivity(new Intent(mContext,CreateGestureActivity.class).putExtra("from","main"));
+                                            } else if ("CreateGesture".equals(from)) {
+                                                startActivity(new Intent(mContext, CreateGestureActivity.class).putExtra("from", "main"));
                                                 //CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
-                                            }else if("apply".equals(from)){
-                                                Intent intent=new Intent();
-                                                intent.putExtra("ok","ok");
-                                                setResult(1000,intent);
+                                            } else if ("apply".equals(from)) {
+                                                Intent intent = new Intent();
+                                                intent.putExtra("ok", "ok");
+                                                setResult(1000, intent);
                                                 finish();
-                                            }else if ("splash".equals(from)){
+                                            } else if ("splash".equals(from)) {
                                                 MainActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
-                                            }else if("Createuserinformation".equals(from)){
-                                                startActivity(new Intent(mContext,CreateGestureActivity.class).putExtra("from","Createuserinformation"));
+                                            } else if ("Createuserinformation".equals(from)) {
+                                                startActivity(new Intent(mContext, CreateGestureActivity.class).putExtra("from", "Createuserinformation"));
                                                 //CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
-                                            }else if("Createapply".equals(from)){
+                                            } else if ("Createapply".equals(from)) {
 
-                                                Intent intent=new Intent(mContext,CreateGestureActivity.class).putExtra("from","Createapply");
+                                                Intent intent = new Intent(mContext, CreateGestureActivity.class).putExtra("from", "Createapply");
                                                 Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
                                                 intent.putExtra("product", desc);
                                                 startActivity(intent);
                                                 //CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
-                                            }else if("SettingCreateGesture".equals(from)){
+                                            } else if ("SettingCreateGesture".equals(from)) {
                                                 CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
                                             }
                                         }
-                                    } else if(error_code==2){
-                                        Intent intent=new Intent(mContext,LoginActivity.class);
-                                        intent.putExtra("message",json.getString("error_message"));
-                                        intent.putExtra("from","error");
+                                    } else if (error_code == 2) {
+                                        Intent intent = new Intent(mContext, LoginActivity.class);
+                                        intent.putExtra("message", json.getString("error_message"));
+                                        intent.putExtra("from", "error");
                                         startActivity(intent);
                                         finish();
-                                    }else {
+                                    } else {
                                         FILD_NU++;
                                         tvFail.setText(FILD_NU + "次密码输入错误");
                                         String msg = json.getString("error_message");

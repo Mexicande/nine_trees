@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:stv="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/view_passWord"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <cn.com.stableloan.utils.editext.PowerfulEditText
@@ -59,39 +59,22 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"/>
 
-    <cn.com.stableloan.view.RoundButton
+    <cn.com.stableloan.view.supertextview.SuperButton
         android:id="@+id/bt_login"
-        android:visibility="gone"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="登 录"
-        app:btnCornerRadius="5dp"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/colorPrimary"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:textColor="#ffffff"
-        />
-    <cn.com.stableloan.view.RoundButton
-        android:id="@+id/bt_VisiableButton"
         android:enabled="false"
-        android:layout_below="@id/et_SettingPassWord"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="开始"
-        app:btnCornerRadius="5dp"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/Normal_Button"
-        android:gravity="center"
+        android:text="登 录"
         android:textSize="24sp"
-        android:textColor="#ffffff"
-        />
+        android:textColor="@color/white"
+        stv:sCornersRadius="5dp"
+        stv:sSelectorDisableColor="@color/Normal_Button"
+        stv:sSelectorNormalColor="@color/colorPrimary"
+        stv:sSelectorPressedColor="@color/normalcolorPrimary"
+        stv:sUseSelector="true" />
 
 
     <RelativeLayout

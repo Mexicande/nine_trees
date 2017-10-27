@@ -150,19 +150,18 @@ public class LotteryFragment extends ImmersionFragment {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         stateLayout.showContentView();
-                        LogUtils.i("福利", s);
                         Gson gson = new Gson();
                         WelfareBean bean = gson.fromJson(s, WelfareBean.class);
                         if(bean.getData().size()==0){
+
                             ivDefault.setVisibility(View.VISIBLE);
+
                         }else {
                             ivDefault.setVisibility(View.GONE);
                             welfareAdapter = new WelfareAdapter(bean.getData());
                             welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
                             welfareRecycler.setAdapter(welfareAdapter);
-
                         }
-
                     }
 
                     @Override

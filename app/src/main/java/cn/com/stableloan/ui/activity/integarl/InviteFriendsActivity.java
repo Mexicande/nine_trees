@@ -41,6 +41,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.integarl.InviteFriendList;
 import cn.com.stableloan.model.integarl.InviteFriendsBean;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.adapter.InviteListAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
@@ -81,6 +82,8 @@ public class InviteFriendsActivity extends BaseActivity {
     private InviteListAdapter listAdapter;
     private String base_str;
     private Qr_Dialog qr_dialog;
+    private static final  int REQUEST_CODE=100;
+    private static final int TOKEN_FAIL = 120;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, InviteFriendsActivity.class));
@@ -92,12 +95,12 @@ public class InviteFriendsActivity extends BaseActivity {
         setContentView(R.layout.activity_invite_friends);
         ButterKnife.bind(this);
         initView();
-        getInviteList();
-        setListener();
         String nick = getIntent().getStringExtra("nick");
         if(nick!=null){
             tv_nick.setText("Hi, "+nick);
         }
+        getInviteList();
+        setListener();
     }
 
     private void initView() {
@@ -129,7 +132,12 @@ public class InviteFriendsActivity extends BaseActivity {
                             if (friendList.getError_code() == 0) {
                                 listAdapter.addData(friendList.getData().getInviteLog());
                                 base_str = friendList.getData().getQrCode();
-                            } else {
+                            }else if(friendList.getError_code()==2){
+                                Intent intent=new Intent(InviteFriendsActivity.this, LoginActivity.class);
+                                intent.putExtra("message",friendList.getError_message());
+                                intent.putExtra("from","Friend");
+                                startActivityForResult(intent,REQUEST_CODE);
+                            }else {
                                 ToastUtils.showToast(InviteFriendsActivity.this, friendList.getError_message());
                             }
 
@@ -305,7 +313,14 @@ public class InviteFriendsActivity extends BaseActivity {
                         inviteFriends(replace);
                     }
                     break;
+
                 }
+                break;
+            case REQUEST_CODE:
+                if(resultCode==TOKEN_FAIL){
+                    getInviteList();
+                }
+                break;
 
         }
     }
@@ -341,6 +356,7 @@ public class InviteFriendsActivity extends BaseActivity {
 
 
     }
+
 
     private String[] getPhoneContacts(Uri uri) {
         String[] contact = new String[2];

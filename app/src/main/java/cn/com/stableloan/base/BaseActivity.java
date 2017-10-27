@@ -14,6 +14,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.gyf.barlibrary.ImmersionBar;
 
 import cn.com.stableloan.R;
@@ -44,6 +46,11 @@ public class BaseActivity extends AppCompatActivity {
         if(contains){
             ActivityStackManager.getInstance().popActivity(this);
         }
+        if(Util.isOnMainThread()&&!this.isFinishing())
+        {
+            Glide.with(this).pauseRequests();
+        }
+
 
     }
 

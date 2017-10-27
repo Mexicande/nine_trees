@@ -68,6 +68,8 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private FragmentManager mFragmentManager;
     private SlideUp slideUp;
+    private static  final  int IMAGE_RESULT=110;
+
     private static final int STUDENT = 2;
     private static final int COMPANY = 1;
     private static final int BUSINESS = 3;
@@ -93,13 +95,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         initToolbar();
         initMagicIndicator();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
-       /* AppApplication.addDestoryActivity(this,"integarl");
-        String integarl = getIntent().getStringExtra("integarl");
-        if(integarl!=null){
-            getDate();
-        }else {
-
-        }*/
     }
 
     private void getDate() {
@@ -291,6 +286,9 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                 slideUp.hide();
                 break;
             case R.id.layout_go:
+                Intent intent=new Intent();
+                intent.putExtra("ok", 1);
+                setResult(IMAGE_RESULT,intent);
                 finish();
                 break;
         }
@@ -298,11 +296,18 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(slideUp.isVisible()){
-            slideUp.hide();
-        }else {
-            return super.onKeyDown(keyCode, event);
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(slideUp.isVisible()) {
+                slideUp.hide();
+                return false;
+            }else {
+                Intent intent=new Intent();
+                intent.putExtra("ok", 1);
+                setResult(IMAGE_RESULT,intent);
+                finish();
+            }
         }
-        return false;
+            return super.onKeyDown(keyCode, event);
     }
 }
