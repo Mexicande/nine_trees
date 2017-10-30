@@ -169,30 +169,37 @@ public class SafeActivity extends BaseActivity {
                 setDateTo(3,ls);
                 break;
             case 4:
-                Save(4, "永久");
+                Save(4, "2222-01-01");
                 break;
 
         }
 
 
     }
-
     private void setDateTo(int index,long ls){
-        long stamp = dateToStamp(period);
-
+        long stamp=0;
+        if(period!=null){
+            if(!period.isEmpty()){
+                stamp = dateToStamp(period);
+            }
+        }
         long l1 = stamp + ls;
         long l2 = System.currentTimeMillis();
-        if (l2 > l1) {
-            String of = String.valueOf(l2 + 86400000);
+
+        String of = String.valueOf(l2 + ls);
+        String date = stampToDate(of);
+        Save(index, date);
+       /* if (l2 > l1) {
+            String of = String.valueOf(l2 + ls);
             String date = stampToDate(of);
             Save(index, date);
         } else {
-            String of = String.valueOf(l1);
+            String of = String.valueOf(l2 + ls);
             String date = stampToDate(of);
             saveBean.setPeriod(date);
             tv_time.setText("当前档案将于 "+date+" 日后自动清除");
             Save(index, date);
-        }
+        }*/
     }
 
 
@@ -243,8 +250,9 @@ public class SafeActivity extends BaseActivity {
                             String isSuccess = object.getString("isSuccess");
                             String msg = object.getString("msg");
                             if ("1".equals(isSuccess)) {
-                                saveBean.setPeriod(date);
-                                saveBean.setManaged(man);
+                                //period=date;
+                              /*  saveBean.setPeriod(date);
+                                saveBean.setManaged(man)*/;
                                 tv_time.setText("当前档案将于 "+date+" 日后自动清除");
                                 selectTime.setRightString(list1[managed]);
                                 ToastUtils.showToast(SafeActivity.this, "修改清档日期成功");
@@ -279,7 +287,7 @@ public class SafeActivity extends BaseActivity {
                     finish();
                 } else {
                     Intent intent = new Intent();
-                    intent.putExtra("month", selectTime.getRightString());
+                    intent.putExtra("month",selectTime.getRightString());
                     intent.putExtra("time", tv_time.getText().toString());
                     setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                     finish();
@@ -291,7 +299,6 @@ public class SafeActivity extends BaseActivity {
                 break;
             case R.id.tv_OneMonth:
                 timeSlideUp.hide();
-
                 setTimes(1);
                 break;
             case R.id.tv_ThreeMonth:
@@ -392,7 +399,13 @@ public class SafeActivity extends BaseActivity {
                                 tv_time.setText("当前档案将于 "+dateTime+" 日后自动清除");
                                 saveBean.setPeriod(dateTime);
                                 selectTime.setRightString("无数据");
-
+                                if (tv_time.getText().toString().equals(period) && selectTime.getRightString().equals(manage)) {
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent();
+                                    setResult(Urls.SettingResultCode.SAFE_DATE, intent);
+                                    finish();
+                                }
                             } else {
                                 ToastUtils.showToast(SafeActivity.this, msg);
                             }
@@ -417,7 +430,6 @@ public class SafeActivity extends BaseActivity {
                     finish();
                 } else {
                     Intent intent = new Intent();
-
                     setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                     finish();
                 }

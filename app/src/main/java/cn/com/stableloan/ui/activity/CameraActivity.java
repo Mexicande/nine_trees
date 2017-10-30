@@ -311,11 +311,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     }
 
     private void uploadAndRecognize(String base64) {
-      /*  hud = KProgressHUD.create(CameraActivity.this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("识别中,请稍后.....")
-                .setCancellable(true)
-                .show();*/
         InputBean.InputsBean.ImageBean imageBean = new InputBean.InputsBean.ImageBean();
         imageBean.setDataType(50);
         imageBean.setDataValue(base64);

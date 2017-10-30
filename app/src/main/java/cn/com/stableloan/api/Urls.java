@@ -6,20 +6,19 @@ package cn.com.stableloan.api;
 
 public interface Urls {
 
-    String Ip_url="http://test.api.anwenqianbao.com/v1/";
+    String Ip_url="http://api.anwenqianbao.com/v1/";
 
-    String NEW_Ip_url="http://test.api.anwenqianbao.com/v2/";
+    String NEW_Ip_url="http://api.anwenqianbao.com/v2/";
 
-    String puk_URL="http://test.api.shoujijiekuan.com/Home/ApiLogin/";
+    String puk_URL="http://api.shoujijiekuan.com/Home/ApiLogin/";
 
-    String NEW_URL="http://test.api.shoujijiekuan.com/Home/";
+    String NEW_URL="http://api.shoujijiekuan.com/Home/";
 
-    String HTML_URL="http://test.m.anwenqianbao.com/";
+    String HTML_URL="http://m.anwenqianbao.com/";
 
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
-            "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4" +
-            "DkeI2HZ45KR+7qkSXQIDAQAB";
+            "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4";
     String PRIVATE_KEY = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANSzGmJ7eD51Oc+/" +
             "q+NG4I5UHqFzRXqoVcBvONISzUdkcKj8lGBQEcr58LJz4spSFyxh7TRpOfMNE25b" +
             "QwCEbWVci74mjQSffKIUHhriNwxROFXHWzun8KaqT4pQCYz0UsGtPpSgrNss0qL3" +
@@ -32,14 +31,18 @@ public interface Urls {
             "7/kcUwJAPq1VNWGGhl4IUm1Ew0l6Xa98JBJ8UaniqPAPRRS5nvhWukHdTgCkzIQd" +
             "cl8XbArcxNLulVTY8VHlzKFdErPq4QJBAJ4lT8/2/hPpG2G4jcTzX6MibCxVgp04" +
             "oscNEArgXtmmKrzFbxIMGNpYyg/l1tuF0/kcOxBnoJoZZ2xK2q1WSdMCQQCQDV6/" +
-            "y0puJ4EGhEa+jwiSi8rSD/vw09CNUNTieVGqx5DzxvPUzTyvRQ9y4dpU8zufqq5p" +
-            "BI1hNZWOmpTyld2F";
+            "y0puJ4EGhEa+jwiSi8rSD/vw09CNUNTieVGqx5DzxvPUzTyvRQ9y4dpU8zufqq5p";
 
     String Api_Id="3846f6f1e99e4f1b958111fda257c368";
     //
+    String  TOKEN=                                                                                  "token";
+    String NUMBER_ZERO=                                                                             "0";
+    String NUMBER_ONE=                                                                              "1";
+    String NUMBER_TWO=                                                                              "2";
+
     interface Update{
 
-        String APP_UPDATA="http://test.api.shoujijiekuan.com/Home/ApiLogin/Version";
+        String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
 
         String value="url=";
 
@@ -56,7 +59,6 @@ public interface Urls {
         String LOGIN="login/login";
         String USER_INFOMATION="person/lockPassword";
         String GET_SIGNATURE="Mine/GetSignature";
-        String Immunity="Mine/Immunity";
         String QUICK_LOGIN="quick/login";
         String captchaURL = "geetes/captcha";
         String validateURL = "geetes/verification";
@@ -95,7 +97,6 @@ public interface Urls {
     }
     interface STATUS{
         String GetCerftication="accredit/status";
-        String GetPictrueStatus="status/getImageStatus";
         String Getsetting="SaveSetting/Getsetting";
         String Save_Setting="SaveSetting/setting";
 
@@ -104,7 +105,6 @@ public interface Urls {
 
     interface  HOME_FRAGMENT{
         String BANNER_HOT="GetBanner";
-        //String PRODUCT_LIST="GetProducts";
         String Class_Product_List="project/list";   //专题
         String SPECKILL="second/kill";
         String HOT_NEW_PRODUCT="product/home";
@@ -112,7 +112,6 @@ public interface Urls {
 
     }
     interface register{
-        String REGSTER  = "Registered";
         String FORGETWORD="set/forgetpassword";
     }
 
@@ -129,7 +128,6 @@ public interface Urls {
     }
     interface update{
 
-        String UPDATE_NICK="Modify";
         String UPDATE_Word="person/setPassword";
         String UPDATE_PROFRSSION="person/setIdentity";
         String GET_IDENTITY="person/getIdentity";
@@ -163,8 +161,8 @@ public interface Urls {
         String WEICHAT_APPID="wxd8a11cffdc98f84b";
         String QQ_APPID="1106239350";
 
-        String PageWeb="http://test.m.anwenqianbao.com/#/details?pId=";
-        String SHARE_INCODE="http://test.m.anwenqianbao.com/#/login?inviteCode=";
+        String PageWeb="http://m.anwenqianbao.com/#/details?pId=";
+        String SHARE_INCODE="http://m.anwenqianbao.com/#/login?inviteCode=";
     }
     interface  Integarl{
         String getAccumulatePoints="point/getAccumulatePoints";
@@ -217,24 +215,21 @@ public interface Urls {
     }
 
     interface DataStatistics{
-        String APPLY            =                                                                   "product/apply";
+        String APPLY       =                                                                   "product/apply";
     }
     interface SettingResultCode{
-        int     SAFE_DATE   =                                                                       200;
+        int    SAFE_DATE   =                                                                    200;
     }
-    String  TOKEN=                                                                                  "token";
-    String NUMBER_ZERO=                                                                             "0";
-    String NUMBER_ONE=                                                                              "1";
-    String NUMBER_TWO=                                                                              "2";
+
     interface lock{
-        int  NO_VERIFICATION =                                                                            0;
-        int  PW_VERIFICATION =                                                                            2;
-        int  GESTURE_VERIFICATION =                                                                       3;
-        String  CAT =                                                                                     "cat";
-        String  LOGIN =                                                                                     "login";
-        String  APPLY =                                                                                     "apply";
-        String  TOKEN =                                                                                     "token";
-        String  USER_PHONE =                                                                                "phone";
+        int  NO_VERIFICATION =                                                                   0;
+        int  PW_VERIFICATION =                                                                   2;
+        int  GESTURE_VERIFICATION =                                                              3;
+        String  CAT =                                                                            "cat";
+        String  LOGIN =                                                                          "login";
+        String  APPLY =                                                                          "apply";
+        String  TOKEN =                                                                          "token";
+        String  USER_PHONE =                                                                     "phone";
     }
 
 }

@@ -7,61 +7,22 @@
     <string name="header_pull_over">释放立即刷新</string>
     <string name="header_refreshing">加载中…</string>
     <string name="header_completed">加载中…</string>
-    <string name="back">返回</string>
 
     <string name="captcha_btn_resend">重发验证码</string>
     <string name="validate_btn_hint">获取验证码</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-
     <string name="hint_feedback">期待您的宝贵建议(120字)</string>
-
     <string name="loading">正在加载…</string>
     <string name="error">出错了（┬＿┬）</string>
     <string name="retry">轻触屏幕重试</string>
     <string name="empty">没有符合的产品 </string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_mohu">MohuActivity</string>
-    <!-- 快速导航-->
-    <string name="add_note">+ 便签</string>
-    <string name="add_card">+ 名片</string>
-    <string name="add_bill">+ 账单</string>
-
-    <string name="note_link_tel">Call</string>
-    <string name="note_link_email">Send email</string>
-    <string name="note_link_web">Browse web</string>
-    <string name="note_link_other">Open map</string>
-    <string name="title_activity_add_card">AddCardActivity</string>
-    <string name="title_activity_add_note">AddNoteActivity</string>
-    <string name="title_activity_add_bill">AddBillActivity</string>
-    <string name="title_activity_one_day_all">OneDayAllActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_all_diary">AllDiaryActivity</string>
-    <string name="title_activity_all_card">AllCardActivity</string>
-    <string name="title_activity_all_bill">AllBillActivity</string>
-    <string name="title_activity_all_notes">AllNotesActivity</string>
-    <string name="title_activity_setting">SettingActivity</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_regist">RegistActivity</string>
-    <string name="title_activity_cloud">CloudActivity</string>
-    <string name="title_activity_all_card_item">AllCardItemActivity</string>
-    <string name="title_activity_all_company_item">AllCompanyItemActivity</string>
-    <string name="title_activity_all_bill_item">AllBillItemActivity</string>
-    <string name="title_activity_add_diary">AddDiaryActivity</string>
-    <string name="title_activity_user_base_info">UserBaseInfoActivity</string>
-    <string name="title_activity_base_setting">BaseSettingActivity</string>
-    <string name="title_activity_pass_to">PassToActivity</string>
-    <string name="title_activity_guild">GuildActivity</string>
+    <string name="AutoEdit">自定填写</string>
+    <string name="Validity_Time">有效期</string>
+    <string name="Save">保 存</string>
+    <string name="Forget_PW">忘记密码</string>
 
 
     <!--密码锁-->
-    <string name="splash_activity">SplashActivity</string>
 
     <!-- Gesture login activity -->
     <string name="gesture_forget_gesture">忘记手势？</string>
@@ -70,7 +31,6 @@
     <string name="gesture_correct">输入正确</string>
 
     <!-- Create gesture activity -->
-    <string name="create_gesture_activity">CreateGestureActivity</string>
     <string name="create_gesture_default">设置新手势密码</string>
     <string name="create_gesture_correct">再次绘制解锁图案</string>
     <string name="create_gesture_less_error">至少连接4个点，请重新输入</string>
@@ -78,31 +38,18 @@
     <string name="create_gesture_confirm_correct">设置成功</string>
     <string name="create_gesture_reset">重新设置</string>
 
-    <string name="error_passwordnotvalid">密码错误</string>
-    <string name="status">待完成</string>
-    <string name="success_status">已完成</string>
-    <string name="default_text">没有存档或已过期</string>
-    <string name="storage1">为了保证您的信息安全,我们默认不会长期存储您的个人信息。过期后我们将安全删除您的全部图片信息。</string>
-    <string name="storage2">有效期会根据您的托管时间设置,从您最后一次修改图片信息的当日起计算,过期自动删除。</string>
-    <!--  userFragment-->
+    <!--  UserFragment-->
+    <string name="My_Integral">我的积分</string>
     <string name="inivte">邀请好友得现金</string>
     <string name="information">申请材料</string>
     <string name="collection">我的收藏</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">关注安稳钱包微信公众号</string>
-    <string name="wechat_dialog">公众号文本已复制到剪切板&#x0A;打开微信号>点击搜索框>粘贴>&#x0A;搜一搜sdzj6699&#x0A;就能关注快捷安全的</string>
+
     <!--inivte_friend-->
     <string name="invite_text">赚钱多多无上限，快来一起薅!</string>
-    <string name="invite_text1"></string>
-
-
     <color name="test">#0000ff</color>
     <string name="inivte_friendstitle">邀请好友得现金</string>
-    <string name="errcode_success">发送成功</string>
-    <string name="errcode_cancel">发送取消</string>
-    <string name="errcode_deny">发送被拒绝</string>
-    <string name="errcode_unsupported">不支持错误</string>
-    <string name="errcode_unknown">发送返回</string>
 
     <string name="ruledesc">1.用户提取金额必须为整数\n2.单笔交易金额不得小于5元\n3.账户点击提现后，该提现金额会被冻结\n4.提现的账户为填写的支付宝账户\n
         5.一旦确认提现，会在三个工作日内完成打款\n6.如因各种原因3个工作日内未完成打款，系统会自动退回提现金额\n7.恶意刷分刷钱的账户会被查封\n8.本活动最终解释权所有归安稳钱包
@@ -110,7 +57,6 @@
     <string name="safe_text1">为了保障您的信息安全，我们默认不会长期存储您的个人资料。</string>
     <string name="safe_text2">过期后我们将安全删除您的全部图片材料及授权资料。</string>
     <string name="safe_text3">有效期会根据您的托管时间设置，从您最后一次修改图及授权材料的当日起计算，更新材料会刷新日期，更新图片会刷新日期，过期自动删除。</string>
-
 
     <!--ImageViewIdentity-->
     <string name="identification_card">1.身份证 (照片清晰完整，不能使用软件编辑)</string>
@@ -122,4 +68,26 @@
     <!--Device-->
     <string name="device_rule">开启账号保护后，会屏蔽微信/网页端登陆,并在不常用的设备上登录时，需要验证你的手机号码。\n</string>
     <string name="dialog_login_device">在非常用设备上登陆\n且使用非注册手机号\n可在&#34;设置-常用设备管理&#34;中调整</string>
+
+   <!-- User_Bank_Fragment-->
+    
+    <string name="DebitBank_Card">银行卡信息</string>
+    <string name="Debit_Id">借记卡卡号</string>
+    <string name="Debit_UserName">持卡人姓名</string>
+    <string name="Debit_Phone">银行绑定手机号</string>
+    <string name="Debit_BankName">所属银行</string>
+
+    <string name="CreditBank_Card">信用卡信息</string>
+    <string name="Or_CreditBank">拥有信用卡</string>
+    <string name="No_Have">没有</string>
+    <string name="Credit_Id">信用卡卡号</string>
+    <string name="Credit_UserName">持卡人姓名</string>
+    <string name="Credit_Phone">银行绑定手机号</string>
+    <string name="Credit_BankName">所属银行</string>
+
+
+   <!--  especial -->
+    <string name="private_key"></string>
+    <string name="public_key"></string>
+
 </resources>

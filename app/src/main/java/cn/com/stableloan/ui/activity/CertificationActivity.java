@@ -280,7 +280,6 @@ public class CertificationActivity extends BaseActivity {
                 };
                 crawlerStatus.type = "taobao";
                 CrawlerManager.getInstance(this.getApplication()).startCrawlerByType(taobaoCallBack, crawlerStatus);
-
                 break;
             case R.id.alipay:
                 String mApiKey = Urls.Api_Id;

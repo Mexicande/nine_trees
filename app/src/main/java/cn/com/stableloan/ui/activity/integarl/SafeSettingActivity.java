@@ -369,7 +369,6 @@ public class SafeSettingActivity extends BaseActivity {
         }
 
 
-        String lock = aCache.getAsString("lock");
 
         if (gesturePassword != null && !"".equals(gesturePassword)) {
             svChangeGesture.setRightString("已设置");
@@ -408,10 +407,8 @@ public class SafeSettingActivity extends BaseActivity {
                                         int i = Integer.parseInt(managed);
                                         svDateTime.setRightString(managedList[i]);
                                     }
-
                                     if (saveBean.getPeriod().length() < 2) {
                                         svDateTime.setLeftBottomString("自动清档时间:无数据");
-                                        svDateTime.setRightString("无数据");
                                     } else {
                                         svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
                                     }
@@ -438,7 +435,6 @@ public class SafeSettingActivity extends BaseActivity {
             @Override
             public void onYesClick() {
                 selfDialog.dismiss();
-                String userphone = (String) SPUtils.get(SafeSettingActivity.this, Urls.lock.USER_PHONE, "1");
                 SPUtils.remove(mContext,Urls.lock.TOKEN);
                 startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
                 finish();

@@ -26,7 +26,7 @@
         android:clickable="true"
         android:padding="4dp"
         android:text="跳过 >"
-        android:textColor="#0dc982"
+        android:textColor="@color/white"
         android:textSize="16sp"/>
     <Button
         android:id="@+id/btn_guide_enter"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/button_shape"
         style="?android:attr/borderlessButtonStyle"
         android:padding="8dp"

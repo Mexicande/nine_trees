@@ -20,11 +20,9 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_OneWeek"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="45dp"
+                android:gravity="center"
                 android:text="1周"
                 android:textColor="@color/blacktext"
                 android:textSize="@dimen/_16sp"/>
@@ -35,11 +33,9 @@
                 />
             <TextView
                 android:id="@+id/tv_OneMonth"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="45dp"
+                android:gravity="center"
                 android:text="1个月"
                 android:textColor="@color/blacktext"
                 android:textSize="@dimen/_16sp"/>
@@ -50,11 +46,9 @@
                 />
             <TextView
                 android:id="@+id/tv_ThreeMonth"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="45dp"
+                android:gravity="center"
                 android:textColor="@color/blacktext"
 
                 android:text="3个月"
@@ -66,11 +60,9 @@
                 />
             <TextView
                 android:id="@+id/tv_SixMonth"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="45dp"
+                android:gravity="center"
                 android:textColor="@color/blacktext"
 
                 android:text="6个月"
@@ -82,11 +74,9 @@
                 />
             <TextView
                 android:id="@+id/tv_forever"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="45dp"
+                android:gravity="center"
                 android:text="永久"
                 android:textColor="@color/blacktext"
                 android:textSize="@dimen/_16sp"/>
@@ -97,12 +87,9 @@
                 />
             <TextView
                 android:id="@+id/bt_cancel"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/blacktext"
-                android:gravity="center_horizontal"
+                android:layout_height="45dp"
+                android:gravity="center"
                 android:text="取消"
                 android:textSize="@dimen/_16sp"/>
         </LinearLayout>

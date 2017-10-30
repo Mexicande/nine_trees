@@ -66,6 +66,9 @@ import cn.com.stableloan.utils.cache.ACache;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * 图片材料上传
+ */
 public class UpImageIdentityActivity extends BaseActivity {
     @Bind(R.id.title_name)
     TextView titleName;
@@ -111,7 +114,6 @@ public class UpImageIdentityActivity extends BaseActivity {
     public static final int LICENSE_CODE = 6;
     public static final int BRAND_PHOTO = 7;
 
-    private ACache aCache;
 
     private Context mContext;
     private int HEIGHT;
@@ -129,12 +131,11 @@ public class UpImageIdentityActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_identity);
         ButterKnife.bind(this);
-        aCache = ACache.get(this);
         EventBus.getDefault().register(this);
         mContext = this;
         initToolbar();
-        getImageDate();
         getToken();
+        getImageDate();
     }
 
     private void getImageDate() {
@@ -195,7 +196,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                                         fillImageView(am_photo, ivIdentityHead, "手持身份证");
                                     }
                                 } else{
-                                    String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
+                                  /*  String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
                                     final TinyDB tinyDB = new TinyDB(getApplicationContext());
                                     UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
                                     String phone = user.getUserphone();
@@ -208,7 +209,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                                     } else {
                                         Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
                                         startActivity(intent);
-                                    }
+                                    }*/
                                 }
                             }else if(imageDataBean.getError_code()==2){
                                 Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
@@ -240,7 +241,7 @@ public class UpImageIdentityActivity extends BaseActivity {
     private void fillImageView(String picturePath, ImageView imageView, String title) {
         if (!picturePath.isEmpty()) {
              options = new RequestOptions()
-                    .centerInside()
+                     .fitCenter()
                     .error(R.mipmap.iv_error_image)
                     .placeholder(R.mipmap.iv_holder_image)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
@@ -368,7 +369,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                     break;
                 case BRAND_PHOTO:
                     selectList = PictureSelector.obtainMultipleResult(data);
-                    upQiNiuPicture(selectList, ivJob, BRAND_PHOTO, "license_photo");
+                    upQiNiuPicture(selectList, ivJob, BRAND_PHOTO, "brand_photo");
                     break;
                 case CREDIT_CODE:
                     selectList = PictureSelector.obtainMultipleResult(data);
@@ -398,6 +399,8 @@ public class UpImageIdentityActivity extends BaseActivity {
         AppApplication.getUploadManager().put(path, null, qiNiuToken, new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
+
+                LogUtils.i("qiNiuToken====",qiNiuToken+"---");
                 if (info.isOK()) {
                     LogUtils.i("response", response.toString());
                     String key1 = null;
@@ -417,7 +420,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                     });
                 } else {
                     RequestOptions options = new RequestOptions()
-                            .centerCrop()
+                            .fitCenter()
                             .error(R.mipmap.iv_error_image)
                             .placeholder(R.mipmap.iv_holder_image)
                             .override(WIDTH, HEIGHT)
@@ -450,14 +453,12 @@ public class UpImageIdentityActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String msg = object.getString("msg");
-                                ToastUtils.showToast(getApplicationContext(), msg);
+                            int error_code = object.getInt("error_code");
+                            String error_message = object.getString("error_message");
+                            if (error_code==0) {
+                                ToastUtils.showToast(getApplicationContext(), "您的营业执照上传成功");
                             } else {
-                                String msg = object.getString("msg");
-                                ToastUtils.showToast(getApplicationContext(), msg);
-
+                                ToastUtils.showToast(getApplicationContext(), error_message);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -509,7 +510,6 @@ public class UpImageIdentityActivity extends BaseActivity {
                 //.videoSecond()//显示多少秒以内的视频or音频也可适用
                 //.recordVideoSecond()//录制视频秒数 默认60s
                 .forResult(potision);//结果回调onActivityResult code
-
     }
 
     private void getToken() {

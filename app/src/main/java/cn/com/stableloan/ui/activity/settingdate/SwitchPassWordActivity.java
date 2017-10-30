@@ -75,7 +75,6 @@ public class SwitchPassWordActivity extends BaseActivity {
 
 
         String gesturePassword = aCache.getAsString(userPhone);
-        String lock = aCache.getAsString("lock");
 
         if (gesturePassword != null && !"".equals(gesturePassword)) {
             stGestureOpen.setSwitchIsChecked(true);

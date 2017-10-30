@@ -237,29 +237,6 @@
     </style>
 
 
-    <style name="information_style">
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginRight">@dimen/_30dp</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:paddingLeft">@dimen/_5dp</item>
-        <item name="android:layout_width">220dp</item>
-        <item name="android:textSize">@dimen/textsize</item>
-        <item name="android:tint">@color/gay</item>
-        <item name="android:textColor">@color/gay</item>
-        <item name="android:layout_height">@dimen/layout_height</item>
-        <item name="android:background">@drawable/editext_normal</item>
-    </style>
-
-
-    <style name="information_text_style">
-        <item name="android:layout_marginRight">@dimen/_10dp</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/textsize</item>
-    </style>
-
-
     <style name="DialogSlideAnimation" parent="android:style/Theme.Dialog">
         <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
         <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>

@@ -31,6 +31,7 @@ import cn.com.stableloan.bean.CodeMessage;
 import cn.com.stableloan.model.DesBean;
 import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.UserInfromBean;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
 import cn.com.stableloan.utils.EncryptUtils;
@@ -99,7 +100,7 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_forgetwd);
         ButterKnife.bind(this);
         Validate.reg(this);
         captchaTimeCount = new CaptchaTimeCount(Constants.Times.MILLIS_IN_TOTAL, Constants.Times.COUNT_DOWN_INTERVAL, btGetCode, this);
@@ -108,7 +109,7 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
 
     private void initToolbar() {
         etConfirmPassword.setVisibility(View.GONE);
-        titleName.setText("忘记密码");
+        titleName.setText(R.string.Forget_PW);
         ivBack.setVisibility(View.VISIBLE);
 
     }
@@ -194,8 +195,13 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
             int random = new Random().nextInt(10000000) + 89999999;
             LogUtils.i("random", random);
             Deskey = Des4.encode(object.toString(), String.valueOf(random));
-            deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY);
-            sign = RSA.sign(deskey, Urls.PRIVATE_KEY);
+            String public_key = getResources().getString(R.string.public_key);
+
+            deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY+public_key);
+
+            String private_key = getResources().getString(R.string.private_key);
+
+            sign = RSA.sign(deskey, Urls.PRIVATE_KEY+private_key);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,15 +225,24 @@ public class ForgetWordActivity extends BaseActivity implements IValidateResult 
                         hud.dismiss();
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
                         if(infromBean.getError_code()==0){
-                            ToastUtils.showToast(ForgetWordActivity.this, "设置成功");
+                            ToastUtils.showToast(ForgetWordActivity.this,"设置成功");
+                            boolean contains = ActivityStackManager.getInstance().isContains(Verify_PasswordActivity.class);
+                            String from = getIntent().getStringExtra("from");
+                            if(from==null){
+                                if(contains){
+                                    ActivityStackManager.getInstance().popActivity(Verify_PasswordActivity.class);
+                                }
+                                ToastUtils.showToast(ForgetWordActivity.this,"设置成功,请从新登录");
+                                LoginActivity.launch(ForgetWordActivity.this);
+                            }else {
+                                ToastUtils.showToast(ForgetWordActivity.this,"设置成功");
+                            }
                             finish();
+
                         }else {
                             ToastUtils.showToast(ForgetWordActivity.this, infromBean.getError_message());
-
                         }
-
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

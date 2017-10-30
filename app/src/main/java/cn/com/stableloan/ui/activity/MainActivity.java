@@ -311,9 +311,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
 
     }
-
     private ProductFragment selectedFragment;
-
     @Override
     public void setSelectedFragment(ProductFragment backHandledFragment) {
         this.selectedFragment = backHandledFragment;

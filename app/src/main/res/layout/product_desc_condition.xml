@@ -28,7 +28,6 @@
                     android:background="@color/colorStatus"
                     android:layout_height="20dp"/>
                 <TextView
-                    android:id="@+id/tv_titleName"
                     android:layout_marginLeft="3dp"
                     android:textSize="17sp"
                     android:layout_gravity="center_vertical"

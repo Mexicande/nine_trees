@@ -58,7 +58,6 @@
                            android:text=""/>
                </RelativeLayout>
                <ImageView
-                   android:id="@+id/right_arrow"
                    android:layout_marginRight="@dimen/_10dp"
                    android:layout_centerVertical="true"
                    android:layout_alignParentRight="true"

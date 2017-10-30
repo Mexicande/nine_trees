@@ -147,8 +147,11 @@ public class SettingPassWordActivity extends AppCompatActivity {
                         int random = new Random().nextInt(10000000) + 89999999;
                         LogUtils.i("random", random);
                         Deskey = Des4.encode(object.toString(), String.valueOf(random));
-                        deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY);
-                        sign = RSA.sign(deskey, Urls.PRIVATE_KEY);
+                        String public_key = getResources().getString(R.string.public_key);
+
+                        deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY+public_key);
+                        String private_key = getResources().getString(R.string.private_key);
+                        sign = RSA.sign(deskey, Urls.PRIVATE_KEY+private_key);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -465,8 +465,11 @@ public class LoginFragment extends Fragment {
             int random = new Random().nextInt(10000000) + 89999999;
             LogUtils.i("random", random);
             Deskey = Des4.encode(object.toString(), String.valueOf(random));
-            deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY);
-            sign = RSA.sign(deskey, Urls.PRIVATE_KEY);
+            String public_key = getResources().getString(R.string.public_key);
+
+            deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY+public_key);
+            String private_key = getResources().getString(R.string.private_key);
+            sign = RSA.sign(deskey, Urls.PRIVATE_KEY+private_key);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -484,8 +487,6 @@ public class LoginFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("login", s);
-
                         hud.dismiss();
                         UserInfromBean infromBean = gson.fromJson(s, UserInfromBean.class);
                         if (infromBean.getError_code() == 0) {
@@ -498,7 +499,6 @@ public class LoginFragment extends Fragment {
                             SPUtils.put(getActivity(), Urls.lock.USER_PHONE, infromBean.getData().getUserphone());
                             userBean.setIdentity(infromBean.getData().getIdentity());
                             EventBus.getDefault().post(new UserEvent(infromBean));
-                            //  EventBus.getDefault().post(new MessageEvent(userBean.getNickname(), userBean.getUserphone()));
                             TinyDB tinyDB = new TinyDB(getActivity());
                             tinyDB.putObject(infromBean.getData().getUserphone(), userBean);
                             String from = getActivity().getIntent().getStringExtra("from");
@@ -511,7 +511,6 @@ public class LoginFragment extends Fragment {
                                     getActivity().setResult(Flag_User, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
                                 } else if (from.equals("123")) {
-                                    //EventBus.getDefault().post(new InformationEvent("user2"));
                                     getActivity().setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
                                     getActivity().finish();
                                 } else if (from.equals("user1")) {
@@ -630,10 +629,10 @@ public class LoginFragment extends Fragment {
         switch (view.getId()) {
             case R.id.tv_messagelogin:
                 mCallback.showProByName(1);
-                //LoginActivity.viewPager.setCurrentItem(0);
                 break;
             case R.id.tv_forgetPassWord:
-                ForgetWordActivity.launch(getActivity());
+                startActivity(new Intent(getActivity(),ForgetWordActivity.class).putExtra("from","login"));
+                //ForgetWordActivity.launch(getActivity());
                 break;
             case R.id.bt_login:
                 if (Atest) {

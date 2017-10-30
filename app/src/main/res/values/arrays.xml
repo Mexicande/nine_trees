@@ -4,12 +4,6 @@
         <item>未婚</item>
         <item>已婚</item>
     </string-array>
-    <string-array name="income">
-        <item>3000以下</item>
-        <item>3001-5000</item>
-        <item>5001-8000</item>
-        <item>8001以上</item>
-    </string-array>
 
     <string-array name="between">
         <item>朋友同事</item>
@@ -23,22 +17,14 @@
         <item>1-3年</item>
         <item>3年以上</item>
     </string-array>
-    
-    
-    <string-array name="pass_change">
-        <item>手势解锁</item>
-        <item>密码解锁</item>
-    </string-array>
+
+
     <string-array name="times">
         <item>1周</item>
         <item>1个月</item>
         <item>3个月</item>
         <item>6个月</item>
         <item>永久</item>
-    </string-array>
-
-    <string-array name="cash_way">
-        <item>转至支付宝/n15600575837@163.com</item>
     </string-array>
 
     <string-array name="home_money">

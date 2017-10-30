@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/identification_card"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginLeft="@dimen/_10dp"
@@ -41,7 +40,7 @@
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:src="@mipmap/iv_identity_up"/>
                 <ImageView
                     android:id="@+id/iv_IdentityDown"
@@ -55,8 +54,7 @@
                     android:id="@+id/iv_IdentityHead"
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
-                    android:scaleType="centerCrop"
-
+                    android:scaleType="fitXY"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_identity_head"/>
             </LinearLayout>
@@ -81,7 +79,7 @@
                 <ImageView
                     android:id="@+id/iv_business"
                     android:layout_marginLeft="@dimen/_20dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -110,7 +108,7 @@
                     android:id="@+id/iv_job"
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_width="wrap_content"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
 
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_job"/>
@@ -136,7 +134,7 @@
                 <ImageView
                     android:id="@+id/iv_debit"
                     android:layout_marginLeft="@dimen/_20dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -163,7 +161,7 @@
                 <ImageView
                     android:id="@+id/iv_credit"
                     android:layout_marginLeft="@dimen/_20dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/iv_credit"/>

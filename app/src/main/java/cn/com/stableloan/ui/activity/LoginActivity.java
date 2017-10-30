@@ -55,8 +55,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     private static final String[] CHANNELS = new String[]{"短信快捷登录", "账号登录"};
     @Bind(R.id.back)
     ImageView back;
-    /* @Bind(R.id.view_pager)
-     ViewPager viewPager;*/
     public static CommonNavigator commonNavigator ;
    private MagicIndicator loginMagicindicator;
     private FragmentManager mFragmentManager;
@@ -69,10 +67,7 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     private final int LOTTERY_CODE = 500;
     private List<String> mDataList = Arrays.asList(CHANNELS);
 
-    private MyViewPagerAdapter myViewPagerAdapter;
     private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
-
-    private String MessageCode = null;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -115,12 +110,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
 
     private void initFragments() {
         loginMagicindicator= (MagicIndicator) findViewById(R.id.login_magicindicator);
-     /*   viewPager = (ViewPager) findViewById(R.id.login_Viewpager);
-        List<Fragment> list = new ArrayList<>();
-        list.add(new MessageFragment());
-        list.add(new LoginFragment());
-        myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), list);
-        viewPager.setAdapter(myViewPagerAdapter);*/
         commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -141,7 +130,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       // viewPager.setCurrentItem(i);
                         switchMenu(getFragmentName(i+1));
                         LogUtils.i("LogUtils----",i);
 
@@ -165,27 +153,12 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         });
         loginMagicindicator.setNavigator(commonNavigator);
         LinearLayout titleContainer = commonNavigator.getTitleContainer();
-        // must after setNavigator
         titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
         titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
 
-       /* titleContainer.setDividerDrawable(new ColorDrawable() {
-            @Override
-            public int getIntrinsicWidth() {
-                return UIUtil.dip2px(LoginActivity.this, 5);
-            }
-        });*/
-
-        //final FragmentContainerHelper fragmentContainerHelper = new FragmentContainerHelper(loginMagicindicator);
         mFragmentContainerHelper.setInterpolator(new OvershootInterpolator(1.0f));
         mFragmentContainerHelper.setDuration(300);
-       /* viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                mFragmentContainerHelper.handlePageSelected(position);
-            }
-        });*/
     }
 
     private void initView() {
@@ -193,16 +166,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         mFragmentManager = getSupportFragmentManager();
 
         mFragmentManager.beginTransaction().add(R.id.fragment, mCurrentFragment).commitAllowingStateLoss();
-
-       /* changePhone.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        changePhone.getPaint().setAntiAlias(true);
-        assert switchmultibutton != null;
-        switchmultibutton.setText(CHANNELS).setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
-            @Override
-            public void onSwitch(int position, String tabText) {
-
-            }
-        });*/
 
 
     }
@@ -244,9 +207,7 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //返回事件
             String message = getIntent().getStringExtra("message");
-
             String from = getIntent().getStringExtra("from");
             if (from != null) {
                 if (from.equals("user")) {
@@ -259,7 +220,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 } else if (from.equals("user1")) {
                     UserBean userBean = new UserBean();
                     setResult(4000, new Intent().putExtra("user", userBean));
-                    // EventBus.getDefault().post(new InformationEvent("user1"));
                     finish();
                 } else if (from.equals("user2")) {
                     EventBus.getDefault().post(new InformationEvent("user2"));
@@ -296,19 +256,15 @@ public class LoginActivity extends BaseActivity implements Touch_login {
             } else if (from.equals("user1")) {
                 UserBean userBean = new UserBean();
                 setResult(4000, new Intent().putExtra("user", userBean));
-                //EventBus.getDefault().post(new InformationEvent("user1"));
                 finish();
             } else if (from.equals("user2")) {
                 EventBus.getDefault().post(new InformationEvent("user2"));
                 finish();
             }else {
                 if(message!=null){
-                   /* ActivityStackManager.getInstance().popAllActivity();
-                    MainActivity.launch(this);*/
                     ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
                     MainActivity.launch(this);
                     finish();
-
                 }else {
                     finish();
                 }

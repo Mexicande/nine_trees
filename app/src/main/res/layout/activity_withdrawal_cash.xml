@@ -102,7 +102,6 @@
                                 android:src="@drawable/cash_open"/>
                         </RelativeLayout>
                         <TextView
-                            android:id="@+id/tv_visiable"
                             android:layout_below="@id/address"
                             android:layout_marginLeft="@dimen/_10dp"
                             android:layout_marginTop="@dimen/_10dp"

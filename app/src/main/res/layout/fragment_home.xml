@@ -42,7 +42,6 @@
                     android:text="我要多少钱？"
                     />
                 <ImageView
-                    android:id="@+id/iv_arrow"
                     android:layout_marginRight="@dimen/_20dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"

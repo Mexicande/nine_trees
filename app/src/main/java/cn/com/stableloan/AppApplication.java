@@ -39,7 +39,6 @@ import static com.tencent.bugly.beta.tinker.TinkerManager.getApplication;
 public class AppApplication extends Application {
     //dao
 
-    public static String today ;
 
     private static AppApplication instance;
 
@@ -149,13 +148,13 @@ public class AppApplication extends Application {
     private static List<Activity> myActivity = new ArrayList<>();
     private static Map<String,Activity> destoryMap = new HashMap<>();
     public void addToList(Activity activity){
-
         myActivity.add(activity);
-
     }
+
     public static void addDestoryActivity(Activity activity,String activityName) {
         destoryMap.put(activityName,activity);
     }
+
     /**
      *销毁指定Activity
      */
@@ -168,7 +167,6 @@ public class AppApplication extends Application {
             }
         }
     }
-
 
     @Override
     public void onTerminate() {

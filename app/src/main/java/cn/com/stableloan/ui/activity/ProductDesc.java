@@ -82,7 +82,6 @@ public class ProductDesc extends BaseActivity {
     ImageView ivBack;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
     @Bind(R.id.review)
     TextView review;
     @Bind(R.id.arrive)
@@ -274,7 +273,6 @@ public class ProductDesc extends BaseActivity {
 
             String valueOf = String.valueOf(zeroRate);
 
-
             zeroAlgorithm.setText(valueOf + "元");
 
 
@@ -405,8 +403,14 @@ public class ProductDesc extends BaseActivity {
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(this).load(product.getProduct_logo()).apply(options)
                 .into(productLogo);
-        Glide.with(this).load(product.getAd_image())
-                .apply(options).into(descAdvertising);
+        if(product.getAd_image()!=null&&!product.getAd_image().isEmpty()){
+            descAdvertising.setVisibility(View.VISIBLE);
+            Glide.with(this).load(product.getAd_image())
+                    .apply(options).into(descAdvertising);
+        }else {
+            descAdvertising.setVisibility(View.GONE);
+        }
+
         if(product.getActivity()==1){
             ivHots.setVisibility(View.VISIBLE);
         }else {
@@ -416,7 +420,7 @@ public class ProductDesc extends BaseActivity {
             ivNews.setVisibility(View.VISIBLE);
         }else {
             ivNews.setVisibility(View.GONE);
-        }        //averageTime.setText(product.getAverage_time());
+        }
         tvPname.setText(product.getPname());
         productIntroduction.setText(product.getProduct_introduction());
         String minAl = product.getMin_algorithm();
@@ -460,9 +464,8 @@ public class ProductDesc extends BaseActivity {
             substringmax = maximum_amount;
         }
 
-
-        etMaxLimit.setText(maximum_amount);
-        etMaxTime.setText(product.getMax_cycle());
+        etMaxLimit.setText(minimum_amount);
+        etMaxTime.setText(product.getMin_cycle());
         tvPlatform.setText(product.getPlatformdetail().getPl_name());
         if (product.getActual_account() != null && !product.getActual_account().isEmpty()) {
             setTextViewColor(arrive, "到账方式: " + product.getActual_account());

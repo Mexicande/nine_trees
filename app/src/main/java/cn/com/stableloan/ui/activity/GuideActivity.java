@@ -63,7 +63,7 @@ public class GuideActivity extends AppCompatActivity {
     }
     private void processLogic() {
         // 设置数据源
-        bannerGuideBackground.setData(R.mipmap.lod_01, R.mipmap.lod_02, R.mipmap.lod_03);
+        bannerGuideBackground.setData(R.mipmap.lod_01, R.mipmap.lod_02, R.mipmap.lod_03, R.mipmap.lod_04, R.mipmap.lod_05);
 
     }
 

@@ -193,10 +193,8 @@ public class Camera2Activity extends AutoLayoutActivity {
      * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
      */
     CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
-
         @Override
         public void onOpened(@NonNull CameraDevice cameraDevice) {
-            // This method is called when the camera is opened.  We start camera preview here.
             mCameraOpenCloseLock.release();
             mCameraDevice = cameraDevice;
             createCameraPreviewSession();

@@ -413,10 +413,6 @@ public class ProductFragment extends ImmersionFragment {
                 break;
             case R.id.button:
                 slideUp.hide();
-                Set<Integer> selectedList = idFlowlayout.getSelectedList();
-                Set<Integer> selectedList1 = tagFlowlayout.getSelectedList();
-             /*   if (selectedList.size() > 0 || selectedList1.size() > 0) {
-                }*/
                 selectProduct(null,0);
                 break;
             case R.id.layoutGo:

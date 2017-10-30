@@ -163,11 +163,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     mSeckill_layout.setVisibility(View.VISIBLE);
                                     mCountdownView.start(time12);
                                     countdownhour.setTime(time12);
-
-
                                     //mCountdownView.updateShow(time12);
                                     // 总时间
                                     // 初始化并启动倒计时
+                                }else {
+                                    mSeckill_layout.setVisibility(View.GONE);
                                 }
                                 switch (seckillBean.getData().size()) {
                                     case 1:
@@ -176,8 +176,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         RequestOptions options = new RequestOptions()
                                                 .centerCrop()
                                                 .dontAnimate()
-                                                .placeholder(R.mipmap.logo)
-                                                .error(R.mipmap.logo)
                                                 .diskCacheStrategy(DiskCacheStrategy.ALL);
                                         Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(product_logo);
                                         tv_amout.setText("最高" + dataBean.getAmount() + "元");
@@ -252,7 +250,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             advList.add(adInfo);
             AdManager adManager = new AdManager(getActivity(), advList);
             adManager.setOverScreen(true)
-                    .setWidthPerHeight(0.9f)
+                    .setWidthPerHeight(1)
                     .setPageTransformer(new DepthPageTransformer());
             adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
 
@@ -418,7 +416,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         .into(itemView);
             }
         });
-
 
         banner.setDelegate(new BGABanner.Delegate<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override

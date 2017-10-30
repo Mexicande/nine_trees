@@ -80,15 +80,10 @@ public class UserFragment extends ImmersionFragment {
     @Bind(R.id.bt_Money)
     TextView btMoney;
 
-    private ACache aCache;
-    private String userPhone="";
-
-    private String nick;
     private Wechat_dialog wechat_dialog;
     public UserFragment() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,7 +93,6 @@ public class UserFragment extends ImmersionFragment {
         ButterKnife.bind(this, view);
 
         EventBus.getDefault().register(this);
-        aCache = ACache.get(getActivity());
         return view;
     }
  /*   @Override
@@ -151,7 +145,6 @@ public class UserFragment extends ImmersionFragment {
                                     tvNick.setText(personal.getData().getNickname());
                                     tvIntegral.setText(personal.getData().getCredits());
                                     btMoney.setText(personal.getData().getTotal());
-                                    userPhone=personal.getData().getUserphone();
                                 }else if(personal.getError_code()==2){
                                     Intent intent=new Intent(getActivity(),LoginActivity.class);
                                     intent.putExtra("message",personal.getError_message());

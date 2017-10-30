@@ -75,7 +75,6 @@ public class SimpleCountDownTimer extends CountDownTimer {
         long lHr = millisUntilFinished / hr;
         long lMin = (millisUntilFinished - lHr * hr) / min;
         long lSec = (millisUntilFinished - lHr * hr - lMin * min) / sec;
-        long lMs = millisUntilFinished - lHr * hr - lMin * min - lSec * sec;
         String strLMs = getMs(millisUntilFinished);
 
    /*     String time=lHr+":"+lMin+":"+lSec+":"+strLMs;

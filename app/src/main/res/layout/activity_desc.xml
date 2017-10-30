@@ -30,7 +30,6 @@
                 <include layout="@layout/product_desc_condition"
                     />
                 <RelativeLayout
-                    android:id="@+id/layout_platform"
                     android:layout_marginTop="10dp"
                     android:paddingTop="@dimen/_10dp"
                     android:paddingBottom="@dimen/_10dp"

@@ -68,7 +68,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_liven"
                     android:layout_marginRight="@dimen/_30dp"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/_5dp"
@@ -101,7 +100,7 @@
                     android:paddingRight="@dimen/_10dp"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/_14sp"
                     android:layout_height="wrap_content" />
                 <ImageView
                     android:layout_marginBottom="@dimen/_10dp"

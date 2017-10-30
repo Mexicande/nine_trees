@@ -11,22 +11,16 @@
    <!-- 产品list-->
     <color name="white">#FFFFFF</color>
     <color name="product_name_color">#2d2d2d</color>
-    <color name="product_desc_color">#a4aaba</color>
     <color name="product_limit">#999999</color>
     <color name="select_text_color">#333333</color>
-    <color name="strawberry">#fd2021</color>
-    <color name="product_desc">#e51a26</color>
     <!--登陆页面-->
-    <color name="LoginNormalText">#fb5a5b</color>
     <color name="Normal_Button">#EF9A9A</color>
     <color name="gay">#999999</color>
     <color name="line_color">#eeeeee</color>
     <color name="mask">#88000000</color>
 
     <color name="diver">#F3F2F8</color>
-    <color name="background">#f2f3f5</color>
     <color name="seekbardefault">#edecec</color>
-    <color name="gray_light">#dcdcdc</color>
     <color name="pinkishgrey">#cccccc</color>
     <color name="frame_color">#CCCCCC</color>
     <color name="kprogresshud_default_color">#b1000000</color>
@@ -45,14 +39,10 @@
 
     <color name="window_background">#FFF5F5F5</color>
 
-    <color name="pic_textColor">#A0A1A2</color>
-        
-    
+
     <color name="text_setting">#666666</color>
 
-    <color name="login_button">#4e80c2</color>
     <color name="mc">#c8ccd1</color>
-    <color name="tag_backgroud">#7ECEF4</color>
     <color name="tag_textcolor">#666666</color>
 
 
@@ -60,15 +50,12 @@
 
     <color name="inivte_textcolor">#8D8D8D</color>
     <color name="integral">#F3F2F8</color>
-    <color name="cash_toolbar">#F9C039</color>
-    <color name="invitebackground">#FFAE2D</color>
     <color name="invite_friend">#FFEFBD</color>
 
     <!--lock-->
     <color name="grey_b2b2b2">#B2B2B2</color>
     <color name="blue_78d2f6">#78D2F6</color>
     <color name="blue_01aaee">#01AAEE</color>
-    <color name="blue_00aaee">#00AAEE</color>
     <color name="red_f3323b">#F3323B</color>
     <color name="common_pressed">#20000000</color>  <!--白色背景按下去的颜色-->
     <color name="line">#e8e8e8</color>

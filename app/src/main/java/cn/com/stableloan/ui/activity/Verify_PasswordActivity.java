@@ -161,7 +161,7 @@ public class Verify_PasswordActivity extends BaseActivity {
                 VerifyPassWord();
                 break;
             case R.id.tv_forgetPW:
-                startActivity(new Intent(Verify_PasswordActivity.this, ForgetWordActivity.class).putExtra("from", "Verify_PasswordActivity"));
+                ForgetWordActivity.launch(this);
                 break;
         }
     }

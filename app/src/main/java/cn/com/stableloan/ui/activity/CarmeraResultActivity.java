@@ -238,15 +238,19 @@ public class CarmeraResultActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             String s = (String) msg.obj;
             CarmeraResultActivity activity = mWeakReference.get();
-            String token = (String) SPUtils.get(activity, "token", "1");
-            if (activity != null) {
-                switch (msg.what) {
-                    case 1:
-                        UpLoadImage(activity, token, s, "0", positive_photo);
-                        break;
-
+            String token = (String) SPUtils.get(activity, Urls.TOKEN, "1");
+            if(token!=null){
+                if (activity != null) {
+                    switch (msg.what) {
+                        case 1:
+                            UpLoadImage(activity, token, s, "0", positive_photo);
+                            break;
+                    }
                 }
+            }else {
+                ToastUtils.showToast(activity,"账号异常请重新登陆");
             }
+
         }
 
 

@@ -79,7 +79,6 @@ public class CenterDrawable extends Drawable {
     @Override
     public void draw(Canvas canvas) {
         int x = getBounds().left + 20;
-        int y = getBounds().top;
         //画背景
         canvas.drawPath(path, paintShadow);
 

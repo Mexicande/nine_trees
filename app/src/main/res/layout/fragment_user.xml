@@ -104,7 +104,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="我的积分"
+                    android:text="@string/My_Integral"
                     />
             </LinearLayout>
 
@@ -134,7 +134,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="我的现金"
+                    android:text="@string/My_Integral"
                     android:textColor="@color/text_setting"
                     />
 
