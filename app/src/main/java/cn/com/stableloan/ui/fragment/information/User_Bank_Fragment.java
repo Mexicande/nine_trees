@@ -169,7 +169,7 @@ public class User_Bank_Fragment extends Fragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息第二页", eventObject);
 
         pvTime = new TimePickerView.Builder(getActivity(), new TimePickerView.OnTimeSelectListener() {
             @Override

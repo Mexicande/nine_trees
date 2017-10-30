@@ -366,7 +366,7 @@ public class ProductDesc extends BaseActivity {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(this, "产品详情贷款", eventObject);
+        ZhugeSDK.getInstance().track(this, "产品详情页", eventObject);
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
 
@@ -563,8 +563,6 @@ public class ProductDesc extends BaseActivity {
                                     startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                                 }else {
                                     showApplyDialog();
-
-
                                 }
 
                                 break;

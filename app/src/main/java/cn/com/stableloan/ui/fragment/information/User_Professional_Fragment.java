@@ -145,7 +145,7 @@ public class User_Professional_Fragment extends Fragment {
             e.printStackTrace();
         }
         //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息第三页", eventObject);
 
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");

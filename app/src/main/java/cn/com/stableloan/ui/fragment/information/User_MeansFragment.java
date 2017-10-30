@@ -179,7 +179,7 @@ public class User_MeansFragment extends Fragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "身份信息第一页", eventObject);
 
         etCity.setFocusableInTouchMode(false);
         etCity.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {

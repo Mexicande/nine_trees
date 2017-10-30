@@ -21,6 +21,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -130,6 +131,14 @@ public class ProductClassifyActivity extends BaseActivity {
                                                     if ("1".equals(token)||token == null) {
                                                         startActivity(new Intent(mContext, LoginActivity.class).putExtra("ProductClassifyActivity", classBean.getData().getMdse().get(position)));
                                                     } else {
+                                                        JSONObject eventObject = new JSONObject();
+                                                        try {
+                                                            eventObject.put("persmaterials2", "");
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+//记录事件
+                                                        ZhugeSDK.getInstance().track(ProductClassifyActivity.this, "专题详情页--商品+"+classBean.getData().getMdse().get(position).getMdse_name(), eventObject);
                                                         startActivity(new Intent(ProductClassifyActivity.this, HtmlActivity.class).putExtra("class", classBean.getData().getMdse().get(position)));
                                                     }
 
@@ -170,7 +179,20 @@ public class ProductClassifyActivity extends BaseActivity {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 // ProductDesc.launch(getActivity());
+                JSONObject eventObject = new JSONObject();
+                try {
+                    eventObject.put("persmaterials2", "");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//记录事件
+                ZhugeSDK.getInstance().track(ProductClassifyActivity.this, "专题详情页--产品+"+classBean.getData().getProduct().get(position).getPname(), eventObject);
+
+
                 startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", classBean.getData().getProduct().get(position).getId()));
+
+
+
 
               /*  String token = (String) SPUtils.get(mContext, Urls.lock.TOKEN, "1");
                 if ("1".equals(token)||token == null) {

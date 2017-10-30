@@ -123,7 +123,7 @@ public class UserFragment extends ImmersionFragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "minepage", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "我的", eventObject);
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {

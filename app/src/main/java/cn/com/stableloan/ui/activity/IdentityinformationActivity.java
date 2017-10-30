@@ -224,7 +224,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         switch (view.getId()) {
             case R.id.layoutGo:
                 slideUp.hide();
-
                 break;
             case R.id.tv_Company:
                 EventBus.getDefault().post(new ProfessionalSelectEvent(COMPANY));

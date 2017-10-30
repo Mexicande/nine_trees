@@ -138,7 +138,7 @@ public class ProductFragment extends ImmersionFragment {
             e.printStackTrace();
         }
         //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "loanpage", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "产品列表", eventObject);
         EventBus.getDefault().register(this);
 
         return view;

@@ -105,7 +105,7 @@ public class LotteryFragment extends ImmersionFragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "popuppage", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "福利", eventObject);
 
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override

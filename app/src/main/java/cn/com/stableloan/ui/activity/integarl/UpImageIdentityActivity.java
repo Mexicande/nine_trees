@@ -32,6 +32,7 @@ import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadOptions;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -266,7 +267,17 @@ public class UpImageIdentityActivity extends BaseActivity {
 
     private void initToolbar() {
 
-         options = new RequestOptions()
+        JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("persmaterials2", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//记录事件
+        ZhugeSDK.getInstance().track(this, "图片材料页", eventObject);
+
+
+        options = new RequestOptions()
                 .centerCrop()
                 .error(R.mipmap.iv_error_image)
                 .placeholder(R.mipmap.iv_holder_image)

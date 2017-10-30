@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "homepage", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "首页", eventObject);
 
         getDate();
         setListener();
@@ -184,6 +184,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         mCardView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                JSONObject eventObject = new JSONObject();
+                                                try {
+                                                    eventObject.put("miaosha", "");
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                ZhugeSDK.getInstance().track(getActivity(), "安稳秒杀--第1款产品点击", eventObject);
                                                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(0).getProduct_id()));
                                             }
                                         });
@@ -327,7 +335,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                ZhugeSDK.getInstance().track(getActivity(), "新上线产品", eventObject);
+                ZhugeSDK.getInstance().track(getActivity(), "热门推荐--"+productAdapter.getData().get(position).getPname(), eventObject);
 
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
@@ -345,7 +353,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ZhugeSDK.getInstance().track(getActivity(), "分类专题", eventObject);
+                    ZhugeSDK.getInstance().track(getActivity(), "分类专题--专题"+position, eventObject);
                     startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", specialClassBean.getData().get(position)));
                 }
             }
@@ -441,7 +449,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                ZhugeSDK.getInstance().track(getActivity(), "rementuijian", eventObject);
+                ZhugeSDK.getInstance().track(getActivity(), "安稳秒杀--第"+position+"款产品点击", eventObject);
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getProduct_id()));
             }
         });
@@ -583,12 +591,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         JSONObject eventObject = new JSONObject();
+        try {
+            eventObject.put("职业", professional);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         switch (v.getId()) {
             case R.id.iv_free:
+                ZhugeSDK.getInstance().track(getActivity(), "职业搜索-逍遥客", eventObject);
                 professional = "xiaoyaoke";
                 EventBus.getDefault().post(new IdentityProduct(3,100));
                 MainActivity.navigationController.setSelect(1);
+
                 break;
            /* case R.id.iv_other:
                 professional = "xueshengdang";
@@ -597,24 +612,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 break;*/
             case R.id.iv_work:
                 professional = "shangbanzu";
+                ZhugeSDK.getInstance().track(getActivity(), "职业搜索-上班族", eventObject);
                 EventBus.getDefault().post(new IdentityProduct(1,100));
                 MainActivity.navigationController.setSelect(1);
+
                 break;
             case R.id.bussiones:
                 professional = "qiyezhu";
+                ZhugeSDK.getInstance().track(getActivity(), "职业搜索-企业主", eventObject);
                 EventBus.getDefault().post(new IdentityProduct(4,100));
                 MainActivity.navigationController.setSelect(1);
+
                 break;
 
 
         }
-        try {
-            eventObject.put("职业", professional);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "职业搜索", eventObject);
 
     }
 
