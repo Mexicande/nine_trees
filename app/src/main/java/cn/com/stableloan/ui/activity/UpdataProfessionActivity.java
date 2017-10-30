@@ -64,10 +64,7 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
     ImageView ivFree;
     @Bind(R.id.tick_free)
     ImageView tickFree;
-    @Bind(R.id.iv_student)
-    ImageView ivStudent;
-    @Bind(R.id.tick_student)
-    ImageView tickStudent;
+
     @Bind(R.id.iv_company)
     ImageView ivCompany;
     @Bind(R.id.tick_company)
@@ -132,10 +129,10 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                                         ivFree.setColorFilter(getResources().getColor(R.color.mask));
                                         tickFree.setVisibility(View.VISIBLE);
                                         break;
-                                    case 2:
+                                /*    case 2:
                                         ivStudent.setColorFilter(getResources().getColor(R.color.mask));
                                         tickStudent.setVisibility(View.VISIBLE);
-                                        break;
+                                        break;*/
                                     case 3:
                                         ivCompany.setColorFilter(getResources().getColor(R.color.mask));
                                         tickCompany.setVisibility(View.VISIBLE);
@@ -170,7 +167,7 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
 
     }
 
-    @OnClick({R.id.iv_work, R.id.iv_free, R.id.iv_student, R.id.iv_company, R.id.iv_back,R.id.bt_Save})
+    @OnClick({R.id.iv_work, R.id.iv_free, R.id.iv_company, R.id.iv_back,R.id.bt_Save})
     public void onViewClicked(View view) {
         SettingProfession();
         SettingTick();
@@ -185,11 +182,11 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                 tickFree.setVisibility(View.VISIBLE);
                 Flge=4;
                 break;
-            case R.id.iv_student:
+           /* case R.id.iv_student:
                 ivStudent.setColorFilter(getResources().getColor(R.color.mask));
                 tickStudent.setVisibility(View.VISIBLE);
                 Flge=2;
-                break;
+                break;*/
             case R.id.iv_company:
                 ivCompany.setColorFilter(getResources().getColor(R.color.mask));
                 tickCompany.setVisibility(View.VISIBLE);
@@ -279,7 +276,7 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
         tick.setVisibility(View.GONE);
         tickCompany.setVisibility(View.GONE);
         tickFree.setVisibility(View.GONE);
-        tickStudent.setVisibility(View.GONE);
+       // tickStudent.setVisibility(View.GONE);
     }
 
     /**
@@ -288,7 +285,7 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
     private void SettingProfession() {
         ivWork.setColorFilter(null);
         ivFree.setColorFilter(null);
-        ivStudent.setColorFilter(null);
+       // ivStudent.setColorFilter(null);
         ivCompany.setColorFilter(null);
     }
 

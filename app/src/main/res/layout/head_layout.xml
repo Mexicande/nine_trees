@@ -41,7 +41,7 @@
                             android:textColor="@color/select_text_color"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:text=" 放款审核快"/>
                     </RelativeLayout>
 
@@ -57,7 +57,7 @@
                             android:drawableLeft="@mipmap/iv_hook"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/select_text_color"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="甄选品质产品"/>
@@ -73,8 +73,9 @@
                             android:drawablePadding="3dp"
                             android:layout_centerHorizontal="true"
                             android:drawableLeft="@mipmap/iv_hook"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:maxLines="1"
+                            android:gravity="center_vertical"
                             android:textColor="@color/select_text_color"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -129,11 +130,12 @@
                     <ImageView
                         android:layout_centerHorizontal="true"
                         android:id="@+id/iv_free"
+                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/iv_free_identity"/>
                 </RelativeLayout>
-                <RelativeLayout
+              <!--  <RelativeLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
@@ -143,7 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/iv_other_identity"/>
-                </RelativeLayout>
+                </RelativeLayout>-->
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

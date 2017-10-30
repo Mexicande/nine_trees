@@ -459,12 +459,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // 职业选择
         iv_free = (ImageView) view.findViewById(R.id.iv_free);
         iv_work = (ImageView) view.findViewById(R.id.iv_work);
-        iv_student = (ImageView) view.findViewById(R.id.iv_other);
+        //iv_student = (ImageView) view.findViewById(R.id.iv_other);
         iv_enterprise = (ImageView) view.findViewById(R.id.bussiones);
 
         iv_free.setOnClickListener(this);
         iv_work.setOnClickListener(this);
-        iv_student.setOnClickListener(this);
+        //iv_student.setOnClickListener(this);
         iv_enterprise.setOnClickListener(this);
         return view;
     }
@@ -590,11 +590,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 EventBus.getDefault().post(new IdentityProduct(3,100));
                 MainActivity.navigationController.setSelect(1);
                 break;
-            case R.id.iv_other:
+           /* case R.id.iv_other:
                 professional = "xueshengdang";
                 EventBus.getDefault().post(new IdentityProduct(2,100));
                 MainActivity.navigationController.setSelect(1);
-                break;
+                break;*/
             case R.id.iv_work:
                 professional = "shangbanzu";
                 EventBus.getDefault().post(new IdentityProduct(1,100));

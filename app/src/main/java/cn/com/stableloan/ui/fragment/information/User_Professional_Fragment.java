@@ -368,11 +368,11 @@ public class User_Professional_Fragment extends Fragment {
     public void updateEvent(ProfessionalSelectEvent msg) {
         int message = msg.message;
         switch (message) {
-            case STUDENT:
+            /*case STUDENT:
                 title.setText("其他");
                 setVisibilityProfession(layoutStudent);
                 id = STUDENT;
-                break;
+                break;*/
             case COMPANY:
                 title.setText("上班族");
                 setVisibilityProfession(layoutCompany);

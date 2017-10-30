@@ -97,48 +97,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
     }
 
-    private void getDate() {
-        Map<String, String> parms = new HashMap<>();
-        String token = (String) SPUtils.get(this, "token", "1");
-        String signature = (String) SPUtils.get(this, "signature", "1");
-        parms.put("token", token);
-        parms.put("signature", signature);
-        JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.Identity.GetIdentity)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject json = new JSONObject(s);
-                            String isSuccess = json.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                String status = json.getString("status");
-                                if ("1".equals(status)) {
-
-                                    initToolbar();
-                                    initMagicIndicator();
-                                    mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
-                                } else {
-                                    Intent intent = new Intent(IdentityinformationActivity.this, Verify_PasswordActivity.class)
-                                            .putExtra("from", "integarl");
-                                    startActivityForResult(intent, 200);
-                                }
-
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
-
-    }
-
-
     private void initMagicIndicator() {
         mCurrentFragment = new User_MeansFragment();
         mFragmentManager = getSupportFragmentManager();
@@ -261,10 +219,12 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     }
 
     @OnClick({R.id.layoutGo, R.id.tv_Company, R.id.tv_Business,
-            R.id.tv_Student, R.id.tv_Freelancer, R.id.bt_cancel,R.id.layout_go})
+            R.id.tv_Freelancer, R.id.bt_cancel,R.id.layout_go})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layoutGo:
+                slideUp.hide();
+
                 break;
             case R.id.tv_Company:
                 EventBus.getDefault().post(new ProfessionalSelectEvent(COMPANY));
@@ -274,10 +234,10 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                 EventBus.getDefault().post(new ProfessionalSelectEvent(BUSINESS));
                 slideUp.hide();
                 break;
-            case R.id.tv_Student:
+           /* case R.id.tv_Student:
                 EventBus.getDefault().post(new ProfessionalSelectEvent(STUDENT));
                 slideUp.hide();
-                break;
+                break;*/
             case R.id.tv_Freelancer:
                 EventBus.getDefault().post(new ProfessionalSelectEvent(FREE));
                 slideUp.hide();

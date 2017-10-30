@@ -86,8 +86,8 @@
     <string name="Credit_BankName">所属银行</string>
 
 
-   <!--  especial -->
+    <!--  especial -->
     <string name="private_key"></string>
-    <string name="public_key"></string>
+     <string name="public_key"></string>
 
 </resources>

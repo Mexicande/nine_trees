@@ -113,8 +113,7 @@
             />
 
         <RelativeLayout
-            android:layout_toLeftOf="@id/line_profess"
-
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
@@ -143,7 +142,7 @@
 
 
 
-        <RelativeLayout
+     <!--   <RelativeLayout
             android:layout_toRightOf="@id/line_profess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -168,7 +167,7 @@
                 android:layout_below="@id/iv_student"
                 android:layout_centerHorizontal="true"
                 android:text="其他"/>
-        </RelativeLayout>
+        </RelativeLayout>-->
 
     </RelativeLayout>
 
