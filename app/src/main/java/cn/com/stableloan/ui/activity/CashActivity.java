@@ -28,16 +28,13 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.CashEvent;
-import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.model.integarl.CashBean;
-import cn.com.stableloan.ui.activity.cash.GetCashRule;
 import cn.com.stableloan.ui.activity.integarl.RuleDescActivity;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.RoundButton;
-import cn.com.stableloan.view.supertextview.SuperTextView;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -48,18 +45,12 @@ public class CashActivity extends BaseActivity {
 
     @Bind(R.id.cash_recycler)
     RecyclerView cashRecycler;
-    @Bind(R.id.bt_withdrawal)
-    RoundButton btWithdrawal;
     @Bind(R.id.total)
     TextView total;
     @Bind(R.id.account)
     TextView account;
-    @Bind(R.id.bt_visiable)
-    RoundButton btVisiable;
-    @Bind(R.id.sv_GetRule)
-    SuperTextView svGetRule;
-    @Bind(R.id.sv_ExtractionRule)
-    SuperTextView svExtractionRule;
+    @Bind(R.id.bt_withdrawal)
+    SuperButton btWithdrawal;
 
     private CashAdapter cashAdapter;
 
@@ -95,24 +86,10 @@ public class CashActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ZhugeSDK.getInstance().track(this, "cash", eventObject);
+        ZhugeSDK.getInstance().track(this, "现金", eventObject);
     }
 
     private void setListener() {
-        //如何获取现金啊
-        svGetRule.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                startActivity(new Intent(CashActivity.this,GetCashRule.class).putExtra("from","getCash"));
-            }
-        });
-        //现金提取规则
-        svExtractionRule.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                GetCashRule.launch(CashActivity.this);
-            }
-        });
 
     }
 
@@ -145,22 +122,18 @@ public class CashActivity extends BaseActivity {
                         if (s != null) {
                             Gson gson = new Gson();
                             cashBean = gson.fromJson(s, CashBean.class);
-                            if(cashBean.getError_code()==0){
+                            if (cashBean.getError_code() == 0) {
                                 account.setText(cashBean.getData().getAccount());
-                                total.setText("¥"+cashBean.getData().getTotal());
+                                total.setText("¥" + cashBean.getData().getTotal());
                                 cashAdapter.setNewData(cashBean.getData().getCashRecord());
-                                if (cashBean.getData().getAccount().length() > 1) {
-                                    btVisiable.setVisibility(View.GONE);
-                                    btWithdrawal.setVisibility(View.VISIBLE);
-                                }
-                            }else if(cashBean.getError_code()==2){
-                                Intent intent=new Intent(CashActivity.this,LoginActivity.class);
-                                intent.putExtra("message",cashBean.getError_message());
-                                intent.putExtra("from","CashError");
+                            } else if (cashBean.getError_code() == 2) {
+                                Intent intent = new Intent(CashActivity.this, LoginActivity.class);
+                                intent.putExtra("message", cashBean.getError_message());
+                                intent.putExtra("from", "CashError");
                                 startActivity(intent);
 
-                            }else {
-                                ToastUtils.showToast(CashActivity.this,cashBean.getError_message());
+                            } else {
+                                ToastUtils.showToast(CashActivity.this, cashBean.getError_message());
                             }
 
                         }
@@ -180,7 +153,7 @@ public class CashActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.cash_back, R.id.cash_data, R.id.bt_visiable, R.id.bt_withdrawal, R.id.tv_rule})
+    @OnClick({R.id.cash_back, R.id.cash_data, R.id.bt_withdrawal, R.id.tv_rule})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cash_back:
@@ -189,14 +162,10 @@ public class CashActivity extends BaseActivity {
             case R.id.cash_data:
                 CertificationActivity.launch(this);
                 break;
-            case R.id.bt_visiable:
-                ToastUtils.showToast(this, "请先完善资料");
-                break;
             case R.id.tv_rule:
                 RuleDescActivity.launch(this);
                 break;
             case R.id.bt_withdrawal:
-                //WithdrawalCashActivity.launch(this);
                 Intent intent = new Intent();
                 intent.putExtra("cash", cashBean);
                 intent.setClass(this, WithdrawalCashActivity.class);
@@ -205,10 +174,11 @@ public class CashActivity extends BaseActivity {
                 break;
         }
     }
+
     @Subscribe
-    public  void updateEvent(CashEvent msg){
-        if(msg!=null){
-            if(msg.cash==1){
+    public void updateEvent(CashEvent msg) {
+        if (msg != null) {
+            if (msg.cash == 1) {
                 getDate();
             }
         }

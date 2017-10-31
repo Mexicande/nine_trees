@@ -308,8 +308,13 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
 
     @Override
     public void onValidateError(String msg, EditText editText) {
-        ToastUtils.showToast(this,msg);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showToast(UpdataProfessionActivity.this,msg);
 
+            }
+        });
     }
 
     @Override

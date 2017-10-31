@@ -6,80 +6,27 @@
     android:layout_height="match_parent"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.CashActivity">
-    <LinearLayout
-        android:id="@+id/button_layout"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/_50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
-        <cn.com.stableloan.view.supertextview.SuperTextView
-            android:id="@+id/sv_GetRule"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            stv:sLeftTextSize="@dimen/information_textSize"
-            stv:sLeftTextString="如何获得现金奖励？"
-            stv:sRightIconRes="@mipmap/iv_left"
-            stv:sRightTextColor="@color/text_setting"
-            stv:sLeftTextColor="@color/select_text_color"
-            stv:sRightTextSize="@dimen/information_textSize"
-            stv:sRightIconHeight="13dp"
-            stv:sRightIconWidth="15dp"
-            stv:sBottomDividerLineMarginLeft="10dp"
-            stv:sBottomDividerLineMarginRight="10dp"
-            />
-        <cn.com.stableloan.view.supertextview.SuperTextView
-            android:id="@+id/sv_ExtractionRule"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            stv:sLeftTextSize="@dimen/information_textSize"
-            stv:sLeftTextString="现金提取规则"
-            stv:sRightIconRes="@mipmap/iv_left"
-            stv:sRightTextColor="@color/text_setting"
-            stv:sLeftTextColor="@color/select_text_color"
-            stv:sRightTextSize="@dimen/information_textSize"
-            stv:sRightIconHeight="13dp"
-            stv:sRightIconWidth="15dp"
-            stv:sBottomDividerLineMarginLeft="10dp"
-            stv:sBottomDividerLineMarginRight="10dp"
-            />
-    </LinearLayout>
-    <cn.com.stableloan.view.RoundButton
-        android:id="@+id/bt_visiable"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="我要提现"
-        app:btnCornerRadius="0dp"
-        app:btnPressedRatio="1"
-        app:btnSolidColor="#FF8A80"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="#ccffffff"
-        style="?android:attr/borderlessButtonStyle"
-        />
-    <cn.com.stableloan.view.RoundButton
+
+
+    <cn.com.stableloan.view.supertextview.SuperButton
         android:id="@+id/bt_withdrawal"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:enabled="true"
         android:text="我要提现"
-        app:btnPressedRatio="0.9"
-        app:btnSolidColor="@color/colorPrimary"
-        android:gravity="center"
-        android:textStyle="bold"
         android:textSize="18sp"
-        android:textColor="#ccffffff"
-        style="?android:attr/borderlessButtonStyle"
-        />
+        android:textColor="@color/white"
+        stv:sCornersRadius="5dp"
+        stv:sSelectorDisableColor="@color/Normal_Button"
+        stv:sSelectorNormalColor="@color/colorPrimary"
+        stv:sSelectorPressedColor="@color/normalcolorPrimary"
+        stv:sUseSelector="true" />
+
     <LinearLayout
-        android:layout_above="@id/button_layout"
+        android:layout_above="@id/bt_withdrawal"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -146,52 +93,7 @@
                     android:textSize="22sp"/>
             </LinearLayout>
         </RelativeLayout>
-        <RelativeLayout
-            android:background="#F3F2F8"
-            android:layout_width="match_parent"
-            android:layout_height="54dp">
-            <TextView
-                android:id="@+id/tv_ali"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:textColor="@color/gay"
-                android:textSize="15sp"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="提现至支付宝 : "/>
-            <TextView
-                android:id="@+id/account"
-                android:textColor="@color/gay"
-                android:textSize="15sp"
-                android:layout_marginLeft="3dp"
-                android:layout_toRightOf="@id/tv_ali"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <LinearLayout
-                android:id="@+id/cash_data"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/_10dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textColor="@color/gay"
-                    android:textSize="15sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="完善资料"
-                    />
-                <ImageView
-                    android:layout_marginLeft="@dimen/_10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="13dp"
-                    android:layout_height="15dp"
-                    android:src="@mipmap/to_right"/>
-            </LinearLayout>
-        </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:background="#C7C7CA"
