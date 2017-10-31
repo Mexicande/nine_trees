@@ -72,6 +72,7 @@ public class IntegralActivity extends BaseActivity {
     @Bind(R.id.tv_Liven)
     TextView tvLiven;
     private SlideUp slideUp;
+
     private List<String> mDataList = Arrays.asList(CHANNELS);
 
     private MyViewPagerAdapter myViewPagerAdapter;

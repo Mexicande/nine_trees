@@ -108,6 +108,9 @@ public class MessageFragment extends Fragment {
     private String status = "1";
     private boolean Atest = false;
     private static final int TOKEN_FAIL = 120;
+
+    private static final int RESULT_CODE = 200;
+
     public MessageFragment() {
     }
 
@@ -627,7 +630,10 @@ public class MessageFragment extends Fragment {
                                         EventBus.getDefault().post(new DescEvent(collection));
                                         getActivity().finish();
                                     } else if ("CashError".equals(from)) {
-                                        EventBus.getDefault().post(new CashEvent(1));
+                                        Intent intent=new Intent();
+                                        intent.putExtra("cash",1);
+                                        getActivity().setResult(RESULT_CODE,intent);
+                                        getActivity().finish();
                                         getActivity().finish();
                                     } else if ("IntegarlError".equals(from)) {
                                         EventBus.getDefault().post(new IntegarlEvent(1));

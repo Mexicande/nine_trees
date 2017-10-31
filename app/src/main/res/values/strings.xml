@@ -69,8 +69,8 @@
     <string name="device_rule">开启账号保护后，会屏蔽微信/网页端登陆,并在不常用的设备上登录时，需要验证你的手机号码。\n</string>
     <string name="dialog_login_device">在非常用设备上登陆\n且使用非注册手机号\n可在&#34;设置-常用设备管理&#34;中调整</string>
 
-   <!-- User_Bank_Fragment-->
-    
+    <!-- User_Bank_Fragment-->
+
     <string name="DebitBank_Card">银行卡信息</string>
     <string name="Debit_Id">借记卡卡号</string>
     <string name="Debit_UserName">持卡人姓名</string>
@@ -86,8 +86,11 @@
     <string name="Credit_BankName">所属银行</string>
 
 
-    <!--  especial -->
-    <string name="private_key"></string>
-     <string name="public_key"></string>
+    <!--  especial --> 
+    <string name="private_key">BI1hNZWOmpTyld2F</string> 
+    <string name="public_key">DkeI2HZ45KR+7qkSXQIDAQAB</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

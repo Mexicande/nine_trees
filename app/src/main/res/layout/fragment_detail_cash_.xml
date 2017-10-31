@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
+    tools:context="cn.com.stableloan.ui.fragment.cash.DetailCash_Fragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cash_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="55dp"
+        >
+    </android.support.v7.widget.RecyclerView>
+    <cn.com.stableloan.view.supertextview.SuperButton
+        android:id="@+id/bt_withdrawal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:enabled="true"
+        android:text="我要提现"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        stv:sCornersRadius="5dp"
+        stv:sSelectorDisableColor="@color/Normal_Button"
+        stv:sSelectorNormalColor="@color/colorPrimary"
+        stv:sSelectorPressedColor="@color/normalcolorPrimary"
+        stv:sUseSelector="true" />
+</RelativeLayout>
