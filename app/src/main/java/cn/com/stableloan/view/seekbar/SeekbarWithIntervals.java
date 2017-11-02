@@ -134,12 +134,10 @@ public class SeekbarWithIntervals extends LinearLayout {
     public int getProgress() {
         return getSeekbar().getProgress();
     }
-
     public void setIntervals(List<String> intervals) {
         displayIntervals(intervals);
         getSeekbar().setMax(intervals.size() - 1);
     }
-
     public void setProgress(int progress) {
         getSeekbar().setProgress(progress);
     }
@@ -208,7 +206,6 @@ public class SeekbarWithIntervals extends LinearLayout {
         if (idOfPreviousInterval > 0) {
             params.addRule(RelativeLayout.RIGHT_OF, idOfPreviousInterval);
         }
-
         textView.setLayoutParams(params);
     }
 
@@ -245,15 +242,12 @@ public class SeekbarWithIntervals extends LinearLayout {
                 onSeekBarChangeListener.onStopTrackingTouch(seekBar);
             }
         });
-
-
     }
 
     private RelativeLayout getRelativeLayout() {
         if (RelativeLayout == null) {
             RelativeLayout = (RelativeLayout) findViewById(R.id.intervals);
         }
-
         return RelativeLayout;
     }
 
@@ -261,7 +255,6 @@ public class SeekbarWithIntervals extends LinearLayout {
         if (Seekbar == null) {
             Seekbar = (SeekBar) findViewById(R.id.seekbar);
         }
-
         return Seekbar;
     }
 }

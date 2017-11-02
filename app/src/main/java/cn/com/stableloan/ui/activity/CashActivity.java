@@ -53,6 +53,8 @@ import cn.com.stableloan.ui.activity.integarl.RuleDescActivity;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
+import cn.com.stableloan.ui.fragment.cash.DetailCash_Fragment;
+import cn.com.stableloan.ui.fragment.cash.GetCash_Fragment;
 import cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment;
 import cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment;
 import cn.com.stableloan.utils.SPUtils;
@@ -115,8 +117,8 @@ public class CashActivity extends BaseActivity {
 
     private void initFragments() {
         List<Fragment> list = new ArrayList<>();
-        list.add(new IntegarlTaskFragment());
-        list.add(new IntegarlExchangeFragment());
+        list.add(new DetailCash_Fragment());
+        list.add(new GetCash_Fragment());
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), list);
         cashViewPager.setAdapter(myViewPagerAdapter);
         CommonNavigator commonNavigator = new CommonNavigator(this);
@@ -150,7 +152,7 @@ public class CashActivity extends BaseActivity {
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
-                indicator.setColors(Color.parseColor("#fb5a5b"));
+                indicator.setColors(Color.parseColor("#FC4445"));
                 indicator.setLineWidth(UIUtil.dip2px(context, 100));
 
                 return indicator;

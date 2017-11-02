@@ -3,14 +3,12 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -23,9 +21,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -46,12 +41,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.DateStatisticsUtils;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
-import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
@@ -59,9 +52,7 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
-import cn.com.stableloan.view.MyLayoutManager;
 import cn.com.stableloan.view.RecyclerViewDecoration;
-import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.dialog.DescDialog;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
@@ -153,6 +144,8 @@ public class ProductDesc extends BaseActivity {
     ImageView ivNews;
     @Bind(R.id.iv_hots)
     ImageView ivHots;
+    @Bind(R.id.tv_descLimit)
+    TextView tvDescLimit;
     private int pid;
 
     private Product_DescBean descBean;
@@ -162,7 +155,6 @@ public class ProductDesc extends BaseActivity {
     private static final int COLLECTION = 2000;
     private static final int APPLY_VAIL = 1000;
     private static final int Token_Fail = 3000;
-
 
 
     private boolean flag = false;
@@ -318,10 +310,10 @@ public class ProductDesc extends BaseActivity {
                                     if (descBean != null) {
                                         dateInset(descBean);
                                     }
-                                } else if(error_code==2){
-                                    Intent intent=new Intent(ProductDesc.this,LoginActivity.class);
-                                    intent.putExtra("message",error_message);
-                                    intent.putExtra("from","DescError");
+                                } else if (error_code == 2) {
+                                    Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
+                                    intent.putExtra("message", error_message);
+                                    intent.putExtra("from", "DescError");
                                     startActivity(intent);
                                 } else {
                                     ToastUtils.showToast(ProductDesc.this, error_message);
@@ -392,8 +384,8 @@ public class ProductDesc extends BaseActivity {
 
        /* MyLayoutManager layout = new MyLayoutManager();
         flowRecyclerView.setLayoutManager(layout);*/
-        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5,StaggeredGridLayoutManager.VERTICAL));
-        RecyclerViewDecoration decoration = new RecyclerViewDecoration(0,0);
+        flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
+        RecyclerViewDecoration decoration = new RecyclerViewDecoration(0, 0);
         flowRecyclerView.addItemDecoration(decoration);
         superTextAdapter = new SuperTextAdapter(null);
         flowRecyclerView.setAdapter(superTextAdapter);
@@ -403,22 +395,22 @@ public class ProductDesc extends BaseActivity {
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(this).load(product.getProduct_logo()).apply(options)
                 .into(productLogo);
-        if(product.getAd_image()!=null&&!product.getAd_image().isEmpty()){
+        if (product.getAd_image() != null && !product.getAd_image().isEmpty()) {
             descAdvertising.setVisibility(View.VISIBLE);
             Glide.with(this).load(product.getAd_image())
                     .apply(options).into(descAdvertising);
-        }else {
+        } else {
             descAdvertising.setVisibility(View.GONE);
         }
 
-        if(product.getActivity()==1){
+        if (product.getActivity() == 1) {
             ivHots.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             ivHots.setVisibility(View.GONE);
         }
-        if(product.getOnline()==1){
+        if (product.getOnline() == 1) {
             ivNews.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             ivNews.setVisibility(View.GONE);
         }
         tvPname.setText(product.getPname());
@@ -437,11 +429,12 @@ public class ProductDesc extends BaseActivity {
         int interest_algorithm = product.getInterest_algorithm();
         if (interest_algorithm == 0) {
             tvInterestAlgorithm.setText("参考日利率");
-            tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle()+"日");
+            tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle() + "日");
+            tvDescLimit.setText("贷款期限(日)");
         } else {
             tvInterestAlgorithm.setText("参考月利率");
-            tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle()+"月");
-
+            tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle() + "月");
+            tvDescLimit.setText("贷款期限(月)");
         }
         if (minimum_amount.length() > 4) {
             substringmin = minimum_amount.substring(0, minimum_amount.length() - 4);
@@ -472,7 +465,7 @@ public class ProductDesc extends BaseActivity {
         } else {
             arrive.setVisibility(View.GONE);
         }
-        tvDescAmount.setText(substringmin + "~" + substringmax+"元");
+        tvDescAmount.setText(substringmin + "~" + substringmax + "元");
         if (product_crowd != null) {
             setTextViewColor(crowd, "面向人群: " + product_crowd);
         } else {
@@ -549,35 +542,35 @@ public class ProductDesc extends BaseActivity {
                 break;
             case R.id.apply:
                 String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-                if (token==null||"1".equals(token)) {
+                if (token == null || "1".equals(token)) {
                     LoginActivity.launch(this);
 
                 } else {
-                        String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
-                        int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
-                        switch (apply) {
-                            case Urls.lock.NO_VERIFICATION:
-                                Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                                if (dialog != null && dialog) {
-                                    sendIO();
-                                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-                                }else {
-                                    showApplyDialog();
-                                }
+                    String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
+                    int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
+                    switch (apply) {
+                        case Urls.lock.NO_VERIFICATION:
+                            Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
+                            if (dialog != null && dialog) {
+                                sendIO();
+                                startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                            } else {
+                                showApplyDialog();
+                            }
 
-                                break;
-                            case Urls.lock.PW_VERIFICATION:
-                                Intent intent = new Intent(this, Verify_PasswordActivity.class);
-                                intent.putExtra("from", "apply");
-                                startActivityForResult(intent, APPLY_VAIL);
-                                break;
-                            case Urls.lock.GESTURE_VERIFICATION:
-                                Intent intent1 = new Intent(this, GestureLoginActivity.class);
-                                intent1.putExtra("from", "apply");
-                                intent1.putExtra("product", descBean);
-                                startActivityForResult(intent1, APPLY_VAIL);
-                                break;
-                        }
+                            break;
+                        case Urls.lock.PW_VERIFICATION:
+                            Intent intent = new Intent(this, Verify_PasswordActivity.class);
+                            intent.putExtra("from", "apply");
+                            startActivityForResult(intent, APPLY_VAIL);
+                            break;
+                        case Urls.lock.GESTURE_VERIFICATION:
+                            Intent intent1 = new Intent(this, GestureLoginActivity.class);
+                            intent1.putExtra("from", "apply");
+                            intent1.putExtra("product", descBean);
+                            startActivityForResult(intent1, APPLY_VAIL);
+                            break;
+                    }
                 }
                 break;
             case R.id.bt_share:
@@ -634,7 +627,7 @@ public class ProductDesc extends BaseActivity {
                                 break;
                             case 2:
                                 String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-                                if (token == null||"1".equals(token)) {
+                                if (token == null || "1".equals(token)) {
                                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
                                 } else {
                                     if (shareFlag) {
@@ -700,13 +693,13 @@ public class ProductDesc extends BaseActivity {
                                         shareFlag = false;
                                         ToastUtils.showToast(ProductDesc.this, "取消成功");
                                     }
-                                }else if(error_code==2){
-                                    Intent intent=new Intent(ProductDesc.this,LoginActivity.class);
-                                    intent.putExtra("message",json.getString("error_message"));
-                                    intent.putExtra("from","ProductDescError");
-                                    intent.putExtra("collection",status);
+                                } else if (error_code == 2) {
+                                    Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
+                                    intent.putExtra("message", json.getString("error_message"));
+                                    intent.putExtra("from", "ProductDescError");
+                                    intent.putExtra("collection", status);
                                     startActivity(intent);
-                                }else {
+                                } else {
                                     String error_message = json.getString("error_message");
                                     ToastUtils.showToast(ProductDesc.this, error_message);
                                 }
@@ -745,8 +738,8 @@ public class ProductDesc extends BaseActivity {
     }
 
     @Subscribe
-    public  void updateEvent(DescEvent msg){
-        if(msg!=null){
+    public void updateEvent(DescEvent msg) {
+        if (msg != null) {
             CollectionProduct(msg.collection);
         }
 
@@ -780,7 +773,7 @@ public class ProductDesc extends BaseActivity {
                         } else {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }
-                       // startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                        // startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                     }
                 }
                 break;
@@ -801,10 +794,10 @@ public class ProductDesc extends BaseActivity {
                 }
                 break;
             case Token_Fail:
-                if(resultCode==3000){
+                if (resultCode == 3000) {
                     int desc = data.getIntExtra("desc", 0);
-                    if(desc==1){
-                        if(pid!=0){
+                    if (desc == 1) {
+                        if (pid != 0) {
                             getProductDate();
                         }
                     }

@@ -233,13 +233,6 @@ public class ProductFragment extends ImmersionFragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showToast(getActivity(), "网络异常");
-
-                            }
-                        });
                     }
                 });
     }
@@ -276,6 +269,7 @@ public class ProductFragment extends ImmersionFragment {
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
         List<String> seekbarIntervals = getIntervals();
+
         seekbarWithIntervals.setIntervals(seekbarIntervals);
 
 

@@ -51,6 +51,7 @@
     <color name="inivte_textcolor">#8D8D8D</color>
     <color name="integral">#F3F2F8</color>
     <color name="invite_friend">#FFEFBD</color>
+    <color name="cash_withdrawal">#23BE13</color>
 
     <!--lock-->
     <color name="grey_b2b2b2">#B2B2B2</color>
@@ -59,5 +60,6 @@
     <color name="red_f3323b">#F3323B</color>
     <color name="common_pressed">#20000000</color>  <!--白色背景按下去的颜色-->
     <color name="line">#e8e8e8</color>
+    <color name="cash_line">#EBE8E8</color>
 
 </resources>

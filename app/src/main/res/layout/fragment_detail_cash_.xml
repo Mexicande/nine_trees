@@ -23,7 +23,7 @@
         android:text="我要提现"
         android:textSize="18sp"
         android:textColor="@color/white"
-        stv:sCornersRadius="5dp"
+        stv:sCornersRadius="0dp"
         stv:sSelectorDisableColor="@color/Normal_Button"
         stv:sSelectorNormalColor="@color/colorPrimary"
         stv:sSelectorPressedColor="@color/normalcolorPrimary"

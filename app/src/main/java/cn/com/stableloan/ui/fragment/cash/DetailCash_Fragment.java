@@ -64,6 +64,7 @@ public class DetailCash_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail_cash_, container, false);
         ButterKnife.bind(this, view);
         initRecyclerView();
+        getDate();
         setListener();
         return view;
     }

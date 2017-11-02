@@ -44,9 +44,9 @@ import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.dialog.CashDialog;
 import cn.com.stableloan.view.keyboard.VirtualKeyboardView;
+import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -54,24 +54,22 @@ import okhttp3.Response;
  * 现金提取
  */
 public class WithdrawalCashActivity extends BaseActivity {
-    /* @Bind(R.id.Spinner_way)
-     BetterSpinner SpinnerWay;*/
     @Bind(R.id.cash_toolbar)
     Toolbar cashToolbar;
     @Bind(R.id.address)
     TextView address;
-    @Bind(R.id.open)
-    RelativeLayout open;
     @Bind(R.id.layout_no)
     RelativeLayout layoutNo;
     @Bind(R.id.tv_balance)
     TextView tvBalance;
-    @Bind(R.id.bt_withdrawal)
-    RoundButton btWithdrawal;
-    @Bind(R.id.bt_visiableDrawal)
-    RoundButton btVisiableDrawal;
     @Bind(R.id.arrow)
     ImageView arrow;
+    @Bind(R.id.set_account)
+    RelativeLayout setAccount;
+    @Bind(R.id.layout_visiable)
+    RelativeLayout layoutVisiable;
+    @Bind(R.id.bt_withdrawal)
+    SuperButton btWithdrawal;
     private VirtualKeyboardView virtualKeyboardView;
     private CashDialog cashDialog;
     private GridView gridView;
@@ -83,7 +81,8 @@ public class WithdrawalCashActivity extends BaseActivity {
     private Animation exitAnim;
     private CashBean cashBean;
 
-    private static final int RESULT_CODE=200;
+    private static final int RESULT_CODE = 200;
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, WithdrawalCashActivity.class));
     }
@@ -111,13 +110,15 @@ public class WithdrawalCashActivity extends BaseActivity {
         initAnim();
         initView();
         valueList = virtualKeyboardView.getValueList();
+
         cashBean = (CashBean) getIntent().getSerializableExtra("cash");
-        address.setText(cashBean.getData().getAccount());
-        tvBalance.setText(cashBean.getData().getTotal());
+        if (cashBean != null) {
+            address.setText(cashBean.getData().getAccount());
+            tvBalance.setText("¥"+cashBean.getData().getTotal());
+        }
         setListener();
 
     }
-
     private void setListener() {
 
         textAmount.addTextChangedListener(new TextWatcher() {
@@ -129,16 +130,16 @@ public class WithdrawalCashActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String s1 = s + "";
-                if(s1.startsWith(".")){
+                if (s1.startsWith(".")) {
                     String s2 = s1.replaceFirst(".", "0.");
                     textAmount.setText(s2);
                 }
-                if (s.length() >= 1) {
-                    btWithdrawal.setVisibility(View.GONE);
-                    btVisiableDrawal.setVisibility(View.VISIBLE);
+                if (s.length() >= 1&&!address.getText().toString().isEmpty()) {
+                    btWithdrawal.setEnabled(true);
+                    btWithdrawal.setUseShape();
                 } else {
-                    btWithdrawal.setVisibility(View.VISIBLE);
-                    btVisiableDrawal.setVisibility(View.GONE);
+                    btWithdrawal.setEnabled(false);
+                    btWithdrawal.setUseShape();
                 }
             }
 
@@ -200,24 +201,24 @@ public class WithdrawalCashActivity extends BaseActivity {
                             AdvertisingBean outBean = gson.fromJson(s, AdvertisingBean.class);
                             if (outBean.getError_code() == 0) {
                                 try {
-                                    JSONObject jsonObject=new JSONObject(s);
+                                    JSONObject jsonObject = new JSONObject(s);
                                     String data = jsonObject.getString("data");
-                                    JSONObject object1=new JSONObject(data);
+                                    JSONObject object1 = new JSONObject(data);
                                     String isSucess = object1.getString("isSucess");
-                                    if("1".equals(isSucess)){
+                                    if ("1".equals(isSucess)) {
                                         String money = tvBalance.getText().toString();
                                         String substring = money.substring(0, money.length() - 3);
-                                        String replace = substring.replace(",","");
+                                        String replace = substring.replace(",", "");
                                         int size = Integer.parseInt(replace);
                                         int i1 = size - i;
-                                        tvBalance.setText(String.valueOf(i1)+".00");
-                                        Intent intent=new Intent();
-                                        setResult(RESULT_CODE,intent);
-                                        ToastUtils.showToast(WithdrawalCashActivity.this,"提现成功,稍后请查看结果");
+                                        tvBalance.setText(String.valueOf(i1) + ".00");
+                                        Intent intent = new Intent();
+                                        setResult(RESULT_CODE, intent);
+                                        ToastUtils.showToast(WithdrawalCashActivity.this, "提现成功,稍后请查看结果");
                                         finish();
-                                    }else {
+                                    } else {
                                         String error_message = jsonObject.getString("error_message");
-                                        ToastUtils.showToast(WithdrawalCashActivity.this,error_message);
+                                        ToastUtils.showToast(WithdrawalCashActivity.this, error_message);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -377,31 +378,35 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Intent intent=new Intent();
-        setResult(RESULT_CODE,intent);
+        Intent intent = new Intent();
+        setResult(RESULT_CODE, intent);
         finish();
         return super.onKeyDown(keyCode, event);
 
     }
 
-    @OnClick({R.id.close, R.id.iv_rule, R.id.open, R.id.tv_AllWithdrawal, R.id.bt_visiableDrawal})
+    @OnClick({R.id.close, R.id.iv_rule, R.id.arrow, R.id.tv_AllWithdrawal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.close:
-                Intent intent=new Intent();
-                setResult(RESULT_CODE,intent);
+                Intent intent = new Intent();
+                setResult(RESULT_CODE, intent);
                 finish();
                 break;
             case R.id.iv_rule:
                 RuleDescActivity.launch(this);
                 break;
-            case R.id.open:
+            case R.id.arrow:
                 int visibility = layoutNo.getVisibility();
                 if (visibility == View.VISIBLE) {
                     layoutNo.setVisibility(View.GONE);
+                    setAccount.setVisibility(View.GONE);
+                    layoutVisiable.setVisibility(View.VISIBLE);
                     arrow.setImageResource(R.drawable.cash_open);
                 } else {
                     layoutNo.setVisibility(View.VISIBLE);
+                    setAccount.setVisibility(View.VISIBLE);
+                    layoutVisiable.setVisibility(View.GONE);
                     arrow.setImageResource(R.drawable.cash_close);
                 }
                 break;
@@ -420,7 +425,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                     ToastUtils.showToast(this, "余额不足");
                 }
                 break;
-            case R.id.bt_visiableDrawal:
+            case R.id.bt_withdrawal:
                 zhuGe();
                 String toString1 = tvBalance.getText().toString();
                 int indexOf = toString1.lastIndexOf(".");
@@ -431,10 +436,10 @@ public class WithdrawalCashActivity extends BaseActivity {
                 double anInt2 = Double.parseDouble(string);
                 if (anInt2 <= anInt1) {
                     double parseInt = Double.parseDouble(string);
-                    if(parseInt!=0){
+                    if (parseInt != 0) {
                         getDate();
-                    }else {
-                        ToastUtils.showToast(this,"请输入有效金额");
+                    } else {
+                        ToastUtils.showToast(this, "请输入有效金额");
                     }
                 } else {
                     ToastUtils.showToast(this, "请输入有效金额");
@@ -453,7 +458,7 @@ public class WithdrawalCashActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ZhugeSDK.getInstance().track(this, "tixianbutton",  eventObject);
+        ZhugeSDK.getInstance().track(this, "提现", eventObject);
     }
 
 

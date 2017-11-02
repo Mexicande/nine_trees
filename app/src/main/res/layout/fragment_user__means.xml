@@ -35,7 +35,6 @@
         stv:sLeftTextSize="@dimen/information_textSize"
         stv:sLeftTextString="真实姓名"
         stv:sMaxEms="13"
-
         stv:sRightIconRes="@mipmap/ic_arrow"
         stv:sRightTextColor="@color/text_setting"
         stv:sLeftTextColor="@color/select_text_color"

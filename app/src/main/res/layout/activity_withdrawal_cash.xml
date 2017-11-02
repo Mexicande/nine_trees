@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/integral"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity">
     <LinearLayout
         android:orientation="vertical"
@@ -75,6 +76,7 @@
                             android:layout_marginLeft="@dimen/_10dp"
                             android:id="@+id/title"
                             android:textColor="@color/gay"
+                            android:textSize="15sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="转至支付宝"/>
@@ -82,25 +84,22 @@
                             android:layout_marginLeft="@dimen/_10dp"
                             android:layout_marginTop="@dimen/_2dp"
                             android:id="@+id/address"
+                            android:textSize="15sp"
                             android:layout_below="@id/title"
-                            android:textColor="@color/gay"
+                            android:textColor="@color/select_text_color"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             />
-                        <RelativeLayout
-                            android:id="@+id/open"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="13dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp">
+
                             <ImageView
                                 android:id="@+id/arrow"
-                                android:layout_centerInParent="true"
-                                android:layout_width="12dp"
-                                android:layout_height="13dp"
+                                android:layout_marginRight="13dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:layout_alignParentRight="true"
+                                android:layout_width="52dp"
+                                android:padding="@dimen/_10dp"
+                                android:layout_height="35dp"
                                 android:src="@drawable/cash_open"/>
-                        </RelativeLayout>
                         <TextView
                             android:layout_below="@id/address"
                             android:layout_marginLeft="@dimen/_10dp"
@@ -115,20 +114,22 @@
                             android:visibility="gone"
                             android:layout_marginLeft="@dimen/_1dp"
                             android:layout_marginRight="@dimen/_1dp"
-                            android:layout_marginTop="@dimen/_5dp"
+                            android:layout_marginTop="@dimen/_10dp"
                             android:layout_below="@id/address"
-                            android:background="#E0E0E0"
+                            android:background="@color/white"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="@color/gay"/>
+                                android:background="@color/cash_line"/>
                             <TextView
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="@dimen/_10dp"
                                 android:id="@+id/title1"
-                                android:textColor="@color/mask"
+                                android:textColor="@color/gay"
+                                android:textSize="15sp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="转至银行卡"
@@ -136,25 +137,62 @@
                             <TextView
                                 android:layout_marginLeft="@dimen/_10dp"
                                 android:id="@+id/no"
-                                android:textColor="@color/mask"
+                                android:textColor="@color/select_text_color"
                                 android:layout_below="@id/title1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="15sp"
                                 android:text="暂不支持银行卡提现"
                                 />
                             <View
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="9dp"
                                 android:layout_below="@id/no"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="@color/gay"/>
+                                android:background="@color/cash_line"/>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/set_account"
+                            android:layout_marginLeft="@dimen/_1dp"
+                            android:layout_marginRight="@dimen/_1dp"
+                            android:layout_below="@id/layout_no"
+                            android:background="@color/white"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="@dimen/_10dp"
+                                android:id="@+id/tv_account"
+                                android:textColor="@color/gay"
+                                android:textSize="15sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="设置提现账户"
+                                />
+                            <TextView
+                                android:layout_marginLeft="@dimen/_10dp"
+                                android:id="@+id/iv_go"
+                                android:textColor="@color/white"
+                                android:layout_below="@id/tv_account"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="点击前往"
+                                android:textSize="@dimen/sp_12"
+                                android:background="@drawable/set_account_bg"
+                                />
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/iv_go"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/cash_line"/>
                         </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
-
             <RelativeLayout
-                android:layout_marginTop="@dimen/_10dp"
+                android:id="@+id/layout_visiable"
+                android:layout_marginTop="@dimen/_5dp"
                 android:layout_marginRight="@dimen/_10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_width="match_parent"
@@ -191,7 +229,8 @@
                     android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/select_text_color"
+                    android:layout_marginLeft="@dimen/_2dp"
+                    android:textColor="@color/gay"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -205,12 +244,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="全部提现"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/cash_withdrawal"
                     android:textSize="16sp"
                     />
             </LinearLayout>
         </LinearLayout>
-        <cn.com.stableloan.view.RoundButton
+
+        <cn.com.stableloan.view.supertextview.SuperButton
             android:id="@+id/bt_withdrawal"
             android:layout_marginLeft="@dimen/_20dp"
             android:layout_marginRight="@dimen/_20dp"
@@ -219,33 +259,14 @@
             android:layout_height="wrap_content"
             android:text="提 现"
             android:enabled="false"
-            app:btnPressedRatio="0.9"
-            app:btnCornerRadius="@dimen/_5dp"
-            app:btnSolidColor="#FF8A80"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#ffffff"
-            style="?android:attr/borderlessButtonStyle"
-            />
-        <cn.com.stableloan.view.RoundButton
-            android:id="@+id/bt_visiableDrawal"
-            android:layout_marginLeft="@dimen/_20dp"
-            android:layout_marginRight="@dimen/_20dp"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="提 现"
-            android:visibility="gone"
-            app:btnPressedRatio="0.9"
-            app:btnSolidColor="@color/colorPrimary"
-            app:btnCornerRadius="@dimen/_5dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#ffffff"
-            style="?android:attr/borderlessButtonStyle"
-            />
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            stv:sCornersRadius="5dp"
+            stv:sSelectorDisableColor="@color/frame_color"
+            stv:sSelectorNormalColor="@color/colorPrimary"
+            stv:sSelectorPressedColor="@color/normalcolorPrimary"
+            stv:sUseSelector="true" />
+
     </LinearLayout>
     <cn.com.stableloan.view.keyboard.VirtualKeyboardView
         android:id="@+id/virtualKeyboardView"
