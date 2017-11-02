@@ -37,7 +37,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 现金明细
  */
 public class DetailCash_Fragment extends Fragment {
 

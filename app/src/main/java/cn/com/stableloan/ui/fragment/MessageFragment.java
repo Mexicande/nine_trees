@@ -111,6 +111,8 @@ public class MessageFragment extends Fragment {
 
     private static final int RESULT_CODE = 200;
 
+    private static final int WITHDRAW_CODE = 1;
+
     public MessageFragment() {
     }
 
@@ -666,6 +668,10 @@ public class MessageFragment extends Fragment {
                                         Intent intent = new Intent();
                                         intent.putExtra(Urls.TOKEN, 1);
                                         getActivity().setResult(TOKEN_FAIL, intent);
+                                        getActivity().finish();
+                                    }else if ("CashWithError".equals(from)) {
+                                        Intent intent = new Intent();
+                                        getActivity().setResult(WITHDRAW_CODE, intent);
                                         getActivity().finish();
                                     }
 

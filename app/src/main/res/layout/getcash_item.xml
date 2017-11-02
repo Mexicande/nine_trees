@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_integar_bg"
+            android:layout_marginRight="@dimen/_20dp"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_gravity="top"
+            android:adjustViewBounds="true"
+            android:src="@drawable/iv_special_bg"/>
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_alignLeft="@id/iv_integar_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/iv_cash_activity_icon"/>
+        <TextView
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:layout_alignLeft="@id/iv_integar_bg"
+            android:layout_below="@id/iv_integar_bg"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:textSize="14sp"
+            android:textColor="@color/text_setting"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="奥士康等哈时间好的卡刷卡静待花开吉安市抠脚大汉看见回复科技活动继父回家危害健康科技贷款计算肯定就是记李将军"/>
+</RelativeLayout>

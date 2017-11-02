@@ -56,7 +56,7 @@
             android:textSize="20sp"
             android:textColor="@color/white"
             stv:sCornersRadius="5dp"
-            stv:sSelectorDisableColor="@color/Normal_Button"
+            stv:sSelectorDisableColor="@color/frame_color"
             stv:sSelectorNormalColor="@color/colorPrimary"
             stv:sSelectorPressedColor="@color/normalcolorPrimary"
             stv:sUseSelector="true" />

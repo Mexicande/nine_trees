@@ -74,7 +74,6 @@ public class AppApplication extends Application {
         super.onCreate();
         sApp = this;
 
-
         mHandler = new Handler();
 
         initTypeface();

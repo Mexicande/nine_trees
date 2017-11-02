@@ -92,6 +92,6 @@
             android:textSize="20sp"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/white"
-            android:text="立即申请"
+            android:text="马上申请"
             />
 </RelativeLayout>

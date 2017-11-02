@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
@@ -72,6 +73,7 @@ public class IntegralActivity extends BaseActivity {
     @Bind(R.id.tv_Liven)
     TextView tvLiven;
     private SlideUp slideUp;
+    private static final int INVITE_CODE=200;
 
     private List<String> mDataList = Arrays.asList(CHANNELS);
 
@@ -92,10 +94,18 @@ public class IntegralActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         initSlide();
         setListener();
+        String from = getIntent().getStringExtra("from");
+
         titleName.setText("积分");
         ivBack.setVisibility(View.VISIBLE);
         initFragments();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+        if (from != null && "cash".equals(from)) {
+            magicIndicator.onPageSelected(1);
+            viewPager.setCurrentItem(1);
+            //viewPager.setCurrentItem(1);
+
+        }
     }
 
     private void setListener() {
@@ -252,6 +262,12 @@ public class IntegralActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                String from = getIntent().getStringExtra("from");
+                if(from!=null&&"cash".equals(from)){
+                    Intent intent=new Intent();
+                    setResult(INVITE_CODE,intent);
+                }
+
                 finish();
                 break;
             case R.id.layoutGo:
@@ -275,4 +291,19 @@ public class IntegralActivity extends BaseActivity {
                 break;
         }
     }*/
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            String from = getIntent().getStringExtra("from");
+            if(from!=null&&"cash".equals(from)){
+                Intent intent=new Intent();
+                setResult(INVITE_CODE,intent);
+                finish();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 }

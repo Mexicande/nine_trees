@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -84,6 +85,7 @@ public class InviteFriendsActivity extends BaseActivity {
     private Qr_Dialog qr_dialog;
     private static final  int REQUEST_CODE=100;
     private static final int TOKEN_FAIL = 120;
+    private static final int INVITE_CODE=200;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, InviteFriendsActivity.class));
@@ -198,7 +200,13 @@ public class InviteFriendsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.goback:
+                String from = getIntent().getStringExtra("from");
+                if(from!=null&&"cash".equals(from)){
+                    Intent intent=new Intent();
+                    setResult(INVITE_CODE,intent);
+                }
                 finish();
+
                 break;
             case R.id.layout_Share_WeChat:
                 shareWechat(WXShareContent.WXSession);
@@ -387,5 +395,17 @@ public class InviteFriendsActivity extends BaseActivity {
         return contact;
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            String from = getIntent().getStringExtra("from");
+            if(from!=null&&"cash".equals(from)){
+                Intent intent=new Intent();
+                setResult(INVITE_CODE,intent);
+                finish();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
 
+    }
 }

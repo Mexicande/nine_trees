@@ -153,6 +153,7 @@
                         </RelativeLayout>
                         <RelativeLayout
                             android:id="@+id/set_account"
+                            android:visibility="gone"
                             android:layout_marginLeft="@dimen/_1dp"
                             android:layout_marginRight="@dimen/_1dp"
                             android:layout_below="@id/layout_no"
@@ -262,7 +263,7 @@
             android:textSize="24sp"
             android:textColor="@color/white"
             stv:sCornersRadius="5dp"
-            stv:sSelectorDisableColor="@color/frame_color"
+            stv:sSelectorDisableColor="@color/Normal_Button"
             stv:sSelectorNormalColor="@color/colorPrimary"
             stv:sSelectorPressedColor="@color/normalcolorPrimary"
             stv:sUseSelector="true" />

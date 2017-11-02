@@ -76,6 +76,7 @@ public class CertificationActivity extends BaseActivity {
     /* @Bind(R.id.jd)
      SuperTextView jd;*/
     private static  final  int IMAGE_RESULT=110;
+    private static final int WITHDRAW_CODE = 1;
 
     private String phone;
     private KProgressHUD hud;
@@ -235,9 +236,16 @@ public class CertificationActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_go:
-                Intent intent=new Intent();
-                intent.putExtra("ok", 1);
-                setResult(IMAGE_RESULT,intent);
+                String from = getIntent().getStringExtra("from");
+
+                if(from!=null&&"cash".equals(from)){
+                    Intent intent=new Intent();
+                    setResult(WITHDRAW_CODE,intent);
+                }else {
+                    Intent intent=new Intent();
+                    intent.putExtra("ok", 1);
+                    setResult(IMAGE_RESULT,intent);
+                }
                 finish();
                 break;
             case R.id.mobile:
@@ -317,9 +325,15 @@ public class CertificationActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent=new Intent();
-            intent.putExtra("ok", 1);
-            setResult(IMAGE_RESULT,intent);
+            String from = getIntent().getStringExtra("from");
+            if("cash".equals(from)){
+                Intent intent=new Intent();
+                setResult(WITHDRAW_CODE,intent);
+            }else {
+                Intent intent=new Intent();
+                intent.putExtra("ok", 1);
+                setResult(IMAGE_RESULT,intent);
+            }
             finish();
         }
         return super.onKeyDown(keyCode, event);

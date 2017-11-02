@@ -14,7 +14,8 @@
     <color name="product_limit">#999999</color>
     <color name="select_text_color">#333333</color>
     <!--登陆页面-->
-    <color name="Normal_Button">#EF9A9A</color>
+    <color name="Normal_Button">#CCCCCC</color>
+
     <color name="gay">#999999</color>
     <color name="line_color">#eeeeee</color>
     <color name="mask">#88000000</color>

@@ -22,10 +22,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,8 +42,12 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.model.integarl.CashBean;
+import cn.com.stableloan.ui.activity.CertificationActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.dialog.CashDialog;
@@ -82,6 +88,9 @@ public class WithdrawalCashActivity extends BaseActivity {
     private CashBean cashBean;
 
     private static final int RESULT_CODE = 200;
+    private static final int WITHDRAW_CODE = 1;
+
+    private static final int REQUESTION_CODE=300;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, WithdrawalCashActivity.class));
@@ -99,14 +108,6 @@ public class WithdrawalCashActivity extends BaseActivity {
                 .init();
 
         getUserPopo();
-     /*   ImmersionBar.with(this)
-                .titleBar(cashToolbar)
-                .transparentStatusBar()
-                .statusBarAlpha(0.3f)
-                .init();
-        ImmersionBar.with(this)
-                .titleBar(view) //指定标题栏view,xml里的标题的高度不能指定为warp_content，如果是自定义xml实现标题栏的话，最外层节点不能为RelativeLayout
-                .init();*/
         initAnim();
         initView();
         valueList = virtualKeyboardView.getValueList();
@@ -153,7 +154,7 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     private void getUserPopo() {
 
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("position", "2");
@@ -171,8 +172,14 @@ public class WithdrawalCashActivity extends BaseActivity {
                                 if (outBean.getData().getStatus().equals("1")) {
                                     RuleDialog(outBean.getData().getName(), outBean.getData().getDescription());
                                 }
-                            } else {
-                                ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
+                            } else if(outBean.getError_code() == 2) {
+                                Intent intent = new Intent(WithdrawalCashActivity.this, LoginActivity.class);
+                                intent.putExtra("message", cashBean.getError_message());
+                                intent.putExtra("from", "CashWithError");
+                                startActivityForResult(intent,REQUESTION_CODE);
+
+                            }else {
+                                    ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
 
                         }
@@ -346,7 +353,7 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     private void userKnow() {
 
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("position", "2");
@@ -364,7 +371,9 @@ public class WithdrawalCashActivity extends BaseActivity {
                             AdvertisingBean outBean = gson.fromJson(s, AdvertisingBean.class);
                             if (outBean.getError_code() == 0) {
 
-                            } else {
+                            } else if(outBean.getError_code() == 2){
+                                LoginActivity.launch(WithdrawalCashActivity.this);
+                            }else {
 
                                 ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
@@ -385,7 +394,7 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.close, R.id.iv_rule, R.id.arrow, R.id.tv_AllWithdrawal})
+    @OnClick({R.id.close, R.id.iv_rule, R.id.arrow, R.id.tv_AllWithdrawal,R.id.set_account})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.close:
@@ -445,6 +454,11 @@ public class WithdrawalCashActivity extends BaseActivity {
                     ToastUtils.showToast(this, "请输入有效金额");
                 }
                 break;
+            case R.id.set_account:
+                Intent certifIntent=new Intent(this,CertificationActivity.class);
+                certifIntent.putExtra("from","cash");
+                startActivityForResult(certifIntent,REQUESTION_CODE);
+                break;
 
         }
     }
@@ -461,5 +475,57 @@ public class WithdrawalCashActivity extends BaseActivity {
         ZhugeSDK.getInstance().track(this, "提现", eventObject);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUESTION_CODE){
+            switch (resultCode){
+                case WITHDRAW_CODE:
+                        getCashDate();
+                    break;
+                case 112:
+                    getUserPopo();
+                    break;
+            }
+        }
+    }
+
+
+    private void getCashDate() {
+        LogUtils.i("执行了回调------");
+        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("token", token);
+        JSONObject object = new JSONObject(params);
+        OkGo.<String>post(Urls.Ip_url + Urls.Integarl.GETCASH)
+                .upJson(object)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s != null) {
+                            Gson gson = new Gson();
+                            cashBean = gson.fromJson(s, CashBean.class);
+                            if (cashBean.getError_code() == 0) {
+                                address.setText(cashBean.getData().getAccount());
+                                tvBalance.setText("¥"+cashBean.getData().getTotal());
+                            } else if (cashBean.getError_code() == 2) {
+                                Intent intent = new Intent(WithdrawalCashActivity.this, LoginActivity.class);
+                                intent.putExtra("message", cashBean.getError_message());
+                                intent.putExtra("from", "CashWithError");
+                                startActivityForResult(intent,REQUESTION_CODE);
+                            } else {
+                                ToastUtils.showToast(WithdrawalCashActivity.this, cashBean.getError_message());
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
+                    }
+                });
+    }
 
 }
