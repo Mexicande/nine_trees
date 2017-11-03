@@ -5,7 +5,7 @@ package cn.com.stableloan.api;
  */
 
 public interface Urls {
-    String API="http://test.";
+    String API="http://";
 
     String Ip_url=API+"api.anwenqianbao.com/v1/";
 

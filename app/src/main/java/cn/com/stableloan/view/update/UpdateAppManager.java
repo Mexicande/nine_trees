@@ -15,8 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.vector.update_app.service.DownloadService;
-import com.vector.update_app.utils.AppUpdateUtils;
 
 import java.util.HashMap;
 import java.util.Map;

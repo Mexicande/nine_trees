@@ -26,7 +26,7 @@ import cn.com.stableloan.view.countdownview.CountdownView;
  */
 
 public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBean,BaseViewHolder>{
-    private CountdownView mCountdownView;
+
     public ListProductAdapter(List<Hot_New_Product.DataBean> data) {
         super(R.layout.news_product_trem, data);
     }
@@ -59,20 +59,28 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
             }else {
             news.setVisibility(View.GONE);
         }
-
-
         if(item.getLabels()!=null){
             int size = item.getLabels().size();
             List<Hot_New_Product.DataBean.LabelsBean> lables = item.getLabels();
             switch (size){
                 case 0:
+                    view.setVisibility(View.GONE);
+                    view1.setVisibility(View.GONE);
+                    view2.setVisibility(View.GONE);
+                    view3.setVisibility(View.GONE);
+                    view5.setVisibility(View.GONE);
                     break;
                 case 1:
                     view.setVisibility(View.VISIBLE);
-                    view.setWidth(20);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
                     view.setStrokeColor(Color.parseColor(lables.get(0).getFont()));
                     view.setText(lables.get(0).getName());
+
+                    view1.setVisibility(View.GONE);
+                    view2.setVisibility(View.GONE);
+                    view3.setVisibility(View.GONE);
+                    view5.setVisibility(View.GONE);
+
                     break;
                 case 2:
                     view.setVisibility(View.VISIBLE);
@@ -83,6 +91,11 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
+
+                    view2.setVisibility(View.GONE);
+                    view3.setVisibility(View.GONE);
+                    view5.setVisibility(View.GONE);
+
                     break;
                 case 3:
                     view.setVisibility(View.VISIBLE);
@@ -97,6 +110,10 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
                     view2.setTextColor(Color.parseColor(lables.get(2).getFont()));
                     view2.setStrokeColor(Color.parseColor(lables.get(2).getFont()));
                     view2.setText(lables.get(2).getName());
+
+
+                    view3.setVisibility(View.GONE);
+                    view5.setVisibility(View.GONE);
                     break;
                 case 4:
                     view.setVisibility(View.VISIBLE);
@@ -119,6 +136,8 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
                     view3.setTextColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setText(lables.get(3).getName());
+
+                    view5.setVisibility(View.GONE);
                 default:
                     view.setVisibility(View.VISIBLE);
                     view.setTextColor(Color.parseColor(lables.get(0).getFont()));
@@ -129,7 +148,6 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
                     view1.setTextColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setStrokeColor(Color.parseColor(lables.get(1).getFont()));
                     view1.setText(lables.get(1).getName());
-
 
                     view2.setVisibility(View.VISIBLE);
                     view2.setTextColor(Color.parseColor(lables.get(2).getFont()));
