@@ -218,7 +218,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 });
 
     }
-
     private void initDialog() {
         String[] stringArray = getResources().getStringArray(R.array.home_money);
         list = Arrays.asList(stringArray);
@@ -242,7 +241,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         }
                     }
                 });
-
     }
 
     private void showAdvertising(String img, String url) {
@@ -259,20 +257,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             AdManager adManager = new AdManager(getActivity(), advList);
             adManager.setOverScreen(true)
                     .setWidthPerHeight(1)
-                    .setPageTransformer(new DepthPageTransformer());
-            adManager.showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
-
-            adManager.setPadding(50)
-                    .setBackViewColor(Color.parseColor("#AA333333"));
-            adManager.setOnImageClickListener(new AdManager.OnImageClickListener() {
-                @Override
-                public void onImageClick(View view, AdInfo advInfo) {
-                    if (!url.isEmpty()) {
-                        startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("advertising", url));
-                    }
-                    adManager.dismissAdDialog();
-                }
-            });
+                    .setPadding(50)
+                    .setBackViewColor(Color.parseColor("#AA333333"))
+                    .setPageTransformer(new DepthPageTransformer())
+                    .setOnImageClickListener(new AdManager.OnImageClickListener() {
+                        @Override
+                        public void onImageClick(View view, AdInfo advInfo) {
+                            if (!url.isEmpty()) {
+                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("advertising", url));
+                            }
+                            adManager.dismissAdDialog();
+                        }
+                    })
+                    .showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
             long timeMillis = System.currentTimeMillis();
             SPUtils.put(getActivity(), "AdvertTime", timeMillis);
         }

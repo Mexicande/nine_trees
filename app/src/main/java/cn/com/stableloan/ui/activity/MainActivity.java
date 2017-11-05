@@ -83,49 +83,8 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
-        //VisionTest();
         updateDiy();
         initView();
-    }
-
-
-    private void VisionTest() {
-
-
-      String  channel = WalleChannelReader.getChannel(this.getApplicationContext());
-
-        UpdateManager.create(this).setUrl(Urls.Update.APP_UPDATA).setPostData(Urls.Update.value+channel).setParser(new IUpdateParser() {
-            @Override
-            public UpdateInfo parse(String source) throws Exception {
-                UpdateInfo info = new UpdateInfo();
-                Gson gson=new Gson();
-                UpdateInfoBean infoBean = gson.fromJson(source, UpdateInfoBean.class);
-                int code =Integer.parseInt(getVersionCode(MainActivity.this));
-                if(Integer.parseInt(infoBean.getVersionCode())>code){
-                    info.hasUpdate = true;
-                }else {
-                    info.hasUpdate = false;
-                }
-                info.updateContent =infoBean.getUpdateContent();
-                info.versionCode = Integer.parseInt(infoBean.getVersionCode());
-                info.versionName = infoBean.getVersionName();
-                info.url = infoBean.getUrl();
-                info.md5 =infoBean.getMd5();
-                info.size = infoBean.getSize();
-                info.isForce = infoBean.isForce();
-                info.isIgnorable = infoBean.isIgnorable();
-                info.isAutoInstall=true;
-                info.isSilent = infoBean.isSilent();
-                info.maxTimes=Integer.parseInt(infoBean.getMaxTimes());
-                return info;
-            }
-        }).setManual(true).setManual(true).setWifiOnly(false).setOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(UpdateError error) {
-
-            }
-        }).check();
-
     }
 
     public void updateDiy() {
@@ -133,9 +92,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 //      String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         String  channel = WalleChannelReader.getChannel(this.getApplicationContext());
         Map<String, String> params = new HashMap<String, String>();
-
         params.put("url", channel);
-
         new UpdateAppManager
                 .Builder()
                 //必须设置，当前Activity
@@ -182,16 +139,12 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                             Double i = (double) size / 1024/1024;
                             DecimalFormat df = new DecimalFormat("0.0");
                             String format = df.format(i);
-
-
                             int versioncode = jsonObject.getInt("versioncode");
                             String update="No";
                             if(versioncode>NewVersionCode){
                                 update="Yes";
                             }
-
                             String url = jsonObject.getString("url");
-                            LogUtils.d("url===",url+"");
                             updateAppBean
                                     //（必须）是否更新Yes,No
                                     .setUpdate(update)

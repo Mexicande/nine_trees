@@ -98,6 +98,9 @@ public class DownAPKService extends Service {
                 Uri uri = Uri.fromFile(new File(file.getPath()));
                 installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
                 installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+
                 PendingIntent mPendingIntent = PendingIntent.getActivity(DownAPKService.this, 0, installIntent, 0);
                 builder.setContentText("下载完成,请点击安装");
                 builder.setContentIntent(mPendingIntent);
