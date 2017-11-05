@@ -42,10 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        boolean contains = ActivityStackManager.getInstance().isContains(this);
-        if(contains){
             ActivityStackManager.getInstance().popActivity(this);
-        }
         if(Util.isOnMainThread()&&!this.isFinishing())
         {
             Glide.with(this).pauseRequests();
@@ -186,7 +183,6 @@ public class BaseActivity extends AppCompatActivity {
             } else {
                 v.setFocusable(false);
                 v.setFocusableInTouchMode(true);
-
                 return true;
             }
         }

@@ -530,8 +530,12 @@ public class LoginFragment extends Fragment {
                                     MainActivity.launch(getActivity());
                                     getActivity().finish();
                                 } else if ("error_UserFragment".equals(from)) {
-                                    EventBus.getDefault().post(new UpdateEvent("user"));
+                                    Intent intent=new Intent();
+                                    getActivity().setResult(RESULT_CODE,intent);
                                     getActivity().finish();
+
+
+
                                 } else if ("CollectionError".equals(from)) {
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     getActivity().finish();
@@ -594,7 +598,6 @@ public class LoginFragment extends Fragment {
                             } else if (id != null) {
                                 startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class", id));
                                 getActivity().finish();
-
                             } else {
                                 getActivity().finish();
                             }
@@ -613,13 +616,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                hud.dismiss();
-                            }
-                        });
+                        hud.dismiss();
                     }
                 });
 
@@ -646,7 +643,7 @@ public class LoginFragment extends Fragment {
                 if (Atest) {
                     AndPermission.with(getActivity())
                             .requestCode(200)
-                            .permission(Manifest.permission.READ_PHONE_STATE)
+                            .permission(Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             .callback(listener)
                             .start();
                 } else {

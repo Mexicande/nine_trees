@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.integarl.StatusBean;
@@ -52,7 +55,7 @@ import okhttp3.Response;
 /**
  * 申请材料
  */
-public class UserInformationActivity extends Activity {
+public class UserInformationActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -69,7 +72,6 @@ public class UserInformationActivity extends Activity {
     private static  final  int IMAGE_RESULT=110;
     /**
      * #17326b
-     *
      * @param context
      */
     public static void launch(Context context) {
@@ -81,7 +83,6 @@ public class UserInformationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
         ButterKnife.bind(this);
-
         ImmersionBar.with(this).statusBarColor(R.color.information_title)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
@@ -205,6 +206,7 @@ public class UserInformationActivity extends Activity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                EventBus.getDefault().post(new UpdateEvent("user"));
                 finish();
                 break;
             case R.id.User_information:
@@ -252,6 +254,15 @@ public class UserInformationActivity extends Activity {
 
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            EventBus.getDefault().post(new UpdateEvent("user"));
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

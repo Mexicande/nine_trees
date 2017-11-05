@@ -228,7 +228,8 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                     if(message!=null){
                         int count = ActivityStackManager.getInstance().getCount();
                         LogUtils.i("ActivityStackManager===",count+"");
-                        ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
+                        ActivityStackManager.getInstance().popAllActivity();
+                       // ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
                         MainActivity.launch(this);
                         finish();
                     }else {
@@ -244,7 +245,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     public void onViewClicked() {
         String from = getIntent().getStringExtra("from");
         String message = getIntent().getStringExtra("message");
-
         if (from != null) {
             if (from.equals("user")) {
                 UserBean userBean = new UserBean();
@@ -262,7 +262,8 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 finish();
             }else {
                 if(message!=null){
-                    ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
+                    ActivityStackManager.getInstance().popAllActivity();
+                    //ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
                     MainActivity.launch(this);
                     finish();
                 }else {

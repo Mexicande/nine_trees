@@ -266,9 +266,12 @@ public class IntegralActivity extends BaseActivity {
                 if(from!=null&&"cash".equals(from)){
                     Intent intent=new Intent();
                     setResult(INVITE_CODE,intent);
+                    finish();
+                }else {
+                    Intent intent=new Intent();
+                    setResult(INVITE_CODE,intent);
+                    finish();
                 }
-
-                finish();
                 break;
             case R.id.layoutGo:
                 slideUp.hide();
@@ -298,6 +301,10 @@ public class IntegralActivity extends BaseActivity {
         if(keyCode==KeyEvent.KEYCODE_BACK){
             String from = getIntent().getStringExtra("from");
             if(from!=null&&"cash".equals(from)){
+                Intent intent=new Intent();
+                setResult(INVITE_CODE,intent);
+                finish();
+            }else {
                 Intent intent=new Intent();
                 setResult(INVITE_CODE,intent);
                 finish();

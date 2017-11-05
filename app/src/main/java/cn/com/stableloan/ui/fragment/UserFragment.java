@@ -53,6 +53,7 @@ import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
@@ -81,6 +82,8 @@ public class UserFragment extends ImmersionFragment {
     TextView btMoney;
 
     private Wechat_dialog wechat_dialog;
+
+    private  boolean ONRESUEM=false;
     public UserFragment() {
 
     }
@@ -91,21 +94,20 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-
         EventBus.getDefault().register(this);
         return view;
     }
- /*   @Override
+    @Override
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             //相当于Fragment的onPause
             getUserInfo();
 
         } else {
+            getUserInfo();
             // 相当于Fragment的onResume
         }
-    }*/
-
+    }
 
     @Override
     public void onResume() {
@@ -124,7 +126,7 @@ public class UserFragment extends ImmersionFragment {
         }
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "我的", eventObject);
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {
             HashMap<String, String> params = new HashMap<>();
@@ -149,8 +151,7 @@ public class UserFragment extends ImmersionFragment {
                                     Intent intent=new Intent(getActivity(),LoginActivity.class);
                                     intent.putExtra("message",personal.getError_message());
                                     intent.putExtra("from","error_UserFragment");
-                                    startActivity(intent);
-
+                                    startActivityForResult(intent,200);
                                 } else {
                                     ToastUtils.showToast(getActivity(),personal.getError_message());
                                 }
@@ -170,6 +171,15 @@ public class UserFragment extends ImmersionFragment {
         ButterKnife.unbind(this);
     }
 
+    @Subscribe
+    public  void updateEvent(UpdateEvent msg){
+        if(msg!=null){
+            if("user".equals(msg.msg)){
+                getUserInfo();
+            }
+        }
+
+    }
 
     @Override
     protected void immersionInit() {
@@ -195,15 +205,6 @@ public class UserFragment extends ImmersionFragment {
     }
 
     @Subscribe
-    public  void updateEvent(UpdateEvent msg){
-        if(msg!=null){
-            if("user".equals(msg.msg)){
-                getUserInfo();
-            }
-        }
-
-    }
-    @Subscribe
     public void onUserEvent(UserEvent event) {
         UserInfromBean userNick = event.userNick;
         if (userNick != null) {
@@ -221,12 +222,10 @@ public class UserFragment extends ImmersionFragment {
                 TextUser();
                 break;
             case R.id.iv_Edit:
-                //TextUser();
                 startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class),100);
                 break;
             case R.id.layout_setting:
                 SafeSettingActivity.launch(getActivity());
-                //SafeActivity11111.launch(getActivity());
                 break;
             case R.id.feedback:
                 FeedbackActivity.launch(getActivity());
@@ -235,13 +234,17 @@ public class UserFragment extends ImmersionFragment {
                 CollectionActivity.launch(getActivity());
                 break;
             case R.id.layout_Integral:
-                IntegralActivity.launch(getActivity());
+                startActivityForResult(new Intent(getActivity(),IntegralActivity.class),200);
+
+                //IntegralActivity.launch(getActivity());
                 break;
             case R.id.laout_Money:
-                CashActivity.launch(getActivity());
+                startActivityForResult(new Intent(getActivity(),CashActivity.class),200);
+
+              //  CashActivity.launch(getActivity());
                 break;
             case R.id.invite:
-                startActivity(new Intent(getActivity(),InviteFriendsActivity.class).putExtra("nick",tvNick.getText().toString()));
+                startActivityForResult(new Intent(getActivity(),InviteFriendsActivity.class).putExtra("nick",tvNick.getText().toString()),200);
                 break;
             case R.id.layout_attention:
                 wechat_dialog = new Wechat_dialog(getActivity());
@@ -300,15 +303,18 @@ public class UserFragment extends ImmersionFragment {
                     int cat = (int) SPUtils.get(getActivity(), userphone+Urls.lock.CAT, 0);
                        switch (cat){
                            case Urls.lock.NO_VERIFICATION:
-                               UserInformationActivity.launch(getActivity());
+                               startActivityForResult(new Intent(getActivity(),UserInformationActivity.class),200);
+                              // UserInformationActivity.launch(getActivity());
                                break;
                            case Urls.lock.GESTURE_VERIFICATION:
-                               Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userinformation");
-                               startActivity(intent);
+                               startActivityForResult(new Intent(getActivity(),GestureLoginActivity.class).putExtra("from", "userinformation"),200);
+                              /* Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userinformation");
+                               startActivity(intent);*/
                                break;
                            case Urls.lock.PW_VERIFICATION:
-                               Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
-                               startActivity(intent2);
+                               startActivityForResult(new Intent(getActivity(),Verify_PasswordActivity.class).putExtra("from", "userinformation"),200);
+                              /* Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
+                               startActivity(intent2);*/
                                break;
                        }
 
@@ -326,7 +332,12 @@ public class UserFragment extends ImmersionFragment {
                             tvNick.setText(nick);
                         }
                     }
+                    break;
             }
+        }
+        if(requestCode==200){
+            LogUtils.i("刷新======");
+            getUserInfo();
         }
     }
 
@@ -334,6 +345,5 @@ public class UserFragment extends ImmersionFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-
     }
 }

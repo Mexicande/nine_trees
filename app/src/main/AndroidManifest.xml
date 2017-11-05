@@ -33,6 +33,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden"
         tools:replace="android:name">
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -43,7 +44,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
+        <service android:name=".utils.DownAPKService"/>
+        <service android:name=".view.update.DownloadService"/>
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.Splash">

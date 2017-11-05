@@ -204,6 +204,9 @@ public class InviteFriendsActivity extends BaseActivity {
                 if(from!=null&&"cash".equals(from)){
                     Intent intent=new Intent();
                     setResult(INVITE_CODE,intent);
+                }else {
+                    Intent intent=new Intent();
+                    setResult(100,intent);
                 }
                 finish();
 
@@ -402,8 +405,12 @@ public class InviteFriendsActivity extends BaseActivity {
             if(from!=null&&"cash".equals(from)){
                 Intent intent=new Intent();
                 setResult(INVITE_CODE,intent);
-                finish();
+            }else {
+                    Intent intent=new Intent();
+                    setResult(100,intent);
             }
+            finish();
+
         }
         return super.onKeyDown(keyCode, event);
 

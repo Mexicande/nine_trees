@@ -785,8 +785,6 @@ public class ProductDesc extends BaseActivity {
                         if (dialog != null && dialog) {
                             sendIO();
                             startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
-
-                            addDateApply();
                         } else {
                             showApplyDialog();
                         }
@@ -806,9 +804,5 @@ public class ProductDesc extends BaseActivity {
         }
     }
 
-    private void addDateApply() {
-
-
-    }
 
 }

@@ -528,7 +528,7 @@ public class MessageFragment extends Fragment {
             case R.id.bt_message_login:
                 AndPermission.with(getActivity())
                         .requestCode(300)
-                        .permission(Manifest.permission.READ_PHONE_STATE)
+                        .permission(Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .callback(listener)
                         .start();
                 break;
@@ -619,7 +619,8 @@ public class MessageFragment extends Fragment {
                                         MainActivity.launch(getActivity());
                                         getActivity().finish();
                                     } else if ("error_UserFragment".equals(from)) {
-                                        EventBus.getDefault().post(new UpdateEvent("user"));
+                                        Intent intent=new Intent();
+                                        getActivity().setResult(RESULT_CODE,intent);
                                         getActivity().finish();
                                     } else if ("CollectionError".equals(from)) {
                                         EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));

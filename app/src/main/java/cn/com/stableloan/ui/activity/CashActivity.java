@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
@@ -180,6 +181,8 @@ public class CashActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cash_back:
+                Intent intent=new Intent();
+                setResult(100,intent);
                 finish();
                 break;
             case R.id.tv_rule:
@@ -209,6 +212,17 @@ public class CashActivity extends BaseActivity {
                 break;
         }
     }*/
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            Intent intent=new Intent();
+            setResult(100,intent);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     protected void onDestroy() {

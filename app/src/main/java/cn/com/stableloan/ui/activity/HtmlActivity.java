@@ -1,11 +1,17 @@
 package cn.com.stableloan.ui.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,12 +29,18 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.BaseRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,13 +55,23 @@ import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.WelfareShutBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.js.JsInteration;
+import cn.com.stableloan.utils.DownAPKService;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.update.AppUpdateUtils;
+import cn.com.stableloan.view.update.DownloadService;
+import cn.com.stableloan.view.update.HttpManager;
+import cn.com.stableloan.view.update.OkGoUpdateHttpUtil;
+import cn.com.stableloan.view.update.UpdateAppBean;
+import cn.com.stableloan.view.update.UpdateAppManager;
+import cn.com.stableloan.view.update.UpdateCallback;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class HtmlActivity extends BaseActivity {
+import static android.R.attr.path;
+
+public class HtmlActivity extends BaseActivity  {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -68,7 +90,8 @@ public class HtmlActivity extends BaseActivity {
 
     private WebView mWebView;
    private WelfareBean.DataBean welfare;
-
+    String path = "";
+    private File file;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, HtmlActivity.class));
@@ -270,11 +293,28 @@ public class HtmlActivity extends BaseActivity {
                 Toast.makeText(HtmlActivity.this, "请安装最新版应用宝", Toast.LENGTH_SHORT).show();
             }
             return true;
-        }
-        else {
+        }else if(url.endsWith(".apk")){
+            downloadApk(url);
+            return true;
+
+        } else {
             return false;
         }
+
     }
+
+    /**
+     * 应用内拦截下载
+     */
+    private void downloadApk(String url) {
+
+        Intent intent = new Intent(this, DownAPKService.class);
+        intent.putExtra("apk_url",url);
+        startService(intent);
+
+    }
+
+
 
     @OnClick({R.id.iv_back, R.id.web_container})
     public void onViewClicked(View view) {
@@ -289,6 +329,7 @@ public class HtmlActivity extends BaseActivity {
                 break;
         }
     }
+
 
 
     private class MyWebChromeClient extends WebChromeClient {
