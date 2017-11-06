@@ -55,7 +55,7 @@ import okhttp3.Response;
 /**
  * 申请材料
  */
-public class UserInformationActivity extends BaseActivity {
+public class UserInformationActivity extends Activity{
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -83,9 +83,7 @@ public class UserInformationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
         ButterKnife.bind(this);
-        ImmersionBar.with(this).statusBarColor(R.color.information_title)
-                .statusBarAlpha(0.3f)
-                .fitsSystemWindows(true)
+        ImmersionBar.with(this)
                 .init();
         EventBus.getDefault().register(this);
         initToolbar();

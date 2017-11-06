@@ -1,16 +1,12 @@
 package cn.com.stableloan.base;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -20,18 +16,19 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.utils.ActivityStackManager;
-import cn.com.stableloan.utils.keyboard.KeyBoardUtils;
 
 /**
  * Created by apple on 2017/5/20.
  */
 
 public class BaseActivity extends AppCompatActivity {
+    private ImmersionBar mImmersionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersionBar.with(this).statusBarColor(R.color.colorPrimary)
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.colorPrimary)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();
@@ -42,11 +39,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-            ActivityStackManager.getInstance().popActivity(this);
+        ActivityStackManager.getInstance().popActivity(this);
         if(Util.isOnMainThread()&&!this.isFinishing())
         {
             Glide.with(this).pauseRequests();
         }
+        if (mImmersionBar != null)
+            mImmersionBar.destroy();
 
 
     }

@@ -831,7 +831,7 @@ public class Camera2Activity extends AutoLayoutActivity {
                                 String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
                                 if(camera==null||camera.equals("1")){
                                     SPUtils.put(Camera2Activity.this,"camera","ok");
-                                    identifyPhoto(file1.getAbsolutePath(),photoBase64);
+                                    identifyPhoto(file1.getAbsolutePath());
                                 }
                             });
                             //清除该Uri的Fresco缓存. 若不清除，对于相同文件名的图片，Fresco会直接使用缓存而使得Drawee得不到更新.
@@ -853,7 +853,7 @@ public class Camera2Activity extends AutoLayoutActivity {
     }
     private Bitmap bitmap;
     private KProgressHUD hd;
-    private void identifyPhoto(String path,String base) {
+    private void identifyPhoto(String path) {
         hd .show();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_4444;
