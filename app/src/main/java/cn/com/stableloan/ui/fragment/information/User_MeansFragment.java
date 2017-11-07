@@ -382,7 +382,7 @@ public class User_MeansFragment extends Fragment {
                                         }
                                         etCity.setRightString(identityBean.getCity());
                                         Identity.DataBean.IdentityBean.ContactBean bean = identityBean.getContact().get(0);
-                                        etContact.setRightString(bean.getUserphone());
+                                        etContact1.setRightString(bean.getUserphone());
 
                                         etContactName.setRightString(bean.getContact());
 
@@ -395,7 +395,7 @@ public class User_MeansFragment extends Fragment {
 
                                         Identity.DataBean.IdentityBean.ContactBean bean1 = identityBean.getContact().get(1);
 
-                                        etContact1.setRightString(bean1.getUserphone());
+                                        etContact.setRightString(bean1.getUserphone());
                                         etContactName2.setRightString(bean1.getContact());
 
                                         String bet2 = bean1.getRelation();
@@ -644,8 +644,8 @@ public class User_MeansFragment extends Fragment {
         String city = etCity.getRightString();
         String between1 = etBetween1.getRightString();
         String between2 = etBetween2.getRightString();
-        String contact1 = etContact.getRightString();
-        String contact2 = etContact1.getRightString();
+        String contact1 = etContact1.getRightString();
+        String contact2 = etContact.getRightString();
         String contactName1 = etContactName.getRightString();
         String contactName2 = etContactName2.getRightString();
 

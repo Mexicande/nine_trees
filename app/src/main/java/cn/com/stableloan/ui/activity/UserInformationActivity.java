@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,7 +57,7 @@ import okhttp3.Response;
  * 申请材料
  */
 public class UserInformationActivity extends Activity{
-
+    private ImmersionBar immersionBar;
     @Bind(R.id.title_name)
     TextView titleName;
     @Bind(R.id.iv_back)
@@ -83,7 +84,10 @@ public class UserInformationActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
         ButterKnife.bind(this);
-        ImmersionBar.with(this)
+        immersionBar = ImmersionBar.with(this);
+              immersionBar.statusBarColor(R.color.information_title1)
+                .fitsSystemWindows(true)
+                .statusBarAlpha(0.3f)
                 .init();
         EventBus.getDefault().register(this);
         initToolbar();
@@ -112,9 +116,31 @@ public class UserInformationActivity extends Activity{
                         .into(itemView);
             }
         });
+
         viewById.setData(Arrays.asList(String.valueOf(R.drawable.user_infomation_top1),String.valueOf(R.drawable.user_information_top_bg)),null);
 
+viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if(position==0){
+                             immersionBar.statusBarColor(R.color.information_title1)
+                                       .init();
+                       }else if(position==1){
+                            immersionBar.statusBarColor(R.color.information_title)
+                                                .init();
+                            }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+});
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("mymaterials", "");
