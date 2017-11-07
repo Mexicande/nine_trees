@@ -223,10 +223,8 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                     Iterator<Integer> iterator = mSelectedView.iterator();
                     Integer preIndex = iterator.next();
                     TagView pre = (TagView) getChildAt(preIndex);
-                    if(pre!=null){
-                        pre.setChecked(false);
-                    }
-                    child.setChecked(true);
+                    setChildUnChecked(preIndex, pre);
+                    setChildChecked(position, child);
                     mSelectedView.remove(preIndex);
                     mSelectedView.add(position);
                 } else
@@ -257,7 +255,15 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     private static final String KEY_CHOOSE_POS = "key_choose_pos";
     private static final String KEY_DEFAULT = "key_default";
 
+    private void setChildChecked(int position, TagView view) {
+               view.setChecked(true);
+        mTagAdapter.onSelected(position, view.getTagView());
+          }
 
+   private void setChildUnChecked(int position, TagView view) {
+           view.setChecked(false);
+            mTagAdapter.unSelected(position, view.getTagView());
+        }
     @Override
     protected Parcelable onSaveInstanceState()
     {

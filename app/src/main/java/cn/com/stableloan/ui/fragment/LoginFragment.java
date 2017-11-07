@@ -116,7 +116,6 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         gt3GeetestUtils = GT3GeetestUtils.getInstance(getActivity());
         ButterKnife.bind(this, view);
-        initView();
         setGt3GeetestUtilsListener();
         long date = (long) SPUtils.get(getActivity(), "date", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
@@ -133,15 +132,18 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private void initView() {
-
+    private void initViewDialog(int title,int desc) {
         dialog = new Login_DeviceDialog(getActivity());
+        dialog.setTitle(getResources().getString(title));
+        dialog.setMessage(getResources().getString(desc));
         dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
                 dialog.dismiss();
             }
         });
+
+        dialog.show();
 
     }
 
@@ -534,8 +536,6 @@ public class LoginFragment extends Fragment {
                                     getActivity().setResult(RESULT_CODE,intent);
                                     getActivity().finish();
 
-
-
                                 } else if ("CollectionError".equals(from)) {
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
                                     getActivity().finish();
@@ -602,13 +602,16 @@ public class LoginFragment extends Fragment {
                                 getActivity().finish();
                             }
                         } else if (infromBean.getError_code() == 1130) {
-                            dialog.show();
-                        } else {
+                            initViewDialog(R.string.safe_error_title,R.string.safe_error_desc);
+                        } else if(infromBean.getError_code() == 1136){
+                            initViewDialog(R.string.freezing_error_title,R.string.freezing_error_desc);
+                        }else {
                             long timeMillis = System.currentTimeMillis();
                             SPUtils.put(getActivity(), "date", timeMillis);
                             llBtnType.setVisibility(View.VISIBLE);
                             Atest = false;
-                            gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
+                            setGt3GeetestUtilsListener();
+                            //gt3GeetestUtils.getGeetest(Urls.Ip_url + Urls.Login.captchaURL, Urls.Ip_url + Urls.Login.validateURL, null);
                             ToastUtils.showToast(getActivity(), infromBean.getError_message());
                         }
                     }

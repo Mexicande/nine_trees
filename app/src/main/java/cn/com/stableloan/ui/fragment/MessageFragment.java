@@ -122,7 +122,6 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
-        intView();
         String unique = (String) SPUtils.get(getActivity(), "unique", null);
         if (unique != null) {
             times = unique;
@@ -141,15 +140,19 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
-    private void intView() {
-
+    private void initViewDialog(int title,int desc) {
         dialog = new Login_DeviceDialog(getActivity());
+        dialog.setTitle(getResources().getString(title));
+        dialog.setMessage(getResources().getString(desc));
         dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
                 dialog.dismiss();
             }
         });
+
+        dialog.show();
+
     }
 
 
@@ -476,7 +479,7 @@ public class MessageFragment extends Fragment {
                                     StringBuffer str = new StringBuffer(phone);
                                     str.insert(3, " ");
                                     str.insert(8, " ");
-                                    tvPhone.setText("+86 " + str);
+                                    tvPhone.setText(str);
                                     captchaTimeCount.start();
                                 }
                                 btGetCodeLogin.setEnabled(true);
@@ -690,9 +693,11 @@ public class MessageFragment extends Fragment {
                                 LogUtils.i("status", codeMessage.getData().getStatus());
                                 startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone", etPhone.getText().toString()));
                             }
-                        } else if (codeMessage.getError_code() == 1130) {
-                            dialog.show();
-                        } else {
+                        }  else if (codeMessage.getError_code() == 1130) {
+                            initViewDialog(R.string.safe_error_title,R.string.safe_error_desc);
+                        } else if(codeMessage.getError_code() == 1136) {
+                            initViewDialog(R.string.freezing_error_title, R.string.freezing_error_desc);
+                        }else{
                             ToastUtils.showToast(getActivity(), codeMessage.getError_message());
                         }
                     }

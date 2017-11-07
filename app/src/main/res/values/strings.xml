@@ -20,7 +20,7 @@
     <string name="Validity_Time">有效期</string>
     <string name="Save">保 存</string>
     <string name="Forget_PW">忘记密码</string>
-
+    <string name="setting_prompting">建议您使用安全密码拼写组合，其中包括:\n 数字、英文字母大小写、特殊符号</string>
 
     <!--密码锁-->
 
@@ -86,12 +86,20 @@
     <string name="Credit_Phone">银行绑定手机号</string>
     <string name="Credit_BankName">所属银行</string>
 
-
+    
     <!--  especial --> 
     <string name="private_key">BI1hNZWOmpTyld2F</string> 
     <string name="public_key">DkeI2HZ45KR+7qkSXQIDAQAB</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--warning_dialog-->
+    <string name="token_error_title">登录过期,请重新登录</string>
+    <string name="token_error_desc">登录过期有如下几种原因:\n在其他浏览器/微信/设备上登录\n清理微信/浏览器/应用程序缓存</string>
+
+    <string name="freezing_error_title">警告!</string>
+    <string name="freezing_error_desc">您的帐户已被冻结,无法登录\n具体相关事宜请联系客服</string>
+
+    <string name="safe_error_title">账号安全保护中!</string>
+    <string name="safe_error_desc">在非常用设备上登录\n且使用非注册手机号\n可在"设置-常用设备管理"中调整</string>
+
 
 </resources>

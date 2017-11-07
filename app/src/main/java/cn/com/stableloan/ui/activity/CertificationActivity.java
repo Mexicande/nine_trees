@@ -133,6 +133,7 @@ public class CertificationActivity extends BaseActivity {
                                     Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
                                     alipay.setTextBackground(drawable);
                                     alipay.setRightString("已完成");
+                                    alipay.setLeftBottomString(data.getAliAccount());
                                 }else {
                                     Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_fail);
                                     alipay.setTextBackground(drawable);

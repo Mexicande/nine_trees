@@ -41,27 +41,6 @@
                 android:maxLength="120"
                 />
             <TextView
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:textSize="17sp"
-                android:text="我们回复您的方式:"/>
-            <EditText
-                android:id="@+id/et_message_phone"
-                android:tag="suggest"
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="17dp"
-                android:hint="手机号"
-                android:layout_marginRight="17dp"
-                android:paddingLeft="@dimen/_10dp"
-                android:inputType="phone"
-                android:maxLength="11"
-                android:background="@drawable/view_linnerlayout_border"
-                android:maxLines="1"/>
-            <TextView
                 android:layout_marginTop="@dimen/_20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

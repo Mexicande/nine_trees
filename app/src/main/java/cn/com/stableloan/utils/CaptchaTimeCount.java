@@ -39,7 +39,7 @@ public class CaptchaTimeCount extends CountDownTimer {
 
 	    validate_btn.setClickable(true); 
 	    validate_btn.setText(R.string.captcha_btn_resend);//@color/color_63b953
-	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.gay));
+	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.colorPrimary));
 		validate_btn.setBackgroundResource(R.drawable.login_editext_bacground);//背景颜色
 	}
 	/**

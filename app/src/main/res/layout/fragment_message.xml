@@ -31,7 +31,7 @@
             android:paddingLeft="@dimen/_10dp"
             android:textSize="@dimen/_16sp"
             android:textColorHint="@color/gay"
-            android:theme="@style/MyEditText"
+            app:theme="@style/MyEditText"
             android:textCursorDrawable="@null"
             app:funcType="canClear"
             />
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/gay"
+            android:textColor="@color/select_text_color"
             android:layout_gravity="center_horizontal"/>
         <RelativeLayout
             android:layout_marginTop="@dimen/_10dp"
@@ -97,7 +97,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="发送验证码"
-                android:textColor="@color/gay"
+                android:textColor="@color/colorPrimary"
                 android:background="@drawable/login_editext_bacground"
                 />
             <cn.com.stableloan.utils.editext.PowerfulEditText
@@ -116,7 +116,7 @@
                 android:paddingLeft="@dimen/_10dp"
                 android:textSize="@dimen/_16sp"
                 android:textColorHint="@color/gay"
-                android:theme="@style/MyEditText"
+                app:theme="@style/MyEditText"
                 android:textCursorDrawable="@null"
                 app:funcType="canClear"
                 />

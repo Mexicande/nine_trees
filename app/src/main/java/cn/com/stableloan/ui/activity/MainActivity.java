@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
@@ -84,6 +86,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         updateDiy();
+
         initView();
     }
 
@@ -195,20 +198,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
     }
 
-
-    private String s="";
-    public String getVersionCode(Context context){
-        PackageManager packageManager=context.getPackageManager();
-        PackageInfo packageInfo;
-        String versionCode="";
-        try {
-            packageInfo=packageManager.getPackageInfo(context.getPackageName(),0);
-            versionCode=packageInfo.versionCode+"";
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return versionCode;
-    }
     private void initView() {
 
 

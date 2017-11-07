@@ -42,7 +42,10 @@
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_gravity="center_horizontal" />
-
+<View
+    android:layout_width="match_parent"
+    android:background="@color/line_color"
+    android:layout_height="@dimen/_1dp"/>
         <FrameLayout
             android:id="@+id/fragment"
             android:layout_marginTop="@dimen/_10dp"
@@ -61,5 +64,5 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="@color/gay"
-        android:text="消费金融行业先驱者"/>
+        android:text="贷款，投资你的明天"/>
 </RelativeLayout>

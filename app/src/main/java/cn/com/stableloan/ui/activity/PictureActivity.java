@@ -57,7 +57,8 @@ public class PictureActivity extends AppCompatActivity {
         ViewCompat.setTransitionName(picture, TRANSIT_PIC);
         titleName.setText(mImageTitle);
         RequestOptions options = new RequestOptions()
-                .centerCrop()
+                .centerInside()
+                 .dontTransform()
                 .dontTransform();
         Glide.with(this).load(mImageUrl).apply(options).into(picture);
     }

@@ -55,8 +55,6 @@ public class SettingPassWordActivity extends AppCompatActivity {
     RelativeLayout layout;
     @Bind(R.id.et_SettingPassWord)
     PowerfulEditText etSettingPassWord;
-    @Bind(R.id.phone)
-    TextView phone;
     @Bind(R.id.bt_login)
     SuperButton btLogin;
     private String userPhone;
@@ -84,13 +82,13 @@ public class SettingPassWordActivity extends AppCompatActivity {
     private void setListener() {
 
         userPhone = getIntent().getStringExtra("userPhone");
-        if (userPhone != null) {
+       /* if (userPhone != null) {
             StringBuilder sb = new StringBuilder(userPhone);
             sb.insert(3, " ");
             sb.insert(8, " ");
             sb.insert(0, "+86 ");
             phone.setText(sb);
-        }
+        }*/
         etSettingPassWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

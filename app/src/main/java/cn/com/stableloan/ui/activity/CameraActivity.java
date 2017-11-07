@@ -224,6 +224,7 @@ public class CameraActivity extends AutoLayoutActivity {
                         }else {
                             ToastUtils.showToast(CameraActivity.this,"解析失败,请重新扫描");
                             SPUtils.remove(CameraActivity.this,"camera1");
+                            finish();
                         }
                     }
 
@@ -233,6 +234,7 @@ public class CameraActivity extends AutoLayoutActivity {
                                 ToastUtils.showToast(CameraActivity.this,"解析失败,请重新扫描");
                                 SPUtils.remove(CameraActivity.this,"camera1");
                                 hd.dismiss();
+                        finish();
                     }
                 });
 

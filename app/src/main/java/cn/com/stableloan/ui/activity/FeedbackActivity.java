@@ -2,9 +2,13 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -17,6 +21,7 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -25,9 +30,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperButton;
+import cn.com.stableloan.view.update.AppUpdateUtils;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -39,8 +46,6 @@ public class FeedbackActivity extends BaseActivity {
     ImageView ivBack;
     @Bind(R.id.et_message)
     EditText etMessage;
-    @Bind(R.id.et_message_phone)
-    EditText etMessagePhone;
     @Bind(R.id.bt_login)
     SuperButton btLogin;
 
@@ -103,23 +108,31 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     private void sendMessageFeed() {
-        String phone = etMessagePhone.getText().toString();
         String message = etMessage.getText().toString();
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
 
-        if (!phone.isEmpty() && !message.isEmpty()) {
-            String token = (String) SPUtils.get(this, "token", "1");
-            if (token != null) {
-                HashMap<String, String> params = new HashMap<>();
+        if (!TextUtils.isEmpty(message)) {
+            String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
+            String versionName = AppUpdateUtils.getVersionName(this);
+            Point point = new Point();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                getWindowManager().getDefaultDisplay().getRealSize(point);
+            }
+            DisplayMetrics displayMetrics = AppUpdateUtils.getDisplayMetrics(this);
+
+            double x = Math.pow(point.x/ displayMetrics.xdpi, 2);
+            double y = Math.pow(point.y / displayMetrics.ydpi, 2);
+            double screenInches = Math.sqrt(x + y);
+            DecimalFormat df = new DecimalFormat("0.0");
+            String format = df.format(screenInches);
+            HashMap<String, String> params = new HashMap<>();
                 params.put("token", token);
                 params.put("content", message);
-                if (phone.isEmpty()) {
-                    params.put("phone", "");
-                } else {
-                    params.put("phone", phone);
-
-                }
+                params.put("phone", userphone);
+                params.put("sversion", versionName);
+                params.put("browser", "android");
+                params.put("screen", format);
                 JSONObject jsonObject = new JSONObject(params);
-
                 OkGo.<String>post(Urls.Ip_url + Urls.user.FEEDBACK)
                         .tag(this)
                         .upJson(jsonObject)
@@ -137,7 +150,6 @@ public class FeedbackActivity extends BaseActivity {
                                         intent.putExtra("message",object.getString("error_message"));
                                         intent.putExtra("from","error_UserFragment");
                                         startActivityForResult(intent,REQUEST_CODE);
-
                                     } else{
                                         ToastUtils.showToast(FeedbackActivity.this, object.getString("error_message"));
                                     }
@@ -152,7 +164,6 @@ public class FeedbackActivity extends BaseActivity {
                 ToastUtils.showToast(this, "信息不能为空");
             }
         }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

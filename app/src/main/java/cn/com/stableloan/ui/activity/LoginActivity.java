@@ -48,6 +48,7 @@ import cn.com.stableloan.ui.fragment.MessageFragment;
 import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.dialog.Login_DeviceDialog;
 
 public class LoginActivity extends BaseActivity implements Touch_login {
 
@@ -60,6 +61,7 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     private FragmentManager mFragmentManager;
 
     private Fragment mCurrentFragment;
+    private Login_DeviceDialog dialog;
 
 
     private boolean Flag = false;
@@ -87,10 +89,24 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         String message = getIntent().getStringExtra("message");
         if(message!=null){
             ToastUtils.showToast(this,message);
+            initViewDialog(R.string.token_error_title,R.string.token_error_desc);
         }
         mFragmentContainerHelper.attachMagicIndicator(loginMagicindicator);
     }
+    private void initViewDialog(int title,int desc) {
+        dialog = new Login_DeviceDialog(this);
+        dialog.setTitle(getResources().getString(title));
+        dialog.setMessage(getResources().getString(desc));
+        dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                dialog.dismiss();
+            }
+        });
 
+        dialog.show();
+
+    }
      protected void transparentStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

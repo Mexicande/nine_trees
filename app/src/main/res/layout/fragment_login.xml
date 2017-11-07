@@ -23,7 +23,7 @@
         android:paddingRight="15dp"
         android:textSize="@dimen/_16sp"
         android:textColorHint="@color/gay"
-        android:theme="@style/MyEditText"
+        app:theme="@style/MyEditText"
         android:textCursorDrawable="@null"
         app:funcType="canClear"
         />
@@ -48,6 +48,7 @@
         android:layout_height="45dp"
         android:textCursorDrawable="@null"
         app:funcType="canWatchPwd"
+        app:theme="@style/MyEditText"
         android:inputType="textPassword"
         />
     <com.example.gt3unbindsdk.GT3GeetestButton

@@ -73,6 +73,15 @@ public class Certification implements Serializable{
         private int TaobaoStatus;
         private int CapStatus;
         private int AliStatus;
+        private String AliAccount;
+
+        public String getAliAccount() {
+            return AliAccount;
+        }
+
+        public void setAliAccount(String aliAccount) {
+            AliAccount = aliAccount;
+        }
 
         public int getTaobaoStatus() {
             return TaobaoStatus;

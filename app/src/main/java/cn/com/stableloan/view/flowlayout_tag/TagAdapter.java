@@ -56,7 +56,11 @@ public abstract class TagAdapter<T>
     {
         return mCheckedPosList;
     }
+   public void onSelected(int position, View view){
+   }
 
+   public void unSelected(int position, View view){
+   }
 
     public int getCount()
     {

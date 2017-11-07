@@ -146,6 +146,8 @@ public class ProductDesc extends BaseActivity {
     ImageView ivHots;
     @Bind(R.id.tv_descLimit)
     TextView tvDescLimit;
+    @Bind(R.id.view_line)
+    View viewLine;
     private int pid;
 
     private Product_DescBean descBean;
@@ -361,29 +363,7 @@ public class ProductDesc extends BaseActivity {
         ZhugeSDK.getInstance().track(this, "产品详情页", eventObject);
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
-
-      /*  FlexboxLayoutManager manager = new FlexboxLayoutManager();
-        //设置主轴排列方式
-        manager.setFlexDirection(FlexDirection.ROW);
-        //设置是否换行
-        manager.setFlexWrap(FlexWrap.WRAP);
-        flowRecyclerView.setLayoutManager(manager);
-        flowRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-*/
-
-       /* FlexboxLayoutManager manager = new FlexboxLayoutManager();
-
-        manager.setFlexDirection(FlexDirection.ROW);
-        //设置是否换行
-        manager.setFlexWrap(FlexWrap.WRAP);
-        manager.setAlignItems(AlignItems.STRETCH);
-
-        flowRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        flowRecyclerView.setLayoutManager(manager);*/
-
-       /* MyLayoutManager layout = new MyLayoutManager();
-        flowRecyclerView.setLayoutManager(layout);*/
+        
         flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
         RecyclerViewDecoration decoration = new RecyclerViewDecoration(0, 0);
         flowRecyclerView.addItemDecoration(decoration);
@@ -399,8 +379,11 @@ public class ProductDesc extends BaseActivity {
             descAdvertising.setVisibility(View.VISIBLE);
             Glide.with(this).load(product.getAd_image())
                     .apply(options).into(descAdvertising);
+            viewLine.setVisibility(View.GONE);
+
         } else {
             descAdvertising.setVisibility(View.GONE);
+            viewLine.setVisibility(View.VISIBLE);
         }
 
         if (product.getActivity() == 1) {

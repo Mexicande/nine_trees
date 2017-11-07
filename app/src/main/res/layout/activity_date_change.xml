@@ -14,6 +14,7 @@
         android:visibility="gone"
         android:layout_marginTop="@dimen/_10dp"
         android:paddingLeft="@dimen/_5dp"
+        android:textColorHint="@color/gay"
         android:layout_width="match_parent"
         android:textSize="@dimen/information_textSize"
         android:layout_height="50dp"
@@ -31,6 +32,8 @@
     <com.andreabaccega.widget.FormEditText
         android:id="@+id/et_idCard"
         android:visibility="gone"
+        android:textColorHint="@color/gay"
+
         android:layout_marginTop="@dimen/_10dp"
         android:paddingLeft="@dimen/_5dp"
         android:layout_width="match_parent"
@@ -71,6 +74,8 @@
         android:visibility="gone"
         android:layout_marginTop="@dimen/_10dp"
         android:paddingLeft="@dimen/_5dp"
+        android:textColorHint="@color/gay"
+
         android:layout_width="match_parent"
         android:textSize="@dimen/information_textSize"
         android:layout_height="50dp"
@@ -91,6 +96,8 @@
         android:layout_width="match_parent"
         android:textSize="@dimen/information_textSize"
         android:layout_height="50dp"
+        android:textColorHint="@color/gay"
+
         android:background="@drawable/editext_normal"
         android:maxLines="1"
         android:hint="11位有效手机号码"
@@ -113,6 +120,8 @@
         android:background="@drawable/editext_normal"
         android:maxLines="1"
         android:hint="真实地址"
+        android:textColorHint="@color/gay"
+
         whatever:emptyAllowed="false"
         android:textColor="@color/select_text_color"
         whatever:testType="regexp"
@@ -130,6 +139,8 @@
         android:background="@drawable/editext_normal"
         android:maxLines="1"
         android:hint="请输入卡号"
+        android:textColorHint="@color/gay"
+
         whatever:emptyAllowed="false"
         android:textColor="@color/select_text_color"
         android:inputType="number"
@@ -150,6 +161,8 @@
         android:maxLines="1"
         android:hint="真实姓名"
         whatever:emptyAllowed="false"
+        android:textColorHint="@color/gay"
+
         android:textColor="@color/select_text_color"
         whatever:customRegexp="^([a-zA-Z\\u4e00-\\u9fa5\\·]{1,10})$"
         whatever:testErrorString="姓名格式不正确"
@@ -167,6 +180,8 @@
         android:background="@drawable/editext_normal"
         android:maxLines="1"
         whatever:emptyAllowed="false"
+        android:textColorHint="@color/gay"
+
         android:textColor="@color/select_text_color"
         android:maxLength="30"
         whatever:testType="regexp"
@@ -184,6 +199,8 @@
         android:background="@drawable/editext_normal"
         android:maxLines="1"
         android:hint="区号"
+        android:textColorHint="@color/gay"
+
         android:gravity="center"
         android:inputType="phone"
         whatever:emptyAllowed="false"
@@ -201,6 +218,8 @@
         android:background="@drawable/editext_normal"
         android:maxLines="1"
         android:hint="号码"
+        android:textColorHint="@color/gay"
+
         android:gravity="center"
         android:inputType="phone"
         whatever:emptyAllowed="false"
@@ -222,6 +241,8 @@
         android:textColor="@color/select_text_color"
         android:maxLines="1"
         android:hint="邮箱地址"
+        android:textColorHint="@color/gay"
+
         android:inputType="textEmailAddress"
         android:imeOptions="actionNext"
         android:tint="@color/gay"
@@ -238,6 +259,7 @@
         android:tint="@color/select_text_color"
         android:maxLines="1"
         android:hint="月收入"
+        android:textColorHint="@color/gay"
         android:inputType="number"
         whatever:emptyAllowed="false"
         android:textColor="@color/select_text_color"

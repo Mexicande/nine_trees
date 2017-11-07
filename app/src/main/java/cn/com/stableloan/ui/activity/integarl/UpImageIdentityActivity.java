@@ -242,7 +242,7 @@ public class UpImageIdentityActivity extends BaseActivity {
     private void fillImageView(String picturePath, ImageView imageView, String title) {
         if (!picturePath.isEmpty()) {
              options = new RequestOptions()
-                     .fitCenter()
+                     .centerCrop()
                     .error(R.mipmap.iv_error_image)
                     .placeholder(R.mipmap.iv_holder_image)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
@@ -431,7 +431,7 @@ public class UpImageIdentityActivity extends BaseActivity {
                     });
                 } else {
                     RequestOptions options = new RequestOptions()
-                            .fitCenter()
+                            .centerCrop()
                             .error(R.mipmap.iv_error_image)
                             .placeholder(R.mipmap.iv_holder_image)
                             .override(WIDTH, HEIGHT)
