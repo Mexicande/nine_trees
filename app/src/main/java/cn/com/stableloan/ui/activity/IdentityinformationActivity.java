@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -132,6 +133,8 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setColors(Color.parseColor("#fb5a5b"));
+                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                indicator.setLineWidth(UIUtil.dip2px(context, 90));
                 return indicator;
             }
 
@@ -142,6 +145,8 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
         titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+        final FragmentContainerHelper fragmentContainerHelper = new FragmentContainerHelper(magicIndicator);
+        fragmentContainerHelper.setInterpolator(new OvershootInterpolator(2.0f));
 
     }
 

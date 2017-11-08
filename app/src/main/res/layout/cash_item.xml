@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
-    <RelativeLayout
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+ <!--   <RelativeLayout
+        android:id="@+id/layout"
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="50dp">
-        <LinearLayout
+        <TextView
+            android:id="@+id/status"
+            android:layout_marginLeft="17dp"
             android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/select_text_color"
+            android:text="123"
+            />
+        <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -16,6 +28,7 @@
                 android:layout_marginLeft="21dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="2017/07/07 07:17"
                 android:textColor="@color/gay"/>
             <TextView
                 android:id="@+id/create_at"
@@ -23,6 +36,7 @@
                 android:layout_below="@id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="发起提现"
                 android:textColor="@color/gay"/>
         </LinearLayout>
         <TextView
@@ -33,21 +47,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FEB324"
+            android:text="-100元"
             />
-        <TextView
-            android:id="@+id/status"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/_20dp"
-            android:layout_toLeftOf="@id/number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="123"
-            />
+
         <View
             android:layout_marginLeft="19dp"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:background="#F3F2F8"
             android:layout_height="2dp"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
+    <cn.com.stableloan.view.supertextview.SuperTextView
+        android:id="@+id/stv_cash"
+        android:layout_below="@id/layout"
+        android:layout_width="match_parent"
+        stv:sLeftTextString="处理中"
+        stv:sLeftViewMarginLeft="15dp"
+        stv:sLeftTextSize="16sp"
+        stv:sCenterBottomTextSize="13sp"
+        stv:sCenterTopTextSize="14sp"
+        stv:sCenterTopTextColor="@color/text_setting"
+        stv:sCenterBottomTextColor="@color/gay"
+        stv:sCenterViewMarginLeft="50dp"
+        stv:sCenterViewGravity="left_center"
+        stv:sBottomDividerLineMarginRight="15dp"
+        stv:sBottomDividerLineMarginLeft="15dp"
+        stv:sDividerLineColor="@color/frame_color"
+        stv:sCenterTopTextString="2017/07/07 07:17"
+        stv:sCenterBottomTextString="发起提现"
+        stv:sRightTextString="-100元"
+        stv:sRightTextSize="16sp"
+        stv:sRightViewMarginLeft="15dp"
+        android:layout_height="70dp">
+    </cn.com.stableloan.view.supertextview.SuperTextView>
 </RelativeLayout>

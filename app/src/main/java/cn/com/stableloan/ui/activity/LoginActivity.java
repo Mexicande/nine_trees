@@ -88,7 +88,6 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         initFragments();
         String message = getIntent().getStringExtra("message");
         if(message!=null){
-            ToastUtils.showToast(this,message);
             initViewDialog(R.string.token_error_title,R.string.token_error_desc);
         }
         mFragmentContainerHelper.attachMagicIndicator(loginMagicindicator);

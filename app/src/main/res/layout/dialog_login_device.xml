@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="5dp"
+        card_view:cardCornerRadius="6dp"
         card_view:cardElevation="1dp"
         card_view:cardUseCompatPadding="true">
     <LinearLayout

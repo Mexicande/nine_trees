@@ -116,12 +116,25 @@ public class AppUpdateUtils {
         return "";
     }
 
-    public static int getVersionCode(Context context) {
+   /* public static int getVersionCode(Context context) {
         PackageInfo packageInfo = getPackageInfo(context);
         if (packageInfo != null) {
             return packageInfo.versionCode;
         }
         return 0;
+    }*/
+
+    public static int getVersionCode(Context context){
+        PackageManager packageManager=context.getPackageManager();
+        PackageInfo packageInfo;
+        int versionCode=0;
+        try {
+            packageInfo=packageManager.getPackageInfo(context.getPackageName(),0);
+            versionCode=packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
     }
 
     public static PackageInfo getPackageInfo(Context context) {

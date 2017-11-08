@@ -33,7 +33,6 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden"
         tools:replace="android:name">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -44,8 +43,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <service android:name=".utils.DownAPKService"/>
-        <service android:name=".view.update.DownloadService"/>
+
+        <service android:name=".utils.DownAPKService" />
+        <service android:name=".view.update.DownloadService" />
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.Splash">
@@ -141,6 +142,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="41551e9365727dbf1b539c5c8e36557a" />
+
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
             android:screenOrientation="portrait"
@@ -178,13 +180,13 @@
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <!-- 密码设置 -->
 
-        <activity android:name=".ui.activity.SettingPassWordActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.SettingPassWordActivity"
+            android:screenOrientation="portrait" />
         <!-- 三方认证 -->
-        <activity android:name=".ui.activity.CertificationActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.CertificationActivity"
+            android:screenOrientation="portrait" />
         <!-- 反馈意见 -->
 
         <activity
@@ -219,55 +221,55 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <!-- Cash Running water -->
-        <activity android:name=".ui.activity.IntegralActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.IntegralActivity"
+            android:screenOrientation="portrait" />
         <!-- Cash desc -->
-        <activity android:name=".ui.activity.CashActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.CashActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Cash withdrawals rule -->
-        <activity android:name=".ui.activity.integarl.RuleDescActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.integarl.RuleDescActivity"
+            android:screenOrientation="portrait" />
         <!-- Cash withdrawals -->
 
-        <activity android:name=".ui.activity.integarl.WithdrawalCashActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.integarl.WithdrawalCashActivity"
+            android:screenOrientation="portrait" />
         <!-- 好友邀请 -->
-        <activity android:name=".ui.activity.integarl.InviteFriendsActivity"
-            android:screenOrientation="portrait"
-            />
-        <!--图片信息上传-->
-        <activity android:name=".ui.activity.integarl.UpImageIdentityActivity"
-            android:screenOrientation="portrait"
-            />
-
-        <activity android:name=".ui.activity.integarl.DateChangeActivity"
-            android:screenOrientation="portrait"
-            />
-        <!--安全设置-->
-        <activity android:name=".ui.activity.integarl.SafeSettingActivity"
-            android:screenOrientation="portrait"
-            />
-        <!--设备管理-->
-        <activity android:name=".ui.activity.settingdate.DeviceActivity"
-            android:screenOrientation="portrait"
-            />
-        <!--密码修改-->
-        <activity android:name=".ui.activity.UpdatePWActivity"
-            android:screenOrientation="portrait"
-            />
-       <!-- 现金规则-->
-        <activity android:name=".ui.activity.cash.GetCashRule"
-            android:screenOrientation="portrait"
-            />
-        <!--设置手势密码-->
-        <activity android:name=".ui.activity.settingdate.SwitchPassWordActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".ui.activity.integarl.InviteFriendsActivity"
+            android:screenOrientation="portrait" />
+        <!-- 图片信息上传 -->
+        <activity
+            android:name=".ui.activity.integarl.UpImageIdentityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.integarl.DateChangeActivity"
+            android:screenOrientation="portrait" />
+        <!-- 安全设置 -->
+        <activity
+            android:name=".ui.activity.integarl.SafeSettingActivity"
+            android:screenOrientation="portrait" />
+        <!-- 设备管理 -->
+        <activity
+            android:name=".ui.activity.settingdate.DeviceActivity"
+            android:screenOrientation="portrait" />
+        <!-- 密码修改 -->
+        <activity
+            android:name=".ui.activity.UpdatePWActivity"
+            android:screenOrientation="portrait" />
+        <!-- 现金规则 -->
+        <activity
+            android:name=".ui.activity.cash.GetCashRule"
+            android:screenOrientation="portrait" />
+        <!-- 设置手势密码 -->
+        <activity
+            android:name=".ui.activity.settingdate.SwitchPassWordActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.cash.CashFlowActivity"></activity>
     </application>
 
 </manifest>

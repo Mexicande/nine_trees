@@ -363,7 +363,7 @@ public class ProductDesc extends BaseActivity {
         ZhugeSDK.getInstance().track(this, "产品详情页", eventObject);
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
-        
+
         flowRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
         RecyclerViewDecoration decoration = new RecyclerViewDecoration(0, 0);
         flowRecyclerView.addItemDecoration(decoration);

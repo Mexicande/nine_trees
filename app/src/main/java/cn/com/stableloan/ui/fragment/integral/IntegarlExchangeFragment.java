@@ -30,6 +30,8 @@ import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * 积分兑换
  */
 public class IntegarlExchangeFragment extends Fragment {
 

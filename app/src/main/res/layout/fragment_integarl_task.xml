@@ -10,7 +10,6 @@
             android:background="#F3F2F8"
             android:layout_width="match_parent"
             android:layout_height="1.5dp"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/task_recycler"
             android:layout_width="match_parent"

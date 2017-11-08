@@ -3,7 +3,6 @@ package cn.com.stableloan.ui.fragment.information;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,10 +12,8 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -58,12 +55,9 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
-import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
-import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
@@ -117,6 +111,8 @@ public class User_MeansFragment extends Fragment {
     RoundButton save;
     @Bind(R.id.layout_camera)
     SuperTextView layoutCamera;
+    @Bind(R.id.line_platform)
+    View linePlatform;
 
     private ACache aCache;
     private UserBean user;
@@ -183,85 +179,13 @@ public class User_MeansFragment extends Fragment {
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "身份信息第一页", eventObject);
 
-        etCity.setFocusableInTouchMode(false);
-        etCity.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView v) {
-                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
-                        REQUEST_CODE_PICK_CITY);
-            }
-        });
-
-        etMarriage.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                PickerViewUtils.setPickerView(etMarriage, marrieList, getActivity(), "婚姻状况");
-
-            }
-        });
-        etBetween1.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                PickerViewUtils.setPickerView(etBetween1, relationList, getActivity(), "与您的关系");
-            }
-        });
-        etBetween2.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                PickerViewUtils.setPickerView(etBetween2, relationList, getActivity(), "与您的关系");
-            }
-        });
-        // 城市定位
-        etCity.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                getLocationPermission();
-            }
-        });
-        //相机拍照
-        layoutCamera.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                getCameraPermission();
-
-            }
-        });
-        //联系人数据
-            etContactName.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-                @Override
-                public void onClickListener(SuperTextView superTextView) {
-                    getPermission(1);
-
-                }
-            });
-            etContactName2.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-                @Override
-                public void onClickListener(SuperTextView superTextView) {
-                    getPermission(2);
-
-                }
-            });
-
-        setSuperText(etName, Urls.DateChange.NAME);
-        setSuperText(etIDCard, Urls.DateChange.IDCARD);
-        setSuperText(etAge1, Urls.DateChange.AGE);
-        setSuperText(etContact, Urls.DateChange.CONTACT_PHONE1);
-        setSuperText(etContact1, Urls.DateChange.CONTACT_PHONE2);
-        setSuperText(etAddress, Urls.DateChange.ADDRESS);
-
-
     }
 
     private void setSuperText(SuperTextView superText, int type) {
-        superText.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
                 Intent intent = new Intent(getActivity(), DateChangeActivity.class);
                 intent.putExtra("type", type);
-                intent.putExtra("hint",superText.getRightString());
+                intent.putExtra("hint", superText.getRightString());
                 startActivityForResult(intent, 10000);
-            }
-        });
 
     }
 
@@ -294,10 +218,10 @@ public class User_MeansFragment extends Fragment {
                 //最大允许的拍照尺寸（像素数）
                 intent.putExtra("maxPicturePixels", 3840 * 2160);
                 //startActivityForResult(intent, AppApplication.TAKE_PHOTO_CUSTOM);
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     intent.setClass(getActivity(), Camera2Activity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     intent.setClass(getActivity(), CameraActivity.class);
                     startActivity(intent);
                     //ToastUtils.showToast(getActivity(),"暂时不支持"+ Build.VERSION.SDK_INT);
@@ -310,7 +234,7 @@ public class User_MeansFragment extends Fragment {
             // 权限申请失败回调。
             if (requestCode == 500) {
                 // TODO ...
-                ToastUtils.showToast(getActivity(),"获取权限失败，请在设置中手动添加拍照权限");
+                ToastUtils.showToast(getActivity(), "获取权限失败，请在设置中手动添加拍照权限");
             }
         }
     };
@@ -355,15 +279,13 @@ public class User_MeansFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         if (s != null) {
                             Gson gson = new Gson();
                             Identity identity = gson.fromJson(s, Identity.class);
                             if (identity.getError_code() == 0) {
                                 if (identity.getData().getIsSuccess().equals("1")) {
                                     if (identity.getData().getStatus().equals("1")) {
-                                        if(identityBean!=null){
-
+                                        if (identityBean != null) {
                                             identityBean = identity.getData().getIdentity();
                                             etName.setRightString(identityBean.getName());
                                             etIDCard.setRightString(identityBean.getIdcard());
@@ -374,7 +296,6 @@ public class User_MeansFragment extends Fragment {
                                                 etSex.setRightString("男");
                                             }
                                             etAge1.setRightString(identityBean.getAge());
-
                                             etAddress.setRightString(identityBean.getIdaddress());
                                             String marriage = identityBean.getMarriage();
                                             if ("0".equals(marriage)) {
@@ -423,10 +344,10 @@ public class User_MeansFragment extends Fragment {
 
                                     }
                                 }
-                            }else if(identity.getError_code()==2){
-                                Intent intent=new Intent(getActivity(),LoginActivity.class);
-                                intent.putExtra("message",identity.getError_message());
-                                intent.putExtra("from","IdentityError");
+                            } else if (identity.getError_code() == 2) {
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                intent.putExtra("message", identity.getError_message());
+                                intent.putExtra("from", "IdentityError");
                                 startActivity(intent);
 
                             } else {
@@ -476,16 +397,6 @@ public class User_MeansFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({ R.id.save})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.save:
-                if(identityBean!=null){
-                    saveDate();
-                }
-                break;
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -546,25 +457,22 @@ public class User_MeansFragment extends Fragment {
                 break;
 
             case 10000:
-                switch (resultCode){
+                switch (resultCode) {
                     case Urls.DateChange.NAME:
-                        if(data!=null){
+                        if (data != null) {
                             String type = data.getStringExtra("type");
-                            LogUtils.i("name===",type);
                             etName.setRightString(type);
                         }
                         break;
                     case Urls.DateChange.AGE:
-                        if(data!=null){
+                        if (data != null) {
                             String type = data.getStringExtra("type");
-                            LogUtils.i("name===",type);
                             etAge1.setRightString(type);
                         }
                         break;
                     case Urls.DateChange.IDCARD:
-                        if(data!=null){
+                        if (data != null) {
                             String type = data.getStringExtra("type");
-                            LogUtils.i("name===",type);
                             StringBuilder sb = new StringBuilder(type);
                             StringBuilder replace = sb.replace(10, 15, "***");
                             etIDCard.setRightString(replace);
@@ -585,53 +493,25 @@ public class User_MeansFragment extends Fragment {
                         }
                         break;
                     case Urls.DateChange.CONTACT_PHONE1:
-                        if(data!=null){
+                        if (data != null) {
                             String type = data.getStringExtra("type");
-                            LogUtils.i("name===",type);
                             etContact.setRightString(type);
                         }
                         break;
                     case Urls.DateChange.CONTACT_PHONE2:
-                        if(data!=null){
+                        if (data != null) {
                             String type = data.getStringExtra("type");
-                            LogUtils.i("name===",type);
                             etContact1.setRightString(type);
                         }
                         break;
                     case Urls.DateChange.ADDRESS:
-                        if(data!=null){
+                        if (data != null) {
                             String type = data.getStringExtra("type");
-                            LogUtils.i("name===",type);
                             etAddress.setRightString(type);
                         }
                         break;
                 }
                 break;
-
-
-        /*    case AppApplication.TAKE_PHOTO_CUSTOM:
-                mFile = new File(data.getStringExtra("file"));
-                Flowable.just(mFile)
-                        //将File解码为Bitmap
-                        .map(file -> BitmapUtils.compressToResolution(file, 1920 * 1080))
-                        //裁剪Bitmap
-                        .map(BitmapUtils::crop)
-                        //将Bitmap写入文件
-                        .map(bitmap -> BitmapUtils.writeBitmapToFile(bitmap, "mFile"))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(file -> {
-                            mFile = file;
-                            Uri uri = Uri.parse("file://" + mFile.toString());
-                            *//*ImagePipeline imagePipeline = Fresco.getImagePipeline();
-                            //清除该Uri的Fresco缓存. 若不清除，对于相同文件名的图片，Fresco会直接使用缓存而使得Drawee得不到更新.
-                            imagePipeline.evictFromMemoryCache(uri);
-                            imagePipeline.evictFromDiskCache(uri);
-                            FrescoUtils.load("file://" + mFile.toString()).resize(240, 164).into(mImageView);
-                            mBtnTakePicture.setText("重新拍照");
-                            mHasSelectedOnce = true;*//*
-                        });
-                break;*/
 
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -734,22 +614,22 @@ public class User_MeansFragment extends Fragment {
         list.add(identity3);
         identity1.setContact(list);
         String token = (String) SPUtils.get(getActivity(), "token", "1");
-        Identity.DataBean date=new Identity.DataBean();
+        Identity.DataBean date = new Identity.DataBean();
         date.setIdentity(identity1);
         date.setToken(token);
 
-        if(user!=null){
+        if (user != null) {
             identity1.setUserphone(user.getUserphone());
         }
-        JSONObject object=new JSONObject();
+        JSONObject object = new JSONObject();
         try {
-            object.put("identity",identity1);
-            object.put("token",token);
+            object.put("identity", identity1);
+            object.put("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Gson gson=new Gson();
+        Gson gson = new Gson();
         String json = gson.toJson(date);
 
         OkGo.<String>post(Urls.Ip_url + Urls.Identity.AddIdentity)
@@ -761,7 +641,7 @@ public class User_MeansFragment extends Fragment {
                         try {
                             JSONObject object = new JSONObject(s);
                             int isSuccess = object.getInt("error_code");
-                            if (isSuccess==0) {
+                            if (isSuccess == 0) {
                                 identityBean = identity1;
                                 EventBus.getDefault().post(new InformationEvent("informationStatus"));
                                 String data = object.getString("data");
@@ -780,6 +660,7 @@ public class User_MeansFragment extends Fragment {
                 });
 
     }
+
     /**
      * 内容有无修改
      *
@@ -900,8 +781,6 @@ public class User_MeansFragment extends Fragment {
                     LogUtils.i("location", "权限");
                     initLocation();
                     mLocationClient.start();
-
-
                 }
             }
 
@@ -940,11 +819,11 @@ public class User_MeansFragment extends Fragment {
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
 
 
-            if (phone!=null&&phone.getCount() > 0) {
+            if (phone != null && phone.getCount() > 0) {
                 phone.moveToFirst();
                 contact[1] = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             }
-            if(phone!=null){
+            if (phone != null) {
                 phone.close();
             }
             cursor.close();
@@ -974,6 +853,60 @@ public class User_MeansFragment extends Fragment {
         mLocationClient.setLocOption(option);
     }
 
+    @OnClick({R.id.save,R.id.layout_camera, R.id.et_name, R.id.et_IDCard, R.id.et_Sex, R.id.et_Age1, R.id.et_Address, R.id.et_Marriage, R.id.et_City, R.id.et_Contact_name, R.id.et_Contact1, R.id.et_Between1, R.id.et_Contact_name2, R.id.et_Contact, R.id.et_Between2})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.save:
+                if (identityBean != null) {
+                    saveDate();
+                }
+                break;
+            case R.id.layout_camera:
+                getCameraPermission();
+                break;
+            case R.id.et_name:
+                setSuperText(etName, Urls.DateChange.NAME);
+                break;
+            case R.id.et_IDCard:
+                setSuperText(etIDCard, Urls.DateChange.IDCARD);
+                break;
+          /*  case R.id.et_Sex:
+                break;
+            case R.id.et_Age1:
+                setSuperText(etAge1, Urls.DateChange.AGE);
+                break;*/
+            case R.id.et_Address:
+                setSuperText(etAddress, Urls.DateChange.ADDRESS);
+                break;
+            case R.id.et_Marriage:
+                PickerViewUtils.setPickerView(etMarriage, marrieList, getActivity(), "婚姻状况");
+                break;
+            case R.id.et_City:
+                getLocationPermission();
+                break;
+            case R.id.et_Contact_name:
+                getPermission(1);
+                break;
+            case R.id.et_Contact1:
+                setSuperText(etContact, Urls.DateChange.CONTACT_PHONE1);
+
+                break;
+            case R.id.et_Between1:
+                PickerViewUtils.setPickerView(etBetween1, relationList, getActivity(), "与您的关系");
+
+                break;
+            case R.id.et_Contact_name2:
+                getPermission(2);
+                break;
+            case R.id.et_Contact:
+                setSuperText(etContact1, Urls.DateChange.CONTACT_PHONE2);
+                break;
+            case R.id.et_Between2:
+                PickerViewUtils.setPickerView(etBetween2, relationList, getActivity(), "与您的关系");
+                break;
+        }
+    }
+
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
@@ -988,6 +921,9 @@ public class User_MeansFragment extends Fragment {
                     }
                 });
             } else {
+                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
+
                 ToastUtils.showToast(getActivity(), bdLocation.getLocType() + "");
                 LogUtils.i("getLocType", bdLocation.getLocType() + "");
 
@@ -1001,6 +937,7 @@ public class User_MeansFragment extends Fragment {
 
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

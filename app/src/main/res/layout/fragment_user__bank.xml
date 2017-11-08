@@ -11,114 +11,127 @@
        android:orientation="vertical"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
-       <TextView
-           android:paddingLeft="@dimen/_10dp"
-           android:gravity="center_vertical"
-           android:layout_width="match_parent"
-           android:textStyle="bold"
+       <LinearLayout
            android:background="@color/white"
-           android:layout_height="50dp"
-           android:textSize="17sp"
-           android:textColor="@color/select_text_color"
-           android:text="@string/DebitBank_Card"/>
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_50dp">
+           <View
+               android:layout_marginLeft="@dimen/_10dp"
+               android:layout_width="4dp"
+               android:layout_gravity="center_vertical"
+               android:layout_centerVertical="true"
+               android:background="@color/colorStatus"
+               android:layout_height="17dp"/>
+           <cn.com.stableloan.view.supertextview.SuperTextView
+               android:id="@+id/debit_camera"
+               android:layout_width="match_parent"
+               android:layout_height="50dp"
+               stv:sLeftTextSize="16sp"
+               stv:sLeftViewMarginLeft="5dp"
+               stv:sDividerLineColor="@color/frame_color"
+               stv:sLeftTextString="@string/DebitBank_Card"
+               stv:sLeftTextIsBold="true"
+               stv:sRightTextColor="@color/select_text_color"
+               stv:sRightTextSize="@dimen/information_textSize"
+               stv:sRightTvDrawableRight="@mipmap/iv_scan"
+               stv:sBottomDividerLineMarginRight="10dp"
+               stv:sDividerLineType="none"
+               stv:sRightTextString="一键填写"
+               />
+       </LinearLayout>
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/et_BankCard1"
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           stv:sLeftTextSize="@dimen/information_textSize"
+           style="@style/identity_style"
            stv:sLeftTextString="@string/Debit_Id"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"
-           stv:sLeftTextColor="@color/select_text_color"
            stv:sRightTextSize="@dimen/information_textSize"
-           stv:sBottomDividerLineMarginLeft="10dp"
-           stv:sBottomDividerLineMarginRight="10dp"
-
+           stv:sDividerLineType="both"
+           stv:sTopDividerLineMarginLeft="10dp"
+           stv:sTopDividerLineMarginRight="10dp"
            />
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/et_BankPersonName1"
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           stv:sLeftTextSize="@dimen/information_textSize"
+           style="@style/identity_style"
+
            stv:sLeftTextString="@string/Debit_UserName"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"
-           stv:sLeftTextColor="@color/select_text_color"
            stv:sRightTextSize="@dimen/information_textSize"
            stv:sMaxEms="13"
-
-           stv:sBottomDividerLineMarginLeft="10dp"
-           stv:sBottomDividerLineMarginRight="10dp"
 
            />
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/et_BankPhone1"
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           stv:sLeftTextSize="@dimen/information_textSize"
+           style="@style/identity_style"
+
            stv:sLeftTextString="@string/Debit_Phone"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"
-           stv:sLeftTextColor="@color/select_text_color"
            stv:sRightTextSize="@dimen/information_textSize"
-           stv:sBottomDividerLineMarginLeft="10dp"
-           stv:sBottomDividerLineMarginRight="10dp"
 
            />
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/et_SelectBank1"
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           stv:sLeftTextSize="@dimen/information_textSize"
+           style="@style/identity_style"
+
            stv:sLeftTextString="@string/Debit_BankName"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"
-           stv:sLeftTextColor="@color/select_text_color"
            stv:sRightTextSize="@dimen/information_textSize"
-           stv:sBottomDividerLineMarginLeft="10dp"
-           stv:sBottomDividerLineMarginRight="10dp"
            stv:sRightTextString="@string/AutoEdit"
 
            />
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/et_ValidityTime1"
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           stv:sLeftTextSize="@dimen/information_textSize"
+           style="@style/identity_style"
+
            stv:sLeftTextString="@string/Validity_Time"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"
-           stv:sLeftTextColor="@color/select_text_color"
            stv:sRightTextSize="@dimen/information_textSize"
-           stv:sBottomDividerLineMarginLeft="10dp"
-           stv:sBottomDividerLineMarginRight="10dp"
 
            />
 
 
-       <TextView
-           android:layout_marginTop="@dimen/_10dp"
-           android:gravity="center_vertical"
-           android:paddingLeft="@dimen/_10dp"
-           android:layout_width="match_parent"
-           android:textStyle="bold"
+       <LinearLayout
            android:background="@color/white"
-           android:layout_height="50dp"
-           android:textSize="17sp"
-           android:textColor="@color/select_text_color"
-           android:text="@string/CreditBank_Card"/>
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_50dp">
+           <View
+               android:layout_marginLeft="@dimen/_10dp"
+               android:layout_width="4dp"
+               android:layout_gravity="center_vertical"
+               android:layout_centerVertical="true"
+               android:background="@color/colorStatus"
+               android:layout_height="17dp"/>
+           <cn.com.stableloan.view.supertextview.SuperTextView
+               android:id="@+id/credit_camera"
+               android:layout_width="match_parent"
+               android:layout_height="50dp"
+               stv:sLeftTextSize="16sp"
+               stv:sLeftViewMarginLeft="5dp"
+               stv:sDividerLineColor="@color/frame_color"
+               stv:sLeftTextString="@string/CreditBank_Card"
+               stv:sLeftTextIsBold="true"
+               stv:sRightTextColor="@color/select_text_color"
+               stv:sRightTextSize="@dimen/information_textSize"
+               stv:sRightTvDrawableRight="@mipmap/iv_scan"
+               stv:sBottomDividerLineMarginRight="10dp"
+               stv:sDividerLineType="none"
+               stv:sRightTextString="一键填写"
+               />
+       </LinearLayout>
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/is_credit"
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           stv:sLeftTextSize="@dimen/information_textSize"
+           style="@style/identity_style"
+           stv:sDividerLineType="both"
+           stv:sTopDividerLineMarginLeft="10dp"
+           stv:sTopDividerLineMarginRight="10dp"
            stv:sLeftTextString="@string/Or_CreditBank"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"
-           stv:sLeftTextColor="@color/select_text_color"
            stv:sRightTextSize="@dimen/information_textSize"
-           stv:sBottomDividerLineMarginLeft="10dp"
-           stv:sBottomDividerLineMarginRight="10dp"
            stv:sRightTextString="@string/No_Have"
            />
        <LinearLayout
@@ -129,74 +142,52 @@
            android:layout_height="wrap_content">
            <cn.com.stableloan.view.supertextview.SuperTextView
                android:id="@+id/et_BankCard2"
-               android:layout_width="match_parent"
-               android:layout_height="50dp"
-               stv:sLeftTextSize="@dimen/information_textSize"
+               style="@style/identity_style"
                stv:sLeftTextString="@string/Credit_Id"
                stv:sRightIconRes="@mipmap/ic_arrow"
                stv:sRightTextColor="@color/text_setting"
-               stv:sLeftTextColor="@color/select_text_color"
                stv:sRightTextSize="@dimen/information_textSize"
-               stv:sBottomDividerLineMarginLeft="10dp"
-               stv:sBottomDividerLineMarginRight="10dp"
                />
            <cn.com.stableloan.view.supertextview.SuperTextView
                android:id="@+id/et_BankPersonName2"
-               android:layout_width="match_parent"
-               android:layout_height="50dp"
-               stv:sLeftTextSize="@dimen/information_textSize"
+               style="@style/identity_style"
+
                stv:sLeftTextString="@string/Credit_UserName"
                stv:sMaxEms="13"
-
                stv:sRightIconRes="@mipmap/ic_arrow"
                stv:sRightTextColor="@color/text_setting"
-               stv:sLeftTextColor="@color/select_text_color"
                stv:sRightTextSize="@dimen/information_textSize"
-               stv:sBottomDividerLineMarginLeft="10dp"
-               stv:sBottomDividerLineMarginRight="10dp"
 
                />
            <cn.com.stableloan.view.supertextview.SuperTextView
                android:id="@+id/et_BankPhone2"
-               android:layout_width="match_parent"
-               android:layout_height="50dp"
-               stv:sLeftTextSize="@dimen/information_textSize"
+               style="@style/identity_style"
+
                stv:sLeftTextString="@string/Credit_Phone"
                stv:sRightIconRes="@mipmap/ic_arrow"
                stv:sRightTextColor="@color/text_setting"
-               stv:sLeftTextColor="@color/select_text_color"
                stv:sRightTextSize="@dimen/information_textSize"
-               stv:sBottomDividerLineMarginLeft="10dp"
-               stv:sBottomDividerLineMarginRight="10dp"
 
                />
            <cn.com.stableloan.view.supertextview.SuperTextView
                android:id="@+id/et_SelectBank2"
-               android:layout_width="match_parent"
-               android:layout_height="50dp"
-               stv:sLeftTextSize="@dimen/information_textSize"
+               style="@style/identity_style"
+
                stv:sLeftTextString="@string/Credit_BankName"
                stv:sRightIconRes="@mipmap/ic_arrow"
                stv:sRightTextColor="@color/text_setting"
-               stv:sLeftTextColor="@color/select_text_color"
                stv:sRightTextSize="@dimen/information_textSize"
-               stv:sBottomDividerLineMarginLeft="10dp"
-               stv:sBottomDividerLineMarginRight="10dp"
                stv:sRightTextString="@string/AutoEdit"
 
                />
            <cn.com.stableloan.view.supertextview.SuperTextView
                android:id="@+id/et_ValidityTime2"
-               android:layout_width="match_parent"
-               android:layout_height="50dp"
-               stv:sLeftTextSize="@dimen/information_textSize"
+               style="@style/identity_style"
+
                stv:sLeftTextString="@string/Validity_Time"
                stv:sRightIconRes="@mipmap/ic_arrow"
                stv:sRightTextColor="@color/text_setting"
-               stv:sLeftTextColor="@color/select_text_color"
                stv:sRightTextSize="@dimen/information_textSize"
-               stv:sBottomDividerLineMarginLeft="10dp"
-               stv:sBottomDividerLineMarginRight="10dp"
 
                />
        </LinearLayout>
@@ -205,7 +196,9 @@
            android:layout_marginBottom="50dp"
            android:layout_marginTop="40dp"
            android:layout_gravity="center"
-           android:layout_width="180dp"
+           android:layout_marginLeft="@dimen/_20dp"
+           android:layout_marginRight="@dimen/_20dp"
+           android:layout_width="match_parent"
            android:layout_height="40dp"
            android:text="@string/Save"
            app:btnCornerRadius="5dp"

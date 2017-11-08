@@ -7,11 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.andreabaccega.widget.FormEditText;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -36,7 +33,6 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.WorkInformation;
 import cn.com.stableloan.model.event.ProfessionalSelectEvent;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SmoothCheckBox;
@@ -51,10 +47,6 @@ import okhttp3.Response;
  */
 public class User_Professional_Fragment extends Fragment {
 
-    @Bind(R.id.title)
-    TextView title;
-    @Bind(R.id.bt_SelectProfession)
-    Button btSelectProfession;
     @Bind(R.id.et_School)
     SuperTextView etSchool;
     @Bind(R.id.et_SchoolAddress)
@@ -107,6 +99,8 @@ public class User_Professional_Fragment extends Fragment {
     LinearLayout layout5;
     @Bind(R.id.layout_Freelancer)
     LinearLayout layoutFreelancer;
+    @Bind(R.id.bt_SelectProfession)
+    SuperTextView btSelectProfession;
     private String[] list2;
     private static final int STUDENT = 2;
     private static final int COMPANY = 1;
@@ -117,7 +111,7 @@ public class User_Professional_Fragment extends Fragment {
     private WorkInformation.DataBean work;
     private static final int REQUEST_CODE = 30000;
 
-
+     private List<String> list;
     public User_Professional_Fragment() {
         // Required empty public constructor
     }
@@ -170,22 +164,24 @@ public class User_Professional_Fragment extends Fragment {
                                     int anInt = Integer.parseInt(identity);
                                     switch (anInt) {
                                         case STUDENT:
-                                            title.setText("其他");
+                                            btSelectProfession.setLeftString("其他");
                                             setVisibilityProfession(layoutStudent);
                                             id = STUDENT;
                                             break;
                                         case COMPANY:
-                                            title.setText("上班族");
+                                            btSelectProfession.setLeftString("上班族");
+
                                             setVisibilityProfession(layoutCompany);
                                             id = COMPANY;
                                             break;
                                         case BUSINESS:
-                                            title.setText("企业主");
+                                            btSelectProfession.setLeftString("企业主");
+
                                             setVisibilityProfession(layoutBusiness);
                                             id = BUSINESS;
                                             break;
                                         case FREE:
-                                            title.setText("逍遥客");
+                                            btSelectProfession.setLeftString("逍遥客");
                                             setVisibilityProfession(layoutFreelancer);
                                             id = FREE;
                                             break;
@@ -195,7 +191,7 @@ public class User_Professional_Fragment extends Fragment {
                                     etSchool.setRightString(student.getSchool());
                                     etSchoolAddress.setRightString(student.getAddress());
 
-                                    if(!student.getTeacherphone().isEmpty()){
+                                    if (!student.getTeacherphone().isEmpty()) {
                                         etTeacher.setRightString(student.getPreTeacherphone() + "-" + student.getTeacherphone());
                                     }
 
@@ -205,13 +201,13 @@ public class User_Professional_Fragment extends Fragment {
                                     etLocation.setRightString(company.getLocation());
                                     etEmail.setRightString(company.getEmail());
                                     String years = company.getYears();
-                                    if (years.length()==1) {
+                                    if (years.length() == 1) {
                                         int year = Integer.parseInt(company.getYears());
                                         etYears.setRightString(list2[year]);
                                     }
                                     String cincome = company.getCincome();
                                     etCincome.setRightString(cincome);
-                                    if(!company.getFixedline().isEmpty()){
+                                    if (!company.getFixedline().isEmpty()) {
                                         etFixedline.setRightString(company.getPreFixedline() + "-" + company.getFixedline());
                                     }
 
@@ -220,12 +216,12 @@ public class User_Professional_Fragment extends Fragment {
                                     BusinessCompany.setRightString(business.getBcompany());
                                     BusinessEmail.setRightString(business.getBemail());
 
-                                    if(!business.getBfixedline().isEmpty()){
-                                        etBusinessFixedline.setRightString(business.getBpreFixedline() + "-" +business.getBfixedline());
+                                    if (!business.getBfixedline().isEmpty()) {
+                                        etBusinessFixedline.setRightString(business.getBpreFixedline() + "-" + business.getBfixedline());
                                     }
 
-                                    BusinessLocation.setRightString( business.getBlocation());
-                                    if (business.getByears().length() ==1) {
+                                    BusinessLocation.setRightString(business.getBlocation());
+                                    if (business.getByears().length() == 1) {
                                         int year1 = Integer.parseInt(business.getByears());
                                         BusinessYears.setRightString(list2[year1]);
                                     }
@@ -265,27 +261,7 @@ public class User_Professional_Fragment extends Fragment {
     private void initBetter() {
 
         list2 = getResources().getStringArray(R.array.years);
-        List<String> list = Arrays.asList(list2);
-
-
-        etOperations.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                PickerViewUtils.setPickerView(etOperations, list, getActivity(), "经营年限");
-            }
-        });
-        etYears.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                PickerViewUtils.setPickerView(etYears, list, getActivity(), "工作年限");
-            }
-        });
-        BusinessYears.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                PickerViewUtils.setPickerView(BusinessYears, list, getActivity(), "工作年限");
-            }
-        });
+        list = Arrays.asList(list2);
 
         checkbox1.setOnCheckedChangeListener(new SmoothCompoundButton.OnCheckedChangeListener() {
             @Override
@@ -333,35 +309,15 @@ public class User_Professional_Fragment extends Fragment {
             }
         });
 
-        setSuperText(etSchool, Urls.DateChange.STUHENT_NAME);
-        setSuperText(etSchoolAddress, Urls.DateChange.STUHENT_ADRESS);
-        setSuperText(etTeacher, Urls.DateChange.STUHENT_TELEPHONE);
-
-        setSuperText(etCompany, Urls.DateChange.COMPANY_NAME);
-        setSuperText(etLocation, Urls.DateChange.COMPANY_ADRESS);
-        setSuperText(etFixedline, Urls.DateChange.COMPANY_TELEPHONE);
-        setSuperText(etEmail, Urls.DateChange.COMPANY_EMAIL);
-        setSuperText(etCincome, Urls.DateChange.COMPANY_SALART);
-
-        setSuperText(BusinessCompany, Urls.DateChange.BUSSINESS_NAME);
-        setSuperText(BusinessLocation, Urls.DateChange.BUSSINESS_ADRESS);
-        setSuperText(BusinessEmail, Urls.DateChange.BUSSINESS_EMAIL);
-        setSuperText(etBusinessFixedline, Urls.DateChange.BUSSINESS_TELEPHONE);
-        setSuperText(BusinessCincome, Urls.DateChange.BUSSINESS_SALART);
 
 
     }
 
     private void setSuperText(SuperTextView superText, int type) {
-        superText.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
                 Intent intent = new Intent(getActivity(), DateChangeActivity.class);
                 intent.putExtra("type", type);
-                intent.putExtra("hint",superText.getRightString());
+                intent.putExtra("hint", superText.getRightString());
                 startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
     }
 
     @Subscribe
@@ -374,17 +330,19 @@ public class User_Professional_Fragment extends Fragment {
                 id = STUDENT;
                 break;*/
             case COMPANY:
-                title.setText("上班族");
+                btSelectProfession.setLeftString("上班族");
+
                 setVisibilityProfession(layoutCompany);
                 id = COMPANY;
                 break;
             case BUSINESS:
-                title.setText("企业主");
+                btSelectProfession.setLeftString("企业主");
+
                 setVisibilityProfession(layoutBusiness);
                 id = BUSINESS;
                 break;
             case FREE:
-                title.setText("自由职业");
+                btSelectProfession.setLeftString("自由职业");
                 setVisibilityProfession(layoutFreelancer);
                 id = FREE;
                 break;
@@ -579,99 +537,85 @@ public class User_Professional_Fragment extends Fragment {
 
     }
 
-    @OnClick({R.id.bt_SelectProfession, R.id.save})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bt_SelectProfession:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(0));
-                break;
-            case R.id.save:
-                if(work!=null){
-                    saveInformation();
-                }
-                break;
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CODE){
-            switch (resultCode){
+        if (requestCode == REQUEST_CODE) {
+            switch (resultCode) {
                 case Urls.DateChange.STUHENT_NAME:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         etSchool.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.STUHENT_ADRESS:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         etSchoolAddress.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.STUHENT_TELEPHONE:
-                    if(data!=null){
+                    if (data != null) {
                         Bundle type = data.getBundleExtra("type");
-                        etTeacher.setRightString(type.getString("are")+"-"+type.getString("telephone"));
+                        etTeacher.setRightString(type.getString("are") + "-" + type.getString("telephone"));
                     }
                     break;
                 case Urls.DateChange.COMPANY_TELEPHONE:
-                    if(data!=null){
+                    if (data != null) {
                         Bundle type = data.getBundleExtra("type");
-                        etFixedline.setRightString(type.getString("are")+"-"+type.getString("telephone"));
+                        etFixedline.setRightString(type.getString("are") + "-" + type.getString("telephone"));
                     }
                     break;
                 case Urls.DateChange.BUSSINESS_TELEPHONE:
-                    if(data!=null){
+                    if (data != null) {
                         Bundle type = data.getBundleExtra("type");
-                        etBusinessFixedline.setRightString(type.getString("are")+"-"+type.getString("telephone"));
+                        etBusinessFixedline.setRightString(type.getString("are") + "-" + type.getString("telephone"));
                     }
                     break;
                 case Urls.DateChange.COMPANY_NAME:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         etCompany.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.BUSSINESS_NAME:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         BusinessCompany.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.COMPANY_ADRESS:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         etLocation.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.BUSSINESS_ADRESS:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         BusinessLocation.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.COMPANY_EMAIL:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         etEmail.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.BUSSINESS_EMAIL:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         BusinessEmail.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.COMPANY_SALART:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         etCincome.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.BUSSINESS_SALART:
-                    if(data!=null){
+                    if (data != null) {
                         String type = data.getStringExtra("type");
                         BusinessCincome.setRightString(type);
                     }
@@ -679,5 +623,88 @@ public class User_Professional_Fragment extends Fragment {
             }
         }
 
+    }
+
+
+    @OnClick({R.id.bt_SelectProfession, R.id.save,R.id.et_School, R.id.et_SchoolAddress,
+            R.id.et_Teacher, R.id.et_company, R.id.et_location, R.id.et_fixedline,
+            R.id.et_years, R.id.et_email, R.id.et_Cincome, R.id.Business_company,
+            R.id.Business_location, R.id.etBusiness_fixedline, R.id.Business_years,
+            R.id.Business_email, R.id.Business_Cincome, R.id.et_operations})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_SelectProfession:
+                EventBus.getDefault().post(new ProfessionalSelectEvent(0));
+                break;
+            case R.id.save:
+                if (work != null) {
+                    saveInformation();
+                }
+                break;
+            case R.id.et_School:
+                setSuperText(etSchool, Urls.DateChange.STUHENT_NAME);
+
+                break;
+            case R.id.et_SchoolAddress:
+                setSuperText(etSchoolAddress, Urls.DateChange.STUHENT_ADRESS);
+
+                break;
+            case R.id.et_Teacher:
+                setSuperText(etTeacher, Urls.DateChange.STUHENT_TELEPHONE);
+
+                break;
+            case R.id.et_company:
+                setSuperText(etCompany, Urls.DateChange.COMPANY_NAME);
+
+                break;
+            case R.id.et_location:
+                setSuperText(etLocation, Urls.DateChange.COMPANY_ADRESS);
+
+                break;
+            case R.id.et_fixedline:
+                setSuperText(etFixedline, Urls.DateChange.COMPANY_TELEPHONE);
+
+                break;
+            case R.id.et_years:
+                PickerViewUtils.setPickerView(etYears, list, getActivity(), "工作年限");
+
+                break;
+            case R.id.et_email:
+                setSuperText(etEmail, Urls.DateChange.COMPANY_EMAIL);
+
+                break;
+            case R.id.et_Cincome:
+                setSuperText(etCincome, Urls.DateChange.COMPANY_SALART);
+
+                break;
+            case R.id.Business_company:
+                setSuperText(BusinessCompany, Urls.DateChange.BUSSINESS_NAME);
+
+                break;
+            case R.id.Business_location:
+                setSuperText(BusinessLocation, Urls.DateChange.BUSSINESS_ADRESS);
+
+                break;
+            case R.id.etBusiness_fixedline:
+                setSuperText(etBusinessFixedline, Urls.DateChange.BUSSINESS_TELEPHONE);
+
+                break;
+            case R.id.Business_years:
+                PickerViewUtils.setPickerView(BusinessYears, list, getActivity(), "工作年限");
+
+                break;
+            case R.id.Business_email:
+                setSuperText(BusinessEmail, Urls.DateChange.BUSSINESS_EMAIL);
+
+                break;
+            case R.id.Business_Cincome:
+                setSuperText(BusinessCincome, Urls.DateChange.BUSSINESS_SALART);
+
+                break;
+            case R.id.et_operations:
+                PickerViewUtils.setPickerView(etOperations, list, getActivity(), "经营年限");
+                break;
+
+        }
     }
 }

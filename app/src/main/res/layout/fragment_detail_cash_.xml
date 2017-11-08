@@ -9,7 +9,7 @@
         android:id="@+id/cash_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="60dp"
         >
     </android.support.v7.widget.RecyclerView>
     <cn.com.stableloan.view.supertextview.SuperButton

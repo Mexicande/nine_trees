@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
-import android.os.Vibrator;
 import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -24,6 +23,7 @@ import cn.com.stableloan.R;
 import okhttp3.Call;
 
 /**
+ * 第三方H5-apk下载
  * Created by apple on 2017/11/5.
  */
 
@@ -52,7 +52,7 @@ public class DownAPKService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("onStartCommand");
         // 接收Intent传来的参数:
-         APK_url = intent.getStringExtra("apk_url");
+        APK_url = intent.getStringExtra("apk_url");
         DownFile(APK_url, APK_dir );
         return super.onStartCommand(intent, flags, startId);
     }
@@ -98,8 +98,6 @@ public class DownAPKService extends Service {
                 Uri uri = Uri.fromFile(new File(file.getPath()));
                 installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
                 installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
 
                 PendingIntent mPendingIntent = PendingIntent.getActivity(DownAPKService.this, 0, installIntent, 0);
                 builder.setContentText("下载完成,请点击安装");

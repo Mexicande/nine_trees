@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -79,6 +80,12 @@ public class DetailCash_Fragment extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
+        cashAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -99,7 +106,7 @@ public class DetailCash_Fragment extends Fragment {
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         JSONObject object = new JSONObject(params);
-        OkGo.<String>post(Urls.Ip_url + Urls.Integarl.GETCASH)
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.Integarl.getActivity)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override

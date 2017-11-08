@@ -38,6 +38,7 @@
                 android:text="个人信息完善至100%"/>
         </LinearLayout>
 
+
         <RelativeLayout
             android:gravity="right"
             android:layout_gravity="center_vertical"

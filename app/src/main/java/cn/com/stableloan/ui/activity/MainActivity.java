@@ -98,14 +98,12 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         params.put("url", channel);
         new UpdateAppManager
                 .Builder()
-                //必须设置，当前Activity
                 .setActivity(this)
                 //必须设置，实现httpManager接口的对象
                 .setHttpManager(new OkGoUpdateHttpUtil())
                 //必须设置，更新地址
                 .setUpdateUrl(Urls.Update.APP_UPDATA)
                 //以下设置，都是可选
-                //设置请求方式，默认get
                 .setPost(true)
                 //不显示通知栏进度条
 //                .dismissNotificationProgress()
@@ -143,11 +141,11 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                             DecimalFormat df = new DecimalFormat("0.0");
                             String format = df.format(i);
                             int versioncode = jsonObject.getInt("versioncode");
+
                             String update="No";
                             if(versioncode>NewVersionCode){
                                 update="Yes";
                             }
-                            String url = jsonObject.getString("url");
                             updateAppBean
                                     //（必须）是否更新Yes,No
                                     .setUpdate(update)
@@ -185,14 +183,12 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                      */
                     @Override
                     public void onBefore() {
-                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
                     }
                     /**
                      * 网路请求之后
                      */
                     @Override
                     public void onAfter() {
-                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
                     }
                 });
 
@@ -327,30 +323,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     private long mLastBackTime = 0;
     @Override
     public void onBackPressed() {
-      /*  ProductFragment productFragment=new ProductFragment();
-        if(productFragment!=null){
-            SlideUp slideUp = productFragment.slideUp;
-            if(slideUp!=null){
-            }
-            boolean visible = ProductFragment.slideUp.isVisible();
-            if(visible){
-                ProductFragment.slideUp.hide();
-            }else {
-                if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
-                    finish();
-                } else {
-                    mLastBackTime = System.currentTimeMillis();
-                    ToastUtils.showToast(this, "再按一次退出");
-                }
-            }
-        }else {
-            if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
-                finish();
-            } else {
-                mLastBackTime = System.currentTimeMillis();
-                ToastUtils.showToast(this, "再按一次退出");
-            }
-        }*/
         if(selectedFragment!=null ) {
             boolean visible = ProductFragment.slideUp.isVisible();
                 if(visible){
@@ -364,7 +336,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                     }
                 }
         }else {
-
             if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
                 finish();
             } else {

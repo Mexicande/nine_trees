@@ -252,6 +252,14 @@
         <item name="android:windowEnterAnimation">@anim/trm_popup_enter</item>
         <item name="android:windowExitAnimation">@anim/trm_popup_exit</item>
     </style>
-
-
+    <!--identityinformation-->
+    <style name="identity_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="sLeftTextSize">@dimen/information_textSize</item>
+        <item name="sLeftTextColor">@color/select_text_color</item>
+        <item name="sBottomDividerLineMarginLeft">10dp</item>
+        <item name="sBottomDividerLineMarginRight">10dp</item>
+        <item name="sDividerLineColor">@color/frame_color</item>
+    </style>
 </resources>

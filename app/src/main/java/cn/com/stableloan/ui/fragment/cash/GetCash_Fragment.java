@@ -49,9 +49,8 @@ public class GetCash_Fragment extends Fragment {
 
     private static final int REQUEST_CODE=100;
     private static final int INVITE_CODE=200;
-    private static final int INTEAGE_CODE=300;
     public GetCash_Fragment() {
-        // Required empty public constructor
+
     }
 
 

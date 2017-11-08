@@ -43,7 +43,7 @@ public interface Urls {
 
     interface Update{
 
-        String APP_UPDATA="http://api.shoujijiekuan.com/Home/ApiLogin/Version";
+        String APP_UPDATA=API+"api.shoujijiekuan.com/Home/ApiLogin/Version";
 
         String value="url=";
 
@@ -167,6 +167,7 @@ public interface Urls {
     }
     interface  Integarl{
         String getAccumulatePoints="point/getAccumulatePoints";
+        String getActivity="activity/getActivity";
         String GETCASH="cash/getCash";
         String OUTCASH="cash/getCashOut";
         String EXCHANGEPOINTS="point/exchangePoints";
