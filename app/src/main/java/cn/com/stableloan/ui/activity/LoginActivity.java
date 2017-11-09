@@ -88,7 +88,11 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         initFragments();
         String message = getIntent().getStringExtra("message");
         if(message!=null){
-            initViewDialog(R.string.token_error_title,R.string.token_error_desc);
+            if("1136".equals(message)){
+                initViewDialog(R.string.freezing_error_title, R.string.freezing_error_desc);
+            }else {
+                initViewDialog(R.string.token_error_title,R.string.token_error_desc);
+            }
         }
         mFragmentContainerHelper.attachMagicIndicator(loginMagicindicator);
     }

@@ -316,7 +316,14 @@ public class ProductDesc extends BaseActivity {
                                     Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
                                     intent.putExtra("message", error_message);
                                     intent.putExtra("from", "DescError");
+                                    startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
+                                }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                    Intent intent=new Intent(ProductDesc.this,LoginActivity.class);
+                                    intent.putExtra("message","1136");
+                                    intent.putExtra("from","1136");
                                     startActivity(intent);
+                                    finish();
+
                                 } else {
                                     ToastUtils.showToast(ProductDesc.this, error_message);
                                 }
@@ -681,7 +688,7 @@ public class ProductDesc extends BaseActivity {
                                     intent.putExtra("message", json.getString("error_message"));
                                     intent.putExtra("from", "ProductDescError");
                                     intent.putExtra("collection", status);
-                                    startActivity(intent);
+                                    startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
                                 } else {
                                     String error_message = json.getString("error_message");
                                     ToastUtils.showToast(ProductDesc.this, error_message);
@@ -783,6 +790,9 @@ public class ProductDesc extends BaseActivity {
                         }
                     }
                 }
+                break;
+            case Urls.REQUEST_CODE.PULLBLIC_CODE:
+                getProductDate();
                 break;
         }
     }

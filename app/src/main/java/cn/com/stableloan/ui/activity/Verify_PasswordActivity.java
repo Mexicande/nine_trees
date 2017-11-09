@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +35,8 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.Product_DescBean;
+import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -155,6 +158,10 @@ public class Verify_PasswordActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_go:
+                String from = getIntent().getStringExtra("from");
+                if("safe".equals(from)){
+                    ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
+                }
                 finish();
                 break;
             case R.id.bt_Validation:
@@ -240,16 +247,17 @@ public class Verify_PasswordActivity extends BaseActivity {
                                                 //CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
                                             } else if ("Createapply".equals(from)) {
-
                                                 Intent intent = new Intent(mContext, CreateGestureActivity.class).putExtra("from", "Createapply");
                                                 Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
                                                 intent.putExtra("product", desc);
                                                 startActivity(intent);
-                                                //CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
                                             } else if ("SettingCreateGesture".equals(from)) {
                                                 CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
+                                            }else if("safe".equals(from)){
+                                                Intent intent=new Intent();
+                                                setResult(100,intent);
                                             }
                                         }
                                     } else if (error_code == 2) {
@@ -258,7 +266,13 @@ public class Verify_PasswordActivity extends BaseActivity {
                                         intent.putExtra("from", "error");
                                         startActivity(intent);
                                         finish();
-                                    } else {
+                                    } else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                        Intent intent=new Intent(mContext,LoginActivity.class);
+                                        intent.putExtra("message","1136");
+                                        intent.putExtra("from","1136");
+                                        startActivity(intent);
+                                        finish();
+                                    }else {
                                         FILD_NU++;
                                         tvFail.setText(FILD_NU + "次密码输入错误");
                                         String msg = json.getString("error_message");
@@ -321,5 +335,17 @@ public class Verify_PasswordActivity extends BaseActivity {
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            String from = getIntent().getStringExtra("from");
+            if("safe".equals(from)){
+                ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
+                finish();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

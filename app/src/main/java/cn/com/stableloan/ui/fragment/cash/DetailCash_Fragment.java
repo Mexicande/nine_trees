@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -29,6 +30,7 @@ import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.cash.CashFlowActivity;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
 import cn.com.stableloan.utils.SPUtils;
@@ -83,6 +85,13 @@ public class DetailCash_Fragment extends Fragment {
         cashAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(getActivity(), CashFlowActivity.class).putExtra("log_id",cashBean.getData().getCashRecord().get(position).getLog_id()));
+            }
+        });
+        cashRecycler.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(getActivity(), CashFlowActivity.class).putExtra("log_id",cashBean.getData().getCashRecord().get(position).getLog_id()));
 
             }
         });
@@ -106,7 +115,7 @@ public class DetailCash_Fragment extends Fragment {
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         JSONObject object = new JSONObject(params);
-        OkGo.<String>post(Urls.NEW_Ip_url + Urls.Integarl.getActivity)
+        OkGo.<String>post(Urls.Ip_url + Urls.Integarl.GETCASH)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override
@@ -157,9 +166,7 @@ public class DetailCash_Fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE:
-                if (resultCode == RESULT_CODE) {
-                    getDate();
-                }
+                getDate();
                 break;
         }
     }

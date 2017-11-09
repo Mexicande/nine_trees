@@ -218,6 +218,13 @@ public class UpImageIdentityActivity extends BaseActivity {
                                 intent.putExtra("from","UpImageError");
                                 startActivity(intent);
 
+                            }else if(imageDataBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
                             } else {
                                 ToastUtils.showToast(mContext, imageDataBean.getError_message());
                             }
@@ -468,6 +475,13 @@ public class UpImageIdentityActivity extends BaseActivity {
                             String error_message = object.getString("error_message");
                             if (error_code==0) {
                                 ToastUtils.showToast(getApplicationContext(), "您的营业执照上传成功");
+                            }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
                             } else {
                                 ToastUtils.showToast(getApplicationContext(), error_message);
                             }

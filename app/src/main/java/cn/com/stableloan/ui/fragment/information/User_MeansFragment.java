@@ -56,6 +56,7 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
 import cn.com.stableloan.utils.CommonUtils;
@@ -348,8 +349,14 @@ public class User_MeansFragment extends Fragment {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 intent.putExtra("message", identity.getError_message());
                                 intent.putExtra("from", "IdentityError");
-                                startActivity(intent);
+                                startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
 
+                            }else if(identity.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                getActivity().finish();
                             } else {
                                 ToastUtils.showToast(getActivity(), identity.getError_message());
                             }
@@ -511,6 +518,9 @@ public class User_MeansFragment extends Fragment {
                         }
                         break;
                 }
+                break;
+            case Urls.REQUEST_CODE.PULLBLIC_CODE:
+                getDate();
                 break;
 
         }

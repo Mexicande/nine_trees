@@ -133,7 +133,7 @@ public class FeedbackActivity extends BaseActivity {
                 params.put("browser", "android");
                 params.put("screen", format);
                 JSONObject jsonObject = new JSONObject(params);
-                OkGo.<String>post(Urls.Ip_url + Urls.user.FEEDBACK)
+                OkGo.<String>post(Urls.NEW_Ip_url + Urls.user.FEEDBACK)
                         .tag(this)
                         .upJson(jsonObject)
                         .execute(new StringCallback() {
@@ -148,8 +148,15 @@ public class FeedbackActivity extends BaseActivity {
                                     }else if(error_code==2){
                                         Intent intent=new Intent(FeedbackActivity.this,LoginActivity.class);
                                         intent.putExtra("message",object.getString("error_message"));
-                                        intent.putExtra("from","error_UserFragment");
+                                        intent.putExtra("from","FeedbackActivity");
                                         startActivityForResult(intent,REQUEST_CODE);
+                                    } else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                        Intent intent=new Intent(FeedbackActivity.this,LoginActivity.class);
+                                        intent.putExtra("message","1136");
+                                        intent.putExtra("from","1136");
+                                        startActivity(intent);
+                                        finish();
+
                                     } else{
                                         ToastUtils.showToast(FeedbackActivity.this, object.getString("error_message"));
                                     }
@@ -175,5 +182,6 @@ public class FeedbackActivity extends BaseActivity {
                     break;
             }
         }
+
     }
 }

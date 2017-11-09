@@ -18,7 +18,7 @@
             android:scaleType="fitXY"
             android:layout_gravity="top"
             android:adjustViewBounds="true"
-            android:src="@drawable/iv_special_bg"/>
+            android:src="@drawable/iv_invite_cash"/>
         <ImageView
             android:layout_marginTop="10dp"
             android:layout_alignLeft="@id/iv_invite_bg"
@@ -52,7 +52,7 @@
             android:scaleType="fitXY"
             android:layout_gravity="top"
             android:adjustViewBounds="true"
-            android:src="@drawable/iv_special_bg"/>
+            android:src="@drawable/iv_get_invite"/>
         <ImageView
             android:layout_marginTop="10dp"
             android:layout_alignLeft="@id/iv_integar_bg"

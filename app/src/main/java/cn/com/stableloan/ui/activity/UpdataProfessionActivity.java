@@ -139,12 +139,23 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                                         break;
                                 }
                             }else if(error_code==2){
-                                int error_message = object.getInt("error_message");
+                                String error_message = object.getString("error_message");
 
                                 Intent intent=new Intent(UpdataProfessionActivity.this,LoginActivity.class);
                                 intent.putExtra("message",error_message);
                                 intent.putExtra("from","UpdataProfessionError");
+                                startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
+                            }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(UpdataProfessionActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
                                 startActivity(intent);
+                                finish();
+
+                            }else {
+                                String error_message = object.getString("error_message");
+
+                                ToastUtils.showToast(UpdataProfessionActivity.this,error_message);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -327,5 +338,13 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
         super.onDestroy();
         EventBus.getDefault().unregister(this);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
+            getIdentity();
+        }
     }
 }

@@ -192,15 +192,6 @@ public class ProductClassifyActivity extends BaseActivity {
                 startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", classBean.getData().getProduct().get(position).getId()));
 
 
-
-
-              /*  String token = (String) SPUtils.get(mContext, Urls.lock.TOKEN, "1");
-                if ("1".equals(token)||token == null) {
-                    startActivity(new Intent(mContext, LoginActivity.class).putExtra("ProductClassifyActivity", classBean.getData().getMdse().get(position)));
-                } else {
-                    startActivity(new Intent(ProductClassifyActivity.this, HtmlActivity.class).putExtra("class", classBean.getData().getMdse().get(position)));
-                }*/
-
             }
         });
 

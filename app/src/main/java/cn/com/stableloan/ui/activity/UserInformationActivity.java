@@ -207,8 +207,15 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                             }else if(statusBean.getError_code()==2){
                                 Intent intent=new Intent(UserInformationActivity.this,LoginActivity.class);
                                 intent.putExtra("message",statusBean.getError_message());
-                                intent.putExtra("from","UserInformationError");
+                                intent.putExtra("from","UserInformationActivity");
+                                startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
+                            }else if(statusBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(UserInformationActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
                                 startActivity(intent);
+                                finish();
+
                             } else{
                                 ToastUtils.showToast(UserInformationActivity.this, statusBean.getError_message());
                             }
@@ -278,6 +285,9 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             }
         }
+        if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
+            getStatus();
+        }
     }
 
     @Override
@@ -295,4 +305,5 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
         EventBus.getDefault().unregister(this);
 
     }
+
 }

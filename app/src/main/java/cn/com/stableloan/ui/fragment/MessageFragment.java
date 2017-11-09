@@ -61,6 +61,7 @@ import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.Constants;
@@ -674,6 +675,14 @@ public class MessageFragment extends Fragment {
                                         getActivity().setResult(TOKEN_FAIL, intent);
                                         getActivity().finish();
                                     }else if ("CashWithError".equals(from)) {
+                                        Intent intent = new Intent();
+                                        getActivity().setResult(WITHDRAW_CODE, intent);
+                                        getActivity().finish();
+                                    }else  if("1136".equals(from)){
+                                        ActivityStackManager.getInstance().popAllActivity();
+                                        MainActivity.launch(getActivity());
+                                        getActivity().finish();
+                                    }else {
                                         Intent intent = new Intent();
                                         getActivity().setResult(WITHDRAW_CODE, intent);
                                         getActivity().finish();

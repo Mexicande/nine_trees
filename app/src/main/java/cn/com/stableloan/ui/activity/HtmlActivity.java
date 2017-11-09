@@ -49,6 +49,7 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.DateStatisticsUtils;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.cash.CashActivityBean;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
@@ -163,6 +164,12 @@ public class HtmlActivity extends BaseActivity  {
             if(safe!=null){
                 titleName.setText("安全小贴士");
                 getDate(Urls.HTML_URL+safe);
+            }
+
+            CashActivityBean.DataBean.ActivityBean cashActivityBean = (CashActivityBean.DataBean.ActivityBean) getIntent().getSerializableExtra("cashActivityBean");
+            if(cashActivityBean!=null){
+                titleName.setText(cashActivityBean.getTitle());
+                getDate(cashActivityBean.getUrl());
             }
         } else {
             ToastUtils.showToast(this,"网络异常");
@@ -365,5 +372,4 @@ public class HtmlActivity extends BaseActivity  {
         mWebView.destroy();
         mWebView = null;
     }
-
 }

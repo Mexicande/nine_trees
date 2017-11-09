@@ -30,8 +30,10 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Device;
+import cn.com.stableloan.ui.activity.CertificationActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
+import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.DeviceAdapter;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -102,6 +104,12 @@ public class DeviceActivity extends BaseActivity {
                                     intent.putExtra("message",device.getError_message());
                                     intent.putExtra("from","DeviceError");
                                     startActivityForResult(intent,1000);
+                                }else if(device.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                    Intent intent=new Intent(DeviceActivity.this,LoginActivity.class);
+                                    intent.putExtra("message","1136");
+                                    intent.putExtra("from","1136");
+                                    startActivity(intent);
+                                    finish();
 
                                 }else {
                                     ToastUtils.showToast(DeviceActivity.this,device.getError_message());
@@ -200,7 +208,22 @@ public class DeviceActivity extends BaseActivity {
                                     mDeviceAdapter.remove(position-1);
                                     ToastUtils.showToast(DeviceActivity.this,"成功删除");
 
-                                } else{
+                                }else if(error_code==2) {
+                                    String error_message = object.getString("error_message");
+
+                                    Intent intent = new Intent(DeviceActivity.this, LoginActivity.class);
+                                    intent.putExtra("message", error_message);
+                                    intent.putExtra("from", "CertificationActivity");
+                                    startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
+
+                                } else if(device.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                    Intent intent=new Intent(DeviceActivity.this,LoginActivity.class);
+                                    intent.putExtra("message","1136");
+                                    intent.putExtra("from","1136");
+                                    startActivity(intent);
+                                    finish();
+
+                                }else{
                                     String error_message = object.getString("error_message");
                                     ToastUtils.showToast(DeviceActivity.this,error_message);
                                 }

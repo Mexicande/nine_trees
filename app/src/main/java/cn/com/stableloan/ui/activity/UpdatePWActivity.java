@@ -134,6 +134,13 @@ public class UpdatePWActivity extends BaseActivity {
                                 AppApplication.destoryActivity("SafeSetting");
                                 startActivity(new Intent(UpdatePWActivity.this, LoginActivity.class).putExtra("from", "user"));
                                 finish();
+                            }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(UpdatePWActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
                             } else {
                                 hud.dismiss();
                                 String string = object.getString("error_message");
@@ -154,4 +161,9 @@ public class UpdatePWActivity extends BaseActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 }

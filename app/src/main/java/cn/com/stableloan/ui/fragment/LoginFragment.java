@@ -58,6 +58,7 @@ import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -586,6 +587,17 @@ public class LoginFragment extends Fragment {
                                     getActivity().setResult(TOKEN_FAIL, intent);
                                     getActivity().finish();
                                 } else if ("CashWithError".equals(from)) {
+                                    Intent intent = new Intent();
+                                    getActivity().setResult(WITHDRAW_CODE, intent);
+                                    getActivity().finish();
+                                }else  if("1136".equals(from)){
+
+                                    ActivityStackManager.getInstance().popAllActivity();
+                                    // ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
+                                    MainActivity.launch(getActivity());
+                                    getActivity().finish();
+
+                                } else {
                                     Intent intent = new Intent();
                                     getActivity().setResult(WITHDRAW_CODE, intent);
                                     getActivity().finish();

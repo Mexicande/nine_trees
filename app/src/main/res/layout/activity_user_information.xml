@@ -86,6 +86,7 @@
         stv:sLeftTextColor="@android:color/black"
         stv:sLeftTextSize="16sp"
         stv:sLeftTextString="授权材料"
+
         stv:sLeftTvDrawableWidth="30dp"
         stv:sRightTextString="未完成"
         stv:sLeftViewMarginLeft="15dp"
@@ -110,6 +111,7 @@
         stv:sLeftTextString="图片材料"
         stv:sLeftTvDrawableWidth="30dp"
         stv:sRightTextString="未完成"
+
         stv:sLeftViewMarginLeft="15dp"
         stv:sLeftIconMarginLeft="20dp"
         stv:sRightTextColor="@color/white"

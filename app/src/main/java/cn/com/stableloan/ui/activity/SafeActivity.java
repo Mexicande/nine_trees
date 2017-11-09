@@ -406,6 +406,18 @@ public class SafeActivity extends BaseActivity {
                                     setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                                     finish();
                                 }
+                            }else if(code==2){
+                                Intent intent=new Intent(SafeActivity.this,LoginActivity.class);
+                                intent.putExtra("message",msg);
+                                intent.putExtra("from","SafeActivity");
+                                startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
+                            }else if(code==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(SafeActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
                             } else {
                                 ToastUtils.showToast(SafeActivity.this, msg);
                             }
@@ -437,6 +449,14 @@ public class SafeActivity extends BaseActivity {
 
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
+            deleteDate();
+        }
     }
 }
 

@@ -59,7 +59,7 @@ public class CollectionActivity extends BaseActivity {
 
     private View errorView;
     private View notDataView;
-
+    private  static final int RERQUEST_CAODE=100;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, CollectionActivity.class));
     }
@@ -141,9 +141,17 @@ public class CollectionActivity extends BaseActivity {
                             }else if(error_code==2){
                                 Intent intent=new Intent(CollectionActivity.this,LoginActivity.class);
                                 intent.putExtra("message",json.getString("error_message"));
-                                intent.putExtra("from","CollectionError");
+                                intent.putExtra("from","CollectionActivity");
+                                startActivityForResult(intent,RERQUEST_CAODE);
+
+                            } else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(CollectionActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
                                 startActivity(intent);
-                            } else{
+                                finish();
+
+                            }else{
                                 classify_recycler_adapter.setNewData(null);
                                 classify_recycler_adapter.setEmptyView(notDataView);
                                 String error_message = json.getString("error_message");
@@ -194,5 +202,13 @@ public class CollectionActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RERQUEST_CAODE){
+            initData();
+        }
     }
 }

@@ -178,7 +178,15 @@ public class WithdrawalCashActivity extends BaseActivity {
                                 intent.putExtra("from", "CashWithError");
                                 startActivityForResult(intent,REQUESTION_CODE);
 
+                            }else if(outBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
                             }else {
+
                                     ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
 
@@ -216,7 +224,8 @@ public class WithdrawalCashActivity extends BaseActivity {
                                         String money = tvBalance.getText().toString();
                                         String substring = money.substring(0, money.length() - 3);
                                         String replace = substring.replace(",", "");
-                                        int size = Integer.parseInt(replace);
+                                        String replace2 = replace.replace("¥", "");
+                                        int size = Integer.parseInt(replace2);
                                         int i1 = size - i;
                                         tvBalance.setText(String.valueOf(i1) + ".00");
                                         Intent intent = new Intent();
@@ -231,7 +240,20 @@ public class WithdrawalCashActivity extends BaseActivity {
                                     e.printStackTrace();
                                 }
 
-                            } else {
+                            } else  if(outBean.getError_code()==2){
+                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
+                                intent.putExtra("message", cashBean.getError_message());
+                                intent.putExtra("from", "CashWithError");
+                                startActivityForResult(intent,REQUESTION_CODE);
+
+                            }else if(outBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
+                            } else{
                                 ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
                         }
@@ -394,7 +416,7 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.close, R.id.iv_rule, R.id.arrow, R.id.tv_AllWithdrawal,R.id.set_account})
+    @OnClick({R.id.close, R.id.iv_rule, R.id.arrow, R.id.tv_AllWithdrawal,R.id.set_account,R.id.bt_withdrawal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.close:
@@ -424,13 +446,15 @@ public class WithdrawalCashActivity extends BaseActivity {
 
                 int indexOf1 = toString.lastIndexOf(".");
                 String substring1 = toString.substring(0, indexOf1);
-                String replace1 = substring1.replace(",", "");
+                String replace2 = substring1.replace("¥", "");
+
+                String replace1 = replace2.replace(",", "");
 
                 double anInt = Double.parseDouble(replace1);
                 int i = (int) anInt;
                 if (i != 0) {
-                    textAmount.setText(i + "");
-                } else if (i == 0) {
+                    textAmount.setText(String.valueOf(i));
+                } else {
                     ToastUtils.showToast(this, "余额不足");
                 }
                 break;
@@ -439,7 +463,8 @@ public class WithdrawalCashActivity extends BaseActivity {
                 String toString1 = tvBalance.getText().toString();
                 int indexOf = toString1.lastIndexOf(".");
                 String substring = toString1.substring(0, indexOf);
-                String replace = substring.replace(",", "");
+                String replace3 = substring.replace("¥", "");
+                String replace = replace3.replace(",", "");
                 int anInt1 = Integer.parseInt(replace);
                 String string = textAmount.getText().toString();
                 double anInt2 = Double.parseDouble(string);
@@ -481,7 +506,7 @@ public class WithdrawalCashActivity extends BaseActivity {
         if(requestCode==REQUESTION_CODE){
             switch (resultCode){
                 case WITHDRAW_CODE:
-                        getCashDate();
+                    getCashDate();
                     break;
                 case 112:
                     getUserPopo();
@@ -492,7 +517,6 @@ public class WithdrawalCashActivity extends BaseActivity {
 
 
     private void getCashDate() {
-        LogUtils.i("执行了回调------");
         String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
@@ -513,7 +537,14 @@ public class WithdrawalCashActivity extends BaseActivity {
                                 intent.putExtra("message", cashBean.getError_message());
                                 intent.putExtra("from", "CashWithError");
                                 startActivityForResult(intent,REQUESTION_CODE);
-                            } else {
+                            } else if(cashBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
+                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
+                            }else {
                                 ToastUtils.showToast(WithdrawalCashActivity.this, cashBean.getError_message());
                             }
 

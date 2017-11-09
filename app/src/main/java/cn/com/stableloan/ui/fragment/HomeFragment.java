@@ -179,7 +179,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                                 .diskCacheStrategy(DiskCacheStrategy.ALL);
                                         Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(product_logo);
                                         tv_amout.setText("最高" + dataBean.getAmount() + "元");
-                                        tv_activity_desc.setText(dataBean.getActivity_desc());
+
+                                        String activity_desc = dataBean.getActivity_desc();
+                                        if(activity_desc!=null&&activity_desc.length()>2){
+                                            StringBuffer str = new StringBuffer(activity_desc);
+                                            str.insert(2,"\n");
+                                            tv_activity_desc.setText(str);
+                                        }else {
+                                            tv_activity_desc.setText(dataBean.getActivity_desc());
+                                        }
+
                                         tv_pname.setText(dataBean.getProduct_name());
                                         mCardView.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -382,12 +391,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private Recycler_Adapter rc_adapter;
     private Classify_Recycler_Adapter classify_recycler_adapter;
 
-    private ImageView iv_work, iv_student, iv_free, iv_enterprise;
+    private ImageView iv_work, iv_free, iv_enterprise;
 
     private CardView mCardView;
     //秒杀
     private LinearLayout mSeckill_layout;
-    private TextView tv_pname, tv_amout, tv_activity_desc, tvDisplay;
+    private TextView tv_pname, tv_amout, tv_activity_desc;
 
     private Banner_HotBean hotBean;
 

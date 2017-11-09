@@ -37,6 +37,7 @@
         android:layout_height="55dp"
         stv:sLeftBottomTextColor="@color/gay"
         stv:sLeftBottomTextSize="15sp"
+
         stv:sLeftBottomTextString="有可能用到的第三方材料"
         stv:sLeftIconRes="@mipmap/iv_taobao"
         stv:sLeftTextColor="@android:color/black"

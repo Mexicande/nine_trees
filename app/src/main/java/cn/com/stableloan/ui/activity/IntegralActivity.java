@@ -215,11 +215,11 @@ public class IntegralActivity extends BaseActivity {
             if (event.offica != null) {
                 btOffical.setText(event.offica);
             }
-            tvLiven.setText(event.topCredits);
+            tvLiven.setText(String.valueOf(event.topCredits));
         }
     }
 
-    @Subscribe
+  /*  @Subscribe
     public void onMessageEvent(ShareEvent event) {
         if (event != null) {
             if (event.type == 1) {
@@ -227,7 +227,7 @@ public class IntegralActivity extends BaseActivity {
                 slideUp.show();
             }
         }
-    }
+    }*/
 
     private WXManager wxManager;
 

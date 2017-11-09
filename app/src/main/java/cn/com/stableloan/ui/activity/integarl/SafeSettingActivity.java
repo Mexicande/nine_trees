@@ -413,7 +413,11 @@ public class SafeSettingActivity extends BaseActivity {
                                         svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
                                     }
                                 }
-                            } else {
+                            } else if("3".equals(isSuccess)) {
+                                Intent intent = new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class);
+                                intent.putExtra("from","safe");
+                                startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -498,6 +502,9 @@ public class SafeSettingActivity extends BaseActivity {
 
 
             }
+        }
+        if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
+            getDate();
         }
     }
 

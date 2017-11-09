@@ -126,13 +126,21 @@ public class CashBean implements Serializable {
             public void setRemark(String remark) {
                 this.remark = remark;
             }
-
+            private String log_id;
             private String type;
             private String expend;
             private String create_at;
             private String font;
             private String number;
             private String income;
+
+            public String getLog_id() {
+                return log_id;
+            }
+
+            public void setLog_id(String log_id) {
+                this.log_id = log_id;
+            }
 
             private String status;
 

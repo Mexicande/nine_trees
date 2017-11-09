@@ -161,7 +161,6 @@ public interface Urls {
     interface KEY{
         String WEICHAT_APPID="wxd8a11cffdc98f84b";
         String QQ_APPID="1106239350";
-
         String PageWeb="http://m.anwenqianbao.com/#/details?pId=";
         String SHARE_INCODE="http://m.anwenqianbao.com/#/login?inviteCode=";
     }
@@ -171,6 +170,7 @@ public interface Urls {
         String GETCASH="cash/getCash";
         String OUTCASH="cash/getCashOut";
         String EXCHANGEPOINTS="point/exchangePoints";
+        String CASH_DETAIL="cash/detail";
     }
     interface Dialog{
         String advertising="popup/getPopup";
@@ -232,6 +232,12 @@ public interface Urls {
         String  APPLY =                                                                          "apply";
         String  TOKEN =                                                                          "token";
         String  USER_PHONE =                                                                     "phone";
+    }
+    interface ERROR_CODE{
+        int FREEZING_CODE=                                                                      1136;
+    }
+    interface REQUEST_CODE{
+        int PULLBLIC_CODE                                                                          =100;
     }
 
 }

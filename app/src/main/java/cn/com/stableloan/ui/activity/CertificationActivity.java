@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Certification;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -130,10 +132,10 @@ public class CertificationActivity extends BaseActivity {
                             Certification.DataBean data = fromJson.getData();
                             if (data != null) {
                                 if (data.getAliStatus() == 1) {
+                                    alipay.setLeftBottomString(data.getAliaccount());
                                     Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
                                     alipay.setTextBackground(drawable);
                                     alipay.setRightString("已完成");
-                                    alipay.setLeftBottomString(data.getAliAccount());
                                 }else {
                                     Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_fail);
                                     alipay.setTextBackground(drawable);
@@ -159,6 +161,19 @@ public class CertificationActivity extends BaseActivity {
                                     mobile.setRightString("未完成");
                                 }
                             }
+
+                        }else if(error_code==2){
+                                Intent intent=new Intent(CertificationActivity.this,LoginActivity.class);
+                                intent.putExtra("message",fromJson.getError_message());
+                                intent.putExtra("from","CertificationActivity");
+                                startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
+
+                        }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
+                            Intent intent=new Intent(CertificationActivity.this,LoginActivity.class);
+                            intent.putExtra("message","1136");
+                            intent.putExtra("from","1136");
+                            startActivity(intent);
+                            finish();
 
                         } else {
                             ToastUtils.showToast(CertificationActivity.this, fromJson.getError_message());
@@ -346,4 +361,11 @@ public class CertificationActivity extends BaseActivity {
         CrawlerManager.getInstance(this.getApplication()).unregistAllCallBack();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
+            getStatus();
+        }
+    }
 }

@@ -1,20 +1,21 @@
 package cn.com.stableloan.bean.cash;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by apple on 2017/11/8.
  */
 
 public class CashFlowBean implements Serializable {
+
     /**
      * code : 0
-     * message : sasa
+     * message :
      * error_code : 0
-     * error_message : 2121
-     * data : {"account":"123****qq.com","total":"1,000.00","cashrecord":[{"remark":"提现申请","status":"失败","number":"-10.00元","font":"#23BE13","create_at":"2017-11-06 12:55:44"}]}
+     * error_message :
+     * data : {"money":"-1,000.00","status":"被驳回","title":"用户提现","resault":"交易失败，金额未扣除；详情请咨询客服","created_at":"2017-11-08 00:00:00","updated_at":"2017-11-09 00:00:00","account":{"name":"支付宝","account":"123***@qq.com"}}
      */
+
     private int code;
     private String message;
     private int error_code;
@@ -63,92 +64,102 @@ public class CashFlowBean implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
-         * account : 123****qq.com
-         * total : 1,000.00
-         * cashrecord : [{"remark":"提现申请","status":"失败","number":"-10.00元","font":"#23BE13","create_at":"2017-11-06 12:55:44"}]
+         * money : -1,000.00
+         * status : 被驳回
+         * title : 用户提现
+         * resault : 交易失败，金额未扣除；详情请咨询客服
+         * created_at : 2017-11-08 00:00:00
+         * updated_at : 2017-11-09 00:00:00
+         * account : {"name":"支付宝","account":"123***@qq.com"}
          */
 
-        private String account;
-        private String total;
-        private List<CashrecordBean> cashrecord;
+        private String money;
+        private String status;
+        private String title;
+        private String resault;
+        private String created_at;
+        private String updated_at;
+        private AccountBean account;
 
-        public String getAccount() {
+        public String getMoney() {
+            return money;
+        }
+
+        public void setMoney(String money) {
+            this.money = money;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getResault() {
+            return resault;
+        }
+
+        public void setResault(String resault) {
+            this.resault = resault;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
+        }
+
+        public AccountBean getAccount() {
             return account;
         }
 
-        public void setAccount(String account) {
+        public void setAccount(AccountBean account) {
             this.account = account;
         }
 
-        public String getTotal() {
-            return total;
-        }
-
-        public void setTotal(String total) {
-            this.total = total;
-        }
-
-        public List<CashrecordBean> getCashrecord() {
-            return cashrecord;
-        }
-
-        public void setCashrecord(List<CashrecordBean> cashrecord) {
-            this.cashrecord = cashrecord;
-        }
-
-        public static class CashrecordBean implements Serializable {
+        public static class AccountBean implements Serializable{
             /**
-             * remark : 提现申请
-             * status : 失败
-             * number : -10.00元
-             * font : #23BE13
-             * create_at : 2017-11-06 12:55:44
+             * name : 支付宝
+             * account : 123***@qq.com
              */
 
-            private String remark;
-            private String status;
-            private String number;
-            private String font;
-            private String create_at;
+            private String name;
+            private String account;
 
-            public String getRemark() {
-                return remark;
+            public String getName() {
+                return name;
             }
 
-            public void setRemark(String remark) {
-                this.remark = remark;
+            public void setName(String name) {
+                this.name = name;
             }
 
-            public String getStatus() {
-                return status;
+            public String getAccount() {
+                return account;
             }
 
-            public void setStatus(String status) {
-                this.status = status;
-            }
-
-            public String getNumber() {
-                return number;
-            }
-
-            public void setNumber(String number) {
-                this.number = number;
-            }
-
-            public String getFont() {
-                return font;
-            }
-
-            public void setFont(String font) {
-                this.font = font;
-            }
-
-            public String getCreate_at() {
-                return create_at;
-            }
-
-            public void setCreate_at(String create_at) {
-                this.create_at = create_at;
+            public void setAccount(String account) {
+                this.account = account;
             }
         }
     }

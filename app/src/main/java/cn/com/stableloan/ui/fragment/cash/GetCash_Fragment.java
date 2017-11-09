@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
@@ -26,8 +28,10 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.CashEvent;
+import cn.com.stableloan.bean.cash.CashActivityBean;
 import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.model.integarl.InviteFriendList;
+import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
@@ -49,6 +53,8 @@ public class GetCash_Fragment extends Fragment {
 
     private static final int REQUEST_CODE=100;
     private static final int INVITE_CODE=200;
+
+    private  CashActivityBean cashBean;
     public GetCash_Fragment() {
 
     }
@@ -61,29 +67,22 @@ public class GetCash_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_get_cash_, container, false);
         ButterKnife.bind(this, view);
         initView();
+        getDate();
         initFooter();
         setListener();
         return view;
     }
 
     private void setListener() {
-        integar_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), IntegralActivity.class);
-                intent.putExtra("from","cash");
-                startActivityForResult(intent,REQUEST_CODE);
-            }
-        });
-        invite_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), InviteFriendsActivity.class);
-                intent.putExtra("from","cash");
-                startActivityForResult(intent,REQUEST_CODE);
-            }
-        });
 
+        activityRecycler.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(getActivity(), HtmlActivity.class);
+                intent.putExtra("cashActivityBean",cashBean.getData().getActivity().get(position));
+                startActivityForResult(intent,REQUEST_CODE);
+            }
+        });
     }
 
 
@@ -110,7 +109,6 @@ public class GetCash_Fragment extends Fragment {
                 startActivityForResult(intent,REQUEST_CODE);
             }
         });
-
         return view;
     }
 
@@ -126,34 +124,24 @@ public class GetCash_Fragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode==REQUEST_CODE){
-            if(resultCode==INVITE_CODE){
-                getDate();
-            }
-        }
-    }
-
 
     private void getDate() {
 
-        String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
-        HashMap<String, String> params = new HashMap<>();
-        params.put("token", token);
+        HashMap<String, Integer> params = new HashMap<>();
+        params.put("type", 1);
         JSONObject object = new JSONObject(params);
-        OkGo.<String>post(Urls.Ip_url + Urls.Integarl.GETCASH)
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.Integarl.getActivity)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s != null) {
                             Gson gson = new Gson();
-                            CashBean cashBean = gson.fromJson(s, CashBean.class);
+                             cashBean = gson.fromJson(s, CashActivityBean.class);
                             if (cashBean.getError_code() == 0) {
-                                EventBus.getDefault().post(new CashEvent("¥" + cashBean.getData().getTotal()));
+                              /*  EventBus.getDefault().post(new CashEvent("¥" + cashBean.getData().getTotal()));
+                                getAdapter.addData(cashBean.getData().get);*/
+                                getAdapter.setNewData(cashBean.getData().getActivity());
                             } else if (cashBean.getError_code() == 2) {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 intent.putExtra("message", cashBean.getError_message());
@@ -169,14 +157,16 @@ public class GetCash_Fragment extends Fragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showToast(getContext(), "服务器异常");
-                            }
-                        });
                     }
                 });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE){
+            getDate();
+        }
     }
 }
 

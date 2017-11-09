@@ -152,6 +152,12 @@ public class UserFragment extends ImmersionFragment {
                                     intent.putExtra("message",personal.getError_message());
                                     intent.putExtra("from","error_UserFragment");
                                     startActivityForResult(intent,200);
+                                }else if(personal.getError_code()==1136){
+                                    Intent intent=new Intent(getActivity(),LoginActivity.class);
+                                    intent.putExtra("message","1136");
+                                    intent.putExtra("from","1136");
+                                    startActivity(intent);
+                                    getActivity().finish();
                                 } else {
                                     ToastUtils.showToast(getActivity(),personal.getError_message());
                                 }
@@ -336,7 +342,6 @@ public class UserFragment extends ImmersionFragment {
             }
         }
         if(requestCode==200){
-            LogUtils.i("刷新======");
             getUserInfo();
         }
     }

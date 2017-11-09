@@ -139,6 +139,13 @@ public class InviteFriendsActivity extends BaseActivity {
                                 intent.putExtra("message",friendList.getError_message());
                                 intent.putExtra("from","Friend");
                                 startActivityForResult(intent,REQUEST_CODE);
+                            }else if(friendList.getError_code()==1136){
+                                Intent intent=new Intent(InviteFriendsActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
+                                finish();
+
                             }else {
                                 ToastUtils.showToast(InviteFriendsActivity.this, friendList.getError_message());
                             }
@@ -223,7 +230,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 QQShareContent contentQQ = new QQShareContent();
                 contentQQ.setShareType(QQShare.SHARE_TO_QQ_TYPE_DEFAULT)
                         .setTitle("安稳钱包")
-                        .setTarget_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode())
+                        .setTarget_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode()+"go_home=1")
                         .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png")
                         .setSummary("只需身份证,无需抵押无需面审急速放款!");
                 qqManager.share(contentQQ);
@@ -282,7 +289,7 @@ public class InviteFriendsActivity extends BaseActivity {
         WXShareContent contentWX = new WXShareContent();
         contentWX.setScene(scence)
                 .setType(WXShareContent.share_type.WebPage)
-                .setWeb_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode())
+                .setWeb_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode()+"go_home=1")
                 .setTitle("安稳钱包")
                 .setDescription("只需身份证,无需抵押无需面审急速放款!")
                 .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
@@ -328,9 +335,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 }
                 break;
             case REQUEST_CODE:
-                if(resultCode==TOKEN_FAIL){
                     getInviteList();
-                }
                 break;
 
         }
@@ -358,6 +363,11 @@ public class InviteFriendsActivity extends BaseActivity {
                             InviteFriendsBean friendsBean = gson.fromJson(s, InviteFriendsBean.class);
                             if (friendsBean.getError_code() == 0) {
                                 ToastUtils.showToast(InviteFriendsActivity.this, friendsBean.getData().getMsg());
+                            }else if(friendsBean.getError_code()==1136){
+                                Intent intent=new Intent(InviteFriendsActivity.this,LoginActivity.class);
+                                intent.putExtra("message","1136");
+                                intent.putExtra("from","1136");
+                                startActivity(intent);
                             } else {
                                 ToastUtils.showToast(InviteFriendsActivity.this, friendsBean.getError_message());
                             }
