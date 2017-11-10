@@ -59,6 +59,7 @@ import cn.com.stableloan.model.MessageCode;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.SettingPassWordActivity;
 import cn.com.stableloan.utils.ActivityStackManager;
@@ -682,12 +683,16 @@ public class MessageFragment extends Fragment {
                                         ActivityStackManager.getInstance().popAllActivity();
                                         MainActivity.launch(getActivity());
                                         getActivity().finish();
-                                    }else {
+                                    }else if("switch".equals(from)){
+                                        ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
+
+                                        MainActivity.launch(getContext());
+                                        getActivity().finish();
+                                    } else{
                                         Intent intent = new Intent();
                                         getActivity().setResult(WITHDRAW_CODE, intent);
                                         getActivity().finish();
                                     }
-
                                 } else if (id != null) {
                                     startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("class", id));
                                     getActivity().finish();

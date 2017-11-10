@@ -57,6 +57,7 @@ import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.activity.ForgetWordActivity;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.AppUtils;
@@ -591,12 +592,14 @@ public class LoginFragment extends Fragment {
                                     getActivity().setResult(WITHDRAW_CODE, intent);
                                     getActivity().finish();
                                 }else  if("1136".equals(from)){
-
-                                    ActivityStackManager.getInstance().popAllActivity();
+                                    ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
                                     // ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
                                     MainActivity.launch(getActivity());
                                     getActivity().finish();
 
+                                }else if("switch".equals(from)){
+                                    MainActivity.launch(getContext());
+                                    getActivity().finish();
                                 } else {
                                     Intent intent = new Intent();
                                     getActivity().setResult(WITHDRAW_CODE, intent);

@@ -60,6 +60,8 @@ public class Verify_PasswordActivity extends BaseActivity {
     LinearLayout main;
     @Bind(R.id.bt_Validation)
     SuperButton btValidation;
+    @Bind(R.id.tv_Switch)
+    TextView tvSwitch;
     private int FILD_NU = 0;
     private Context mContext;
 
@@ -85,13 +87,13 @@ public class Verify_PasswordActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(s.length()>=6){
-                            btValidation.setEnabled(true);
-                            btValidation.setUseShape();
-                        }else {
-                            btValidation.setEnabled(false);
-                            btValidation.setUseShape();
-                        }
+                if (s.length() >= 6) {
+                    btValidation.setEnabled(true);
+                    btValidation.setUseShape();
+                } else {
+                    btValidation.setEnabled(false);
+                    btValidation.setUseShape();
+                }
             }
 
             @Override
@@ -154,12 +156,12 @@ public class Verify_PasswordActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.layout_go, R.id.bt_Validation, R.id.tv_forgetPW})
+    @OnClick({R.id.layout_go, R.id.bt_Validation, R.id.tv_forgetPW,R.id.tv_Switch})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_go:
                 String from = getIntent().getStringExtra("from");
-                if("safe".equals(from)){
+                if ("safe".equals(from)) {
                     ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
                 }
                 finish();
@@ -169,6 +171,14 @@ public class Verify_PasswordActivity extends BaseActivity {
                 break;
             case R.id.tv_forgetPW:
                 ForgetWordActivity.launch(this);
+                break;
+            case R.id.tv_Switch:
+                SPUtils.remove(mContext,Urls.lock.TOKEN);
+                Intent intent=new Intent(this,LoginActivity.class);
+                intent.putExtra("message","switch");
+                intent.putExtra("from","switch");
+                startActivity(intent);
+                finish();
                 break;
         }
     }
@@ -255,9 +265,9 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             } else if ("SettingCreateGesture".equals(from)) {
                                                 CreateGestureActivity.launch(Verify_PasswordActivity.this);
                                                 finish();
-                                            }else if("safe".equals(from)){
-                                                Intent intent=new Intent();
-                                                setResult(100,intent);
+                                            } else if ("attestation".equals(from)) {
+                                                Intent intent = new Intent();
+                                                setResult(100, intent);
                                             }
                                         }
                                     } else if (error_code == 2) {
@@ -266,13 +276,13 @@ public class Verify_PasswordActivity extends BaseActivity {
                                         intent.putExtra("from", "error");
                                         startActivity(intent);
                                         finish();
-                                    } else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                                        Intent intent=new Intent(mContext,LoginActivity.class);
-                                        intent.putExtra("message","1136");
-                                        intent.putExtra("from","1136");
+                                    } else if (error_code == Urls.ERROR_CODE.FREEZING_CODE) {
+                                        Intent intent = new Intent(mContext, LoginActivity.class);
+                                        intent.putExtra("message", "1136");
+                                        intent.putExtra("from", "1136");
                                         startActivity(intent);
                                         finish();
-                                    }else {
+                                    } else {
                                         FILD_NU++;
                                         tvFail.setText(FILD_NU + "次密码输入错误");
                                         String msg = json.getString("error_message");
@@ -339,9 +349,9 @@ public class Verify_PasswordActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             String from = getIntent().getStringExtra("from");
-            if("safe".equals(from)){
+            if ("safe".equals(from)) {
                 ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
                 finish();
             }

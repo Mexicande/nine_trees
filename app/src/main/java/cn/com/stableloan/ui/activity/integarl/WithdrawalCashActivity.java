@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -461,22 +462,27 @@ public class WithdrawalCashActivity extends BaseActivity {
             case R.id.bt_withdrawal:
                 zhuGe();
                 String toString1 = tvBalance.getText().toString();
-                int indexOf = toString1.lastIndexOf(".");
-                String substring = toString1.substring(0, indexOf);
-                String replace3 = substring.replace("¥", "");
-                String replace = replace3.replace(",", "");
-                int anInt1 = Integer.parseInt(replace);
-                String string = textAmount.getText().toString();
-                double anInt2 = Double.parseDouble(string);
-                if (anInt2 <= anInt1) {
-                    double parseInt = Double.parseDouble(string);
-                    if (parseInt != 0) {
-                        getDate();
+
+                if(TextUtils.isEmpty(toString1)){
+
+                }else {
+                    int indexOf = toString1.lastIndexOf(".");
+                    String substring = toString1.substring(0, indexOf);
+                    String replace3 = substring.replace("¥", "");
+                    String replace = replace3.replace(",", "");
+                    int anInt1 = Integer.parseInt(replace);
+                    String string = textAmount.getText().toString();
+                    double anInt2 = Double.parseDouble(string);
+                    if (anInt2 <= anInt1) {
+                        double parseInt = Double.parseDouble(string);
+                        if (parseInt != 0) {
+                            getDate();
+                        } else {
+                            ToastUtils.showToast(this, "请输入有效金额");
+                        }
                     } else {
                         ToastUtils.showToast(this, "请输入有效金额");
                     }
-                } else {
-                    ToastUtils.showToast(this, "请输入有效金额");
                 }
                 break;
             case R.id.set_account:

@@ -449,9 +449,16 @@ public class ProductFragment extends ImmersionFragment {
             if (idenlist.size() > 0) {
                 Integer[] arr = new Integer[1];
                 Integer[] i = idenlist.toArray(arr);
-                String string = String.valueOf(i[0] + 1);
-                String[] str = new String[]{string};
-                param.setIdentity(Arrays.asList(str));
+                if(i[0]==2){
+                    int i1 = i[0] + 1;
+                    String string = String.valueOf(i1 + 1);
+                    String[] str = new String[]{string};
+                    param.setIdentity(Arrays.asList(str));
+                }else {
+                    String string = String.valueOf(i[0] + 1);
+                    String[] str = new String[]{string};
+                    param.setIdentity(Arrays.asList(str));
+                }
             } else {
                 String[] str1 = new String[]{};
                 param.setIdentity(Arrays.asList(str1));

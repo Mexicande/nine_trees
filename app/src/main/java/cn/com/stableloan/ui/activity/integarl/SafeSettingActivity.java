@@ -51,6 +51,12 @@ import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ *
+ *  安全设置
+ *
+ */
+
 public class SafeSettingActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
@@ -415,9 +421,8 @@ public class SafeSettingActivity extends BaseActivity {
                                 }
                             } else if("3".equals(isSuccess)) {
                                 Intent intent = new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class);
-                                intent.putExtra("from","safe");
+                                intent.putExtra("from","attestation");
                                 startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

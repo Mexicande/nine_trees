@@ -54,7 +54,8 @@ public class DetailCash_Fragment extends Fragment {
     private CashBean cashBean;
     private static final int REQUEST_CODE = 1;
     private static final int RESULT_CODE = 200;
-
+    private int ACTION_UP=1;
+    private int ACTION_DOWN=0;
     public DetailCash_Fragment() {
         // Required empty public constructor
     }
@@ -67,7 +68,7 @@ public class DetailCash_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail_cash_, container, false);
         ButterKnife.bind(this, view);
         initRecyclerView();
-        getDate();
+        getDate(ACTION_UP,1);
         setListener();
         return view;
     }
@@ -82,12 +83,6 @@ public class DetailCash_Fragment extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
-        cashAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(getActivity(), CashFlowActivity.class).putExtra("log_id",cashBean.getData().getCashRecord().get(position).getLog_id()));
-            }
-        });
         cashRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -95,6 +90,21 @@ public class DetailCash_Fragment extends Fragment {
 
             }
         });
+        cashAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override public void onLoadMoreRequested() {
+                cashRecycler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ACTION_UP++;
+                        if(cashAdapter.getData().size()>=10){
+                            getDate(ACTION_UP,1);
+                        }
+                    }
+
+                }, 1000);
+            }
+        }, cashRecycler);
+
     }
 
     private void initRecyclerView() {
@@ -104,16 +114,19 @@ public class DetailCash_Fragment extends Fragment {
     }
     private KProgressHUD hud;
 
-    private void getDate() {
+
+
+
+    private void getDate(int page,int action) {
         hud = KProgressHUD.create(getActivity())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait.....")
                 .setCancellable(true)
                 .show();
-
         String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
+        params.put("page", String.valueOf(page));
         JSONObject object = new JSONObject(params);
         OkGo.<String>post(Urls.Ip_url + Urls.Integarl.GETCASH)
                 .upJson(object)
@@ -125,8 +138,25 @@ public class DetailCash_Fragment extends Fragment {
                             Gson gson = new Gson();
                             cashBean = gson.fromJson(s, CashBean.class);
                             if (cashBean.getError_code() == 0) {
+
                                 EventBus.getDefault().post(new CashEvent("¥" + cashBean.getData().getTotal()));
-                                cashAdapter.setNewData(cashBean.getData().getCashRecord());
+                                //cashAdapter.setNewData(cashBean.getData().getCashRecord());
+                                if(cashBean.getData().getCashRecord().size()==0){
+                                    cashAdapter.loadMoreEnd();
+                                }else {
+                                    if(action==0){
+                                        cashAdapter.setNewData(cashBean.getData().getCashRecord());
+                                    }else {
+                                        cashAdapter.addData(cashBean.getData().getCashRecord());
+                                    }
+
+                                    if(cashBean.getData().getCashRecord().size()<10){
+                                        cashAdapter.loadMoreEnd();
+                                    }else {
+                                        cashAdapter.loadMoreComplete();
+
+                                    }
+                                }
                             } else if (cashBean.getError_code() == 2) {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 intent.putExtra("message", cashBean.getError_message());
@@ -166,7 +196,7 @@ public class DetailCash_Fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE:
-                getDate();
+                getDate(ACTION_DOWN,0);
                 break;
         }
     }
