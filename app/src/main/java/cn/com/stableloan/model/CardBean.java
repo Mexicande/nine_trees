@@ -121,12 +121,9 @@ public class CardBean implements Serializable{
                             ", request_id='" + request_id + '\'' +
                             ", sex='" + sex + '\'' +
                             ", success=" + success +
+                            ", card_num='" + card_num + '\'' +
                             '}';
                 }
-
-                /**
-
-                 */
 
                 private String address;
                 private String birth;
@@ -138,6 +135,15 @@ public class CardBean implements Serializable{
                 private String request_id;
                 private String sex;
                 private boolean success;
+                private String card_num;
+
+                public String getCard_num() {
+                    return card_num;
+                }
+
+                public void setCard_num(String card_num) {
+                    this.card_num = card_num;
+                }
 
                 public String getAddress() {
                     return address;

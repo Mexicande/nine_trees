@@ -13,6 +13,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import java.lang.ref.WeakReference;
 
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.ui.activity.safe.FingerActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
 
@@ -37,7 +38,8 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         }
-        ImmersionBar.with(this).transparentBar().init();
+        ImmersionBar.with(this).transparentBar()
+                .init();
         setWelcome();
     }
 
@@ -79,6 +81,10 @@ public class SplashActivity extends AppCompatActivity {
                       /*  MainActivity.launch(activity);
                         activity.finish();*/
                         break;
+                    case 2:
+                        FingerActivity.launch(activity);
+                        activity.finish();
+                        break;
 
                 }
             }
@@ -92,8 +98,9 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             return;
         }else {
-            mHandler.sendEmptyMessageDelayed(1, 1000);
+            mHandler.sendEmptyMessageDelayed(2, 1000);
         }
+
     }
     /**
      * startActivity屏蔽物理返回按钮
@@ -109,6 +116,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

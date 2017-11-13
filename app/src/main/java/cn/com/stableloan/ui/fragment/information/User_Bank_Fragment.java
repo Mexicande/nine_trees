@@ -1,8 +1,10 @@
 package cn.com.stableloan.ui.fragment.information;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,9 +25,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -35,10 +41,13 @@ import cn.com.stableloan.model.Bank;
 import cn.com.stableloan.model.BankInformation;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.ui.activity.Camera2Activity;
+import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
 import cn.com.stableloan.utils.BankUtils;
+import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -83,8 +92,14 @@ public class User_Bank_Fragment extends Fragment {
     private ACache aCache;
 
     private static final int REQUEST_CODE = 20000;
+    private static final int REQUEST_BANK = 200;
 
-    private boolean creditFlag=false;
+    private static final int DEBIT_CODE = 1;
+    private static final int CREDIT_CODE = 2;
+
+
+    private boolean creditFlag = false;
+
     public User_Bank_Fragment() {
         // Required empty public constructor
     }
@@ -107,14 +122,7 @@ public class User_Bank_Fragment extends Fragment {
     }
 
     private void setListener() {
-        setSuperText(etBankCard1, Urls.DateChange.DEBIT_CARD);
-        setSuperText(etBankCard2, Urls.DateChange.CREDIT_CARD);
 
-        setSuperText(etBankPersonName1, Urls.DateChange.DEBIT_NAME);
-        setSuperText(etBankPersonName2, Urls.DateChange.CREDIT_NAME);
-
-        setSuperText(etBankPhone1, Urls.DateChange.DEBIT_PHONE);
-        setSuperText(etBankPhone2, Urls.DateChange.CREDIT_PHONE);
 
        /* setSuperText(etSelectBank1, Urls.DateChange.DEBIT_BANK);
         setSuperText(etSelectBank2, Urls.DateChange.CREDIT_BANK);*/
@@ -134,10 +142,10 @@ public class User_Bank_Fragment extends Fragment {
             @Override
             public void onClickListener(SuperTextView superTextView) {
                 int visibility = layoutCredit.getVisibility();
-                if(visibility==View.GONE){
+                if (visibility == View.GONE) {
                     layoutCredit.setVisibility(View.VISIBLE);
                     isCredit.setRightString("有");
-                }else {
+                } else {
                     layoutCredit.setVisibility(View.GONE);
                     isCredit.setRightString("没有");
                 }
@@ -147,16 +155,10 @@ public class User_Bank_Fragment extends Fragment {
     }
 
     private void setSuperText(SuperTextView superText, int type) {
-        superText.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
                 Intent intent = new Intent(getActivity(), DateChangeActivity.class);
                 intent.putExtra("type", type);
-                intent.putExtra("hint",superText.getRightString());
+                intent.putExtra("hint", superText.getRightString());
                 startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
-
     }
 
     private void initTime() {
@@ -231,10 +233,10 @@ public class User_Bank_Fragment extends Fragment {
 
                                     int is_credit = bankBean.getBank().getCredit().getIs_credit();
 
-                                    if(is_credit==1){
+                                    if (is_credit == 1) {
                                         layoutCredit.setVisibility(View.VISIBLE);
                                         isCredit.setRightString("有");
-                                    }else {
+                                    } else {
                                         isCredit.setRightString("没有");
                                     }
 
@@ -284,9 +286,9 @@ public class User_Bank_Fragment extends Fragment {
         creditBean.setCphone(etBankPhone2.getRightString());
 
         int visibility = layoutCredit.getVisibility();
-        if(visibility==View.GONE){
+        if (visibility == View.GONE) {
             creditBean.setIs_credit(2);
-        }else {
+        } else {
             creditBean.setIs_credit(1);
         }
 
@@ -357,7 +359,6 @@ public class User_Bank_Fragment extends Fragment {
                 case Urls.DateChange.DEBIT_CARD:
                     if (data != null) {
                         String type = data.getStringExtra("type");
-                        LogUtils.i("name===", type);
                         etBankCard1.setRightString(type);
                         if (type.length() > 6) {
                             String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
@@ -368,7 +369,6 @@ public class User_Bank_Fragment extends Fragment {
                 case Urls.DateChange.CREDIT_CARD:
                     if (data != null) {
                         String type = data.getStringExtra("type");
-                        LogUtils.i("name===", type);
                         etBankCard2.setRightString(type);
                         if (type.length() > 6) {
                             String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
@@ -379,33 +379,54 @@ public class User_Bank_Fragment extends Fragment {
                 case Urls.DateChange.DEBIT_NAME:
                     if (data != null) {
                         String type = data.getStringExtra("type");
-                        LogUtils.i("name===", type);
                         etBankPersonName1.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.CREDIT_NAME:
                     if (data != null) {
                         String type = data.getStringExtra("type");
-                        LogUtils.i("name===", type);
                         etBankPersonName2.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.DEBIT_PHONE:
                     if (data != null) {
                         String type = data.getStringExtra("type");
-                        LogUtils.i("name===", type);
                         etBankPhone1.setRightString(type);
                     }
                     break;
                 case Urls.DateChange.CREDIT_PHONE:
                     if (data != null) {
                         String type = data.getStringExtra("type");
-                        LogUtils.i("name===", type);
                         etBankPhone2.setRightString(type);
+                    }
+                    break;
+
+            }
+        }else if(requestCode==REQUEST_BANK){
+            switch (resultCode){
+                case DEBIT_CODE:
+                    if (data != null) {
+                        String type = data.getStringExtra("card_num");
+                        etBankCard1.setRightString(type);
+                        if (type.length() > 6) {
+                            String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
+                            etSelectBank1.setRightString(name);
+                        }
+                    }
+                    break;
+                case CREDIT_CODE:
+                    if (data != null) {
+                        String type = data.getStringExtra("card_num");
+                        etBankCard2.setRightString(type);
+                        if (type.length() > 6) {
+                            String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
+                            etSelectBank2.setRightString(name);
+                        }
                     }
                     break;
             }
         }
+
 
     }
 
@@ -424,8 +445,120 @@ public class User_Bank_Fragment extends Fragment {
 
     @OnClick(R.id.save)
     public void onViewClicked() {
-        if(bankBean!=null){
+        if (bankBean != null) {
             Save();
         }
     }
+
+
+
+    @OnClick({R.id.debit_camera, R.id.et_BankCard1, R.id.et_BankPersonName1, R.id.et_BankPhone1, R.id.et_SelectBank1, R.id.et_ValidityTime1, R.id.credit_camera, R.id.is_credit, R.id.et_BankCard2, R.id.et_BankPersonName2, R.id.et_BankPhone2, R.id.et_SelectBank2, R.id.et_ValidityTime2, R.id.save})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.debit_camera:
+                getCameraPermission(DEBIT_CODE);
+                break;
+            case R.id.et_BankCard1:
+                setSuperText(etBankCard1, Urls.DateChange.DEBIT_CARD);
+                break;
+            case R.id.et_BankPersonName1:
+                setSuperText(etBankPersonName1, Urls.DateChange.DEBIT_NAME);
+                break;
+            case R.id.et_BankPhone1:
+                setSuperText(etBankPhone1, Urls.DateChange.DEBIT_PHONE);
+                break;
+            case R.id.et_SelectBank1:
+                break;
+            case R.id.credit_camera:
+                getCameraPermission(CREDIT_CODE);
+                break;
+            case R.id.is_credit:
+                break;
+            case R.id.et_BankCard2:
+                setSuperText(etBankCard2, Urls.DateChange.CREDIT_CARD);
+                break;
+            case R.id.et_BankPersonName2:
+                setSuperText(etBankPersonName2, Urls.DateChange.CREDIT_NAME);
+                break;
+            case R.id.et_BankPhone2:
+                setSuperText(etBankPhone2, Urls.DateChange.CREDIT_PHONE);
+
+                break;
+            case R.id.et_SelectBank2:
+                break;
+            case R.id.save:
+                break;
+        }
+
+    }
+
+    private void getCameraPermission(int type) {
+        AndPermission.with(getActivity())
+                .requestCode(type)
+                .permission(Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .callback(listener)
+                .start();
+
+    }
+    private File mFile;
+
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+            // 这里的requestCode就是申请时设置的requestCode。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if (requestCode == DEBIT_CODE) {
+                Intent intent = new Intent();
+                mFile = CommonUtils.createImageFile("mFile");
+                //文件保存的路径和名称
+                intent.putExtra("file", mFile.toString());
+                //拍照时的提示文本
+                intent.putExtra("hint", "请将证件放入框内。将裁剪图片，只保留框内区域的图像");
+                //是否使用整个画面作为取景区域(全部为亮色区域)
+                intent.putExtra("hideBounds", false);
+                intent.putExtra("type",DEBIT_CODE);
+                //最大允许的拍照尺寸（像素数）
+                intent.putExtra("maxPicturePixels", 3840 * 2160);
+                //startActivityForResult(intent, AppApplication.TAKE_PHOTO_CUSTOM);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    intent.setClass(getActivity(), Camera2Activity.class);
+                    startActivityForResult(intent,REQUEST_BANK);
+                } else {
+                    intent.setClass(getActivity(), CameraActivity.class);
+                    startActivityForResult(intent,REQUEST_BANK);
+                }
+            }else if(requestCode==CREDIT_CODE){
+                Intent intent = new Intent();
+                mFile = CommonUtils.createImageFile("mFile");
+                //文件保存的路径和名称
+                intent.putExtra("file", mFile.toString());
+                //拍照时的提示文本
+                intent.putExtra("hint", "请将证件放入框内。将裁剪图片，只保留框内区域的图像");
+                //是否使用整个画面作为取景区域(全部为亮色区域)
+                intent.putExtra("hideBounds", false);
+                intent.putExtra("type",CREDIT_CODE);
+                //最大允许的拍照尺寸（像素数）
+                intent.putExtra("maxPicturePixels", 3840 * 2160);
+                //startActivityForResult(intent, AppApplication.TAKE_PHOTO_CUSTOM);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    intent.setClass(getActivity(), Camera2Activity.class);
+                    startActivityForResult(intent,REQUEST_BANK);
+                } else {
+                    intent.setClass(getActivity(), CameraActivity.class);
+                    startActivityForResult(intent,REQUEST_BANK);
+                }
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            if (requestCode == 500) {
+                // TODO ...
+                ToastUtils.showToast(getActivity(), "获取权限失败，请在设置中手动添加拍照权限");
+            }
+        }
+    };
 }

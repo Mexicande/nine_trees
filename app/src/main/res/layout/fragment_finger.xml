@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.com.stableloan.ui.fragment.dialogfragment.FingerFragment">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_marginTop="@dimen/_20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="安稳钱包验证"
+        android:textColor="@color/select_text_color"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"/>
+    <ImageView
+        android:layout_marginTop="@dimen/_20dp"
+        android:layout_below="@id/tv_title"
+        android:id="@+id/iv_finger"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/iv_dialog_finger"/>
+     <TextView
+         android:layout_marginTop="@dimen/_20dp"
+         android:layout_below="@id/iv_finger"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingRight="@dimen/_10dp"
+         android:paddingLeft="@dimen/_10dp"
+         android:paddingTop="3dp"
+         android:layout_alignParentRight="true"
+         android:paddingBottom="3dp"
+         android:layout_marginRight="@dimen/_20dp"
+         android:layout_marginBottom="@dimen/_20dp"
+         android:text="取消"/>
+</RelativeLayout>

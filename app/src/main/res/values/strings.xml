@@ -101,5 +101,8 @@
     <string name="safe_error_title">账号安全保护中!</string>
     <string name="safe_error_desc">在非常用设备上登录\n且使用非注册手机号\n可在"设置-常用设备管理"中调整</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

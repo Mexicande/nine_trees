@@ -67,6 +67,7 @@ import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.InputBean;
 import cn.com.stableloan.utils.BitmapUtils;
 import cn.com.stableloan.utils.Camera2Utils;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import io.reactivex.Flowable;
@@ -86,6 +87,8 @@ import okhttp3.Response;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class Camera2Activity extends AutoLayoutActivity {
 
+    private static final int DEBIT_CODE = 1;
+    private static final int CREDIT_CODE = 2;
     /**
      * finish()是否已调用过
      */
@@ -812,47 +815,127 @@ public class Camera2Activity extends AutoLayoutActivity {
                 /**
                  * 拍照完成后返回MainActivity.
                  */
-               file1=new File(mFile.toString());
-                Flowable.just(file1)
-                        //将File解码为Bitmap
-                        .map(file -> BitmapUtils.compressToResolution(file, 1920 * 1080))
-                        //裁剪Bitmap
-                        .map(BitmapUtils::crop)
-                        //将Bitmap写入文件
-                        .map(bitmap -> BitmapUtils.writeBitmapToFile(bitmap, "mFile"))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(file -> {
-                            file1 = file;
-                            Log.i("file-----",file1.getAbsolutePath());
-                            AppApplication.mHandler.post(() -> {
-                                mFinishCalled = true;
-                                AppApplication.destoryActivity("CarmeraResultActivity");
-                                String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
-                                if(camera==null||camera.equals("1")){
-                                    SPUtils.put(Camera2Activity.this,"camera","ok");
-                                    identifyPhoto(file1.getAbsolutePath());
-                                }
-                            });
-                            //清除该Uri的Fresco缓存. 若不清除，对于相同文件名的图片，Fresco会直接使用缓存而使得Drawee得不到更新.
-                        });
-               /* AppApplication.mHandler.post(() -> {
-                    mFinishCalled = true;
-                    File file=new File(file2.getAbsolutePath());
-                    Bitmap bitmap = BitmapUtils.compressToResolution(file, 1920 * 1080);
-                    BitmapUtils.crop(bitmap);
-                    // setResult(200, getIntent().putExtra("file", mFile.toString()));
-                    Log.i("file-----",file2.getAbsolutePath());
-                    identifyPhoto(file2.getAbsolutePath(),photoBase64);
+                int type = getIntent().getIntExtra("type", 0);
+                file1=new File(mFile.toString());
 
-                });*/
+                if(type!=0){
+                    Flowable.just(file1)
+                            //将File解码为Bitmap
+                            .map(file -> BitmapUtils.compressToResolution(file, 1920 * 1080))
+                            //裁剪Bitmap
+                            .map(BitmapUtils::crop)
+                            //将Bitmap写入文件
+                            .map(bitmap -> BitmapUtils.writeBitmapToFile(bitmap, "mFile"))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(file -> {
+                                file1 = file;
+                                Log.i("file-----",file1.getAbsolutePath());
+                                AppApplication.mHandler.post(() -> {
+                                    mFinishCalled = true;
+                                    String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
+                                    if(camera==null||camera.equals("1")){
+                                        SPUtils.put(Camera2Activity.this,"camera","ok");
+                                        bankPhoto(file1.getAbsolutePath(),type);
+                                    }
+                                });
+                            });
+
+                }else {
+                    Flowable.just(file1)
+                            //将File解码为Bitmap
+                            .map(file -> BitmapUtils.compressToResolution(file, 1920 * 1080))
+                            //裁剪Bitmap
+                            .map(BitmapUtils::crop)
+                            //将Bitmap写入文件
+                            .map(bitmap -> BitmapUtils.writeBitmapToFile(bitmap, "mFile"))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(file -> {
+                                file1 = file;
+                                Log.i("file-----",file1.getAbsolutePath());
+                                AppApplication.mHandler.post(() -> {
+                                    mFinishCalled = true;
+                                    AppApplication.destoryActivity("CarmeraResultActivity");
+
+                                    String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
+                                    SPUtils.put(Camera2Activity.this,"camera","ok");
+                                    if(camera==null||camera.equals("1")){
+                                        SPUtils.put(Camera2Activity.this,"camera","ok");
+                                        identifyPhoto(file1.getAbsolutePath());
+                                    }
+                                });
+                            });
+                }
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+    private void bankPhoto(String path,int type) {
+
+        hd .show();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+        bitmap = BitmapFactory.decodeFile(path, options);
+        String base64 = bitmapToBase64(bitmap);
+        InputBean.InputsBean.ImageBean imageBean= new InputBean.InputsBean.ImageBean();
+        imageBean.setDataType(50);
+        imageBean.setDataValue(base64);
+        InputBean.InputsBean bean=new InputBean.InputsBean();
+        bean.setImage(imageBean);
+        List<InputBean.InputsBean>list=new ArrayList<>();
+        list.add(bean);
+        InputBean inputBean=new InputBean();
+        inputBean.setInputs(list);
+        Gson gson=new Gson();
+        String json = gson.toJson(inputBean);
+        OkGo.<String>post("http://yhk.market.alicloudapi.com/rest/160601/ocr/ocr_bank_card.json")
+                .tag(this)
+                .headers("Authorization","APPCODE "+"652e57e76e014140a1fc93e0b1e6e6f9")
+                .headers("Content-Type", "application/json; charset=UTF-8")
+                .upJson(json)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        hd.dismiss();
+                        String s1 = s.replace("\"{", "{");
+                        String s2 = s1.replace("\\", "");
+                        String s3 = s2.replace("}\"", "}");
+                        Gson gson1=new Gson();
+                        CardBean cardBean = gson1.fromJson(s3, CardBean.class);
+                        CardBean.OutputsBean.OutputValueBean.DataValueBean value = cardBean.getOutputs().get(0).getOutputValue().getDataValue();
+                        if(cardBean.getOutputs().get(0).getOutputValue().getDataValue().isSuccess()){
+                            SPUtils.remove(Camera2Activity.this,"camera");
+                            Intent intent=new Intent();
+                            intent.putExtra("card_num",value.getCard_num());
+                            setResult(type,intent);
+                            finish();
+                        }else {
+                            ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
+                            SPUtils.remove(Camera2Activity.this,"camera");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
+                        SPUtils.remove(Camera2Activity.this,"camera");
+                        hd.dismiss();
+                    }
+                });
+
+
+    }
+
     private Bitmap bitmap;
     private KProgressHUD hd;
+
+
     private void identifyPhoto(String path) {
         hd .show();
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -878,7 +961,7 @@ public class Camera2Activity extends AutoLayoutActivity {
         String json = gson.toJson(inputBean);
         OkGo.<String>post("https://dm-51.data.aliyun.com/rest/160601/ocr/ocr_idcard.json")
                 .tag(this)
-                .headers("Authorization","APPCODE "+"a37dbd4d651b43c2a7e0c56b3f842b74")
+                .headers("Authorization","APPCODE "+"652e57e76e014140a1fc93e0b1e6e6f9")
                 .headers("Content-Type", "application/json; charset=UTF-8")
                 .upJson(json)
                 .execute(new StringCallback() {
@@ -914,14 +997,10 @@ public class Camera2Activity extends AutoLayoutActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
-                                SPUtils.remove(Camera2Activity.this,"camera");
-                                hd.dismiss();
-                            }
-                        });
+                        ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
+                        SPUtils.remove(Camera2Activity.this,"camera");
+
+                        hd.dismiss();
                     }
                 });
 

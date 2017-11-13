@@ -269,7 +269,8 @@
         <activity
             android:name=".ui.activity.settingdate.SwitchPassWordActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.cash.CashFlowActivity"></activity>
+        <activity android:name=".ui.activity.cash.CashFlowActivity" />
+        <activity android:name=".ui.activity.safe.FingerActivity"></activity>
     </application>
 
 </manifest>
