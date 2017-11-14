@@ -1,6 +1,7 @@
 package cn.com.stableloan.ui.activity.safe;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,10 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.fragment.dialogfragment.FingerFragment;
 
-public class FingerActivity extends AppCompatActivity {
+public class FingerActivity extends AppCompatActivity implements DialogInterface.OnDismissListener,FingerFragment.FragmentListener{
 
     private FingerFragment fingerFragment;
     public static void launch(Context context) {
@@ -31,8 +33,6 @@ public class FingerActivity extends AppCompatActivity {
             fingerFragment=new FingerFragment();
         }
         fingerFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
-
-
     }
 
     @OnClick(R.id.iv_finger)
@@ -43,4 +43,17 @@ public class FingerActivity extends AppCompatActivity {
         fingerFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+
+    }
+
+
+    @Override
+    public void verify(int type) {
+        if(type==0){
+            MainActivity.launch(this);
+            finish();
+        }
+    }
 }

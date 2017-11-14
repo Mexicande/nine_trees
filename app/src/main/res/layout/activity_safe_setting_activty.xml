@@ -135,6 +135,27 @@
                 stv:sBottomDividerLineMarginLeft="10dp"
                 stv:sBottomDividerLineMarginRight="10dp"
                 />
+
+            <cn.com.stableloan.view.supertextview.SuperTextView
+                android:id="@+id/st_fingerprint"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                stv:sLeftTextSize="@dimen/information_textSize"
+                stv:sLeftTextString="指纹登录"
+                stv:sRightTextColor="@color/text_setting"
+                stv:sLeftTextColor="@color/select_text_color"
+                stv:sRightTextSize="@dimen/information_textSize"
+                stv:sRightViewType="switchBtn"
+                stv:sSwitchIsChecked="false"
+                stv:sSwitchMinWidth="40dp"
+                stv:sBottomDividerLineMarginLeft="10dp"
+                stv:sBottomDividerLineMarginRight="10dp"
+                stv:sThumbResource="@drawable/thumb"
+                stv:sTrackResource="@drawable/track"
+                stv:sDividerLineHeight="1dp"
+                />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -224,5 +245,4 @@
     <include layout="@layout/setting_cat_slide"/>
     <include layout="@layout/setting_apply_slide"/>
     <include layout="@layout/setting_login_slide"/>
-
 </RelativeLayout>

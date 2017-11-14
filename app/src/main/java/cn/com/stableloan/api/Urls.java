@@ -240,5 +240,8 @@ public interface Urls {
     interface REQUEST_CODE{
         int PULLBLIC_CODE                                                                          =100;
     }
+    interface DEVICE{
+        String MEIZU=                                                                               "Meizu";
+    }
 
 }

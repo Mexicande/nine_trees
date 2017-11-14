@@ -268,6 +268,7 @@ public class Verify_PasswordActivity extends BaseActivity {
                                             } else if ("attestation".equals(from)) {
                                                 Intent intent = new Intent();
                                                 setResult(100, intent);
+                                                finish();
                                             }
                                         }
                                     } else if (error_code == 2) {

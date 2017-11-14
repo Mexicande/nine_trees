@@ -399,7 +399,11 @@ public static java.lang.String TABLENAME;
 -keepclassmembers class * {
     native <methods>;
 }
+# MeiZuFingerprint
+-keep class com.fingerprints.service.** { *; }
 
+# SmsungFingerprint
+-keep class com.samsung.android.sdk.** { *; }
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn okhttp3.**

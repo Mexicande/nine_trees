@@ -16,6 +16,9 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.ui.activity.safe.FingerActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
+import cn.com.stableloan.utils.SystemUtil;
+import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
+import cn.com.stableloan.utils.fingerprint.aosp.BaseFingerprint;
 
 
 /**
@@ -23,6 +26,7 @@ import cn.com.stableloan.utils.SharedPreferencesUtil;
  *
  */
 public class SplashActivity extends AppCompatActivity {
+
     private SwitchHandler mHandler = new SwitchHandler(this);
 
     @Override
@@ -45,6 +49,8 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private static class SwitchHandler extends Handler {
+        private FingerprintIdentify mFingerprintIdentify;
+
         private WeakReference<SplashActivity> mWeakReference;
 
         SwitchHandler(SplashActivity activity) {
@@ -54,23 +60,40 @@ public class SplashActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             SplashActivity activity = mWeakReference.get();
             if (activity != null) {
-                switch (msg.what){
+                switch (msg.what) {
                     case 1:
                         String userphone = (String) SPUtils.get(activity, Urls.lock.USER_PHONE, "1");
                         String token = (String) SPUtils.get(activity, Urls.lock.TOKEN, "0");
-                        if(token==null||"0".equals(token)){
+                        if (token == null || "0".equals(token)) {
                             MainActivity.launch(activity);
                             activity.finish();
-                        }else {
-                            int  loginCode = (int) SPUtils.get(activity, userphone + Urls.lock.LOGIN, 5);
-                            switch (loginCode){
+                        } else {
+                            int loginCode = (int) SPUtils.get(activity, userphone + Urls.lock.LOGIN, 5);
+
+                            switch (loginCode) {
                                 case Urls.lock.PW_VERIFICATION:
-                                    activity.startActivity(new Intent(activity,Verify_PasswordActivity.class).putExtra("from","splash"));
+                                    activity.startActivity(new Intent(activity, Verify_PasswordActivity.class).putExtra("from", "splash"));
                                     activity.finish();
                                     break;
                                 case Urls.lock.GESTURE_VERIFICATION:
-                                    activity.startActivity(new Intent(activity,GestureLoginActivity.class).putExtra("from","splash"));
+                                    activity.startActivity(new Intent(activity, GestureLoginActivity.class).putExtra("from", "splash"));
                                     activity.finish();
+                                    break;
+                                case Urls.lock.GESTURE_FINGER:
+                                    mFingerprintIdentify = new FingerprintIdentify(activity);
+
+                                    //硬件设备是否已录入指纹
+                                    boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
+                                    //指纹功能是否可用
+                                    boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
+                                    if (registeredFingerprint && fingerprintEnable) {
+                                        FingerActivity.launch(activity);
+                                        activity.finish();
+                                    } else {
+                                        activity.startActivity(new Intent(activity, Verify_PasswordActivity.class).putExtra("from", "splash"));
+                                        activity.finish();
+                                    }
+
                                     break;
                                 default:
                                     MainActivity.launch(activity);
@@ -78,8 +101,6 @@ public class SplashActivity extends AppCompatActivity {
                                     break;
                             }
                         }
-                      /*  MainActivity.launch(activity);
-                        activity.finish();*/
                         break;
                     case 2:
                         FingerActivity.launch(activity);

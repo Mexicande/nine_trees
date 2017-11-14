@@ -2,18 +2,10 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 import com.meituan.android.walle.WalleChannelReader;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -32,7 +24,6 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.UpdateInfoBean;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
@@ -43,16 +34,10 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
 import cn.com.stableloan.view.update.AppUpdateUtils;
-import cn.com.stableloan.view.update.CProgressDialogUtils;
 import cn.com.stableloan.view.update.OkGoUpdateHttpUtil;
 import cn.com.stableloan.view.update.UpdateAppBean;
 import cn.com.stableloan.view.update.UpdateAppManager;
 import cn.com.stableloan.view.update.UpdateCallback;
-import ezy.boost.update.IUpdateParser;
-import ezy.boost.update.OnFailureListener;
-import ezy.boost.update.UpdateError;
-import ezy.boost.update.UpdateInfo;
-import ezy.boost.update.UpdateManager;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
@@ -86,13 +71,11 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
         updateDiy();
-
         initView();
     }
 
     public void updateDiy() {
         NewVersionCode = AppUpdateUtils.getVersionCode(this);
-//      String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         String  channel = WalleChannelReader.getChannel(this.getApplicationContext());
         Map<String, String> params = new HashMap<String, String>();
         params.put("url", channel);
