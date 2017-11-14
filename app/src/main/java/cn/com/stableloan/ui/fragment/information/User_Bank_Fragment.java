@@ -97,7 +97,7 @@ public class User_Bank_Fragment extends Fragment {
     private static final int DEBIT_CODE = 1;
     private static final int CREDIT_CODE = 2;
 
-
+    private String APP_CODE="";
     private boolean creditFlag = false;
 
     public User_Bank_Fragment() {
@@ -223,6 +223,7 @@ public class User_Bank_Fragment extends Fragment {
                             Gson gson = new Gson();
                             BankInformation information = gson.fromJson(s, BankInformation.class);
                             if (information.getError_code() == 0) {
+                                APP_CODE=information.getData().getApp_code();
                                 if (information.getData().getStatus().equals("1")) {
                                     bankBean = information.getData();
                                     etBankCard1.setRightString(bankBean.getBank().getDebit().getDnumber());
@@ -515,6 +516,7 @@ public class User_Bank_Fragment extends Fragment {
                 //文件保存的路径和名称
                 intent.putExtra("file", mFile.toString());
                 //拍照时的提示文本
+                intent.putExtra("app_code",APP_CODE);
                 intent.putExtra("hint", "请将证件放入框内。将裁剪图片，只保留框内区域的图像");
                 //是否使用整个画面作为取景区域(全部为亮色区域)
                 intent.putExtra("hideBounds", false);
@@ -535,6 +537,8 @@ public class User_Bank_Fragment extends Fragment {
                 //文件保存的路径和名称
                 intent.putExtra("file", mFile.toString());
                 //拍照时的提示文本
+                intent.putExtra("app_code",APP_CODE);
+
                 intent.putExtra("hint", "请将证件放入框内。将裁剪图片，只保留框内区域的图像");
                 //是否使用整个画面作为取景区域(全部为亮色区域)
                 intent.putExtra("hideBounds", false);

@@ -10,9 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
@@ -21,7 +19,6 @@ import cn.com.stableloan.R;
  * A simple {@link Fragment} subclass.
  */
 public class FingerFragment extends DialogFragment {
-
 
 
     public FingerFragment() {
@@ -64,7 +61,7 @@ public class FingerFragment extends DialogFragment {
 
 
 
-    @OnClick(R.id.tv_title)
+    @OnClick(R.id.cancel)
     public void onViewClicked() {
         getDialog().dismiss();
     }

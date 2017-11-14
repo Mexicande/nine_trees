@@ -13,11 +13,20 @@ public class Bank implements Serializable {
      * bank : {"debit":{"dnumber":"0","dname":"0","dperiod":"0","dbank":"0","dphone":"0"},"credit":{"cnumber":"0","cname":"0","cperiod":"0","cbank":"0","cphone":"0"},"blass_time":"0"}
      * status : 1
      */
+    private String app_code;
 
     private String isSuccess;
     private BankBean bank;
     private String status;
     private String token;
+
+    public String getApp_code() {
+        return app_code;
+    }
+
+    public void setApp_code(String app_code) {
+        this.app_code = app_code;
+    }
 
     public String getToken() {
         return token;

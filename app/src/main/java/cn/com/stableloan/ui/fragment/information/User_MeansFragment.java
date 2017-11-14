@@ -124,7 +124,7 @@ public class User_MeansFragment extends Fragment {
     private String[] list;
     private File mFile;
 
-
+    private String APP_CODE="";
     private static final int REQUEST_CODE_PICK_CITY = 0;
 
     private Identity.DataBean.IdentityBean identityBean;
@@ -212,6 +212,7 @@ public class User_MeansFragment extends Fragment {
                 mFile = CommonUtils.createImageFile("mFile");
                 //文件保存的路径和名称
                 intent.putExtra("file", mFile.toString());
+                intent.putExtra("app_code",APP_CODE);
                 //拍照时的提示文本
                 intent.putExtra("hint", "请将证件放入框内。将裁剪图片，只保留框内区域的图像");
                 //是否使用整个画面作为取景区域(全部为亮色区域)
@@ -286,8 +287,9 @@ public class User_MeansFragment extends Fragment {
                             if (identity.getError_code() == 0) {
                                 if (identity.getData().getIsSuccess().equals("1")) {
                                     if (identity.getData().getStatus().equals("1")) {
+                                        identityBean = identity.getData().getIdentity();
+                                        APP_CODE=identity.getData().getApp_code();
                                         if (identityBean != null) {
-                                            identityBean = identity.getData().getIdentity();
                                             etName.setRightString(identityBean.getName());
                                             etIDCard.setRightString(identityBean.getIdcard());
                                             String sex = identityBean.getSex();
@@ -329,7 +331,6 @@ public class User_MeansFragment extends Fragment {
                                                 etBetween2.setRightString(list[i1]);
                                             }
                                         }
-
                                     } else {
 
                                         Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");

@@ -98,7 +98,7 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             return;
         }else {
-            mHandler.sendEmptyMessageDelayed(2, 1000);
+            mHandler.sendEmptyMessageDelayed(1, 1000);
         }
 
     }

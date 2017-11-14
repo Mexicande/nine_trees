@@ -256,6 +256,8 @@ public class CameraActivity extends AutoLayoutActivity {
     private KProgressHUD hd;
     private void identifyPhoto(String path) {
         hd .show();
+        String app_code = getIntent().getStringExtra("app_code");
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_4444;
         bitmap = BitmapFactory.decodeFile(path, options);
@@ -279,7 +281,7 @@ public class CameraActivity extends AutoLayoutActivity {
         String json = gson.toJson(inputBean);
         OkGo.<String>post("https://dm-51.data.aliyun.com/rest/160601/ocr/ocr_idcard.json")
                 .tag(this)
-                .headers("Authorization","APPCODE "+"a37dbd4d651b43c2a7e0c56b3f842b74")
+                .headers("Authorization","APPCODE "+app_code)
                 .headers("Content-Type", "application/json; charset=UTF-8")
                 .upJson(json)
                 .execute(new StringCallback() {

@@ -878,6 +878,7 @@ public class Camera2Activity extends AutoLayoutActivity {
     private void bankPhoto(String path,int type) {
 
         hd .show();
+        String app_code = getIntent().getStringExtra("app_code");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_4444;
         bitmap = BitmapFactory.decodeFile(path, options);
@@ -895,7 +896,7 @@ public class Camera2Activity extends AutoLayoutActivity {
         String json = gson.toJson(inputBean);
         OkGo.<String>post("http://yhk.market.alicloudapi.com/rest/160601/ocr/ocr_bank_card.json")
                 .tag(this)
-                .headers("Authorization","APPCODE "+"652e57e76e014140a1fc93e0b1e6e6f9")
+                .headers("Authorization","APPCODE "+app_code)
                 .headers("Content-Type", "application/json; charset=UTF-8")
                 .upJson(json)
                 .execute(new StringCallback() {

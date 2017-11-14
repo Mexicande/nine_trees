@@ -79,8 +79,16 @@ public class Identity implements Serializable {
          * isSuccess : 1
          * status : 1
          */
-
+        private String app_code;
         private IdentityBean identity;
+
+        public String getApp_code() {
+            return app_code;
+        }
+
+        public void setApp_code(String app_code) {
+            this.app_code = app_code;
+        }
 
         private String isSuccess;
         private String status;
