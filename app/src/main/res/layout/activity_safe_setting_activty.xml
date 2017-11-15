@@ -147,7 +147,7 @@
                 stv:sLeftTextColor="@color/select_text_color"
                 stv:sRightTextSize="@dimen/information_textSize"
                 stv:sRightViewType="switchBtn"
-                stv:sSwitchIsChecked="false"
+                stv:sSwitchIsChecked="true"
                 stv:sSwitchMinWidth="40dp"
                 stv:sBottomDividerLineMarginLeft="10dp"
                 stv:sBottomDividerLineMarginRight="10dp"

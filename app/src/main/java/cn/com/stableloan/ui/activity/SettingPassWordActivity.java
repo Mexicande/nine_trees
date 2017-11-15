@@ -16,6 +16,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.meituan.android.walle.WalleChannelReader;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -132,10 +133,15 @@ public class SettingPassWordActivity extends AppCompatActivity {
                 boolean match = RegexUtils.isMatch(RegexUtils.number_letter_underline, strPassWord);
 
                 if (!strPassWord.isEmpty() && match) {
+                    String  channel = WalleChannelReader.getChannel(getApplicationContext());
+
                     HashMap<String, String> params = new HashMap<>();
                     String md5ToString = EncryptUtils.encryptMD5ToString(strPassWord);
                     params.put("userphone", userPhone);
                     params.put("password", md5ToString);
+                    params.put("channel",channel);
+                    params.put("terminal", "1");
+
                     JSONObject object = new JSONObject(params);
 
                     String Deskey = null;

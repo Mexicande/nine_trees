@@ -216,7 +216,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                         if(mFingerFragment==null){
                             mFingerFragment=new FingerFragment();
                         }
-                        Bundle bundle=new Bundle(); 
+                        Bundle bundle=new Bundle();
                         bundle.putString("from","safe");
                         mFingerFragment.setArguments(bundle);
                         mFingerFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
@@ -405,10 +405,13 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
             case Urls.lock.NO_VERIFICATION:
                 svUnLockLogin.setRightString("无验证");
                 loginNO.setChecked(true);
+                stFingerprint.setSwitchIsChecked(false);
+
                 break;
             case Urls.lock.PW_VERIFICATION:
                 svUnLockLogin.setRightString("密码验证");
                 loginPW.setChecked(true);
+                stFingerprint.setSwitchIsChecked(false);
                 break;
             case Urls.lock.GESTURE_VERIFICATION:
                 svUnLockLogin.setRightString("手势验证");
@@ -417,9 +420,10 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                 } else {
                     loginGE.setChecked(true);
                 }
+                stFingerprint.setSwitchIsChecked(false);
                 break;
             case Urls.lock.GESTURE_FINGER:
-
+                stFingerprint.setSwitchIsChecked(true);
                 break;
         }
 
@@ -528,6 +532,8 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                         if (loginGE.isChecked()) {
                             loginGE.setChecked(false);
                             loginPW.setChecked(true);
+                            stFingerprint.setSwitchIsChecked(false);
+
                             svUnLockLogin.setRightString("密码验证");
                         }
                         if (applyGE.isChecked()) {
@@ -542,6 +548,8 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                         svChangeGesture.setRightString("已设置");
                         RBGE.setEnabled(true);
                         loginGE.setEnabled(true);
+                        stFingerprint.setSwitchIsChecked(false);
+
                         applyGE.setEnabled(true);
                     }
                     break;
@@ -621,12 +629,16 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
             case R.id.login_NO:
                 SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.NO_VERIFICATION);
                 svUnLockLogin.setRightString("无验证");
+                stFingerprint.setSwitchIsChecked(false);
+
                 login_SlideUp.hide();
 
                 break;
             case R.id.login_PW:
                 SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
                 svUnLockLogin.setRightString("密码验证");
+                stFingerprint.setSwitchIsChecked(false);
+
                 login_SlideUp.hide();
                 break;
             case R.id.login_GE:
@@ -636,6 +648,8 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                 } else {
                     SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.GESTURE_VERIFICATION);
                     svUnLockLogin.setRightString("手势验证");
+                    stFingerprint.setSwitchIsChecked(false);
+
                     login_SlideUp.hide();
                 }
 
