@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.meituan.android.walle.WalleChannelReader;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
@@ -455,6 +456,8 @@ public class LoginFragment extends Fragment {
                 .show();
         HashMap<String, String> params = new HashMap<>();
         String md5ToString = EncryptUtils.encryptMD5ToString(etPassWord.getText().toString());
+        String  channel = WalleChannelReader.getChannel(getActivity().getApplicationContext());
+
         params.put("userphone", etPhone.getText().toString());
         params.put("password", md5ToString);
         params.put("gtcode", gtcode);
@@ -463,6 +466,8 @@ public class LoginFragment extends Fragment {
         params.put("validatePhone", phone);
         params.put("device", model);
         params.put("version_number", "android " + androidVersion);
+        params.put("channel",channel);
+        params.put("terminal", "1");
         JSONObject object = new JSONObject(params);
         String Deskey = null;
         String sign = null;

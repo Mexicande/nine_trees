@@ -6,6 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
+import com.google.gson.JsonObject;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.meituan.android.walle.WalleChannelReader;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -42,6 +46,8 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class MainActivity extends BaseActivity implements ProductFragment.BackHandlerInterface{
 
@@ -60,6 +66,8 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
     public static final String EXIST = "exist";
     private int NewVersionCode=0;
+    String  channel="";
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -68,15 +76,31 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        channel = WalleChannelReader.getChannel(this.getApplicationContext());
         EventBus.getDefault().register(this);
         ZhugeSDK.getInstance().init(getApplicationContext());
+        statistics();
         updateDiy();
         initView();
+    }
+    
+    private void statistics() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("channel", channel);
+        JSONObject object = new JSONObject(params);
+        OkGo.post(Urls.NEW_Ip_url+Urls.statistics.Deliver).tag(this)
+                .upJson(object)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                    }
+                });
+
     }
 
     public void updateDiy() {
         NewVersionCode = AppUpdateUtils.getVersionCode(this);
-        String  channel = WalleChannelReader.getChannel(this.getApplicationContext());
         Map<String, String> params = new HashMap<String, String>();
         params.put("url", channel);
         new UpdateAppManager

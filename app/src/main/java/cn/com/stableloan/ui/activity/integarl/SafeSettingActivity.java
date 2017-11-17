@@ -116,8 +116,8 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
     RelativeLayout loginSlideImage;
     @Bind(R.id.apply_SlideImage)
     RelativeLayout applySlideImage;
-    @Bind(R.id.st_fingerprint)
-    SuperTextView stFingerprint;
+    /*@Bind(R.id.st_fingerprint)
+    SuperTextView stFingerprint;*/
     private SaveBean saveBean;
     private String[] managedList;
     private Context mContext;
@@ -158,12 +158,12 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
 
         titleName.setText("安全设置");
 
-        mFingerprintIdentify = new FingerprintIdentify(this);
+      /*  mFingerprintIdentify = new FingerprintIdentify(this);
 
         boolean hardwareEnable = mFingerprintIdentify.isHardwareEnable();
         if(hardwareEnable){
             stFingerprint.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
 
@@ -205,7 +205,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
     }
 
     private void setListener() {
-        stFingerprint.setSwitchCheckedChangeListener(new SuperTextView.OnSwitchCheckedChangeListener() {
+      /*  stFingerprint.setSwitchCheckedChangeListener(new SuperTextView.OnSwitchCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -224,7 +224,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                     }
                 }
             }
-        });
+        });*/
 
         svDateTime.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
@@ -317,7 +317,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
             mSettingFingerFragment=new SettingFingerFragment();
         }
         mSettingFingerFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
-        stFingerprint.setSwitchIsChecked(false);
+       // stFingerprint.setSwitchIsChecked(false);
 
 
     }
@@ -405,13 +405,13 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
             case Urls.lock.NO_VERIFICATION:
                 svUnLockLogin.setRightString("无验证");
                 loginNO.setChecked(true);
-                stFingerprint.setSwitchIsChecked(false);
+                //stFingerprint.setSwitchIsChecked(false);
 
                 break;
             case Urls.lock.PW_VERIFICATION:
                 svUnLockLogin.setRightString("密码验证");
                 loginPW.setChecked(true);
-                stFingerprint.setSwitchIsChecked(false);
+               // stFingerprint.setSwitchIsChecked(false);
                 break;
             case Urls.lock.GESTURE_VERIFICATION:
                 svUnLockLogin.setRightString("手势验证");
@@ -420,10 +420,10 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                 } else {
                     loginGE.setChecked(true);
                 }
-                stFingerprint.setSwitchIsChecked(false);
+              //  stFingerprint.setSwitchIsChecked(false);
                 break;
             case Urls.lock.GESTURE_FINGER:
-                stFingerprint.setSwitchIsChecked(true);
+              //  stFingerprint.setSwitchIsChecked(true);
                 break;
         }
 
@@ -532,7 +532,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                         if (loginGE.isChecked()) {
                             loginGE.setChecked(false);
                             loginPW.setChecked(true);
-                            stFingerprint.setSwitchIsChecked(false);
+                            //stFingerprint.setSwitchIsChecked(false);
 
                             svUnLockLogin.setRightString("密码验证");
                         }
@@ -548,7 +548,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                         svChangeGesture.setRightString("已设置");
                         RBGE.setEnabled(true);
                         loginGE.setEnabled(true);
-                        stFingerprint.setSwitchIsChecked(false);
+                        //stFingerprint.setSwitchIsChecked(false);
 
                         applyGE.setEnabled(true);
                     }
@@ -629,7 +629,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
             case R.id.login_NO:
                 SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.NO_VERIFICATION);
                 svUnLockLogin.setRightString("无验证");
-                stFingerprint.setSwitchIsChecked(false);
+                //stFingerprint.setSwitchIsChecked(false);
 
                 login_SlideUp.hide();
 
@@ -637,7 +637,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
             case R.id.login_PW:
                 SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
                 svUnLockLogin.setRightString("密码验证");
-                stFingerprint.setSwitchIsChecked(false);
+                //stFingerprint.setSwitchIsChecked(false);
 
                 login_SlideUp.hide();
                 break;
@@ -648,7 +648,7 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
                 } else {
                     SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.GESTURE_VERIFICATION);
                     svUnLockLogin.setRightString("手势验证");
-                    stFingerprint.setSwitchIsChecked(false);
+                    //stFingerprint.setSwitchIsChecked(false);
 
                     login_SlideUp.hide();
                 }
@@ -678,12 +678,12 @@ public class SafeSettingActivity extends BaseActivity implements  FingerFragment
     @Override
     public void verify(int type) {
         if(type==1){
-            stFingerprint.setSwitchIsChecked(false);
+            //stFingerprint.setSwitchIsChecked(false);
         }
     }
 
     @Override
     public void setting() {
-        stFingerprint.setSwitchIsChecked(false);
+        //stFingerprint.setSwitchIsChecked(false);
     }
 }

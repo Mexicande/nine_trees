@@ -577,6 +577,7 @@ public class MessageFragment extends Fragment {
         String phone = AppUtils.getPhone(getActivity());
         String model = AppUtils.getModel();
         String androidVersion = AppUtils.getSDKVersion();
+        String  channel = WalleChannelReader.getChannel(getActivity().getApplicationContext());
 
         HashMap<String, String> params = new HashMap<>();
         params.put("userphone", etPhone.getText().toString());
@@ -587,6 +588,7 @@ public class MessageFragment extends Fragment {
         params.put("validatePhone", phone);
         params.put("device", model);
         params.put("version_number", "android " + androidVersion);
+        params.put("channel",channel);
         params.put("terminal", "1");
         JSONObject object = new JSONObject(params);
         OkGo.<String>post(Urls.NEW_Ip_url + Urls.Login.QUICK_LOGIN)

@@ -16,9 +16,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.ui.activity.safe.FingerActivity;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
-import cn.com.stableloan.utils.SystemUtil;
 import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
-import cn.com.stableloan.utils.fingerprint.aosp.BaseFingerprint;
 
 
 /**
@@ -79,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
                                     activity.startActivity(new Intent(activity, GestureLoginActivity.class).putExtra("from", "splash"));
                                     activity.finish();
                                     break;
-                                case Urls.lock.GESTURE_FINGER:
+                            /*    case Urls.lock.GESTURE_FINGER:
                                     mFingerprintIdentify = new FingerprintIdentify(activity);
 
                                     //硬件设备是否已录入指纹
@@ -94,7 +92,7 @@ public class SplashActivity extends AppCompatActivity {
                                         activity.finish();
                                     }
 
-                                    break;
+                                    break;*/
                                 default:
                                     MainActivity.launch(activity);
                                     activity.finish();

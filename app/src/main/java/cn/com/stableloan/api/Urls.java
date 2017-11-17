@@ -243,5 +243,8 @@ public interface Urls {
     interface DEVICE{
         String MEIZU=                                                                               "Meizu";
     }
+    interface statistics{
+        String Deliver         =                                                                "deliver/countDeliver";
+    }
 
 }

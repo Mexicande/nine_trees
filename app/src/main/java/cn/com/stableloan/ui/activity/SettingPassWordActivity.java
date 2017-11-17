@@ -142,6 +142,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
                     params.put("channel",channel);
                     params.put("terminal", "1");
 
+
                     JSONObject object = new JSONObject(params);
 
                     String Deskey = null;
@@ -164,10 +165,8 @@ public class SettingPassWordActivity extends AppCompatActivity {
                     bean.setData(Deskey);
                     bean.setDeskey(deskey);
                     final Gson gson = new Gson();
-
                     String json = gson.toJson(bean);
-
-                    OkGo.<String>post(Urls.Ip_url + Urls.Login.SettingPassWord)
+                    OkGo.<String>post(Urls.NEW_Ip_url + Urls.Login.SettingPassWord)
                             .tag(this)
                             .headers("sign", sign)
                             .upJson(json)
@@ -225,6 +224,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
         selfDialog.setYesOnclickListener("否", new SettingPassWordDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
+
                 selfDialog.dismiss();
 
             }
@@ -232,6 +232,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
         selfDialog.setNoOnclickListener("退出", new SettingPassWordDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {
+
                 selfDialog.dismiss();
                 finish();
             }
