@@ -75,6 +75,7 @@ public class UserInformationActivity extends Activity{
      * #17326b
      * @param context
      */
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, UserInformationActivity.class));
     }
@@ -285,9 +286,9 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             }
         }
-        if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
+       /* if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
             getStatus();
-        }
+        }*/
     }
 
     @Override

@@ -110,27 +110,21 @@ public class DeviceActivity extends BaseActivity {
                                     intent.putExtra("from","1136");
                                     startActivity(intent);
                                     finish();
-
                                 }else {
                                     ToastUtils.showToast(DeviceActivity.this,device.getError_message());
                                 }
                             }
                     }
                 });
-        stProtect.setSwitchCheckedChangeListener(new SuperTextView.OnSwitchCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(deviceInt==0){
-                    if(!isChecked){
-                        offDevice(0);
-                    }else {
-                        offDevice(1);
-                    }
+        stProtect.setSwitchCheckedChangeListener((buttonView, isChecked) -> {
+            if(deviceInt==0){
+                if(!isChecked){
+                    offDevice(0);
+                }else {
+                    offDevice(1);
                 }
-
             }
         });
-
     }
 
     /**
@@ -179,12 +173,8 @@ public class DeviceActivity extends BaseActivity {
         recycler.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
 
 
-        mDeviceAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                deleteDevice(position+1,device.getData().getList().get(position).getId());
-            }
-        });
+        mDeviceAdapter.setOnItemChildClickListener((adapter, view, position) ->
+                deleteDevice(position+1,device.getData().getList().get(position).getId()));
     }
 
     private void deleteDevice(int position,int id) {
@@ -203,8 +193,11 @@ public class DeviceActivity extends BaseActivity {
                                 JSONObject object=new JSONObject(s);
                                 int error_code = object.getInt("error_code");
                                 if(error_code==0){
-
-                                    device.getData().getList().remove(position);
+                                    if(device.getData().getList().size()==1){
+                                        device.getData().getList().clear();
+                                    }else {
+                                        device.getData().getList().remove(position);
+                                    }
                                     mDeviceAdapter.remove(position-1);
                                     ToastUtils.showToast(DeviceActivity.this,"成功删除");
 

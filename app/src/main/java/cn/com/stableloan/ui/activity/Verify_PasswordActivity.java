@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.andreabaccega.widget.FormEditText;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -37,9 +36,11 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.utils.ActivityStackManager;
+import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.editext.PowerfulEditText;
 import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -50,8 +51,6 @@ public class Verify_PasswordActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.layout_go)
     LinearLayout layoutGo;
-    @Bind(R.id.et_PassWord)
-    FormEditText etPassWord;
     @Bind(R.id.tv_fail)
     TextView tvFail;
     @Bind(R.id.tv_forgetPW)
@@ -62,6 +61,8 @@ public class Verify_PasswordActivity extends BaseActivity {
     SuperButton btValidation;
     @Bind(R.id.tv_Switch)
     TextView tvSwitch;
+    @Bind(R.id.et_PassWord)
+    PowerfulEditText PassWord;
     private int FILD_NU = 0;
     private Context mContext;
 
@@ -79,7 +80,7 @@ public class Verify_PasswordActivity extends BaseActivity {
     private int lastYPos = 0;
 
     private void setListener() {
-        etPassWord.addTextChangedListener(new TextWatcher() {
+        PassWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -145,7 +146,7 @@ public class Verify_PasswordActivity extends BaseActivity {
 
     private void initToolbar() {
         titleName.setText("身份验证");
-        etPassWord.setTransformationMethod(PasswordTransformationMethod
+        PassWord.setTransformationMethod(PasswordTransformationMethod
                 .getInstance());
         String from = getIntent().getStringExtra("from");
         if ("splash".equals(from)) {
@@ -156,12 +157,14 @@ public class Verify_PasswordActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.layout_go, R.id.bt_Validation, R.id.tv_forgetPW,R.id.tv_Switch})
+    @OnClick({R.id.layout_go, R.id.bt_Validation, R.id.tv_forgetPW, R.id.tv_Switch})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_go:
                 String from = getIntent().getStringExtra("from");
                 if ("safe".equals(from)) {
+                    ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
+                }else if("attestation".equals(from)){
                     ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
                 }
                 finish();
@@ -173,10 +176,10 @@ public class Verify_PasswordActivity extends BaseActivity {
                 ForgetWordActivity.launch(this);
                 break;
             case R.id.tv_Switch:
-                SPUtils.remove(mContext,Urls.lock.TOKEN);
-                Intent intent=new Intent(this,LoginActivity.class);
-                intent.putExtra("message","switch");
-                intent.putExtra("from","switch");
+                SPUtils.remove(mContext, Urls.lock.TOKEN);
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtra("message", "switch");
+                intent.putExtra("from", "switch");
                 startActivity(intent);
                 finish();
                 break;
@@ -186,8 +189,12 @@ public class Verify_PasswordActivity extends BaseActivity {
     private KProgressHUD hud;
 
     private void VerifyPassWord() {
-        String password = etPassWord.getText().toString();
+        String password = PassWord.getText().toString();
         String token = (String) SPUtils.get(this, "token", "1");
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
+        String phone = AppUtils.getPhone(this);
+        String model = AppUtils.getModel();
+        String androidVersion = AppUtils.getSDKVersion();
         if (!password.isEmpty()) {
             hud = KProgressHUD.create(this)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -196,7 +203,10 @@ public class Verify_PasswordActivity extends BaseActivity {
                     .show();
             String md5ToString = EncryptUtils.encryptMD5ToString(password);
             Map<String, String> parms = new HashMap<>();
-            parms.put("token", token);
+            parms.put("validatePhone", phone);
+            parms.put("device", model);
+            parms.put("version_number", "android " + androidVersion);
+            parms.put("phone", userphone);
             parms.put("password", md5ToString);
             JSONObject jsonObject = new JSONObject(parms);
             OkGo.<String>post(Urls.NEW_Ip_url + Urls.Login.USER_INFOMATION)
@@ -210,7 +220,12 @@ public class Verify_PasswordActivity extends BaseActivity {
                                 try {
                                     JSONObject json = new JSONObject(s);
                                     int error_code = json.getInt("error_code");
+
                                     if (error_code == 0) {
+                                        JSONObject object=new JSONObject(json.getString("data"));
+                                        String string = object.getString("token");
+                                        SPUtils.put(Verify_PasswordActivity.this, Urls.lock.TOKEN, string);
+
                                         String from = getIntent().getStringExtra("from");
                                         if (from != null) {
                                             if ("unLock".equals(from)) {
@@ -353,6 +368,9 @@ public class Verify_PasswordActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             String from = getIntent().getStringExtra("from");
             if ("safe".equals(from)) {
+                ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
+                finish();
+            }else if("attestation".equals(from)){
                 ActivityStackManager.getInstance().popActivity(SafeSettingActivity.class);
                 finish();
             }

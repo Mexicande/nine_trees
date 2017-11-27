@@ -16,6 +16,7 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
 import com.uuch.adlibrary.utils.DisplayUtil;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -93,12 +94,21 @@ public class AppApplication extends Application {
         instance = this;
 
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
-
+        //诸葛io
         ZhugeSDK.getInstance().init(this,"24520d39b750437b97f026353aa80aea",channel);
+
+        //Bugly
         Bugly.setAppChannel(this, channel);
         Bugly.init(getApplication(), "e0e8b8baa1", true);
-
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
+
+        //友盟
+        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,"5a14ef858f4a9d5bd300006c"
+        ,channel));
+
+
+
+
 
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
 

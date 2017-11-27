@@ -67,7 +67,7 @@ public class DateChangeActivity extends BaseActivity {
             case Urls.DateChange.NAME:
                 titleName.setText("姓名");
                 if(hint!=null){
-                    etName.setHint(hint);
+                    etName.setText(hint);
                 }
                 etName.setVisibility(View.VISIBLE);
                 break;
@@ -75,7 +75,7 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("年龄");
                 etAge.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etAge.setHint(hint);
+                    etAge.setText(hint);
                 }
                 break;
             case Urls.DateChange.CONTACT_PHONE1:
@@ -83,35 +83,35 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("联系人电话");
                 etContactPhone.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etContactPhone.setHint(hint);
+                    etContactPhone.setText(hint);
                 }
                 break;
             case Urls.DateChange.IDCARD:
                 titleName.setText("身份证号码");
                 etIdCard.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etIdCard.setHint(hint);
+                    etIdCard.setText(hint);
                 }
                 break;
             case Urls.DateChange.ADDRESS:
                 titleName.setText("身份证地址");
                 etAddress.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etAddress.setHint(hint);
+                    etAddress.setText(hint);
                 }
                 break;
             case Urls.DateChange.DEBIT_CARD:
                 titleName.setText("借记卡卡号");
                 etBankCard1.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etBankCard1.setHint(hint);
+                    etBankCard1.setText(hint);
                 }
                 break;
             case Urls.DateChange.CREDIT_CARD:
                 titleName.setText("信用卡卡号");
                 etBankCard1.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etBankCard1.setHint(hint);
+                    etBankCard1.setText(hint);
                 }
                 break;
             case Urls.DateChange.DEBIT_NAME:
@@ -119,28 +119,28 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("持卡人姓名");
                 etName.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etName.setHint(hint);
+                    etName.setText(hint);
                 }
                 break;
             case Urls.DateChange.DEBIT_PHONE:
                 titleName.setText("银行绑定手机号");
                 etContactPhone.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etContactPhone.setHint(hint);
+                    etContactPhone.setText(hint);
                 }
                 break;
             case Urls.DateChange.CREDIT_PHONE:
                 titleName.setText("银行绑定手机号");
                 etContactPhone.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etContactPhone.setHint(hint);
+                    etContactPhone.setText(hint);
                 }
                 break;
             case Urls.DateChange.STUHENT_NAME:
                 titleName.setText("学校名称");
                 etChineseName.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etChineseName.setHint(hint);
+                    etChineseName.setText(hint);
                 }
                 break;
             case Urls.DateChange.COMPANY_NAME:
@@ -148,14 +148,14 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("单位名称");
                 etChineseName.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etChineseName.setHint(hint);
+                    etChineseName.setText(hint);
                 }
                 break;
             case Urls.DateChange.STUHENT_ADRESS:
                 titleName.setText("学校地址");
                 etAddress.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etAddress.setHint(hint);
+                    etAddress.setText(hint);
                 }
                 break;
             case Urls.DateChange.COMPANY_ADRESS:
@@ -163,7 +163,7 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("单位地址");
                 etAddress.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etAddress.setHint(hint);
+                    etAddress.setText(hint);
                 }
                 break;
             case Urls.DateChange.STUHENT_TELEPHONE:
@@ -179,7 +179,7 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("邮箱地址");
                 etEmail.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etEmail.setHint(hint);
+                    etEmail.setText(hint);
                 }
                 break;
             case Urls.DateChange.BUSSINESS_SALART:
@@ -187,7 +187,7 @@ public class DateChangeActivity extends BaseActivity {
                 titleName.setText("月收入(税后)");
                 etSalary.setVisibility(View.VISIBLE);
                 if(hint!=null){
-                    etSalary.setHint(hint);
+                    etSalary.setText(hint);
                 }
                 break;
 
@@ -195,13 +195,14 @@ public class DateChangeActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_save})
+    @OnClick({R.id.iv_back, R.id.iv_save,R.id.bt_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_save:
+            case R.id.bt_save:
                 commit_Date();
                 break;
         }

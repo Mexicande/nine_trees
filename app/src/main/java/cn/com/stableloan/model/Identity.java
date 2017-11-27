@@ -128,6 +128,53 @@ public class Identity implements Serializable {
 
         public static class IdentityBean implements Serializable {
             @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof IdentityBean)) return false;
+
+                IdentityBean that = (IdentityBean) o;
+
+                if (getIstatus() != null ? !getIstatus().equals(that.getIstatus()) : that.getIstatus() != null)
+                    return false;
+                if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+                    return false;
+                if (getUserphone() != null ? !getUserphone().equals(that.getUserphone()) : that.getUserphone() != null)
+                    return false;
+                if (getIdcard() != null ? !getIdcard().equals(that.getIdcard()) : that.getIdcard() != null)
+                    return false;
+                if (getSex() != null ? !getSex().equals(that.getSex()) : that.getSex() != null)
+                    return false;
+                if (getAge() != null ? !getAge().equals(that.getAge()) : that.getAge() != null)
+                    return false;
+                if (getIdaddress() != null ? !getIdaddress().equals(that.getIdaddress()) : that.getIdaddress() != null)
+                    return false;
+                if (getMarriage() != null ? !getMarriage().equals(that.getMarriage()) : that.getMarriage() != null)
+                    return false;
+                if (getCity() != null ? !getCity().equals(that.getCity()) : that.getCity() != null)
+                    return false;
+                if (getIlass_time() != null ? !getIlass_time().equals(that.getIlass_time()) : that.getIlass_time() != null)
+                    return false;
+                return getContact() != null ? getContact().equals(that.getContact()) : that.getContact() == null;
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getIstatus() != null ? getIstatus().hashCode() : 0;
+                result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+                result = 31 * result + (getUserphone() != null ? getUserphone().hashCode() : 0);
+                result = 31 * result + (getIdcard() != null ? getIdcard().hashCode() : 0);
+                result = 31 * result + (getSex() != null ? getSex().hashCode() : 0);
+                result = 31 * result + (getAge() != null ? getAge().hashCode() : 0);
+                result = 31 * result + (getIdaddress() != null ? getIdaddress().hashCode() : 0);
+                result = 31 * result + (getMarriage() != null ? getMarriage().hashCode() : 0);
+                result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
+                result = 31 * result + (getIlass_time() != null ? getIlass_time().hashCode() : 0);
+                result = 31 * result + (getContact() != null ? getContact().hashCode() : 0);
+                return result;
+            }
+
+            @Override
             public String toString() {
                 return "{" +
                         "istatus='" + istatus + '\'' +
@@ -255,6 +302,29 @@ public class Identity implements Serializable {
             }
 
             public static class ContactBean implements Serializable {
+                @Override
+                public boolean equals(Object o) {
+                    if (this == o) return true;
+                    if (!(o instanceof ContactBean)) return false;
+
+                    ContactBean that = (ContactBean) o;
+
+                    if (getContact() != null ? !getContact().equals(that.getContact()) : that.getContact() != null)
+                        return false;
+                    if (getRelation() != null ? !getRelation().equals(that.getRelation()) : that.getRelation() != null)
+                        return false;
+                    return getUserphone() != null ? getUserphone().equals(that.getUserphone()) : that.getUserphone() == null;
+
+                }
+
+                @Override
+                public int hashCode() {
+                    int result = getContact() != null ? getContact().hashCode() : 0;
+                    result = 31 * result + (getRelation() != null ? getRelation().hashCode() : 0);
+                    result = 31 * result + (getUserphone() != null ? getUserphone().hashCode() : 0);
+                    return result;
+                }
+
                 /**
                  * contact : 第一
                  * relation : 1

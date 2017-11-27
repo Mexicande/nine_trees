@@ -16,6 +16,7 @@
         <cn.com.stableloan.view.supertextview.SuperTextView
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10dp"
+            android:id="@+id/stv_supertext"
             stv:sCenterTextString="自主研发AWeye监测，及时拦截非法入侵"
             stv:sCenterTvDrawableLeft="@mipmap/iv_top_safe"
             stv:sLeftTextColor="@color/text_setting"

@@ -36,7 +36,7 @@
             android:paddingRight="@dimen/_20dp"
             android:paddingTop="@dimen/_5dp"
             android:paddingBottom="@dimen/_5dp"
-            android:src="@mipmap/iv_back"/>
+            android:src="@mipmap/back"/>
     </LinearLayout>
 <!--    -->
 </android.support.v7.widget.Toolbar>

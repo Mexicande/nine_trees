@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.fragment.dialogfragment.FingerFragment;
 
 public class FingerActivity extends AppCompatActivity implements DialogInterface.OnDismissListener,FingerFragment.FragmentListener{
@@ -42,7 +43,6 @@ public class FingerActivity extends AppCompatActivity implements DialogInterface
         }
         fingerFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
     }
-
     @Override
     public void onDismiss(DialogInterface dialog) {
 
@@ -51,9 +51,20 @@ public class FingerActivity extends AppCompatActivity implements DialogInterface
 
     @Override
     public void verify(int type) {
-        if(type==0){
+       /* if(type==0){
             MainActivity.launch(this);
             finish();
+        }*/
+        String from = getIntent().getStringExtra("from");
+        if("userinformation".equals(from)){
+            UserInformationActivity.launch(this);
+        }else if("splash".equals(from)){
+            MainActivity.launch(this);
+        }else if("apply".equals(from)){
+            Intent intent=new Intent();
+            intent.putExtra("ok","ok");
+            setResult(1000,intent);
         }
+        finish();
     }
 }

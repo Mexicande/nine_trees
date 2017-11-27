@@ -42,7 +42,7 @@
     <string name="My_Integral">我的积分</string>
     <string name="My_Cash">我的现金</string>
     <string name="inivte">邀请好友得现金</string>
-    <string name="information">申请材料</string>
+    <string name="information">我的申请材料</string>
     <string name="collection">我的收藏</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">关注安稳钱包微信公众号</string>
@@ -52,8 +52,7 @@
     <color name="test">#0000ff</color>
     <string name="inivte_friendstitle">邀请好友得现金</string>
 
-    <string name="ruledesc">1.用户提取金额必须为整数\n2.单笔交易金额不得小于5元\n3.账户点击提现后，该提现金额会被冻结\n4.提现的账户为填写的支付宝账户\n
-        5.一旦确认提现，会在三个工作日内完成打款\n6.如因各种原因3个工作日内未完成打款，系统会自动退回提现金额\n7.恶意刷分刷钱的账户会被查封\n8.本活动最终解释权所有归安稳钱包
+    <string name="ruledesc">1.用户提取金额必须为整数\n2.单笔交易金额不得小于5元\n3.账户点击提现后,该提现金额会被冻结\n4.提现的账户为填写的支付宝账户\n5.一旦确认提现,会在三个工作日内完成打款\n6.如因各种原因3个工作日内未完成打款,系统会自动退回提现金额\n7.恶意刷分刷钱的账户会被查封\n8.本活动最终解释权归安稳钱包所有
    </string>
     <string name="safe_text1">为了保障您的信息安全，我们默认不会长期存储您的个人资料。</string>
     <string name="safe_text2">过期后我们将安全删除您的全部图片材料及授权资料。</string>

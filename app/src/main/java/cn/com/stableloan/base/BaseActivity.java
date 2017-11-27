@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.utils.ActivityStackManager;
@@ -195,6 +196,13 @@ public class BaseActivity extends AppCompatActivity {
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
 }

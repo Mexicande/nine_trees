@@ -36,7 +36,7 @@
                     android:paddingTop="@dimen/_5dp"
                     android:paddingBottom="@dimen/_5dp"
                     android:paddingRight="@dimen/_10dp"
-                    android:src="@mipmap/iv_back"/>
+                    android:src="@mipmap/back"/>
 
             </RelativeLayout>
             <RelativeLayout

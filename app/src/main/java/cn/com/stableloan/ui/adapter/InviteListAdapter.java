@@ -20,7 +20,7 @@ public class InviteListAdapter extends BaseQuickAdapter<InviteFriendList.DataBea
 
     @Override
     protected void convert(BaseViewHolder helper, InviteFriendList.DataBean.InviteLogBean item) {
-        helper.setText(R.id.tv_InvitePhone,item.getMobile())
+        helper.setText(R.id.tv_InvitePhone,item.getInvitePhone())
                 .setText(R.id.tv_Status,item.getStatus())
                 .setText(R.id.tv_Money,item.getMoney());
 

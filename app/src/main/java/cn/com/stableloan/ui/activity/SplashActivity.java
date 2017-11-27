@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.analytics.MobclickAgent;
 
 import java.lang.ref.WeakReference;
 
@@ -77,7 +78,7 @@ public class SplashActivity extends AppCompatActivity {
                                     activity.startActivity(new Intent(activity, GestureLoginActivity.class).putExtra("from", "splash"));
                                     activity.finish();
                                     break;
-                            /*    case Urls.lock.GESTURE_FINGER:
+                                case Urls.lock.GESTURE_FINGER:
                                     mFingerprintIdentify = new FingerprintIdentify(activity);
 
                                     //硬件设备是否已录入指纹
@@ -85,24 +86,21 @@ public class SplashActivity extends AppCompatActivity {
                                     //指纹功能是否可用
                                     boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
                                     if (registeredFingerprint && fingerprintEnable) {
-                                        FingerActivity.launch(activity);
+                                        Intent intent=new Intent(activity,FingerActivity.class);
+                                        intent.putExtra("from","splash");
+                                        activity.startActivity(intent);
                                         activity.finish();
                                     } else {
                                         activity.startActivity(new Intent(activity, Verify_PasswordActivity.class).putExtra("from", "splash"));
                                         activity.finish();
                                     }
-
-                                    break;*/
+                                    break;
                                 default:
                                     MainActivity.launch(activity);
                                     activity.finish();
                                     break;
                             }
                         }
-                        break;
-                    case 2:
-                        FingerActivity.launch(activity);
-                        activity.finish();
                         break;
 
                 }
@@ -141,5 +139,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
 
+    }
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

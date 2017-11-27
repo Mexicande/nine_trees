@@ -147,7 +147,6 @@ public class UpImageIdentityActivity extends BaseActivity {
         HEIGHT = ivBusiness.getMeasuredHeight();
         WIDTH = ivBusiness.getMeasuredWidth();
         LogUtils.i("ivBusiness===", "\n" + HEIGHT + "," + WIDTH);
-
         token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         String signature = (String) SPUtils.get(this, "signature", "1");
         Map<String, String> parms1 = new HashMap<>();
@@ -474,7 +473,8 @@ public class UpImageIdentityActivity extends BaseActivity {
                             int error_code = object.getInt("error_code");
                             String error_message = object.getString("error_message");
                             if (error_code==0) {
-                                ToastUtils.showToast(getApplicationContext(), "您的营业执照上传成功");
+
+                                ToastUtils.showToast(getApplicationContext(), "上传成功");
                             }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
                                 Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
                                 intent.putExtra("message","1136");

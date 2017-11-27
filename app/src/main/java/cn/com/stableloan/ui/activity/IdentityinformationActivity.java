@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -34,29 +32,29 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IdentitySave;
+import cn.com.stableloan.interfaceutils.IdentCallBack;
+import cn.com.stableloan.interfaceutils.Identivity_interface;
+import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.event.ProfessionalSelectEvent;
+import cn.com.stableloan.ui.fragment.dialogfragment.IdentitySaveFragment;
 import cn.com.stableloan.ui.fragment.information.User_Bank_Fragment;
 import cn.com.stableloan.ui.fragment.information.User_MeansFragment;
 import cn.com.stableloan.ui.fragment.information.User_Professional_Fragment;
-import cn.com.stableloan.utils.SPUtils;
-import okhttp3.Call;
-import okhttp3.Response;
+import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.view.supertextview.SuperTextView;
 
-public class IdentityinformationActivity extends AutoLayoutActivity {
+import static org.greenrobot.eventbus.EventBus.getDefault;
 
+public class IdentityinformationActivity extends AutoLayoutActivity implements IdentitySaveFragment.SaveFragmentListener{
     @Bind(R.id.title_name)
     TextView titleName;
     @Bind(R.id.layout_go)
@@ -66,10 +64,16 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     private static final String[] CHANNELS = new String[]{"个人信息", "银行信息", "职业信息"};
     @Bind(R.id.slide_View)
     RelativeLayout slideView;
+    @Bind(R.id.stv_supertext)
+    SuperTextView stvSupertext;
+    private boolean mean=false;
+    private boolean bank=false;
+    private boolean profess=false;
+    private IdentitySaveFragment mSaveFragment;
     private List<String> mDataList = Arrays.asList(CHANNELS);
     private FragmentManager mFragmentManager;
     private SlideUp slideUp;
-    private static  final  int IMAGE_RESULT=110;
+    private static final int IMAGE_RESULT = 110;
 
     private static final int STUDENT = 2;
     private static final int COMPANY = 1;
@@ -78,9 +82,45 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     private Fragment mCurrentFragment;
     private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
 
+    private  IdentitytListener listener;
+
+    @Override
+    public void exit(int type) {
+        if(type==1){
+            Intent intent = new Intent();
+            intent.putExtra("ok", 1);
+            setResult(IMAGE_RESULT, intent);
+            finish();
+        }else {
+            if(bank){
+                EventBus.getDefault().post(new InformationEvent("exitBank"));
+            }
+            if(mean){
+                EventBus.getDefault().post(new InformationEvent("exitmean"));
+            }
+            if(profess){
+                EventBus.getDefault().post(new InformationEvent("exitprofess"));
+            }
+            Intent intent = new Intent();
+            intent.putExtra("ok", 1);
+            setResult(IMAGE_RESULT, intent);
+            finish();
+        }
+    }
+
+    public  static interface IdentitytListener {
+        //跳到h5页面
+        boolean verifymean();
+        boolean verifybank();
+        boolean verifyprofress();
+    }
+    private Identivity_interface identivity_interface;
+
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, IdentityinformationActivity.class));
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +128,14 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_identityinformation);
         ButterKnife.bind(this);
+      /*  if (this instanceof IdentitytListener) {
+            listener = ((IdentitytListener) this);
+        }*/
         ImmersionBar.with(this).statusBarColor(R.color.colorPrimary)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();
-        EventBus.getDefault().register(this);
+        getDefault().register(this);
         initToolbar();
         initMagicIndicator();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
@@ -123,6 +166,7 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                     public void onClick(View v) {
                         mFragmentContainerHelper.handlePageSelected(i);
                         switchMenu(getFragmentName(i + 1));
+
                     }
                 });
                 return simplePagerTitleView;
@@ -163,28 +207,43 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
     }
+
     @Subscribe
-    public  void updateEvent(ProfessionalSelectEvent msg){
-        if(msg.message==0){
+    public void updateEvent(ProfessionalSelectEvent msg) {
+        if (msg.message == 0) {
             slideUp.show();
         }
     }
+    @Subscribe
+    public void getSave(IdentitySave msg) {
+        mean=msg.mean;
+        bank=msg.bank;
+        profess=msg.profession;
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        getDefault().unregister(this);
 
     }
+
     @Subscribe
-
-
     private String getFragmentName(int menuId) {
         switch (menuId) {
             case 1:
+                stvSupertext.setCenterString("独创AWsafe数据加密，为您的信息安全保驾护航");
+                stvSupertext.setCenterTvDrawableLeft(getResources().getDrawable(R.mipmap.iv_top_safe));
                 return User_MeansFragment.class.getName();
             case 2:
+                stvSupertext.setCenterString("自主研发AWeye监测，及时拦截非法入侵");
+                stvSupertext.setCenterTvDrawableLeft(getResources().getDrawable(R.mipmap.iv_see));
+
                 return User_Bank_Fragment.class.getName();
             case 3:
+                stvSupertext.setCenterString("我们会严格保护您的隐私安全，请放心填写");
+                stvSupertext.setCenterTvDrawableLeft(getResources().getDrawable(R.mipmap.iv_bursa));
                 return User_Professional_Fragment.class.getName();
             default:
                 return null;
@@ -224,18 +283,18 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     }
 
     @OnClick({R.id.layoutGo, R.id.tv_Company, R.id.tv_Business,
-            R.id.tv_Freelancer, R.id.bt_cancel,R.id.layout_go})
+            R.id.tv_Freelancer, R.id.bt_cancel, R.id.layout_go})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layoutGo:
                 slideUp.hide();
                 break;
             case R.id.tv_Company:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(COMPANY));
+                getDefault().post(new ProfessionalSelectEvent(COMPANY));
                 slideUp.hide();
                 break;
             case R.id.tv_Business:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(BUSINESS));
+                getDefault().post(new ProfessionalSelectEvent(BUSINESS));
                 slideUp.hide();
                 break;
            /* case R.id.tv_Student:
@@ -243,17 +302,28 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
                 slideUp.hide();
                 break;*/
             case R.id.tv_Freelancer:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(FREE));
+                getDefault().post(new ProfessionalSelectEvent(FREE));
                 slideUp.hide();
                 break;
             case R.id.bt_cancel:
                 slideUp.hide();
                 break;
             case R.id.layout_go:
-                Intent intent=new Intent();
+
+                EventBus.getDefault().post(new InformationEvent("saveBank"));
+                EventBus.getDefault().post(new InformationEvent("mean"));
+                EventBus.getDefault().post(new InformationEvent("profess"));
+
+                if(bank||mean||profess){
+                    if(mSaveFragment==null){
+                        mSaveFragment=new IdentitySaveFragment();
+                    }
+                    mSaveFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
+                }else{Intent intent = new Intent();
                 intent.putExtra("ok", 1);
-                setResult(IMAGE_RESULT,intent);
+                setResult(IMAGE_RESULT, intent);
                 finish();
+                }
                 break;
         }
     }
@@ -262,16 +332,27 @@ public class IdentityinformationActivity extends AutoLayoutActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if(slideUp.isVisible()) {
+            if (slideUp.isVisible()) {
                 slideUp.hide();
                 return false;
-            }else {
-                Intent intent=new Intent();
-                intent.putExtra("ok", 1);
-                setResult(IMAGE_RESULT,intent);
-                finish();
+            } else {
+                EventBus.getDefault().post(new InformationEvent("mean"));
+                EventBus.getDefault().post(new InformationEvent("saveBank"));
+                EventBus.getDefault().post(new InformationEvent("profess"));
+                if(bank||mean||profess){
+                    if(mSaveFragment==null){
+                        mSaveFragment=new IdentitySaveFragment();
+                    }
+                    mSaveFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
+                    return false;
+                }else{
+                    Intent intent = new Intent();
+                    intent.putExtra("ok", 1);
+                    setResult(IMAGE_RESULT, intent);
+                    finish();
+                }
             }
         }
-            return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event);
     }
 }

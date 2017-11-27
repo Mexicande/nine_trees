@@ -53,12 +53,14 @@ import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
+import cn.com.stableloan.ui.activity.safe.FingerActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.utils.constant.Constant;
+import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -87,6 +89,7 @@ public class UserFragment extends ImmersionFragment {
     public UserFragment() {
 
     }
+    private FingerprintIdentify mFingerprintIdentify;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -321,6 +324,21 @@ public class UserFragment extends ImmersionFragment {
                                startActivityForResult(new Intent(getActivity(),Verify_PasswordActivity.class).putExtra("from", "userinformation"),200);
                               /* Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
                                startActivity(intent2);*/
+                               break;
+                           case Urls.lock.GESTURE_FINGER:
+                               mFingerprintIdentify = new FingerprintIdentify(getActivity());
+
+                               //硬件设备是否已录入指纹
+                               boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
+                               //指纹功能是否可用
+                               boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
+                               if (registeredFingerprint && fingerprintEnable) {
+                                   Intent intent=new Intent(getActivity(),FingerActivity.class);
+                                   intent.putExtra("from","userinformation");
+                                   startActivity(intent);
+                               } else {
+                                   startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation"));
+                               }
                                break;
                        }
 

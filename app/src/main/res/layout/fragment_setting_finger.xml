@@ -6,15 +6,18 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:paddingRight="@dimen/_20dp"
+        android:paddingLeft="@dimen/_20dp"
         android:layout_marginTop="@dimen/_20dp"
         android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/select_text_color"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:layout_centerHorizontal="true"
         android:text="请先到手机系统中添加指纹,\n再开启指纹登陆" />
         <TextView
+            android:layout_marginRight="@dimen/_20dp"
             android:layout_marginTop="@dimen/_20dp"
             android:id="@+id/tv_follow"
             android:layout_below="@id/tv_desc"
@@ -22,12 +25,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="去开通"
-            android:textSize="@dimen/_16sp"
+            android:textSize="15sp"
+            android:paddingBottom="@dimen/_10dp"
             android:textColor="@color/blue_01aaee"
             />
         <TextView
             android:id="@+id/cancel"
-            android:textSize="@dimen/_16sp"
+            android:textSize="15sp"
             android:textColor="@color/gay"
             android:layout_marginTop="@dimen/_20dp"
             android:layout_marginRight="@dimen/_40dp"
@@ -36,5 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="取消"
+            android:paddingBottom="@dimen/_10dp"
+
             />
 </RelativeLayout>

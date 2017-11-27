@@ -2,6 +2,7 @@ package cn.com.stableloan.ui.fragment.information;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -37,6 +38,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IdentitySave;
+import cn.com.stableloan.interfaceutils.Identivity_interface;
 import cn.com.stableloan.model.Bank;
 import cn.com.stableloan.model.BankInformation;
 import cn.com.stableloan.model.InformationEvent;
@@ -44,8 +47,10 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.GestureLoginActivity;
+import cn.com.stableloan.ui.activity.IdentityinformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
+import cn.com.stableloan.ui.fragment.dialogfragment.FingerFragment;
 import cn.com.stableloan.utils.BankUtils;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -94,8 +99,8 @@ public class User_Bank_Fragment extends Fragment {
     private static final int REQUEST_CODE = 20000;
     private static final int REQUEST_BANK = 200;
 
-    private static final int DEBIT_CODE = 1;
-    private static final int CREDIT_CODE = 2;
+    public static final int DEBIT_CODE = 4;
+    public static final int CREDIT_CODE = 5;
 
     private String APP_CODE="";
     private boolean creditFlag = false;
@@ -103,6 +108,7 @@ public class User_Bank_Fragment extends Fragment {
     public User_Bank_Fragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -123,9 +129,6 @@ public class User_Bank_Fragment extends Fragment {
 
     private void setListener() {
 
-
-       /* setSuperText(etSelectBank1, Urls.DateChange.DEBIT_BANK);
-        setSuperText(etSelectBank2, Urls.DateChange.CREDIT_BANK);*/
         etValidityTime1.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
@@ -157,7 +160,9 @@ public class User_Bank_Fragment extends Fragment {
     private void setSuperText(SuperTextView superText, int type) {
                 Intent intent = new Intent(getActivity(), DateChangeActivity.class);
                 intent.putExtra("type", type);
-                intent.putExtra("hint", superText.getRightString());
+        String rightString = superText.getRightString();
+        String replace = rightString.replace(" ", "");
+        intent.putExtra("hint", replace);
                 startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -200,6 +205,12 @@ public class User_Bank_Fragment extends Fragment {
         if ("bankinformation".equals(message)) {
             getDate();
         }
+        if("saveBank".equals(message)){
+            EventBus.getDefault().post(new IdentitySave(false,changeTest(),false));
+        }
+        if("exitBank".equals(message)){
+            Save(true);
+        }
     }
 
     private void getDate() {
@@ -210,7 +221,6 @@ public class User_Bank_Fragment extends Fragment {
         parms.put("token", token);
         parms.put("signature", signature);
         parms.put("source", "");
-
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.Ip_url + Urls.Identity.Getbank)
                 .tag(getActivity())
@@ -226,8 +236,31 @@ public class User_Bank_Fragment extends Fragment {
                                 APP_CODE=information.getData().getApp_code();
                                 if (information.getData().getStatus().equals("1")) {
                                     bankBean = information.getData();
-                                    etBankCard1.setRightString(bankBean.getBank().getDebit().getDnumber());
+
+                                    String dnumber = bankBean.getBank().getDebit().getDnumber();
+                                    StringBuffer stringBuffer=new StringBuffer(dnumber);
+
+                                        switch (dnumber.length()){
+                                            case 16:
+                                                stringBuffer.insert(4," ");
+                                                stringBuffer.insert(9," ");
+                                                stringBuffer.insert(14," ");
+                                                break;
+                                            case 17:
+                                                stringBuffer.insert(6," ");
+                                                stringBuffer.insert(11," ");
+                                                break;
+                                            case 19:
+                                                stringBuffer.insert(6," ");
+                                                break;
+                                        }
+                                    etBankCard1.setRightString(stringBuffer);
+
                                     etBankPersonName1.setRightString(bankBean.getBank().getDebit().getDname());
+
+
+
+
                                     etBankPhone1.setRightString(bankBean.getBank().getDebit().getDphone());
                                     etSelectBank1.setRightString(bankBean.getBank().getDebit().getDbank());
                                     etValidityTime1.setRightString(bankBean.getBank().getDebit().getDperiod());
@@ -240,8 +273,26 @@ public class User_Bank_Fragment extends Fragment {
                                     } else {
                                         isCredit.setRightString("没有");
                                     }
+                                    String cnumber = bankBean.getBank().getCredit().getCnumber();
 
-                                    etBankCard2.setRightString(bankBean.getBank().getCredit().getCnumber());
+                                    StringBuffer buffer = new StringBuffer(cnumber);
+
+                                    switch (cnumber.length()){
+                                        case 16:
+                                            buffer.insert(4," ");
+                                            buffer.insert(9," ");
+                                            buffer.insert(14," ");
+                                            break;
+                                        case 17:
+                                            buffer.insert(6," ");
+                                            buffer.insert(11," ");
+                                            break;
+                                        case 19:
+                                            buffer.insert(6," ");
+                                            break;
+                                    }
+                                    etBankCard2.setRightString(buffer);
+
                                     etBankPersonName2.setRightString(bankBean.getBank().getCredit().getCname());
                                     etBankPhone2.setRightString(bankBean.getBank().getCredit().getCphone());
                                     etSelectBank2.setRightString(bankBean.getBank().getCredit().getCbank());
@@ -278,11 +329,16 @@ public class User_Bank_Fragment extends Fragment {
         return format.format(date);
     }
 
-    private void Save() {
+    private void Save(boolean b) {
         final Bank.BankBean.CreditBean creditBean = new Bank.BankBean.CreditBean();
         creditBean.setCbank(etSelectBank2.getRightString());
         creditBean.setCname(etBankPersonName2.getRightString());
-        creditBean.setCnumber(etBankCard2.getRightString());
+
+        String rightString2 = etBankCard2.getRightString();
+        String replace2 = rightString2.replace(" ", "");
+        creditBean.setCnumber(replace2);
+
+
         creditBean.setCperiod(etValidityTime2.getRightString());
         creditBean.setCphone(etBankPhone2.getRightString());
 
@@ -296,10 +352,13 @@ public class User_Bank_Fragment extends Fragment {
         final Bank.BankBean.DebitBean debitBean = new Bank.BankBean.DebitBean();
         debitBean.setDbank(etSelectBank1.getRightString());
         debitBean.setDname(etBankPersonName1.getRightString());
-        debitBean.setDnumber(etBankCard1.getRightString());
+
+        String rightString = etBankCard1.getRightString();
+        String replace = rightString.replace(" ", "");
+        debitBean.setDnumber(replace);
+
         debitBean.setDperiod(etValidityTime1.getRightString());
         debitBean.setDphone(etBankPhone1.getRightString());
-
         if (bankBean.getBank().getCredit().equals(creditBean) && bankBean.getBank().getDebit().equals(debitBean)) {
             ToastUtils.showToast(getActivity(), "无修改内容");
 
@@ -336,7 +395,9 @@ public class User_Bank_Fragment extends Fragment {
                                     String data = object.getString("data");
                                     JSONObject object1 = new JSONObject(data);
                                     String msg = object1.getString("msg");
-                                    ToastUtils.showToast(getActivity(), msg);
+                                    if(!b){
+                                        ToastUtils.showToast(getActivity(), msg);
+                                    }
                                     bankBean.getBank().setDebit(debitBean);
                                     bankBean.getBank().setCredit(creditBean);
                                 } else {
@@ -351,7 +412,42 @@ public class User_Bank_Fragment extends Fragment {
                     });
         }
     }
+    private boolean changeTest(){
+        final Bank.BankBean.CreditBean creditBean = new Bank.BankBean.CreditBean();
+        creditBean.setCbank(etSelectBank2.getRightString());
+        creditBean.setCname(etBankPersonName2.getRightString());
 
+        String rightString2 = etBankCard2.getRightString();
+        String replace2 = rightString2.replace(" ", "");
+        creditBean.setCnumber(replace2);
+
+
+        creditBean.setCperiod(etValidityTime2.getRightString());
+        creditBean.setCphone(etBankPhone2.getRightString());
+
+        int visibility = layoutCredit.getVisibility();
+        if (visibility == View.GONE) {
+            creditBean.setIs_credit(2);
+        } else {
+            creditBean.setIs_credit(1);
+        }
+
+        final Bank.BankBean.DebitBean debitBean = new Bank.BankBean.DebitBean();
+        debitBean.setDbank(etSelectBank1.getRightString());
+        debitBean.setDname(etBankPersonName1.getRightString());
+
+        String rightString = etBankCard1.getRightString();
+        String replace = rightString.replace(" ", "");
+        debitBean.setDnumber(replace);
+
+        debitBean.setDperiod(etValidityTime1.getRightString());
+        debitBean.setDphone(etBankPhone1.getRightString());
+        if (bankBean.getBank().getCredit().equals(creditBean) && bankBean.getBank().getDebit().equals(debitBean)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -408,7 +504,22 @@ public class User_Bank_Fragment extends Fragment {
                 case DEBIT_CODE:
                     if (data != null) {
                         String type = data.getStringExtra("card_num");
-                        etBankCard1.setRightString(type);
+                        StringBuffer buffer = new StringBuffer(type);
+                        switch (type.length()){
+                            case 16:
+                                buffer.insert(4," ");
+                                buffer.insert(9," ");
+                                buffer.insert(14," ");
+                                break;
+                            case 17:
+                                buffer.insert(6," ");
+                                buffer.insert(11," ");
+                                break;
+                            case 19:
+                                buffer.insert(6," ");
+                                break;
+                        }
+                        etBankCard1.setRightString(buffer);
                         if (type.length() > 6) {
                             String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
                             etSelectBank1.setRightString(name);
@@ -418,10 +529,36 @@ public class User_Bank_Fragment extends Fragment {
                 case CREDIT_CODE:
                     if (data != null) {
                         String type = data.getStringExtra("card_num");
-                        etBankCard2.setRightString(type);
+                        StringBuffer buffer = new StringBuffer(type);
+
+                        switch (type.length()){
+                            case 16:
+                                buffer.insert(4," ");
+                                buffer.insert(9," ");
+                                buffer.insert(14," ");
+                                break;
+                            case 17:
+                                buffer.insert(6," ");
+                                buffer.insert(11," ");
+                                break;
+                            case 19:
+                                buffer.insert(6," ");
+                                break;
+                        }
+                        etBankCard2.setRightString(buffer);
+
                         if (type.length() > 6) {
                             String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
                             etSelectBank2.setRightString(name);
+                            int visibility = layoutCredit.getVisibility();
+                            if (visibility == View.GONE) {
+                                layoutCredit.setVisibility(View.VISIBLE);
+                                isCredit.setRightString("有");
+                            } else {
+                                layoutCredit.setVisibility(View.GONE);
+                                isCredit.setRightString("没有");
+                            }
+
                         }
                     }
                     break;
@@ -444,16 +581,12 @@ public class User_Bank_Fragment extends Fragment {
 
     }
 
-    @OnClick(R.id.save)
-    public void onViewClicked() {
-        if (bankBean != null) {
-            Save();
-        }
-    }
 
-
-
-    @OnClick({R.id.debit_camera, R.id.et_BankCard1, R.id.et_BankPersonName1, R.id.et_BankPhone1, R.id.et_SelectBank1, R.id.et_ValidityTime1, R.id.credit_camera, R.id.is_credit, R.id.et_BankCard2, R.id.et_BankPersonName2, R.id.et_BankPhone2, R.id.et_SelectBank2, R.id.et_ValidityTime2, R.id.save})
+    @OnClick({R.id.debit_camera, R.id.et_BankCard1, R.id.et_BankPersonName1,
+            R.id.et_SelectBank1, R.id.et_ValidityTime1, R.id.et_BankPhone1,
+            R.id.credit_camera, R.id.is_credit, R.id.et_BankCard2,
+            R.id.et_BankPersonName2, R.id.et_BankPhone2, R.id.et_SelectBank2,
+            R.id.et_ValidityTime2, R.id.save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.debit_camera:
@@ -488,6 +621,9 @@ public class User_Bank_Fragment extends Fragment {
             case R.id.et_SelectBank2:
                 break;
             case R.id.save:
+                if (bankBean != null) {
+                    Save(false);
+                }
                 break;
         }
 
@@ -565,4 +701,5 @@ public class User_Bank_Fragment extends Fragment {
             }
         }
     };
+
 }

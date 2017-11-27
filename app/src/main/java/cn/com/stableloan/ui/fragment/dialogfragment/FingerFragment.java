@@ -5,11 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -17,13 +17,18 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.ui.activity.GestureLoginActivity;
+import cn.com.stableloan.ui.activity.MainActivity;
+import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
@@ -35,6 +40,10 @@ import cn.com.stableloan.utils.fingerprint.aosp.BaseFingerprint;
 public class FingerFragment extends DialogFragment {
     @Bind(R.id.verify)
     TextView verify;
+    @Bind(R.id.iv_finger)
+    ImageView ivFinger;
+    @Bind(R.id.text)
+    TextView text;
     private FingerprintIdentify mFingerprintIdentify;
     public FragmentListener mListener;
     private MyHandler switchHandler;
@@ -63,8 +72,8 @@ public class FingerFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_finger, container, false);
         ButterKnife.bind(this, view);
-        Looper looper = Looper.myLooper ();
-        switchHandler=new MyHandler(looper);
+        Looper looper = Looper.myLooper();
+        switchHandler = new MyHandler(looper);
         start();
         setListener();
         return view;
@@ -93,51 +102,80 @@ public class FingerFragment extends DialogFragment {
         mFingerprintIdentify.startIdentify(3, new BaseFingerprint.FingerprintIdentifyListener() {
             @Override
             public void onSucceed() {
-                getActivity().runOnUiThread(new Runnable() {
+                text.setVisibility(View.GONE);
+                verify.setText("指纹识别中...");
+                verify.setTextColor(getResources().getColor(R.color.select_text_color));
+                switchHandler.sendEmptyMessageDelayed(2, 500);
+
+                switchHandler.sendEmptyMessageDelayed(1, 1000);
+
+              /*  getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         verify.setText("指纹识别中...");
+                        switchHandler.sendEmptyMessageDelayed(2, 500);
 
-                        switchHandler.sendEmptyMessageDelayed(1,1000);
+                        switchHandler.sendEmptyMessageDelayed(1, 1000);
 
                     }
-                });
+                });*/
 
 
             }
 
             @Override
             public void onNotMatch(int availableTimes) {
-
-                //ToastUtils.showToast(getActivity(), "指纹不匹配，剩余"+availableTimes+" 次机会");
+                verify.setText(3-availableTimes+"次验证错误");
+                text.setVisibility(View.VISIBLE);
+                ivFinger.setImageResource(R.mipmap.finger_fail);
+                verify.setTextColor(Color.RED);
+                //  ToastUtils.showToast(getActivity(), "指纹不匹配，剩余"+availableTimes+" 次机会");
             }
 
             @Override
             public void onFailed(boolean isDeviceLocked) {
                 Bundle arguments = getArguments();
-
-                verify.setText("指纹解锁已达到上限...");
-                if(arguments==null){
-                    getActivity().startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "splash"));
-                    getActivity().finish();
-                }else {
+                verify.setText("解锁次数已达到上限");
+                verify.setTextColor(Color.RED);
+                if (arguments == null) {
+                    String from = getActivity().getIntent().getStringExtra("from");
+                    if("userinformation".equals(from)){
+                        getActivity().startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation"));
+                        getActivity().finish();
+                    }else if("splash".equals(from)){
+                        getActivity().startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "splash"));
+                        getActivity().finish();
+                    }else if("apply".equals(from)){
+                        Intent intent=new Intent(getActivity(),Verify_PasswordActivity.class);
+                        intent.putExtra("from", "apply");
+                        startActivityForResult(intent,100);
+                    }
+                } else {
                     mListener.verify(1);
                     getDialog().cancel();
 
                 }
-               // ToastUtils.showToast(getActivity(), "验证失败，设备指纹暂时锁定");
+                // ToastUtils.showToast(getActivity(), "验证失败，设备指纹暂时锁定");
             }
 
             @Override
             public void onStartFailedByDeviceLocked() {
                 ToastUtils.showToast(getActivity(), "设备指纹暂时锁定,请使用密码登陆");
                 Bundle arguments = getArguments();
-
-                if(arguments==null){
-                    getActivity().startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "splash"));
-                    getActivity().finish();
-                }else {
+                if (arguments == null) {
+                    String from = getActivity().getIntent().getStringExtra("from");
+                    if("userinformation".equals(from)){
+                        getActivity().startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation"));
+                        getActivity().finish();
+                    }else if("splash".equals(from)){
+                        getActivity().startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "splash"));
+                        getActivity().finish();
+                    }else if("apply".equals(from)){
+                        Intent intent=new Intent(getActivity(),Verify_PasswordActivity.class);
+                        intent.putExtra("from", "apply");
+                        startActivityForResult(intent,100);
+                    }
+                } else {
                     mListener.verify(1);
                     getDialog().cancel();
 
@@ -147,19 +185,23 @@ public class FingerFragment extends DialogFragment {
     }
 
 
-    private class MyHandler extends Handler{
-        public MyHandler(Looper looper){
-            super (looper);
+    private class MyHandler extends Handler {
+        public MyHandler(Looper looper) {
+            super(looper);
         }
+
         @Override
         public void handleMessage(Message msg) { // 处理消息
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
                     Bundle arguments = getArguments();
-                    if(arguments==null){
+                    if (arguments == null) {
                         mListener.verify(0);
                     }
                     getDialog().cancel();
+                    break;
+                case 2:
+                    ivFinger.setImageResource(R.mipmap.finger_succee);
                     break;
 
             }
@@ -189,4 +231,15 @@ public class FingerFragment extends DialogFragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100){
+                Intent intent = new Intent();
+                intent.putExtra("ok", "ok");
+                getActivity().setResult(1000, intent);
+                getActivity().finish();
+
+        }
+    }
 }

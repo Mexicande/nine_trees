@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.meituan.android.walle.WalleChannelReader;
+import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,7 +84,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         updateDiy();
         initView();
     }
-    
+
     private void statistics() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("channel", channel);
@@ -240,7 +241,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         public void onSelected(int index, int old) {
             if(index==3){
                 String token = (String) SPUtils.get(MainActivity.this, Urls.lock.TOKEN, "1");
-                LogUtils.i("token",token+"---");
                 if ("1".equals(token)) {
                     startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
                 }else {

@@ -180,15 +180,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(product_logo);
                                         tv_amout.setText("最高" + dataBean.getAmount() + "元");
 
-                                        String activity_desc = dataBean.getActivity_desc();
+                                        String activity_desc = dataBean.getHeadline();
                                         if(activity_desc!=null&&activity_desc.length()>2){
                                             StringBuffer str = new StringBuffer(activity_desc);
                                             str.insert(2,"\n");
                                             tv_activity_desc.setText(str);
                                         }else {
-                                            tv_activity_desc.setText(dataBean.getActivity_desc());
+                                            tv_activity_desc.setText(dataBean.getHeadline());
                                         }
-
+                                        tv_Desc.setText(dataBean.getActivity_desc());
                                         tv_pname.setText(dataBean.getProduct_name());
                                         mCardView.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -396,7 +396,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private CardView mCardView;
     //秒杀
     private LinearLayout mSeckill_layout;
-    private TextView tv_pname, tv_amout, tv_activity_desc;
+    private TextView tv_pname, tv_amout, tv_activity_desc,tv_Desc;
 
     private Banner_HotBean hotBean;
 
@@ -412,6 +412,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tv_pname = (TextView) view.findViewById(R.id.pname);
         tv_activity_desc = (TextView) view.findViewById(R.id.activity_desc);
         tv_amout = (TextView) view.findViewById(R.id.amount);
+        tv_Desc= (TextView) view.findViewById(R.id.desc);
         mCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         mCardView = (CardView) view.findViewById(R.id.seckill_item_one);
         countdownhour = (EasyCountDownView) view.findViewById(R.id.countdownhour);
@@ -459,8 +460,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getProduct_id()));
             }
         });
-
-
         // 分类
         classify_recyclView = (RecyclerView) view.findViewById(R.id.recycler_special);
         classify_recycler_adapter = new Classify_Recycler_Adapter(null);
@@ -473,12 +472,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // 职业选择
         iv_free = (ImageView) view.findViewById(R.id.iv_free);
         iv_work = (ImageView) view.findViewById(R.id.iv_work);
-        //iv_student = (ImageView) view.findViewById(R.id.iv_other);
         iv_enterprise = (ImageView) view.findViewById(R.id.bussiones);
 
         iv_free.setOnClickListener(this);
         iv_work.setOnClickListener(this);
-        //iv_student.setOnClickListener(this);
         iv_enterprise.setOnClickListener(this);
         return view;
     }
@@ -528,14 +525,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
-                        //easylayout.setRefreshing(false);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                easylayout.refreshComplete();
-                                ToastUtils.showToast(getActivity(), "网络异常");
-                            }
-                        });
+                        if(easylayout!=null){
+                            easylayout.refreshComplete();
+
+                        }
                         super.onError(call, response, e);
                     }
                 });
@@ -611,11 +604,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 MainActivity.navigationController.setSelect(1);
 
                 break;
-           /* case R.id.iv_other:
-                professional = "xueshengdang";
-                EventBus.getDefault().post(new IdentityProduct(2,100));
-                MainActivity.navigationController.setSelect(1);
-                break;*/
             case R.id.iv_work:
                 professional = "shangbanzu";
                 ZhugeSDK.getInstance().track(getActivity(), "职业搜索-上班族", eventObject);
@@ -628,7 +616,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 ZhugeSDK.getInstance().track(getActivity(), "职业搜索-企业主", eventObject);
                 EventBus.getDefault().post(new IdentityProduct(4,100));
                 MainActivity.navigationController.setSelect(1);
-
                 break;
 
 

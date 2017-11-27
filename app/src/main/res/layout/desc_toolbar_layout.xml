@@ -23,7 +23,7 @@
         android:paddingRight="@dimen/_20dp"
         android:paddingTop="@dimen/_5dp"
         android:paddingBottom="@dimen/_5dp"
-        android:src="@mipmap/iv_back"/>
+        android:src="@mipmap/back"/>
     <RelativeLayout
         android:layout_gravity="right"
         android:layout_marginRight="15dp"

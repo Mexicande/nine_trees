@@ -115,16 +115,16 @@ public class InviteFriendList implements Serializable {
              * money : ￥0.00
              */
 
-            private String mobile;
+            private String invitePhone;
             private String status;
             private String money;
 
-            public String getMobile() {
-                return mobile;
+            public String getInvitePhone() {
+                return invitePhone;
             }
 
-            public void setMobile(String mobile) {
-                this.mobile = mobile;
+            public void setInvitePhone(String invitePhone) {
+                this.invitePhone = invitePhone;
             }
 
             public String getStatus() {

@@ -83,6 +83,23 @@
                     android:drawableLeft="@drawable/circular_check_bg"
                     android:textSize="17sp"
                     />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1dp"
+                    android:background="#EEEEEE"
+                    />
+                <RadioButton
+                    android:visibility="gone"
+                    android:id="@+id/RB_Finder"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text=" 指纹验证  "
+                    android:button="@null"
+                    android:drawableLeft="@drawable/circular_check_bg"
+                    android:textSize="17sp"
+                    />
             </RadioGroup>
 
 

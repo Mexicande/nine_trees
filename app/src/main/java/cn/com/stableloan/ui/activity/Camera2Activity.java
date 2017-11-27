@@ -1,5 +1,6 @@
 package cn.com.stableloan.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
@@ -44,18 +46,29 @@ import com.jakewharton.rxbinding2.view.*;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
+import com.qiniu.android.storage.UploadOptions;
 import com.zhy.autolayout.AutoLayoutActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +76,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.CameraEvent;
 import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.InputBean;
 import cn.com.stableloan.utils.BitmapUtils;
@@ -76,6 +91,8 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static android.R.attr.type;
+
 /**
  * Camera2 API. Android Lollipop 及以后版本的 Android 使用 Camera2 API.
  * <p>
@@ -86,9 +103,10 @@ import okhttp3.Response;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class Camera2Activity extends AutoLayoutActivity {
+    public static final int DEBIT_CODE = 4;
+    public static final int CREDIT_CODE = 5;
 
-    private static final int DEBIT_CODE = 1;
-    private static final int CREDIT_CODE = 2;
+    private static String banNum="";
     /**
      * finish()是否已调用过
      */
@@ -836,7 +854,7 @@ public class Camera2Activity extends AutoLayoutActivity {
                                     String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
                                     if(camera==null||camera.equals("1")){
                                         SPUtils.put(Camera2Activity.this,"camera","ok");
-                                        bankPhoto(file1.getAbsolutePath(),type);
+                                        bankPhoto(file1.getAbsolutePath());
                                     }
                                 });
                             });
@@ -875,7 +893,7 @@ public class Camera2Activity extends AutoLayoutActivity {
         }
     }
 
-    private void bankPhoto(String path,int type) {
+    private void bankPhoto(String path) {
 
         hd .show();
         String app_code = getIntent().getStringExtra("app_code");
@@ -910,11 +928,13 @@ public class Camera2Activity extends AutoLayoutActivity {
                         CardBean cardBean = gson1.fromJson(s3, CardBean.class);
                         CardBean.OutputsBean.OutputValueBean.DataValueBean value = cardBean.getOutputs().get(0).getOutputValue().getDataValue();
                         if(cardBean.getOutputs().get(0).getOutputValue().getDataValue().isSuccess()){
+
+                            upImageBank(path,value.getCard_num());
                             SPUtils.remove(Camera2Activity.this,"camera");
-                            Intent intent=new Intent();
+                         /*   Intent intent=new Intent();
                             intent.putExtra("card_num",value.getCard_num());
                             setResult(type,intent);
-                            finish();
+                            finish();*/
                         }else {
                             ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
                             SPUtils.remove(Camera2Activity.this,"camera");
@@ -932,6 +952,135 @@ public class Camera2Activity extends AutoLayoutActivity {
 
 
     }
+
+
+    private  void upImageBank( String path,String num){
+            hd.show();
+            String userToken = (String) SPUtils.get(this, "token", "1");
+            String signature = (String) SPUtils.get(this, "signature", "1");
+            Map<String, String> parms = new HashMap<>();
+            parms.put("token", userToken);
+            parms.put("signature", signature);
+            parms.put("source", "");
+            JSONObject jsonObject = new JSONObject(parms);
+            OkGo.<String>post(Urls.NEW_URL + Urls.Pictrue.GET_QINIUTOKEN)
+                    .tag(this)
+                    .upJson(jsonObject)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                String isSuccess = object.getString("isSuccess");
+                                if ("1".equals(isSuccess)) {
+                                    String status = object.getString("status");
+                                    if ("1".equals(status)) {
+                                        String qiNiuToken = object.getString("token");
+                                        savePicture(path,qiNiuToken,num);
+                                    } else {
+                                        hd.dismiss();
+                                        Intent intent = new Intent(Camera2Activity.this, Verify_PasswordActivity.class).putExtra("from", "IdentityUpload");
+                                        startActivity(intent);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+
+                        }
+                    });
+
+
+    }
+
+    private void savePicture( String path, String qiNiuToken,String num) {
+        UploadOptions uploadOptions1 = new UploadOptions(null, null, false,
+                new UpProgressHandler() {
+                    @Override
+                    public void progress(String key, double percent) {
+
+                        LogUtils.i("response", "key" + key + "----" + percent);
+                    }
+                }, null);
+        AppApplication.getUploadManager().put(path, null, qiNiuToken, new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                if (info.isOK()) {
+                    try {
+                        String key1 = response.getString("key");
+
+                        int type = getIntent().getIntExtra("type", 0);
+                        String token = (String) SPUtils.get(Camera2Activity.this, Urls.TOKEN, "1");
+                        switch (type) {
+                            case DEBIT_CODE:
+                                UpLoadImage(token, key1,String.valueOf(DEBIT_CODE), "debit_photo",num);
+                                break;
+                            case CREDIT_CODE:
+                                UpLoadImage(token, key1,String.valueOf(CREDIT_CODE), "credite_photo",num);
+                                break;
+                        }
+
+
+                        hd.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    hd.dismiss();
+                    ToastUtils.showToast(Camera2Activity.this, "保存失败,请重新尝试");
+                }
+            }
+        }, uploadOptions1);
+    }
+
+        private void UpLoadImage(String tolen, String url, String var, String photo,String num) {
+            Map<String, String> parms = new HashMap<>();
+            parms.put(photo, url);
+            parms.put("type", var);
+            parms.put("token",tolen);
+            parms.put("source", "");
+            JSONObject jsonObject = new JSONObject(parms);
+            OkGo.<String>post(Urls.Ip_url + Urls.Pictrue.UpLoadImage)
+                    .tag(this)
+                    .upJson(jsonObject)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                int error_code = object.getInt("error_code");
+                                if (error_code==0) {
+                                    String data = object.getString("data");
+                                    JSONObject json=new JSONObject(data);
+                                    String msg = json.getString("msg");
+                                /*    if (flag) {
+                                        EventBus.getDefault().post(new CameraEvent(value));
+                                    }*/
+                                    Intent intent=new Intent();
+                                    intent.putExtra("card_num",num);
+                                    setResult(Integer.parseInt(var),intent);
+                                     finish();
+
+                                } else {
+                                    String msg = object.getString("error_message");
+                                    ToastUtils.showToast(Camera2Activity.this, msg);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+                        }
+                    });
+
+        }
 
     private Bitmap bitmap;
     private KProgressHUD hd;

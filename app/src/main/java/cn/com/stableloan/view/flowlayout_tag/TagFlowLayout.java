@@ -256,6 +256,7 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     private static final String KEY_DEFAULT = "key_default";
 
     private void setChildChecked(int position, TagView view) {
+
                view.setChecked(true);
         mTagAdapter.onSelected(position, view.getTagView());
           }

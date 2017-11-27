@@ -46,10 +46,12 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Product_DescBean;
+import cn.com.stableloan.ui.activity.safe.FingerActivity;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
 import cn.com.stableloan.view.RecyclerViewDecoration;
@@ -160,6 +162,7 @@ public class ProductDesc extends BaseActivity {
 
 
     private boolean flag = false;
+    private FingerprintIdentify mFingerprintIdentify;
 
 
     public static void launch(Context context) {
@@ -534,7 +537,6 @@ public class ProductDesc extends BaseActivity {
                 String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
                 if (token == null || "1".equals(token)) {
                     LoginActivity.launch(this);
-
                 } else {
                     String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
                     int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
@@ -547,7 +549,6 @@ public class ProductDesc extends BaseActivity {
                             } else {
                                 showApplyDialog();
                             }
-
                             break;
                         case Urls.lock.PW_VERIFICATION:
                             Intent intent = new Intent(this, Verify_PasswordActivity.class);
@@ -559,6 +560,27 @@ public class ProductDesc extends BaseActivity {
                             intent1.putExtra("from", "apply");
                             intent1.putExtra("product", descBean);
                             startActivityForResult(intent1, APPLY_VAIL);
+                            break;
+                        case Urls.lock.GESTURE_FINGER:
+                            mFingerprintIdentify = new FingerprintIdentify(this);
+                            //硬件设备是否已录入指纹
+                            boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
+                            //指纹功能是否可用
+                            boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
+                            if (registeredFingerprint && fingerprintEnable) {
+                                Intent fingerintent=new Intent(this,FingerActivity.class);
+                                fingerintent.putExtra("from","apply");
+                                fingerintent.putExtra("product", descBean);
+                                startActivityForResult(fingerintent, APPLY_VAIL);
+                            } else {
+                                Boolean dialog2 = (Boolean) SPUtils.get(this, "dialog", false);
+                                if (dialog2 != null && dialog2) {
+                                    sendIO();
+                                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                                } else {
+                                    showApplyDialog();
+                                }
+                            }
                             break;
                     }
                 }

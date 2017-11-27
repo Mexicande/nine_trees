@@ -1,7 +1,6 @@
 package cn.com.stableloan.model.integarl;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by apple on 2017/8/11.
@@ -9,13 +8,14 @@ import java.util.List;
 
 public class IntegarlBean implements Serializable{
 
+
     /**
      * code : 200
-     * message : 200
-     * data : {"code":[{"id":1,"title":"什么","desc":"我好吗","code":"积分+100","status":100,"create_at":"1970-01-02 00:00:00","update_at":"1970-01-02 00:00:00","update_user_id":1,"url":"http://test.m.anwenqianbao.com/#/login?$inviteCode=170811zmxdfn2z","img":"http://qiniu.shoujijiekuan.com/%E5%AE%89%E7%A8%B3%E9%92%B1%E5%8C%85-%E7%A7%AF%E5%88%863_03.png"},{"id":2,"title":"神马","desc":"你好吗","code":"积分+200","status":200,"create_at":"1970-01-02 00:00:00","update_at":"1970-01-02 00:00:00","update_user_id":0,"url":"http://test.m.anwenqianbao.com/#/login?$inviteCode=170811zmxdfn2z","img":"http://qiniu.shoujijiekuan.com/%E5%AE%89%E7%A8%B3%E9%92%B1%E5%8C%85-%E7%A7%AF%E5%88%864_03.png"}],"status":"+500","offical":"","credits":0}
+     * message : 0
+     * data : {"status":{"status1":0,"status2":1,"status3":0,"status4":0},"offical":"积分越多，就能兑更多的钱哦","credits":0,"topCredits":13500}
      * error_code : 0
      * error_message :
-     * time : 2017-08-11 16:17:34
+     * time : 2017-11-24 19:01:29
      */
 
     private int code;
@@ -75,30 +75,22 @@ public class IntegarlBean implements Serializable{
 
     public static class DataBean implements Serializable{
         /**
-         * code : [{"id":1,"title":"什么","desc":"我好吗","code":"积分+100","status":100,"create_at":"1970-01-02 00:00:00","update_at":"1970-01-02 00:00:00","update_user_id":1,"url":"http://test.m.anwenqianbao.com/#/login?$inviteCode=170811zmxdfn2z","img":"http://qiniu.shoujijiekuan.com/%E5%AE%89%E7%A8%B3%E9%92%B1%E5%8C%85-%E7%A7%AF%E5%88%863_03.png"},{"id":2,"title":"神马","desc":"你好吗","code":"积分+200","status":200,"create_at":"1970-01-02 00:00:00","update_at":"1970-01-02 00:00:00","update_user_id":0,"url":"http://test.m.anwenqianbao.com/#/login?$inviteCode=170811zmxdfn2z","img":"http://qiniu.shoujijiekuan.com/%E5%AE%89%E7%A8%B3%E9%92%B1%E5%8C%85-%E7%A7%AF%E5%88%864_03.png"}]
-         * status : +500
-         * offical :
+         * status : {"status1":0,"status2":1,"status3":0,"status4":0}
+         * offical : 积分越多，就能兑更多的钱哦
          * credits : 0
+         * topCredits : 13500
          */
-        private int topCredits;
-        private String status;
+
+        private StatusBean status;
         private String offical;
         private int credits;
-        private List<CodeBean> code;
+        private int topCredits;
 
-        public int getTopCredits() {
-            return topCredits;
-        }
-
-        public void setTopCredits(int topCredits) {
-            this.topCredits = topCredits;
-        }
-
-        public String getStatus() {
+        public StatusBean getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(StatusBean status) {
             this.status = status;
         }
 
@@ -118,127 +110,57 @@ public class IntegarlBean implements Serializable{
             this.credits = credits;
         }
 
-        public List<CodeBean> getCode() {
-            return code;
+        public int getTopCredits() {
+            return topCredits;
         }
 
-        public void setCode(List<CodeBean> code) {
-            this.code = code;
+        public void setTopCredits(int topCredits) {
+            this.topCredits = topCredits;
         }
 
-        public static class CodeBean implements Serializable{
+        public static class StatusBean implements Serializable{
             /**
-             * id : 1
-             * title : 什么
-             * desc : 我好吗
-             * code : 积分+100
-             * status : 100
-             * create_at : 1970-01-02 00:00:00
-             * update_at : 1970-01-02 00:00:00
-             * update_user_id : 1
-             * url : http://test.m.anwenqianbao.com/#/login?$inviteCode=170811zmxdfn2z
-             * img : http://qiniu.shoujijiekuan.com/%E5%AE%89%E7%A8%B3%E9%92%B1%E5%8C%85-%E7%A7%AF%E5%88%863_03.png
+             * status1 : 0
+             * status2 : 1
+             * status3 : 0
+             * status4 : 0
              */
 
-            private int id;
-            private String bg;
+            private int status1;
+            private int status2;
+            private int status3;
+            private int status4;
 
-            public String getBg() {
-                return bg;
+            public int getStatus1() {
+                return status1;
             }
 
-            public void setBg(String bg) {
-                this.bg = bg;
+            public void setStatus1(int status1) {
+                this.status1 = status1;
             }
 
-            private String title;
-            private String desc;
-            private String code;
-            private String status;
-            private String create_at;
-            private String update_at;
-            private int update_user_id;
-            private String url;
-            private String img;
-
-            public int getId() {
-                return id;
+            public int getStatus2() {
+                return status2;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setStatus2(int status2) {
+                this.status2 = status2;
             }
 
-            public String getTitle() {
-                return title;
+            public int getStatus3() {
+                return status3;
             }
 
-            public void setTitle(String title) {
-                this.title = title;
+            public void setStatus3(int status3) {
+                this.status3 = status3;
             }
 
-            public String getDesc() {
-                return desc;
+            public int getStatus4() {
+                return status4;
             }
 
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getCode() {
-                return code;
-            }
-
-            public void setCode(String code) {
-                this.code = code;
-            }
-
-            public String getStatus() {
-                return status;
-            }
-
-            public void setStatus(String status) {
-                this.status = status;
-            }
-
-            public String getCreate_at() {
-                return create_at;
-            }
-
-            public void setCreate_at(String create_at) {
-                this.create_at = create_at;
-            }
-
-            public String getUpdate_at() {
-                return update_at;
-            }
-
-            public void setUpdate_at(String update_at) {
-                this.update_at = update_at;
-            }
-
-            public int getUpdate_user_id() {
-                return update_user_id;
-            }
-
-            public void setUpdate_user_id(int update_user_id) {
-                this.update_user_id = update_user_id;
-            }
-
-            public String getUrl() {
-                return url;
-            }
-
-            public void setUrl(String url) {
-                this.url = url;
-            }
-
-            public String getImg() {
-                return img;
-            }
-
-            public void setImg(String img) {
-                this.img = img;
+            public void setStatus4(int status4) {
+                this.status4 = status4;
             }
         }
     }

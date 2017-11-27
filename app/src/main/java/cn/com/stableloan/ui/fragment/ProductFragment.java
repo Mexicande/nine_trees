@@ -95,7 +95,7 @@ public class ProductFragment extends ImmersionFragment {
     private int AMOUT=0;
     private int MORE = 1;
     private String[] mVals = new String[]
-            {"上班族", "其他", "逍遥客 ", "企业主"};
+            {"上班族", "逍遥客 ", "企业主"};
 
     private List<TagFlowBean.DataBean> tagData = new ArrayList<>();
 
@@ -252,13 +252,7 @@ public class ProductFragment extends ImmersionFragment {
         }
     }
 
-   /*
-    @Override
-    public void onPause() {
-        super.onPause();
-        isGetData = false;
-    }
-*/
+
 
     private void initViewTitle() {
         titleName.setText("产品列表");

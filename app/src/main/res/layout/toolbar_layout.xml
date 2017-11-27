@@ -22,7 +22,7 @@
         android:paddingRight="@dimen/_20dp"
         android:paddingTop="@dimen/_5dp"
         android:paddingBottom="@dimen/_5dp"
-        android:src="@mipmap/iv_back"/>
+        android:src="@mipmap/back"/>
     <TextView
         android:id="@+id/tv_save"
         android:visibility="gone"

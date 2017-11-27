@@ -145,7 +145,6 @@
                 android:id="@+id/tv_lines"
                 android:textSize="14sp"
                 android:textColor="@color/gay"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="贷款金额（元）"/>
@@ -168,7 +167,6 @@
                 android:id="@+id/tv_descLimit"
                 android:textSize="14sp"
                 android:textColor="@color/gay"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="贷款期限"/>
@@ -205,7 +203,6 @@
                     android:id="@+id/tv_amount"
                     android:textSize="14sp"
                     android:textColor="@color/gay"
-                    android:textStyle="bold"
                     android:text="额度范围 :"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -216,7 +213,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textStyle="bold"
                     android:textColor="@color/select_text_color"
                     />
                 <TextView
@@ -225,7 +221,6 @@
                     android:textSize="14sp"
                     android:layout_below="@id/tv_amount"
                     android:textColor="@color/gay"
-                    android:textStyle="bold"
                     android:text="期限范围 :"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -234,7 +229,6 @@
                     android:id="@+id/tv_cycle"
                     android:layout_below="@id/tv_amount"
                     android:layout_marginLeft="@dimen/_5dp"
-                    android:textStyle="bold"
 
                     android:layout_toRightOf="@id/tv_amount"
                     android:layout_width="wrap_content"
@@ -247,7 +241,6 @@
                     android:textSize="14sp"
                     android:layout_below="@id/tv_limiteScope"
                     android:textColor="@color/gay"
-                    android:textStyle="bold"
                     android:text="手续费    :"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -256,7 +249,6 @@
                     android:id="@+id/tv_Desccharge"
                     android:layout_below="@id/tv_limiteScope"
                     android:layout_marginLeft="@dimen/_5dp"
-                    android:textStyle="bold"
                     android:layout_toRightOf="@id/tv_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -269,7 +261,6 @@
                     android:textSize="14sp"
                     android:layout_below="@id/tv_Desccharge"
                     android:textColor="@color/gay"
-                    android:textStyle="bold"
                     android:text="每期还款 :"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -282,7 +273,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textStyle="bold"
                     android:text="0元"
                     android:textColor="@color/select_text_color"
                     />

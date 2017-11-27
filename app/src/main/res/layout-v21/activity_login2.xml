@@ -97,5 +97,5 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="@color/gay"
-        android:text="消费金融行业先驱者"/>
+        android:text="贷款，投资你的明天"/>
 </RelativeLayout>

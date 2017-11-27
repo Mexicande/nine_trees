@@ -243,9 +243,10 @@ public class CertificationActivity extends BaseActivity {
     };
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         hud.dismiss();
+
     }
 
     @OnClick({R.id.mobile, R.id.alipay, R.id.taobao, R.id.layout_go})

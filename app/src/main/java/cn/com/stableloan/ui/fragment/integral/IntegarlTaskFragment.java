@@ -1,8 +1,11 @@
 package cn.com.stableloan.ui.fragment.integral;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +71,7 @@ public class IntegarlTaskFragment extends Fragment {
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         JSONObject object = new JSONObject(params);
-        OkGo.<String>post(Urls.Ip_url + Urls.Integarl.getAccumulatePoints)
+        OkGo.<String>post(Urls.NEW_Ip_url + Urls.Integarl.getAccumulatePoints)
                 .upJson(object)
                 .execute(new StringCallback() {
                     @Override
@@ -77,6 +80,47 @@ public class IntegarlTaskFragment extends Fragment {
                             Gson gson = new Gson();
                             IntegarlBean bean = gson.fromJson(s, IntegarlBean.class);
                             if (bean.getError_code() == 0) {
+                                if(bean.getData().getStatus().getStatus1()==1){
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_down);
+                                    UserInformation.setTextBackground(drawable);
+                                    UserInformation.setRightString("已完成");
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_up);
+                                    UserInformation.setRightString("+500");
+                                    UserInformation.setRightTextColor(R.color.colorPrimary);
+                                    UserInformation.setTextBackground(drawable);
+                                }
+                                if(bean.getData().getStatus().getStatus2()==1){
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_down);
+                                    inviteFirst.setRightTextColor(Color.WHITE);
+                                    inviteFirst.setRightString("已完成");
+                                    inviteFirst.setTextBackground(drawable);
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_up);
+                                    inviteFirst.setTextBackground(drawable);
+                                    inviteFirst.setRightString("+100");
+                                }
+                                if(bean.getData().getStatus().getStatus3()==1){
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_down);
+                                    inviteSecond.setTextBackground(drawable);
+                                    inviteSecond.setRightString("已完成");
+
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_up);
+                                    inviteSecond.setTextBackground(drawable);
+                                    inviteSecond.setRightString("+150");
+
+                                }
+                                if(bean.getData().getStatus().getStatus4()==1){
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_down);
+                                    inviteThird.setRightString("已完成");
+                                    inviteThird.setTextBackground(drawable);
+
+                                }else {
+                                    Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.invite_list_up);
+                                    inviteThird.setTextBackground(drawable);
+                                    inviteThird.setRightString("+250");
+                                }
                                 EventBus.getDefault().post(new IntregarlEvent(bean.getData().getOffical(), bean.getData().getCredits(), bean.getData().getTopCredits()));
                             } else if (bean.getCode() == 0) {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);

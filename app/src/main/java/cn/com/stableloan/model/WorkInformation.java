@@ -8,6 +8,17 @@ import java.io.Serializable;
 
 public class WorkInformation implements Serializable{
 
+    @Override
+    public String toString() {
+        return "WorkInformation{" +
+                "code=" + code +
+                ", message=" + message +
+                ", data=" + data +
+                ", error_code=" + error_code +
+                ", error_message='" + error_message + '\'' +
+                ", time='" + time + '\'' +
+                '}';
+    }
 
     /**
      * code : 200
@@ -74,6 +85,46 @@ public class WorkInformation implements Serializable{
     }
 
     public static class DataBean implements Serializable{
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "token='" + token + '\'' +
+                    ", isSuccess='" + isSuccess + '\'' +
+                    ", occupation=" + occupation +
+                    ", status='" + status + '\'' +
+                    ", identity='" + identity + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof DataBean)) return false;
+
+            DataBean dataBean = (DataBean) o;
+
+            if (getToken() != null ? !getToken().equals(dataBean.getToken()) : dataBean.getToken() != null)
+                return false;
+            if (getIsSuccess() != null ? !getIsSuccess().equals(dataBean.getIsSuccess()) : dataBean.getIsSuccess() != null)
+                return false;
+            if (getOccupation() != null ? !getOccupation().equals(dataBean.getOccupation()) : dataBean.getOccupation() != null)
+                return false;
+            if (getStatus() != null ? !getStatus().equals(dataBean.getStatus()) : dataBean.getStatus() != null)
+                return false;
+            return getIdentity() != null ? getIdentity().equals(dataBean.getIdentity()) : dataBean.getIdentity() == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getToken() != null ? getToken().hashCode() : 0;
+            result = 31 * result + (getIsSuccess() != null ? getIsSuccess().hashCode() : 0);
+            result = 31 * result + (getOccupation() != null ? getOccupation().hashCode() : 0);
+            result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+            result = 31 * result + (getIdentity() != null ? getIdentity().hashCode() : 0);
+            return result;
+        }
+
         /**
          * isSuccess : 1
          * occupation : {"student":{"school":"1","address":"进\"\u2018哎\"ueoeow","preTeacherphone":"86","teacherphone":"15611111111"},"company":{"company":"还记得就觉得","location":"那些奖学金","years":"1","email":"123@yahoo.cn","cincome":"2000","preFixedline":"022","fixedline":"1563248"},"business":{"operations":"0","license":"0","bincome":"2"},"freelancer":{"source":"1"},"olass_time":"2017-07-19 12:31:18"}
@@ -127,6 +178,50 @@ public class WorkInformation implements Serializable{
         }
 
         public static class OccupationBean implements Serializable{
+            @Override
+            public String toString() {
+                return "OccupationBean{" +
+                        "student=" + student +
+                        ", company=" + company +
+                        ", business=" + business +
+                        ", freelancer=" + freelancer +
+                        ", olass_time='" + olass_time + '\'' +
+                        ", status='" + status + '\'' +
+                        '}';
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof OccupationBean)) return false;
+
+                OccupationBean that = (OccupationBean) o;
+
+                if (getStudent() != null ? !getStudent().equals(that.getStudent()) : that.getStudent() != null)
+                    return false;
+                if (getCompany() != null ? !getCompany().equals(that.getCompany()) : that.getCompany() != null)
+                    return false;
+                if (getBusiness() != null ? !getBusiness().equals(that.getBusiness()) : that.getBusiness() != null)
+                    return false;
+                if (getFreelancer() != null ? !getFreelancer().equals(that.getFreelancer()) : that.getFreelancer() != null)
+                    return false;
+                if (getOlass_time() != null ? !getOlass_time().equals(that.getOlass_time()) : that.getOlass_time() != null)
+                    return false;
+                return getStatus() != null ? getStatus().equals(that.getStatus()) : that.getStatus() == null;
+
+            }
+
+            @Override
+            public int hashCode() {
+                int result = getStudent() != null ? getStudent().hashCode() : 0;
+                result = 31 * result + (getCompany() != null ? getCompany().hashCode() : 0);
+                result = 31 * result + (getBusiness() != null ? getBusiness().hashCode() : 0);
+                result = 31 * result + (getFreelancer() != null ? getFreelancer().hashCode() : 0);
+                result = 31 * result + (getOlass_time() != null ? getOlass_time().hashCode() : 0);
+                result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+                return result;
+            }
+
             /**
              * student : {"school":"1","address":"进\"\u2018哎\"ueoeow","preTeacherphone":"86","teacherphone":"15611111111"}
              * company : {"company":"还记得就觉得","location":"那些奖学金","years":"1","email":"123@yahoo.cn","cincome":"2000","preFixedline":"022","fixedline":"1563248"}
@@ -257,6 +352,16 @@ public class WorkInformation implements Serializable{
                 public void setTeacherphone(String teacherphone) {
                     this.teacherphone = teacherphone;
                 }
+
+                @Override
+                public String toString() {
+                    return "StudentBean{" +
+                            "school='" + school + '\'' +
+                            ", address='" + address + '\'' +
+                            ", preTeacherphone='" + preTeacherphone + '\'' +
+                            ", teacherphone='" + teacherphone + '\'' +
+                            '}';
+                }
             }
 
             public static class CompanyBean implements Serializable{
@@ -361,6 +466,19 @@ public class WorkInformation implements Serializable{
 
                 public void setFixedline(String fixedline) {
                     this.fixedline = fixedline;
+                }
+
+                @Override
+                public String toString() {
+                    return "CompanyBean{" +
+                            "company='" + company + '\'' +
+                            ", location='" + location + '\'' +
+                            ", years='" + years + '\'' +
+                            ", email='" + email + '\'' +
+                            ", cincome='" + cincome + '\'' +
+                            ", preFixedline='" + preFixedline + '\'' +
+                            ", fixedline='" + fixedline + '\'' +
+                            '}';
                 }
             }
 
@@ -483,9 +601,25 @@ public class WorkInformation implements Serializable{
                     return license;
                 }
 
+                @Override
+                public String toString() {
+                    return "BusinessBean{" +
+                            "bcompany='" + bcompany + '\'' +
+                            ", blocation='" + blocation + '\'' +
+                            ", byears='" + byears + '\'' +
+                            ", bemail='" + bemail + '\'' +
+                            ", bcincome='" + bcincome + '\'' +
+                            ", bpreFixedline='" + bpreFixedline + '\'' +
+                            ", bfixedline='" + bfixedline + '\'' +
+                            ", operations='" + operations + '\'' +
+                            ", license='" + license + '\'' +
+                            '}';
+                }
+
                 public void setLicense(String license) {
                     this.license = license;
                 }
+
             }
 
             public static class FreelancerBean implements Serializable {
@@ -517,6 +651,13 @@ public class WorkInformation implements Serializable{
 
                 public void setSource(String source) {
                     this.source = source;
+                }
+
+                @Override
+                public String toString() {
+                    return "FreelancerBean{" +
+                            "source='" + source + '\'' +
+                            '}';
                 }
             }
         }

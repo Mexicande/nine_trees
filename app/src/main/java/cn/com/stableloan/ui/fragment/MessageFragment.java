@@ -578,7 +578,6 @@ public class MessageFragment extends Fragment {
         String model = AppUtils.getModel();
         String androidVersion = AppUtils.getSDKVersion();
         String  channel = WalleChannelReader.getChannel(getActivity().getApplicationContext());
-
         HashMap<String, String> params = new HashMap<>();
         params.put("userphone", etPhone.getText().toString());
         params.put("code", etCode.getText().toString());

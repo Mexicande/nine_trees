@@ -33,6 +33,7 @@ import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.cash.CashFlowActivity;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperButton;
@@ -74,36 +75,25 @@ public class DetailCash_Fragment extends Fragment {
     }
 
     private void setListener() {
-        btWithdrawal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("cash", cashBean);
-                intent.setClass(getActivity(), WithdrawalCashActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+        btWithdrawal.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("cash", cashBean);
+            intent.setClass(getActivity(), WithdrawalCashActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
         });
         cashRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(getActivity(), CashFlowActivity.class).putExtra("log_id",cashBean.getData().getCashRecord().get(position).getLog_id()));
+                startActivity(new Intent(getActivity(), CashFlowActivity.class).putExtra("log_id",cashAdapter.getData().get(position).getLog_id()));
 
             }
         });
-        cashAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override public void onLoadMoreRequested() {
-                cashRecycler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ACTION_UP++;
-                        if(cashAdapter.getData().size()>=10){
-                            getDate(ACTION_UP,1);
-                        }
-                    }
-
-                }, 1000);
+        cashAdapter.setOnLoadMoreListener(() -> cashRecycler.postDelayed(() -> {
+            ACTION_UP++;
+            if(cashAdapter.getData().size()>=10){
+                getDate(ACTION_UP,1);
             }
-        }, cashRecycler);
+        }, 1000), cashRecycler);
 
     }
 

@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import cn.com.stableloan.R;
+
 /**
  * Created by allen on 2016/11/21.
  * <p>
@@ -661,7 +663,7 @@ public class CommonTextView extends RelativeLayout {
             }
             centerTopTVParams.addRule(RelativeLayout.CENTER_VERTICAL, TRUE);
             centerTopTVParams.addRule(RelativeLayout.CENTER_IN_PARENT, TRUE);
-            centerTopTVParams.addRule(ABOVE, com.allen.library.R.id.cCenterBaseLineId);
+            centerTopTVParams.addRule(ABOVE, R.id.cCenterBaseLineId);
             centerTopTVParams.setMargins(mCenterViewPaddingLeft, 0, mCenterViewPaddingRight, 0);
             centerTopTextView = initText(centerTopTextView, centerTopTVParams, com.allen.library.R.id.cCenterTopTextId, mCenterTopTextColor, mCenterTopTextSize);
             centerTopTextView.setText(mCenterTopTextString);

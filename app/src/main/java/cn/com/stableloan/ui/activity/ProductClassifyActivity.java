@@ -21,6 +21,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
@@ -251,6 +252,7 @@ public class ProductClassifyActivity extends BaseActivity {
         }
 
     }
+
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {

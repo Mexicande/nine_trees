@@ -29,10 +29,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.IdentitySave;
+import cn.com.stableloan.interfaceutils.Identivity_interface;
+import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.WorkInformation;
 import cn.com.stableloan.model.event.ProfessionalSelectEvent;
+import cn.com.stableloan.ui.activity.IdentityinformationActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SmoothCheckBox;
@@ -109,6 +114,12 @@ public class User_Professional_Fragment extends Fragment {
     private static int id;
     private String token;
     private WorkInformation.DataBean work;
+
+
+    private WorkInformation.DataBean work1=new WorkInformation.DataBean();
+
+    private String str="";
+
     private static final int REQUEST_CODE = 30000;
 
      private List<String> list;
@@ -160,6 +171,7 @@ public class User_Professional_Fragment extends Fragment {
                             work = information.getData();
                             if (information.getError_code() == 0) {
                                 if (information.getData().getStatus().equals("1")) {
+                                    str=s;
                                     String identity = work.getIdentity();
                                     int anInt = Integer.parseInt(identity);
                                     switch (anInt) {
@@ -321,6 +333,20 @@ public class User_Professional_Fragment extends Fragment {
     }
 
     @Subscribe
+    public void onMessageEvent(InformationEvent event) {
+        String message = event.message;
+        if ("ok".equals(message)) {
+            getDate();
+        }
+        if("profess".equals(message)){
+            EventBus.getDefault().post(new IdentitySave(false,false,changeTest()));
+        }
+        if("exitprofess".equals(message)){
+            saveInformation(true);
+        }
+    }
+
+    @Subscribe
     public void updateEvent(ProfessionalSelectEvent msg) {
         int message = msg.message;
         switch (message) {
@@ -349,172 +375,188 @@ public class User_Professional_Fragment extends Fragment {
         }
     }
 
-    private void saveInformation() {
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
-        final WorkInformation.DataBean workBean = new WorkInformation.DataBean();
-        workBean.setToken(token);
-        WorkInformation.DataBean.OccupationBean occupationBean = new WorkInformation.DataBean.OccupationBean();
-        WorkInformation.DataBean.OccupationBean.StudentBean studentBean = new WorkInformation.DataBean.OccupationBean.StudentBean();
+    private void saveInformation(boolean flag) {
 
-        WorkInformation.DataBean.OccupationBean.CompanyBean companyBean = new WorkInformation.DataBean.OccupationBean.CompanyBean();
-        WorkInformation.DataBean.OccupationBean.BusinessBean businessBean = new WorkInformation.DataBean.OccupationBean.BusinessBean();
+        boolean b = changeTest();
 
-        WorkInformation.DataBean.OccupationBean.FreelancerBean freelancerBean = new WorkInformation.DataBean.OccupationBean.FreelancerBean();
-        String school = etSchool.getRightString();
-        String teather = etTeacher.getRightString();
-        String address = etSchoolAddress.getRightString();
-        studentBean.setSchool(school);
-        studentBean.setTeacherphone(teather);
-        studentBean.setAddress(address);
+        if(!b){
+            ToastUtils.showToast(getActivity(),"没有修改内容");
+        }else {
+            String token = (String) SPUtils.get(getActivity(), "token", "1");
+            final WorkInformation.DataBean workBean = new WorkInformation.DataBean();
+            workBean.setToken(token);
+            WorkInformation.DataBean.OccupationBean occupationBean = new WorkInformation.DataBean.OccupationBean();
+            WorkInformation.DataBean.OccupationBean.StudentBean studentBean = new WorkInformation.DataBean.OccupationBean.StudentBean();
 
-        String cComPanyName = etCompany.getRightString();
-        String cCompanyLocation = etLocation.getRightString();
-        String cCompanyEmail = etEmail.getRightString();
-        String cCincome = etCincome.getRightString();
-        String cCompanyFixedline = etFixedline.getRightString();
+            WorkInformation.DataBean.OccupationBean.CompanyBean companyBean = new WorkInformation.DataBean.OccupationBean.CompanyBean();
+            WorkInformation.DataBean.OccupationBean.BusinessBean businessBean = new WorkInformation.DataBean.OccupationBean.BusinessBean();
 
-        companyBean.setCompany(cComPanyName);
-        companyBean.setLocation(cCompanyLocation);
-        companyBean.setEmail(cCompanyEmail);
-        String string = etYears.getRightString();
-        companyBean.setYears("");
-        for (int i = 0; i < list2.length; i++) {
-            if (list2[i].equals(string)) {
-                String s = String.valueOf(i);
-                companyBean.setYears(s);
+            WorkInformation.DataBean.OccupationBean.FreelancerBean freelancerBean = new WorkInformation.DataBean.OccupationBean.FreelancerBean();
+            String school = etSchool.getRightString();
+            String teather = etTeacher.getRightString();
+            String address = etSchoolAddress.getRightString();
+            studentBean.setSchool(school);
+            studentBean.setTeacherphone(teather);
+            studentBean.setAddress(address);
+            studentBean.setPreTeacherphone("");
+
+            String cComPanyName = etCompany.getRightString();
+            String cCompanyLocation = etLocation.getRightString();
+            String cCompanyEmail = etEmail.getRightString();
+            String cCincome = etCincome.getRightString();
+            String cCompanyFixedline = etFixedline.getRightString();
+
+            companyBean.setCompany(cComPanyName);
+            companyBean.setLocation(cCompanyLocation);
+            companyBean.setEmail(cCompanyEmail);
+            String string = etYears.getRightString();
+            companyBean.setYears("");
+            for (int i = 0; i < list2.length; i++) {
+                if (list2[i].equals(string)) {
+                    String s = String.valueOf(i);
+                    companyBean.setYears(s);
+                }
             }
-        }
-        companyBean.setCincome(cCincome);
-        companyBean.setFixedline(cCompanyFixedline);
+            companyBean.setCincome(cCincome);
+            companyBean.setFixedline(cCompanyFixedline);
+            companyBean.setPreFixedline("");
 
-        String BusinessName = BusinessCompany.getRightString();
-        String BusinessLocation = this.BusinessLocation.getRightString();
-        String BusinessFixedLine = etBusinessFixedline.getRightString();
-        String BusinessEmail = this.BusinessEmail.getRightString();
-        String BusinessCincome = this.BusinessCincome.getRightString();
+            String BusinessName = BusinessCompany.getRightString();
+            String BusinessLocation = this.BusinessLocation.getRightString();
+            String BusinessFixedLine = etBusinessFixedline.getRightString();
+            String BusinessEmail = this.BusinessEmail.getRightString();
+            String BusinessCincome = this.BusinessCincome.getRightString();
 
-        String BusinessYears = this.BusinessYears.getRightString();
 
-        businessBean.setBcompany(BusinessName);
-        businessBean.setBlocation(BusinessLocation);
-        businessBean.setBfixedline(BusinessFixedLine);
+            String BusinessYears = this.BusinessYears.getRightString();
 
-        businessBean.setByears("");
-        for (int i = 0; i < list2.length; i++) {
-            if (list2[i].equals(BusinessYears)) {
-                String s = String.valueOf(i);
-                businessBean.setByears(s);
+            businessBean.setBcompany(BusinessName);
+            businessBean.setBlocation(BusinessLocation);
+            businessBean.setBfixedline(BusinessFixedLine);
+            businessBean.setBpreFixedline("");
+            businessBean.setByears("");
+            for (int i = 0; i < list2.length; i++) {
+                if (list2[i].equals(BusinessYears)) {
+                    String s = String.valueOf(i);
+                    businessBean.setByears(s);
+                }
             }
-        }
-        businessBean.setBemail(BusinessEmail);
-        businessBean.setBcincome(BusinessCincome);
+            businessBean.setBemail(BusinessEmail);
+            businessBean.setBcincome(BusinessCincome);
 
 
-        occupationBean.setStudent(studentBean);
-        occupationBean.setBusiness(businessBean);
-        occupationBean.setCompany(companyBean);
-        occupationBean.setFreelancer(freelancerBean);
+            occupationBean.setStudent(studentBean);
+            occupationBean.setBusiness(businessBean);
+            occupationBean.setCompany(companyBean);
+            occupationBean.setFreelancer(freelancerBean);
 
-        String toString = etOperations.getRightString();
+            String toString = etOperations.getRightString();
 
-        businessBean.setOperations("");
-        for (int i = 0; i < list2.length; i++) {
-            if (list2[i].equals(toString)) {
-                String s = String.valueOf(i);
-                businessBean.setOperations(s);
+            businessBean.setOperations("");
+            for (int i = 0; i < list2.length; i++) {
+                if (list2[i].equals(toString)) {
+                    String s = String.valueOf(i);
+                    businessBean.setOperations(s);
+                }
             }
-        }
-        businessBean.setLicense("");
+            businessBean.setLicense("");
 
-        if (checkbox1.isChecked()) {
-            businessBean.setLicense("0");
-        }
-        if (checkbox2.isChecked()) {
-            businessBean.setLicense("1");
-        }
-        freelancerBean.setSource("");
-        if (checkbox3.isChecked()) {
-            freelancerBean.setSource("0");
-        }
-        if (checkbox4.isChecked()) {
-            freelancerBean.setSource("1");
-        }
+            if (checkbox1.isChecked()) {
+                businessBean.setLicense("0");
+            }
+            if (checkbox2.isChecked()) {
+                businessBean.setLicense("1");
+            }
+            freelancerBean.setSource("");
+            if (checkbox3.isChecked()) {
+                freelancerBean.setSource("0");
+            }
+            if (checkbox4.isChecked()) {
+                freelancerBean.setSource("1");
+            }
 
-        switch (id) {
-            case STUDENT:
+            switch (id) {
+                case STUDENT:
 
-                if (!school.isEmpty() && !teather.isEmpty() && !address.isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(STUDENT));
-
-                break;
-            case COMPANY:
-
-                if (!cComPanyName.isEmpty() && !cCompanyLocation.isEmpty() && !cCompanyEmail.isEmpty()
-                        && !cCincome.isEmpty() && !cCompanyFixedline.isEmpty()
-                        && !string.isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(COMPANY));
-                break;
-            case BUSINESS:
-
-                if (!BusinessName.isEmpty() && !BusinessCincome.isEmpty() && !BusinessEmail.isEmpty()
-                        && !BusinessFixedLine.isEmpty() && !BusinessLocation.isEmpty()
-                        && !BusinessYears.isEmpty() && !businessBean.getLicense().isEmpty() && !businessBean.getOperations().isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(BUSINESS));
-
-                break;
-            case FREE:
-                String freeCincome = etCincome.getRightString();
-                if (!freeCincome.isEmpty()) {
-                    occupationBean.setStatus("1");
-                } else {
-                    occupationBean.setStatus("0");
-                }
-                workBean.setIdentity(String.valueOf(FREE));
-                break;
-        }
-
-
-        workBean.setOccupation(occupationBean);
-        Gson gson = new Gson();
-        String json = gson.toJson(workBean);
-        OkGo.<String>post(Urls.Ip_url + Urls.Identity.AddOccupation)
-                .tag(getActivity())
-                .upJson(json)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            int isSuccess = object.getInt("error_code");
-                            if (isSuccess == 0) {
-                                work = workBean;
-                                EventBus.getDefault().post(new InformationEvent("informationStatus"));
-                                String data = object.getString("data");
-                                JSONObject object1 = new JSONObject(data);
-                                String msg = object1.getString("msg");
-                                ToastUtils.showToast(getActivity(), msg);
-                            } else {
-                                String msg = object.getString("error_message");
-                                ToastUtils.showToast(getActivity(), msg);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    if (!school.isEmpty() && !teather.isEmpty() && !address.isEmpty()) {
+                        occupationBean.setStatus("1");
+                    } else {
+                        occupationBean.setStatus("0");
                     }
-                });
+                    workBean.setIdentity(String.valueOf(STUDENT));
+
+                    break;
+                case COMPANY:
+
+                    if (!cComPanyName.isEmpty() && !cCompanyLocation.isEmpty() && !cCompanyEmail.isEmpty()
+                            && !cCincome.isEmpty() && !cCompanyFixedline.isEmpty()
+                            && !string.isEmpty()) {
+                        occupationBean.setStatus("1");
+                    } else {
+                        occupationBean.setStatus("0");
+                    }
+                    workBean.setIdentity(String.valueOf(COMPANY));
+                    break;
+                case BUSINESS:
+
+                    if (!BusinessName.isEmpty() && !BusinessCincome.isEmpty() && !BusinessEmail.isEmpty()
+                            && !BusinessFixedLine.isEmpty() && !BusinessLocation.isEmpty()
+                            && !BusinessYears.isEmpty() && !businessBean.getLicense().isEmpty() && !businessBean.getOperations().isEmpty()) {
+                        occupationBean.setStatus("1");
+                    } else {
+                        occupationBean.setStatus("0");
+                    }
+                    workBean.setIdentity(String.valueOf(BUSINESS));
+
+                    break;
+                case FREE:
+                    String freeCincome = etCincome.getRightString();
+                    if (!freeCincome.isEmpty()) {
+                        occupationBean.setStatus("1");
+                    } else {
+                        occupationBean.setStatus("0");
+                    }
+                    workBean.setIdentity(String.valueOf(FREE));
+                    break;
+            }
+
+
+            workBean.setOccupation(occupationBean);
+            Gson gson = new Gson();
+            String json = gson.toJson(workBean);
+            OkGo.<String>post(Urls.Ip_url + Urls.Identity.AddOccupation)
+                    .tag(getActivity())
+                    .upJson(json)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                int isSuccess = object.getInt("error_code");
+                                if (isSuccess == 0) {
+                                    work.setOccupation(workBean.getOccupation());
+
+                                    EventBus.getDefault().post(new InformationEvent("informationStatus"));
+                                    String data = object.getString("data");
+                                    JSONObject object1 = new JSONObject(data);
+                                    String msg = object1.getString("msg");
+                                    if(!flag){
+                                        ToastUtils.showToast(getActivity(), msg);
+
+                                    }
+                                } else {
+                                    String msg = object.getString("error_message");
+                                    ToastUtils.showToast(getActivity(), msg);
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+
+        }
     }
 
 
@@ -638,7 +680,7 @@ public class User_Professional_Fragment extends Fragment {
                 break;
             case R.id.save:
                 if (work != null) {
-                    saveInformation();
+                    saveInformation(false);
                 }
                 break;
             case R.id.et_School:
@@ -707,4 +749,111 @@ public class User_Professional_Fragment extends Fragment {
 
         }
     }
+
+
+    private  boolean changeTest(){
+        Gson gson=new Gson();
+        WorkInformation workInformation = gson.fromJson(str, WorkInformation.class);
+
+        work1=workInformation.getData();
+
+        String school = etSchool.getRightString();
+        String teather = etTeacher.getRightString();
+        String address = etSchoolAddress.getRightString();
+
+        work1.getOccupation().getStudent().setSchool(school);
+        work1.getOccupation().getStudent().setAddress(address);
+        work1.getOccupation().getStudent().setTeacherphone(teather);
+        work1.getOccupation().getStudent().setPreTeacherphone("");
+
+        String cComPanyName = etCompany.getRightString();
+        String cCompanyLocation = etLocation.getRightString();
+        String cCompanyEmail = etEmail.getRightString();
+        String cCincome = etCincome.getRightString();
+        String cCompanyFixedline = etFixedline.getRightString();
+
+        work1.getOccupation().getCompany().setCompany(cComPanyName);
+        work1.getOccupation().getCompany().setLocation(cCompanyLocation);
+        work1.getOccupation().getCompany().setEmail(cCompanyEmail);
+        String string = etYears.getRightString();
+        work1.getOccupation().getCompany().setYears("");
+        for (int i = 0; i < list2.length; i++) {
+            if (list2[i].equals(string)) {
+                String s = String.valueOf(i);
+                work1.getOccupation().getCompany().setYears(s);
+            }
+        }
+        work1.getOccupation().getCompany().setCincome(cCincome);
+        work1.getOccupation().getCompany().setFixedline(cCompanyFixedline);
+
+        String BusinessName = BusinessCompany.getRightString();
+        String BusinessLocation = this.BusinessLocation.getRightString();
+        String BusinessFixedLine = etBusinessFixedline.getRightString();
+        String BusinessEmail = this.BusinessEmail.getRightString();
+        String BusinessCincome = this.BusinessCincome.getRightString();
+
+        String BusinessYears = this.BusinessYears.getRightString();
+
+        work1.getOccupation().getBusiness().setBcompany(BusinessName);
+        work1.getOccupation().getBusiness().setBlocation(BusinessLocation);
+        work1.getOccupation().getBusiness().setBfixedline(BusinessFixedLine);
+        work1.getOccupation().setOlass_time(work.getOccupation().getOlass_time());
+        work1.getOccupation().getBusiness().setByears("");
+        for (int i = 0; i < list2.length; i++) {
+            if (list2[i].equals(BusinessYears)) {
+                String s = String.valueOf(i);
+                work1.getOccupation().getBusiness().setByears(s);
+            }
+        }
+
+        work1.getOccupation().getBusiness().setBemail(BusinessEmail);
+        work1.getOccupation().getBusiness().setBcincome(BusinessCincome);
+
+
+
+        work1.getOccupation().getFreelancer().setSource("");
+        if (checkbox3.isChecked()) {
+            work1.getOccupation().getFreelancer().setSource("0");
+        }
+        if (checkbox4.isChecked()) {
+            work1.getOccupation().getFreelancer().setSource("1");
+        }
+
+
+
+        String toString = etOperations.getRightString();
+
+        work1.getOccupation().getBusiness().setOperations("");
+        for (int i = 0; i < list2.length; i++) {
+            if (list2[i].equals(toString)) {
+                String s = String.valueOf(i);
+                work1.getOccupation().getBusiness().setOperations(s);
+            }
+        }
+        work1.getOccupation().getBusiness().setLicense("");
+
+        if (checkbox1.isChecked()) {
+            work1.getOccupation().getBusiness().setLicense("0");
+        }
+        if (checkbox2.isChecked()) {
+            work1.getOccupation().getBusiness().setLicense("1");
+        }
+        work1.getOccupation().getFreelancer().setSource("");
+        if (checkbox3.isChecked()) {
+            work1.getOccupation().getFreelancer().setSource("0");
+        }
+        if (checkbox4.isChecked()) {
+            work1.getOccupation().getFreelancer().setSource("1");
+        }
+
+        work1.getOccupation().setStatus(work.getOccupation().getStatus());
+
+        if(work.equals(work1)){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
 }
