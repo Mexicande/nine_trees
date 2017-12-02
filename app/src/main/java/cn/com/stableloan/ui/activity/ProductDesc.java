@@ -536,7 +536,7 @@ public class ProductDesc extends BaseActivity {
             case R.id.apply:
                 String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
                 if (token == null || "1".equals(token)) {
-                    LoginActivity.launch(this);
+                    startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "DescError"), Token_Fail);
                 } else {
                     String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
                     int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
@@ -594,16 +594,16 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void showApplyDialog() {
-
         descDialog = new DescDialog(this);
-        descDialog.setTitle("提示", descBean.getData().getProduct_logo());
         descDialog.setMessage("确定退出登陆?");
         descDialog.setYesOnclickListener("确定", new DescDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
                 descDialog.dismiss();
                 sendIO();
-                startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                if(descBean!=null){
+                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                }
             }
         });
 
@@ -698,7 +698,7 @@ public class ProductDesc extends BaseActivity {
                                 if (error_code == 0) {
                                     flag = true;
                                     EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
-                                    if (status.equals("1")) {
+                                    if (("1").equals(status)) {
                                         shareFlag = true;
                                         ToastUtils.showToast(ProductDesc.this, "收藏成功");
                                     } else {
@@ -726,12 +726,7 @@ public class ProductDesc extends BaseActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
                                 ToastUtils.showToast(ProductDesc.this, "服务器异常");
-                            }
-                        });
                     }
                 });
 

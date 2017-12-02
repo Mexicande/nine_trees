@@ -174,18 +174,22 @@ public class Camera2Activity extends AutoLayoutActivity {
      * {@link TextureView}.
      */
     TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
+        @Override
         public void onSurfaceTextureAvailable(SurfaceTexture texture, int width, int height) {
             openCamera(width, height);
         }
 
+        @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int width, int height) {
             configureTransform(width, height);
         }
 
+        @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
             return true;
         }
 
+        @Override
         public void onSurfaceTextureUpdated(SurfaceTexture texture) {
         }
     };
@@ -852,7 +856,7 @@ public class Camera2Activity extends AutoLayoutActivity {
                                 AppApplication.mHandler.post(() -> {
                                     mFinishCalled = true;
                                     String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
-                                    if(camera==null||camera.equals("1")){
+                                    if(camera==null||("1").equals(camera)){
                                         SPUtils.put(Camera2Activity.this,"camera","ok");
                                         bankPhoto(file1.getAbsolutePath());
                                     }
@@ -878,7 +882,7 @@ public class Camera2Activity extends AutoLayoutActivity {
 
                                     String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
                                     SPUtils.put(Camera2Activity.this,"camera","ok");
-                                    if(camera==null||camera.equals("1")){
+                                    if(camera==null||("1").equals(camera)){
                                         SPUtils.put(Camera2Activity.this,"camera","ok");
                                         identifyPhoto(file1.getAbsolutePath());
                                     }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -24,6 +23,7 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.BR;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
@@ -79,7 +79,7 @@ public class PlatformInfoActivity extends BaseActivity {
                                 try {
                                     JSONObject jsonObject1 = new JSONObject(s);
                                     String success = jsonObject1.getString("isSuccess");
-                                    if (success.equals("1")) {
+                                    if (("1").equals(success)) {
                                         Gson gson = new Gson();
                                         Product_Detail product_detail = gson.fromJson(s, Product_Detail.class);
                                         dataBinding.setVariable(BR.product, product_detail);

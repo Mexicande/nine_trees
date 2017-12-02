@@ -649,6 +649,7 @@ public class LockPatternView extends View {
 	}
 
 	private Runnable mClearPatternRunnable = new Runnable() {
+		@Override
 		public void run() {
 			LockPatternView.this.setPattern(DisplayMode.DEFAULT);
 		}

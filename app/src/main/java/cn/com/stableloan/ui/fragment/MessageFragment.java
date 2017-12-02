@@ -608,17 +608,17 @@ public class MessageFragment extends Fragment {
                                 SPUtils.put(getActivity(), phone + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
 
                                 if (from != null) {
-                                    if (from.equals("user")) {
+                                    if (("user").equals(from)) {
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         getActivity().finish();
-                                    } else if (from.equals("123")) {
+                                    } else if (("123").equals(from)) {
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         getActivity().finish();
-                                    } else if (from.equals("user2")) {
+                                    } else if (("user2").equals(from)) {
                                         EventBus.getDefault().post(new InformationEvent("userinfor"));
                                         EventBus.getDefault().post(new MessageEvent("", "1"));
                                         getActivity().finish();
-                                    } else if (from.equals("collection")) {
+                                    } else if (("collection").equals(from)) {
                                         Intent intent = new Intent();
                                         intent.putExtra("ok", "ok");
                                         getActivity().setResult(2000, intent);

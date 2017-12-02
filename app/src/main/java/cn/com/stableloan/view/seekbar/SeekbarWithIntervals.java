@@ -124,6 +124,7 @@ public class SeekbarWithIntervals extends LinearLayout {
         lastInterval.setPadding(leftPadding, 0, 0, 0);
     }
 
+    @Override
     protected synchronized void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         WidthMeasureSpec = widthMeasureSpec;
         HeightMeasureSpec = heightMeasureSpec;
@@ -204,7 +205,7 @@ public class SeekbarWithIntervals extends LinearLayout {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         if (idOfPreviousInterval > 0) {
-            params.addRule(RelativeLayout.RIGHT_OF, idOfPreviousInterval);
+            params.addRule(android.widget.RelativeLayout.RIGHT_OF, idOfPreviousInterval);
         }
         textView.setLayoutParams(params);
     }

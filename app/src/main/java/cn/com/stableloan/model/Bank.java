@@ -187,7 +187,6 @@ public class Bank implements Serializable {
         }
 
         public static class CreditBean implements Serializable{
-
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
@@ -195,21 +194,27 @@ public class Bank implements Serializable {
 
                 CreditBean that = (CreditBean) o;
 
-                if (!getCnumber().equals(that.getCnumber())) return false;
-                if (!getCname().equals(that.getCname())) return false;
-                if (!getCperiod().equals(that.getCperiod())) return false;
-                if (!getCbank().equals(that.getCbank())) return false;
-                return getCphone().equals(that.getCphone());
+                if (getIs_credit() != that.getIs_credit()) return false;
+                if (getCnumber() != null ? !getCnumber().equals(that.getCnumber()) : that.getCnumber() != null)
+                    return false;
+                if (getCname() != null ? !getCname().equals(that.getCname()) : that.getCname() != null)
+                    return false;
+                if (getCperiod() != null ? !getCperiod().equals(that.getCperiod()) : that.getCperiod() != null)
+                    return false;
+                if (getCbank() != null ? !getCbank().equals(that.getCbank()) : that.getCbank() != null)
+                    return false;
+                return getCphone() != null ? getCphone().equals(that.getCphone()) : that.getCphone() == null;
 
             }
 
             @Override
             public int hashCode() {
-                int result = getCnumber().hashCode();
-                result = 31 * result + getCname().hashCode();
-                result = 31 * result + getCperiod().hashCode();
-                result = 31 * result + getCbank().hashCode();
-                result = 31 * result + getCphone().hashCode();
+                int result = getCnumber() != null ? getCnumber().hashCode() : 0;
+                result = 31 * result + (getCname() != null ? getCname().hashCode() : 0);
+                result = 31 * result + (getCperiod() != null ? getCperiod().hashCode() : 0);
+                result = 31 * result + (getCbank() != null ? getCbank().hashCode() : 0);
+                result = 31 * result + (getCphone() != null ? getCphone().hashCode() : 0);
+                result = 31 * result + getIs_credit();
                 return result;
             }
 

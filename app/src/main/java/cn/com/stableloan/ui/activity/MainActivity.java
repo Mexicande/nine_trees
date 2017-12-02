@@ -39,6 +39,7 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
 import cn.com.stableloan.view.update.AppUpdateUtils;
+import cn.com.stableloan.view.update.CProgressDialogUtils;
 import cn.com.stableloan.view.update.OkGoUpdateHttpUtil;
 import cn.com.stableloan.view.update.UpdateAppBean;
 import cn.com.stableloan.view.update.UpdateAppManager;
@@ -191,12 +192,16 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                      */
                     @Override
                     public void onBefore() {
+                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
+
                     }
                     /**
                      * 网路请求之后
                      */
                     @Override
                     public void onAfter() {
+                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
+
                     }
                 });
 
@@ -222,16 +227,16 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
     @Subscribe
     public void onMessageEvent(InformationEvent event){
-        if(event.message.equals("user2")){
+        if(("user2").equals(event.message)){
             navigationController.setSelect(0);
-        }else if(event.message.equals("user4")){
+        }else if(("user4").equals(event.message)){
             navigationController.setSelect(3);
-        }else if(event.message.equals("user3")){
+        }else if(("user3").equals(event.message)){
             int selected = navigationController.getSelected();
             switchMenu(getFragmentName(selected+1));
-        }else if(event.message.equals("userinform")){
+        }else if(("userinform").equals(event.message)){
             navigationController.setSelect(3);
-        }else if(event.message.equals("userinfor")){
+        }else if(("userinfor").equals(event.message)){
             navigationController.setSelect(3);
         }
     }
@@ -306,7 +311,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
             case LOTTERY_SNED:
                 if (LOTTERY_CODE == resultCode) {
                     String loffery = data.getStringExtra("Loffery");
-                    if (!loffery.equals("1")) {
+                    if (!("1").equals(loffery)) {
                         switchMenu(getFragmentName(3));
                     }else {
                        navigationController.setSelect(0);

@@ -518,19 +518,19 @@ public class LoginFragment extends Fragment {
                             Class_Special.DataBean.MdseBean id = (Class_Special.DataBean.MdseBean) getActivity().getIntent().getSerializableExtra("ProductClassifyActivity");
 
                             if (from != null) {
-                                if (from.equals("user")) {
+                                if (("user").equals(from)) {
                                     getActivity().setResult(Flag_User, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
-                                } else if (from.equals("123")) {
+                                } else if (("123").equals(from)) {
                                     getActivity().setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "123"));
                                     getActivity().finish();
-                                } else if (from.equals("user1")) {
+                                } else if (("user1").equals(from)) {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
-                                } else if (from.equals("user2")) {
+                                } else if (("user2").equals(from)) {
                                     getActivity().setResult(4000, new Intent().putExtra("user", userBean));
                                     getActivity().finish();
-                                } else if (from.equals("collection")) {
+                                } else if (("collection").equals(from)) {
                                     Intent intent = new Intent();
                                     intent.putExtra("ok", "ok");
                                     getActivity().setResult(2000, intent);

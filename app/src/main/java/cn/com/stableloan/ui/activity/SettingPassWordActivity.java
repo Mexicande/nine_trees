@@ -83,13 +83,7 @@ public class SettingPassWordActivity extends AppCompatActivity {
     private void setListener() {
 
         userPhone = getIntent().getStringExtra("userPhone");
-       /* if (userPhone != null) {
-            StringBuilder sb = new StringBuilder(userPhone);
-            sb.insert(3, " ");
-            sb.insert(8, " ");
-            sb.insert(0, "+86 ");
-            phone.setText(sb);
-        }*/
+
         etSettingPassWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -152,11 +146,11 @@ public class SettingPassWordActivity extends AppCompatActivity {
                         int random = new Random().nextInt(10000000) + 89999999;
                         LogUtils.i("random", random);
                         Deskey = Des4.encode(object.toString(), String.valueOf(random));
-                        String public_key = getResources().getString(R.string.public_key);
+                        String publicKey = getResources().getString(R.string.public_key);
 
-                        deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY+public_key);
-                        String private_key = getResources().getString(R.string.private_key);
-                        sign = RSA.sign(deskey, Urls.PRIVATE_KEY+private_key);
+                        deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY+publicKey);
+                        String privateKey = getResources().getString(R.string.private_key);
+                        sign = RSA.sign(deskey, Urls.PRIVATE_KEY+privateKey);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -175,8 +169,8 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                 public void onSuccess(String s, Call call, Response response) {
                                     hud.dismiss();
                                     UserInfromBean fromJson = gson.fromJson(s, UserInfromBean.class);
-                                    int error_code = fromJson.getError_code();
-                                    if (error_code == 0) {
+                                    int errorCode = fromJson.getError_code();
+                                    if (errorCode == 0) {
                                         SPUtils.put(SettingPassWordActivity.this, Urls.lock.TOKEN, fromJson.getData().getToken());
 
                                         UserBean userBean = new UserBean();
@@ -201,12 +195,9 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(Call call, Response response, Exception e) {
                                     super.onError(call, response, e);
-                                    SettingPassWordActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ToastUtils.showToast(SettingPassWordActivity.this, "服务器出错了，请稍后再试");
-                                            hud.dismiss();
-                                        }
+                                    SettingPassWordActivity.this.runOnUiThread(() -> {
+                                        ToastUtils.showToast(SettingPassWordActivity.this, "服务器出错了，请稍后再试");
+                                        hud.dismiss();
                                     });
                                 }
                             });
@@ -215,6 +206,8 @@ public class SettingPassWordActivity extends AppCompatActivity {
                     ToastUtils.showToast(this, "格式不正确,请重新输入");
                 }
 
+                break;
+            default:
                 break;
         }
     }
@@ -229,13 +222,10 @@ public class SettingPassWordActivity extends AppCompatActivity {
 
             }
         });
-        selfDialog.setNoOnclickListener("退出", new SettingPassWordDialog.onNoOnclickListener() {
-            @Override
-            public void onNoClick() {
+        selfDialog.setNoOnclickListener("退出", () -> {
 
-                selfDialog.dismiss();
-                finish();
-            }
+            selfDialog.dismiss();
+            finish();
         });
         selfDialog.show();
     }

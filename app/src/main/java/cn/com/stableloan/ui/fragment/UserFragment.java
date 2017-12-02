@@ -299,7 +299,7 @@ public class UserFragment extends ImmersionFragment {
         if (pinfo != null) {
             for (int i = 0; i < pinfo.size(); i++) {
                 String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.tencent.mm")) {
+                if (("com.tencent.mm").equals(pn)) {
                     return true;
                 }
             }

@@ -165,7 +165,7 @@ public class LogUtils {
             if (st.getClassName().equals(Thread.class.getName())) {
                 continue;
             }
-            if (st.getFileName().equals("LogUtils.java")) {
+            if (("LogUtils.java").equals(st.getFileName())) {
                 continue;
             }
             return "[" + Thread.currentThread().getName() + "("
@@ -208,16 +208,7 @@ public class LogUtils {
         }
     }
 
-    /**
-     * 删除指定的日志文件
-     */
-    public static void delFile() {// 删除日志文件
-        String needDelFiel = FILE_SUFFIX.format(getDateBefore());
-        File file = new File(LOG_FILE_PATH, needDelFiel + LOG_FILE_NAME);
-        if (file.exists()) {
-            file.delete();
-        }
-    }
+
 
     /**
      * 得到LOG_SAVE_DAYS天前的日期

@@ -33,8 +33,6 @@
 -keep class okio.**{*;}
 
 
-
-
 -keep class de.greenrobot.dao.** { *; }
 -keep class com.squareup.picasso.** { *; }
 -keep class com.nostra13.universalimageloader.** { *; }
@@ -45,13 +43,7 @@ public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
 
-#-keep class com.android.volley.** {*;}
-#-keep class com.android.volley.toolbox.** {*;}
-#-keep class com.android.volley.Response$* { *; }
-#-keep class com.android.volley.Request$* { *; }
-#-keep class com.android.volley.RequestQueue$* { *; }
-#-keep class com.android.volley.toolbox.HurlStack$* { *; }
-#-keep class com.android.volley.toolbox.ImageLoader$* { *; }
+
 
 
 -dontwarn com.jeremyfeinstein.slidingmenu.lib.**
@@ -96,12 +88,16 @@ public static java.lang.String TABLENAME;
 
 #保留行号
 -keepattributes SourceFile,LineNumberTable
-
+-verbose
 -dontoptimize
--dontpreverify
 -keepattributes *Annotation*
+
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
 -keepclassmembers class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator CREATOR;
 }
@@ -122,11 +118,7 @@ public static java.lang.String TABLENAME;
 -dontwarn butterknife.internal.**
 -keep class **$$ViewBinder { *; }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
--keep public class * extends android.app.Activity  #所有activity的子类不要去混淆
--keep public class * extends android.app.Application
+
 
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
@@ -193,6 +185,7 @@ public static java.lang.String TABLENAME;
 -keepclasseswithmembers class * {
     @android.support.annotation.Keep <init>(...);
 }
+
 -keep class com.example.guolin.androidtest.MyFragment {
     *;
 }
@@ -282,16 +275,12 @@ public static java.lang.String TABLENAME;
 
 # eventbus
 -keepattributes *Annotation*
--keepclassmembers class ** {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
+
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
 # Only required if you use AsyncExecutor
 
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
+
 #PictureSelector 2.0
 -keep class com.luck.picture.lib.** { *; }
 
@@ -350,6 +339,7 @@ public static java.lang.String TABLENAME;
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
+
 # Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);

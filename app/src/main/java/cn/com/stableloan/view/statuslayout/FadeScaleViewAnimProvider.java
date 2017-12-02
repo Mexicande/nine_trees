@@ -12,6 +12,7 @@ import android.view.animation.ScaleAnimation;
 
 public class FadeScaleViewAnimProvider implements ViewAnimProvider {
 
+    @Override
     public Animation showAnimation() {
         AnimationSet set = new AnimationSet(true);
         Animation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);

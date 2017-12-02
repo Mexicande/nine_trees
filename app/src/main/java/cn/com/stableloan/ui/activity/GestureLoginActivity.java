@@ -51,7 +51,7 @@ public class GestureLoginActivity extends BaseActivity {
     TextView titleName;
 
     private ACache aCache;
-    private static final long DELAYTIME = 600l;
+    private static final long DELAYTIME = 600L;
     private byte[] gesturePassword;
 
     @Override
@@ -281,11 +281,11 @@ public class GestureLoginActivity extends BaseActivity {
     @OnClick(R.id.forgetGestureBtn)
     void forgetGesturePasswrod() {
         String from = getIntent().getStringExtra("from");
-        if(from.equals("SettingSafe")){
+        if(("SettingSafe").equals(from)){
             Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class).putExtra("from","safe");
             startActivity(intent);
             this.finish();
-        }else if(from.equals("userinformation")){
+        }else if(("userinformation").equals(from)){
             Intent intent = new Intent(GestureLoginActivity.this, Verify_PasswordActivity.class) .putExtra("from", "Createuserinformation");
             startActivity(intent);
             this.finish();

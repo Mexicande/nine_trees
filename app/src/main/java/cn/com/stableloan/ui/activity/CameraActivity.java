@@ -161,7 +161,7 @@ public class CameraActivity extends AutoLayoutActivity {
                                                 AppApplication.mHandler.post(() -> {
                                                     mFinishCalled = true;
                                                     String camera2 = (String) SPUtils.get(CameraActivity.this, "camera", "1");
-                                                    if(camera2==null||camera2.equals("1")){
+                                                    if(camera2==null||("1").equals(camera2)){
                                                         SPUtils.put(CameraActivity.this,"camera1","ok");
                                                         bankPhoto(file1.getAbsolutePath(),type);
                                                     }
@@ -185,7 +185,7 @@ public class CameraActivity extends AutoLayoutActivity {
                                                     mFinishCalled = true;
                                                     String camera2 = (String) SPUtils.get(CameraActivity.this, "camera1", "1");
 
-                                                    if(camera2==null||camera2.equals("1")){
+                                                    if(camera2==null||("1").equals(camera2)){
                                                         SPUtils.put(CameraActivity.this,"camera1","ok");
                                                         identifyPhoto(file1.getAbsolutePath());
                                                     }

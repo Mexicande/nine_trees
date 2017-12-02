@@ -66,6 +66,7 @@ import okhttp3.Response;
 
 /**
  * 我的现金
+ * @author apple
  */
 public class CashActivity extends BaseActivity {
 
@@ -161,7 +162,8 @@ public class CashActivity extends BaseActivity {
 
         });
         cashIndicator.setNavigator(commonNavigator);
-        LinearLayout titleContainer = commonNavigator.getTitleContainer(); // must after setNavigator
+        // must after setNavigator
+        LinearLayout titleContainer = commonNavigator.getTitleContainer();
         titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
         titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
@@ -187,6 +189,8 @@ public class CashActivity extends BaseActivity {
                 break;
             case R.id.tv_rule:
                 RuleDescActivity.launch(this);
+                break;
+            default:
                 break;
 
         }

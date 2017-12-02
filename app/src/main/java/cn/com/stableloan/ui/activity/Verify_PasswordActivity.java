@@ -125,7 +125,6 @@ public class Verify_PasswordActivity extends BaseActivity {
 
                     scrollHeight += lastYPos;
 
-
                     // int i = (ints[1] + btValidation.getHeight()+) - rect.bottom;
                     // 5.让界面整体上移键盘的高度
                     main.scrollTo(0, scrollHeight);
@@ -136,7 +135,6 @@ public class Verify_PasswordActivity extends BaseActivity {
                     //6.不可见区域小于100，说明键盘隐藏了，把界面下移，移动到原有高度
                     main.scrollTo(0, 0);
                     lastYPos = 0;
-
                 }
             }
         });*/
@@ -220,7 +218,6 @@ public class Verify_PasswordActivity extends BaseActivity {
                                 try {
                                     JSONObject json = new JSONObject(s);
                                     int error_code = json.getInt("error_code");
-
                                     if (error_code == 0) {
                                         JSONObject object=new JSONObject(json.getString("data"));
                                         String string = object.getString("token");

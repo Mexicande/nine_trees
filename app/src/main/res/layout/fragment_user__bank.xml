@@ -53,7 +53,6 @@
        <cn.com.stableloan.view.supertextview.SuperTextView
            android:id="@+id/et_BankPersonName1"
            style="@style/identity_style"
-
            stv:sLeftTextString="@string/Debit_UserName"
            stv:sRightIconRes="@mipmap/ic_arrow"
            stv:sRightTextColor="@color/text_setting"

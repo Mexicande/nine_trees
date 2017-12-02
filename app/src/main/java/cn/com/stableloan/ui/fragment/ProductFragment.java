@@ -204,7 +204,7 @@ public class ProductFragment extends ImmersionFragment {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 String success = object.getString("isSuccess");
-                                if (success.equals("1")) {
+                                if (("1").equals(success)) {
                                     Gson gson = new Gson();
                                     Class_ListProductBean json = gson.fromJson(s, Class_ListProductBean.class);
                                     switch (action) {
@@ -422,7 +422,6 @@ public class ProductFragment extends ImmersionFragment {
      */
     private List<Integer> amount=new ArrayList<>();
     private void selectProduct(String[] ident,int money) {
-
         ProductList_Param param=new ProductList_Param();
         amount.add(500);
         amount.add(1000);
@@ -430,22 +429,18 @@ public class ProductFragment extends ImmersionFragment {
         amount.add(5000);
         amount.add(8000);
         amount.add(10000);
-
         param.setAmount(amount.get(AMOUT));
-
         if(AMOUT==0){
             param.setAmount(money);
         }
-
         if (ident == null) {
             stateLayout.showProgressView();
             Set<Integer> idenlist = idFlowlayout.getSelectedList();
             if (idenlist.size() > 0) {
                 Integer[] arr = new Integer[1];
                 Integer[] i = idenlist.toArray(arr);
-                if(i[0]==2){
-                    int i1 = i[0] + 1;
-                    String string = String.valueOf(i1 + 1);
+                if(i[0]>=1){
+                    String string = String.valueOf(i[0] + 2);
                     String[] str = new String[]{string};
                     param.setIdentity(Arrays.asList(str));
                 }else {
@@ -535,6 +530,7 @@ public class ProductFragment extends ImmersionFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -560,6 +556,7 @@ public class ProductFragment extends ImmersionFragment {
         }
     }
 
+    @Override
     public void onStart() {
         super.onStart();
         backHandlerInterface.setSelectedFragment(this);

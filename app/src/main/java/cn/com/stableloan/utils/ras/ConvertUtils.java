@@ -191,7 +191,7 @@ public abstract class ConvertUtils {
     public static Locale stringToLocale(String locString){
 
         locString = locString != null ? locString.trim() : "";
-        if(locString.equals(""))
+        if(("").equals(locString))
             return new Locale("", "", "");
         int pos = locString.indexOf(95);
         if(pos == -1)

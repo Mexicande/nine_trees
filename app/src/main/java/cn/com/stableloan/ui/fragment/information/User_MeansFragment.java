@@ -292,8 +292,8 @@ public class User_MeansFragment extends Fragment {
                             Gson gson = new Gson();
                             Identity identity = gson.fromJson(s, Identity.class);
                             if (identity.getError_code() == 0) {
-                                if (identity.getData().getIsSuccess().equals("1")) {
-                                    if (identity.getData().getStatus().equals("1")) {
+                                if (("1").equals(identity.getData().getIsSuccess())) {
+                                    if (("1").equals(identity.getData().getStatus())) {
                                         str=s;
                                         identityBean = identity.getData().getIdentity();
 

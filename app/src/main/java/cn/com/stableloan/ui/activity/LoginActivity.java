@@ -232,18 +232,18 @@ public class LoginActivity extends BaseActivity implements Touch_login {
             String message = getIntent().getStringExtra("message");
             String from = getIntent().getStringExtra("from");
             if (from != null) {
-                if (from.equals("user")) {
+                if (("user").equals(from)) {
                     UserBean userBean = new UserBean();
                     setResult(Flag_User, new Intent().putExtra("user", userBean));
                     finish();
-                } else if (from.equals("123")) {
+                } else if (("123").equals(from)) {
                     setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
                     finish();
-                } else if (from.equals("user1")) {
+                } else if (("user1").equals(from)) {
                     UserBean userBean = new UserBean();
                     setResult(4000, new Intent().putExtra("user", userBean));
                     finish();
-                } else if (from.equals("user2")) {
+                } else if (("user2").equals(from)) {
                     EventBus.getDefault().post(new InformationEvent("user2"));
                     finish();
                 }else {
@@ -268,18 +268,18 @@ public class LoginActivity extends BaseActivity implements Touch_login {
         String from = getIntent().getStringExtra("from");
         String message = getIntent().getStringExtra("message");
         if (from != null) {
-            if (from.equals("user")) {
+            if (("user").equals(from)) {
                 UserBean userBean = new UserBean();
                 setResult(Flag_User, new Intent().putExtra("user", userBean));
                 finish();
-            } else if (from.equals("123")) {
+            } else if (("123").equals(from)) {
                 setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
                 finish();
-            } else if (from.equals("user1")) {
+            } else if (("user1").equals(from)) {
                 UserBean userBean = new UserBean();
                 setResult(4000, new Intent().putExtra("user", userBean));
                 finish();
-            } else if (from.equals("user2")) {
+            } else if (("user2").equals(from)) {
                 EventBus.getDefault().post(new InformationEvent("user2"));
                 finish();
             }else {

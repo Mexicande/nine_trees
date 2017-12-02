@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         private WeakReference<SplashActivity> mWeakReference;
 
         SwitchHandler(SplashActivity activity) {
-            mWeakReference = new WeakReference<SplashActivity>(activity);
+            mWeakReference = new WeakReference<>(activity);
         }
         @Override
         public void handleMessage(Message msg) {
@@ -102,6 +102,8 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         }
                         break;
+                    default:
+                        break;
 
                 }
             }
@@ -113,7 +115,6 @@ public class SplashActivity extends AppCompatActivity {
         if (isFirstOpen) {
             GuideActivity.launch(this);
             finish();
-            return;
         }else {
             mHandler.sendEmptyMessageDelayed(1, 1000);
         }
@@ -140,10 +141,12 @@ public class SplashActivity extends AppCompatActivity {
         mHandler.removeCallbacksAndMessages(null);
 
     }
+    @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
+    @Override
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);

@@ -229,7 +229,7 @@ public class WXManager {
      * @param listener
      */
     public void setListener(StateListener<String> listener){
-        this.mListener = listener;
+        mListener = listener;
     }
 
     /**

@@ -96,7 +96,7 @@ public class NoticeActivity extends BaseActivity {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 String success = object.getString("isSuccess");
-                                if(success.equals("1")){
+                                if(("1").equals(success)){
                                     Gson gson = new Gson();
                                     NoticeBean noticeBean = gson.fromJson(s, NoticeBean.class);
                                     noticeAdapter.setNewData(noticeBean.getAnnouncements());

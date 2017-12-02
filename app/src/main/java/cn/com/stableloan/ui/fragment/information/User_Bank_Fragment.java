@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author apple
  */
 public class User_Bank_Fragment extends Fragment {
 
@@ -129,29 +131,16 @@ public class User_Bank_Fragment extends Fragment {
 
     private void setListener() {
 
-        etValidityTime1.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                pvTime.show(superTextView);
-            }
-        });
-        etValidityTime2.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                pvTime.show(superTextView);
-            }
-        });
-        isCredit.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                int visibility = layoutCredit.getVisibility();
-                if (visibility == View.GONE) {
-                    layoutCredit.setVisibility(View.VISIBLE);
-                    isCredit.setRightString("有");
-                } else {
-                    layoutCredit.setVisibility(View.GONE);
-                    isCredit.setRightString("没有");
-                }
+        etValidityTime1.setOnSuperTextViewClickListener(superTextView -> pvTime.show(superTextView));
+        etValidityTime2.setOnSuperTextViewClickListener(superTextView -> pvTime.show(superTextView));
+        isCredit.setOnSuperTextViewClickListener(superTextView -> {
+            int visibility = layoutCredit.getVisibility();
+            if (visibility == View.GONE) {
+                layoutCredit.setVisibility(View.VISIBLE);
+                isCredit.setRightString("有");
+            } else {
+                layoutCredit.setVisibility(View.GONE);
+                isCredit.setRightString("没有");
             }
         });
 
@@ -178,23 +167,22 @@ public class User_Bank_Fragment extends Fragment {
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "身份信息第二页", eventObject);
 
-        pvTime = new TimePickerView.Builder(getActivity(), new TimePickerView.OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                SuperTextView btn = (SuperTextView) v;
-                btn.setRightString(getTime(date));
-            }
+        pvTime = new TimePickerView.Builder(getActivity(), (date, v) -> {
+            SuperTextView btn = (SuperTextView) v;
+            btn.setRightString(getTime(date));
         })
                 .setCancelText("取消")
                 .setTitleColor(color)
                 .setSubmitText("确定")
                 .setDividerColor(color)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                //设置选中项文字颜色
+                .setTextColorCenter(Color.BLACK)
                 .setSubmitColor(color)
                 .setCancelColor(color)
                 .setType(new boolean[]{true, true, false, false, false, false})
                 .setLabel("年", "月", "", "", "", "")
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isCenterLabel(false)
                 .build();
 
     }
@@ -234,7 +222,7 @@ public class User_Bank_Fragment extends Fragment {
                             BankInformation information = gson.fromJson(s, BankInformation.class);
                             if (information.getError_code() == 0) {
                                 APP_CODE=information.getData().getApp_code();
-                                if (information.getData().getStatus().equals("1")) {
+                                if (("1").equals(information.getData().getStatus())) {
                                     bankBean = information.getData();
 
                                     String dnumber = bankBean.getBank().getDebit().getDnumber();
@@ -252,6 +240,8 @@ public class User_Bank_Fragment extends Fragment {
                                                 break;
                                             case 19:
                                                 stringBuffer.insert(6," ");
+                                                break;
+                                            default:
                                                 break;
                                         }
                                     etBankCard1.setRightString(stringBuffer);
@@ -289,6 +279,8 @@ public class User_Bank_Fragment extends Fragment {
                                             break;
                                         case 19:
                                             buffer.insert(6," ");
+                                            break;
+                                        default:
                                             break;
                                     }
                                     etBankCard2.setRightString(buffer);
@@ -458,7 +450,8 @@ public class User_Bank_Fragment extends Fragment {
                         String type = data.getStringExtra("type");
                         etBankCard1.setRightString(type);
                         if (type.length() > 6) {
-                            String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
+                            // 获取银行卡的信息
+                            String name = BankUtils.getNameOfBank(type);
                             etSelectBank1.setRightString(name);
                         }
                     }
@@ -468,7 +461,8 @@ public class User_Bank_Fragment extends Fragment {
                         String type = data.getStringExtra("type");
                         etBankCard2.setRightString(type);
                         if (type.length() > 6) {
-                            String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
+                            // 获取银行卡的信息
+                            String name = BankUtils.getNameOfBank(type);
                             etSelectBank2.setRightString(name);
                         }
                     }
@@ -497,6 +491,8 @@ public class User_Bank_Fragment extends Fragment {
                         etBankPhone2.setRightString(type);
                     }
                     break;
+                default:
+                    break;
 
             }
         }else if(requestCode==REQUEST_BANK){
@@ -518,10 +514,13 @@ public class User_Bank_Fragment extends Fragment {
                             case 19:
                                 buffer.insert(6," ");
                                 break;
+                            default:
+                                break;
                         }
                         etBankCard1.setRightString(buffer);
                         if (type.length() > 6) {
-                            String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
+                            // 获取银行卡的信息
+                            String name = BankUtils.getNameOfBank(type);
                             etSelectBank1.setRightString(name);
                         }
                     }
@@ -544,23 +543,23 @@ public class User_Bank_Fragment extends Fragment {
                             case 19:
                                 buffer.insert(6," ");
                                 break;
+                            default:
+                                break;
                         }
                         etBankCard2.setRightString(buffer);
-
                         if (type.length() > 6) {
-                            String name = BankUtils.getNameOfBank(type);// 获取银行卡的信息
+                            // 获取银行卡的信息
+                            String name = BankUtils.getNameOfBank(type);
                             etSelectBank2.setRightString(name);
                             int visibility = layoutCredit.getVisibility();
                             if (visibility == View.GONE) {
                                 layoutCredit.setVisibility(View.VISIBLE);
                                 isCredit.setRightString("有");
-                            } else {
-                                layoutCredit.setVisibility(View.GONE);
-                                isCredit.setRightString("没有");
                             }
-
                         }
                     }
+                    break;
+                default:
                     break;
             }
         }
@@ -625,6 +624,8 @@ public class User_Bank_Fragment extends Fragment {
                     Save(false);
                 }
                 break;
+            default:
+                break;
         }
 
     }
@@ -642,7 +643,7 @@ public class User_Bank_Fragment extends Fragment {
 
     private PermissionListener listener = new PermissionListener() {
         @Override
-        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+        public void onSucceed(int requestCode, @NonNull List<String> grantedPermissions) {
             // 权限申请成功回调。
             // 这里的requestCode就是申请时设置的requestCode。
             // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。

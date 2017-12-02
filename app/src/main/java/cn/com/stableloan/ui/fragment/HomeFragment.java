@@ -245,7 +245,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             Gson gson = new Gson();
                             AdvertisingBean bean = gson.fromJson(s, AdvertisingBean.class);
                             if (bean.getError_code() == 0) {
-                                showAdvertising(bean);
+                                if(bean.getData().getImg()!=null){
+                                    showAdvertising(bean);
+                                }
                             }
                         }
                     }
@@ -499,7 +501,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String success = jsonObject.getString("isSuccess");
-                                if (success.equals("1")) {
+                                if (("1").equals(success)) {
                                     Gson gson = new Gson();
                                     hotBean = gson.fromJson(s, Banner_HotBean.class);
                                     if (Action == 2) {

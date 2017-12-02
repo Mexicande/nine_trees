@@ -14,6 +14,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiniu.android.storage.UploadManager;
+import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
@@ -99,18 +100,15 @@ public class AppApplication extends Application {
 
         //Bugly
         Bugly.setAppChannel(this, channel);
-        Bugly.init(getApplication(), "e0e8b8baa1", true);
-        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", true);
+        Bugly.init(getApplication(), "e0e8b8baa1", false);
+        CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
 
         //友盟
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,"5a14ef858f4a9d5bd300006c"
         ,channel));
 
-
-
-
-
-        sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);//只能被本应用访问
+        //只能被本应用访问
+        sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);
 
         Fresco.initialize(this);
         initDisplayOpinion();

@@ -24,7 +24,7 @@ public  class CountDownUtil implements CountDownInterface{
         this.context=context;
         this.time = time;
         if(millisecond==null){
-            this.millisecond=99l;
+            this.millisecond=99L;
         }else{
             this.millisecond = millisecond;
         }

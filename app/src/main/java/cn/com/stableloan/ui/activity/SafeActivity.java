@@ -171,6 +171,8 @@ public class SafeActivity extends BaseActivity {
             case 4:
                 Save(4, "2222-01-01");
                 break;
+            default:
+                break;
 
         }
 
@@ -218,20 +220,23 @@ public class SafeActivity extends BaseActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long ts = date.getTime();
+        long ts=0L;
+        if(date!=null){
+            ts = date.getTime();
+        }
         return ts;
     }
 
     public static String stampToDate(String s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        long lt = new Long(s);
+        long lt = Long.valueOf(s);
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
         return res;
     }
 
-    private void Save( int managed,String date) {
+    private void Save(int managed, String date) {
         String man = String.valueOf(managed);
         String token = (String) SPUtils.get(this, "token", "1");
         Map<String, String> parms = new HashMap<>();

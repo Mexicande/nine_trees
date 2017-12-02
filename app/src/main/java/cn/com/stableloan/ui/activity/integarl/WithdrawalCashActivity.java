@@ -170,7 +170,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                             Gson gson = new Gson();
                             AdvertisingBean outBean = gson.fromJson(s, AdvertisingBean.class);
                             if (outBean.getError_code() == 0) {
-                                if (outBean.getData().getStatus().equals("1")) {
+                                if (("1").equals(outBean.getData().getStatus())) {
                                     RuleDialog(outBean.getData().getName(), outBean.getData().getDescription());
                                 }
                             } else if(outBean.getError_code() == 2) {

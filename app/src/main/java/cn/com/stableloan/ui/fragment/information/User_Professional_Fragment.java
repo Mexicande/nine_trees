@@ -170,7 +170,7 @@ public class User_Professional_Fragment extends Fragment {
                             WorkInformation information = gson.fromJson(s, WorkInformation.class);
                             work = information.getData();
                             if (information.getError_code() == 0) {
-                                if (information.getData().getStatus().equals("1")) {
+                                if (("1").equals(information.getData().getStatus())) {
                                     str=s;
                                     String identity = work.getIdentity();
                                     int anInt = Integer.parseInt(identity);

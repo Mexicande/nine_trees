@@ -43,6 +43,7 @@
         android:layout_height="50dp"
         android:background="@drawable/editext_normal"
         whatever:testType="regexp"
+
         android:maxLines="1"
         android:hint="18位有效身份证"
         whatever:emptyAllowed="false"
@@ -123,7 +124,7 @@
         android:maxLines="1"
         android:hint="真实地址"
         android:textColorHint="@color/gay"
-
+        android:maxLength="18"
         whatever:emptyAllowed="false"
         android:textColor="@color/select_text_color"
         whatever:testType="regexp"
@@ -142,7 +143,7 @@
         android:maxLines="1"
         android:hint="请输入卡号"
         android:textColorHint="@color/gay"
-
+        android:maxLength="20"
         whatever:emptyAllowed="false"
         android:textColor="@color/select_text_color"
         android:inputType="number"
@@ -185,7 +186,7 @@
         android:textColorHint="@color/gay"
 
         android:textColor="@color/select_text_color"
-        android:maxLength="30"
+        android:maxLength="20"
         whatever:testType="regexp"
         whatever:customRegexp="^[\\u4e00-\\u9fa5]+$"
         whatever:testErrorString="格式不正确"
@@ -244,7 +245,7 @@
         android:maxLines="1"
         android:hint="邮箱地址"
         android:textColorHint="@color/gay"
-
+        android:maxLength="20"
         android:inputType="textEmailAddress"
         android:imeOptions="actionNext"
         android:tint="@color/gay"
