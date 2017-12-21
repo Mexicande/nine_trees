@@ -234,7 +234,6 @@ public class CameraActivity extends AutoLayoutActivity {
                         String s1 = s.replace("\"{", "{");
                         String s2 = s1.replace("\\", "");
                         String s3 = s2.replace("}\"", "}");
-                        LogUtils.i("s2===",s2);
                         Gson gson1=new Gson();
                         CardBean cardBean = gson1.fromJson(s3, CardBean.class);
                         CardBean.OutputsBean.OutputValueBean.DataValueBean value = cardBean.getOutputs().get(0).getOutputValue().getDataValue();

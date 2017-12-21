@@ -606,7 +606,6 @@ public class MessageFragment extends Fragment {
                                 Serializable welfare = getActivity().getIntent().getSerializableExtra("welfare");
                                 Class_Special.DataBean.MdseBean id = (Class_Special.DataBean.MdseBean) getActivity().getIntent().getSerializableExtra("ProductClassifyActivity");
                                 SPUtils.put(getActivity(), phone + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
-
                                 if (from != null) {
                                     if (("user").equals(from)) {
                                         EventBus.getDefault().post(new InformationEvent("user3"));

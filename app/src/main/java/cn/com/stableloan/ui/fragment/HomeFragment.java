@@ -23,11 +23,13 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.luck.picture.lib.tools.ScreenUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.uuch.adlibrary.AdConstant;
@@ -70,6 +72,7 @@ import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
+import cn.com.stableloan.view.GlideRoundTransform;
 import cn.com.stableloan.view.MyDecoration;
 import cn.com.stableloan.view.ScrollSpeedLinearLayoutManger;
 import cn.com.stableloan.view.SpacesItemDecoration;
@@ -268,7 +271,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             AdManager adManager = new AdManager(getActivity(), advList);
             adManager.setOverScreen(true)
                     .setWidthPerHeight(Float.parseFloat(bean.getData().getAspectRatio()))
-                    .setPadding(50)
                     .setBackViewColor(Color.parseColor("#AA333333"))
                     .setPageTransformer(new DepthPageTransformer())
                     .setOnImageClickListener(new AdManager.OnImageClickListener() {
@@ -423,17 +425,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
 
                 RequestOptions options = new RequestOptions()
-                        .centerCrop()
                         .dontAnimate()
+                        .centerCrop()
+                        .transform(new GlideRoundTransform(getActivity(), 10))
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
 
                 Glide.with(getActivity())
                         .load(model.getPictrue())
                         .apply(options)
                         .into(itemView);
+
+
             }
         });
-
         banner.setDelegate(new BGABanner.Delegate<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void onBannerItemClick(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {

@@ -119,7 +119,7 @@ public class UpdataProfessionActivity extends BaseActivity implements IValidateR
                                 JSONObject dateObject=new JSONObject(data);
                                 Flge = dateObject.getInt("identity");
                                 String nickname = dateObject.getString("nickname");
-                                etNick.setHint(nickname);
+                                etNick.setText(nickname);
                                 switch (Flge) {
                                     case 1:
                                         ivWork.setColorFilter(getResources().getColor(R.color.mask));

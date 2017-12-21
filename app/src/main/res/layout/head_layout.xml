@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
             <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/banner_fresco_demo_content"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="180dp"
                 style="@style/BannerDefaultStyle"
                 app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
