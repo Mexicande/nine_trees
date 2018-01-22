@@ -5,7 +5,7 @@ package cn.com.stableloan.api;
  */
 
 public interface Urls {
-    String API="http://";
+    String API="http://test.";
 
     String Ip_url=API+"api.anwenqianbao.com/v1/";
 
@@ -100,8 +100,9 @@ public interface Urls {
         String GetCerftication="accredit/status";
         String Getsetting="SaveSetting/Getsetting";
         String Save_Setting="SaveSetting/setting";
-
-
+    }
+    interface share{
+        String htmlInsurance="http://event.anwenqianbao.com/m/landing5/index.html";
     }
 
     interface  HOME_FRAGMENT{
@@ -109,8 +110,6 @@ public interface Urls {
         String Class_Product_List="project/list";   //专题
         String SPECKILL="second/kill";
         String HOT_NEW_PRODUCT="product/home";
-
-
     }
     interface register{
         String FORGETWORD="set/forgetpassword";
@@ -236,6 +235,7 @@ public interface Urls {
     }
     interface ERROR_CODE{
         int FREEZING_CODE=                                                                      1136;
+        int CER_SATAS_ELEMENTS=                                                                      1800;
     }
     interface REQUEST_CODE{
         int PULLBLIC_CODE                                                                          =100;

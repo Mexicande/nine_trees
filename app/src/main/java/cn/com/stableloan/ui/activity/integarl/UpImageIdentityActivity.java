@@ -32,7 +32,6 @@ import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadOptions;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -146,7 +145,6 @@ public class UpImageIdentityActivity extends BaseActivity {
         ivBusiness.measure(w, h);
         HEIGHT = ivBusiness.getMeasuredHeight();
         WIDTH = ivBusiness.getMeasuredWidth();
-        LogUtils.i("ivBusiness===", "\n" + HEIGHT + "," + WIDTH);
         token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         String signature = (String) SPUtils.get(this, "signature", "1");
         Map<String, String> parms1 = new HashMap<>();
@@ -272,6 +270,7 @@ public class UpImageIdentityActivity extends BaseActivity {
     }
 
     private void initToolbar() {
+/*
 
         JSONObject eventObject = new JSONObject();
         try {
@@ -281,6 +280,7 @@ public class UpImageIdentityActivity extends BaseActivity {
         }
 //记录事件
         ZhugeSDK.getInstance().track(this, "图片材料页", eventObject);
+*/
 
 
         options = new RequestOptions()

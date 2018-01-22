@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -142,7 +141,7 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
     }
 });
-        JSONObject eventObject = new JSONObject();
+     /*   JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("mymaterials", "");
         } catch (JSONException e) {
@@ -150,7 +149,7 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
         }
 //记录事件
         ZhugeSDK.getInstance().track(this, "申请材料", eventObject);
-
+*/
 
     }
 

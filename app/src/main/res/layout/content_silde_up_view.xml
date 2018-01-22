@@ -17,7 +17,7 @@
             android:background="#ffffff"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="70dp">
             <View
                 android:id="@+id/view_wx"
                 android:layout_centerHorizontal="true"
@@ -30,44 +30,53 @@
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:baselineAligned="false">
-                <ImageView
-                    android:layout_marginTop="@dimen/_20dp"
+                <LinearLayout
                     android:layout_gravity="center"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/share_wx"
-                    />
-                <TextView
-                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="微信"/>
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/share_wx"
+                        />
+                    <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="微信"/>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_toRightOf="@id/view_wx"
                 android:id="@+id/layout_friend"
                 android:orientation="vertical"
-                android:layout_centerVertical="true"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:baselineAligned="false">
-                <ImageView
-                    android:layout_marginTop="@dimen/_20dp"
-                    android:layout_gravity="center"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/share_wechat"
-                    />
-                <TextView
-                    android:layout_gravity="center_horizontal"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="朋友圈"/>
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/share_wechat"
+                        />
+                    <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="朋友圈"/>
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
         <View

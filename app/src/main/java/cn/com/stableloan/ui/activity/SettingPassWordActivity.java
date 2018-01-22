@@ -3,13 +3,18 @@ package cn.com.stableloan.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
@@ -35,6 +40,7 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.MessageEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.model.UserInfromBean;
+import cn.com.stableloan.ui.fragment.ThreeElementsFragment;
 import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -58,8 +64,14 @@ public class SettingPassWordActivity extends AppCompatActivity {
     PowerfulEditText etSettingPassWord;
     @Bind(R.id.bt_login)
     SuperButton btLogin;
+    @Bind(R.id.checkbox)
+    AppCompatCheckBox checkbox;
+    @Bind(R.id.layoutCheck)
+    LinearLayout layoutCheck;
     private String userPhone;
     private SettingPassWordDialog selfDialog;
+
+
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SettingPassWordActivity.class));
@@ -83,7 +95,11 @@ public class SettingPassWordActivity extends AppCompatActivity {
     private void setListener() {
 
         userPhone = getIntent().getStringExtra("userPhone");
+        int insure = getIntent().getIntExtra("is_insure", 0);
 
+        if (insure == 1) {
+            layoutCheck.setVisibility(View.VISIBLE);
+        }
         etSettingPassWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -98,7 +114,6 @@ public class SettingPassWordActivity extends AppCompatActivity {
                 } else {
                     btLogin.setEnabled(false);
                     btLogin.setUseShape();
-
                 }
             }
 
@@ -120,20 +135,20 @@ public class SettingPassWordActivity extends AppCompatActivity {
             case R.id.bt_login:
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                        .setLabel("Please wait.....")
+                        .setLabel(getResources().getString(R.string.wait))
                         .setCancellable(true)
                         .show();
                 String strPassWord = etSettingPassWord.getText().toString();
                 boolean match = RegexUtils.isMatch(RegexUtils.number_letter_underline, strPassWord);
 
                 if (!strPassWord.isEmpty() && match) {
-                    String  channel = WalleChannelReader.getChannel(getApplicationContext());
+                    String channel = WalleChannelReader.getChannel(getApplicationContext());
 
                     HashMap<String, String> params = new HashMap<>();
                     String md5ToString = EncryptUtils.encryptMD5ToString(strPassWord);
                     params.put("userphone", userPhone);
                     params.put("password", md5ToString);
-                    params.put("channel",channel);
+                    params.put("channel", channel);
                     params.put("terminal", "1");
 
 
@@ -148,9 +163,9 @@ public class SettingPassWordActivity extends AppCompatActivity {
                         Deskey = Des4.encode(object.toString(), String.valueOf(random));
                         String publicKey = getResources().getString(R.string.public_key);
 
-                        deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY+publicKey);
+                        deskey = RSA.encrypt(String.valueOf(random), Urls.PUCLIC_KEY + publicKey);
                         String privateKey = getResources().getString(R.string.private_key);
-                        sign = RSA.sign(deskey, Urls.PRIVATE_KEY+privateKey);
+                        sign = RSA.sign(deskey, Urls.PRIVATE_KEY + privateKey);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -171,6 +186,8 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                     UserInfromBean fromJson = gson.fromJson(s, UserInfromBean.class);
                                     int errorCode = fromJson.getError_code();
                                     if (errorCode == 0) {
+
+
                                         SPUtils.put(SettingPassWordActivity.this, Urls.lock.TOKEN, fromJson.getData().getToken());
 
                                         UserBean userBean = new UserBean();
@@ -185,6 +202,13 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         AppApplication.destoryActivity("login");
                                         ActivityStackManager.getInstance().popActivity(LoginActivity.class);
                                         EventBus.getDefault().post(new InformationEvent("user3"));
+                                        if(checkbox.isChecked()){
+                                            String link = getIntent().getStringExtra("link");
+                                            Intent intent=new Intent(SettingPassWordActivity.this,HtmlActivity.class);
+                                            intent.putExtra("Insurance","1");
+                                            intent.putExtra("link",link);
+                                            startActivity(intent);
+                                        }
                                         finish();
                                     } else {
 
@@ -195,10 +219,8 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(Call call, Response response, Exception e) {
                                     super.onError(call, response, e);
-                                    SettingPassWordActivity.this.runOnUiThread(() -> {
-                                        ToastUtils.showToast(SettingPassWordActivity.this, "服务器出错了，请稍后再试");
-                                        hud.dismiss();
-                                    });
+                                    ToastUtils.showToast(SettingPassWordActivity.this, "服务器出错了，请稍后再试");
+                                    hud.dismiss();
                                 }
                             });
                 } else {
@@ -236,5 +258,48 @@ public class SettingPassWordActivity extends AppCompatActivity {
             exit();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideKeyboard(v.getWindowToken());
+            }
+        }
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                v.setFocusable(false);
+                v.setFocusableInTouchMode(true);
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
+
+    private void hideKeyboard(IBinder token) {
+        if (token != null) {
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

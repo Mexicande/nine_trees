@@ -458,6 +458,7 @@ public class MessageFragment extends Fragment {
      * Get the verification code
      */
     private void getMessage() {
+        captchaTimeCount.start();
         if (etPhone.getText().toString().length() == 11) {
 
             HashMap<String, String> params = new HashMap<>();
@@ -528,7 +529,7 @@ public class MessageFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.bt_message_login})
+    @OnClick({R.id.bt_message_login,R.id.bt_getCode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_message_login:
@@ -538,6 +539,11 @@ public class MessageFragment extends Fragment {
                         .callback(listener)
                         .start();
                 break;
+            case R.id.bt_getCode:
+                getMessage();
+                break;
+            default:
+                    break;
         }
     }
 
@@ -574,7 +580,7 @@ public class MessageFragment extends Fragment {
      * 权限取得之后登陆
      */
     private void loginPassWord() {
-        String phone = AppUtils.getPhone(getActivity());
+        final String phone = AppUtils.getPhone(getActivity());
         String model = AppUtils.getModel();
         String androidVersion = AppUtils.getSDKVersion();
         String  channel = WalleChannelReader.getChannel(getActivity().getApplicationContext());
@@ -707,7 +713,11 @@ public class MessageFragment extends Fragment {
                                 }
                             } else {
                                 LogUtils.i("status", codeMessage.getData().getStatus());
-                                startActivity(new Intent(getActivity(), SettingPassWordActivity.class).putExtra("userPhone", etPhone.getText().toString()));
+                                Intent intent=new Intent(getActivity(), SettingPassWordActivity.class);
+                                intent.putExtra("userPhone", etPhone.getText().toString());
+                                intent.putExtra("is_insure",codeMessage.getData().getIs_insure());
+                                intent.putExtra("link",codeMessage.getData().getLink());
+                                startActivity(intent);
                             }
                         }  else if (codeMessage.getError_code() == 1130) {
                             initViewDialog(R.string.safe_error_title,R.string.safe_error_desc);
@@ -733,6 +743,8 @@ public class MessageFragment extends Fragment {
                 } else {
                     ToastUtils.showToast(getActivity(), "获取权限失败");
                 }
+                break;
+            default:
                 break;
         }
     }

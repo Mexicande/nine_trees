@@ -451,7 +451,7 @@ public class LoginFragment extends Fragment {
 
         hud = KProgressHUD.create(getActivity())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
+                .setLabel(getResources().getString(R.string.wait))
                 .setCancellable(true)
                 .show();
         HashMap<String, String> params = new HashMap<>();
@@ -672,6 +672,8 @@ public class LoginFragment extends Fragment {
                 } else {
                     ToastUtils.showToast(getActivity(), "为了你的账户安全，请点击按钮进行验证");
                 }
+                break;
+            default:
                 break;
         }
     }

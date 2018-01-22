@@ -21,7 +21,7 @@
     <string name="Save">保 存</string>
     <string name="Forget_PW">忘记密码</string>
     <string name="setting_prompting">建议您使用安全密码拼写组合，其中包括:\n 数字、英文字母大小写、特殊符号</string>
-
+    <string name="insurance">立即领取免费保险</string>
     <!--密码锁-->
 
     <!-- Gesture login activity -->
@@ -103,5 +103,9 @@
     <!--GetCashFragment-->
     <string name="cashInviteCopyWriting">邀好友能变现？多重玩法，快来试试！</string>
     <string name="cashRedeem">越多积分越多现金</string>
+    <string name="wait">请稍后.....</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

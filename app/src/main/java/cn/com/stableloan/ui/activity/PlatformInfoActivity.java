@@ -98,9 +98,6 @@ public class PlatformInfoActivity extends BaseActivity {
 
                             }
 
-                            LogUtils.i("-----------", s + "---" + response.toString());
-                             /*   PlarformInfo info = gson.fromJson(s, PlarformInfo.class);
-                                LogUtils.i("-----------",info.toString());*/
                             hud.dismiss();
                         }
 

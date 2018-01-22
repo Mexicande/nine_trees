@@ -20,7 +20,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -158,7 +157,7 @@ public class User_Bank_Fragment extends Fragment {
     private void initTime() {
         int color = getResources().getColor(R.color.colorPrimary);
 
-        JSONObject eventObject = new JSONObject();
+      /*  JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("persmaterials2", "");
         } catch (JSONException e) {
@@ -166,7 +165,7 @@ public class User_Bank_Fragment extends Fragment {
         }
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "身份信息第二页", eventObject);
-
+*/
         pvTime = new TimePickerView.Builder(getActivity(), (date, v) -> {
             SuperTextView btn = (SuperTextView) v;
             btn.setRightString(getTime(date));

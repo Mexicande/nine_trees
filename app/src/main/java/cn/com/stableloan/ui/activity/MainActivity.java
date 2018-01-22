@@ -12,7 +12,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.meituan.android.walle.WalleChannelReader;
 import com.umeng.analytics.MobclickAgent;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -80,7 +79,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         ButterKnife.bind(this);
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
         EventBus.getDefault().register(this);
-        ZhugeSDK.getInstance().init(getApplicationContext());
         statistics();
         updateDiy();
         initView();
@@ -282,7 +280,9 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         Fragment fragment = mFragmentManager.findFragmentByTag(fragmentName);
 
         if (fragment != null) {
-            if (fragment == mCurrentFragment) return;
+            if (fragment == mCurrentFragment) {
+                return;
+            }
             mFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss();
         } else {
             fragment = Fragment.instantiate(this, fragmentName);
@@ -364,7 +364,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ZhugeSDK.getInstance().flush(getApplicationContext());
         EventBus.getDefault().unregister(this);
 
 

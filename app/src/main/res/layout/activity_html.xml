@@ -9,20 +9,27 @@
     android:background="@color/white"
     tools:context="cn.com.stableloan.ui.activity.HtmlActivity">
     <include layout="@layout/toolbar_layout"/>
-    <FrameLayout
-        android:id="@+id/web_container"
-        android:background="@color/white"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ProgressBar
-            android:id="@+id/web_progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
+
+        <FrameLayout
+            android:id="@+id/web_container"
+            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@android:color/transparent"
-            android:indeterminateOnly="false"
-            android:visibility="visible"/>
-        <include layout="@layout/view_error"
-            android:visibility="gone"/>
-    </FrameLayout>
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/web_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@android:color/transparent"
+                android:indeterminateOnly="false"
+                android:visibility="visible"/>
+            <include layout="@layout/view_error"
+                android:visibility="gone"/>
+        </FrameLayout>
+        <include layout="@layout/content_silde_up_view"
+            />
+    </RelativeLayout>
 </LinearLayout>

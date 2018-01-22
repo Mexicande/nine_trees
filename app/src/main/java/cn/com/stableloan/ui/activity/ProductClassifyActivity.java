@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.umeng.analytics.MobclickAgent;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,10 +76,6 @@ public class ProductClassifyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_classify);
         ButterKnife.bind(this);
-      /*  ImmersionBar.with(this)
-                .navigationBarColor(R.color.mask)
-                .barAlpha(0.2f)
-                .init();*/
         mContext=this;
         specialClassBean = (SpecialClassBean.DataBean) getIntent().getSerializableExtra("class_product");
 
@@ -132,14 +127,14 @@ public class ProductClassifyActivity extends BaseActivity {
                                                     if ("1".equals(token)||token == null) {
                                                         startActivity(new Intent(mContext, LoginActivity.class).putExtra("ProductClassifyActivity", classBean.getData().getMdse().get(position)));
                                                     } else {
-                                                        JSONObject eventObject = new JSONObject();
+                                            /*            JSONObject eventObject = new JSONObject();
                                                         try {
                                                             eventObject.put("persmaterials2", "");
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
                                                         }
 //记录事件
-                                                        ZhugeSDK.getInstance().track(ProductClassifyActivity.this, "专题详情页--商品+"+classBean.getData().getMdse().get(position).getMdse_name(), eventObject);
+                                                        ZhugeSDK.getInstance().track(ProductClassifyActivity.this, "专题详情页--商品+"+classBean.getData().getMdse().get(position).getMdse_name(), eventObject);*/
                                                         startActivity(new Intent(ProductClassifyActivity.this, HtmlActivity.class).putExtra("class", classBean.getData().getMdse().get(position)));
                                                     }
 
@@ -179,8 +174,7 @@ public class ProductClassifyActivity extends BaseActivity {
         classifyRecycl.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                // ProductDesc.launch(getActivity());
-                JSONObject eventObject = new JSONObject();
+            /*    JSONObject eventObject = new JSONObject();
                 try {
                     eventObject.put("persmaterials2", "");
                 } catch (JSONException e) {
@@ -188,7 +182,7 @@ public class ProductClassifyActivity extends BaseActivity {
                 }
 //记录事件
                 ZhugeSDK.getInstance().track(ProductClassifyActivity.this, "专题详情页--产品+"+classBean.getData().getProduct().get(position).getPname(), eventObject);
-
+*/
 
                 startActivity(new Intent(ProductClassifyActivity.this, ProductDesc.class).putExtra("pid", classBean.getData().getProduct().get(position).getId()));
 

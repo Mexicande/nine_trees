@@ -1,19 +1,14 @@
 package cn.com.stableloan.ui.activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -24,23 +19,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.BaseRequest;
+import com.mancj.slideup.SlideUp;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.Serializable;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,19 +53,17 @@ import cn.com.stableloan.utils.DownAPKService;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.update.AppUpdateUtils;
-import cn.com.stableloan.view.update.DownloadService;
-import cn.com.stableloan.view.update.HttpManager;
-import cn.com.stableloan.view.update.OkGoUpdateHttpUtil;
-import cn.com.stableloan.view.update.UpdateAppBean;
-import cn.com.stableloan.view.update.UpdateAppManager;
-import cn.com.stableloan.view.update.UpdateCallback;
+import cn.com.stableloan.utils.top_menu.MenuItem;
+import cn.com.stableloan.utils.top_menu.TopRightMenu;
+import cn.com.stableloan.view.dialog.SafeInformationDialog;
+import cn.com.stableloan.view.share.StateListener;
+import cn.com.stableloan.view.share.TPManager;
+import cn.com.stableloan.view.share.WXManager;
+import cn.com.stableloan.view.share.WXShareContent;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static android.R.attr.path;
-
-public class HtmlActivity extends BaseActivity  {
+public class HtmlActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -88,9 +79,18 @@ public class HtmlActivity extends BaseActivity  {
     FrameLayout mContainer;
     @Bind(R.id.error_content)
     LinearLayout errorContent;
+    @Bind(R.id.bt_share)
+    ImageView btShare;
+    @Bind(R.id.layout_wx)
+    LinearLayout layoutWx;
+    @Bind(R.id.layout_friend)
+    LinearLayout layoutFriend;
+    @Bind(R.id.cash_slideView)
+    RelativeLayout cashSlideView;
+    private SlideUp slideUp;
 
     private WebView mWebView;
-   private WelfareBean.DataBean welfare;
+    private WelfareBean.DataBean welfare;
     String path = "";
     private File file;
 
@@ -110,13 +110,14 @@ public class HtmlActivity extends BaseActivity  {
         CheckInternet();
     }
 
+
     private void CheckInternet() {
 
         boolean available = NetworkUtils.isAvailable(this);
         if (available) {
             Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
             if (desc != null) {
-                DateStatisticsUtils.addApplyDate(this,String.valueOf(desc.getData().getId()));
+                DateStatisticsUtils.addApplyDate(this, String.valueOf(desc.getData().getId()));
                 titleName.setText(desc.getData().getPname());
                 ivBack.setVisibility(View.VISIBLE);
                 String link = desc.getData().getLink();
@@ -144,7 +145,7 @@ public class HtmlActivity extends BaseActivity  {
                 getDate(url);
             }
             String advertising = getIntent().getStringExtra("advertising");
-            if(advertising!=null){
+            if (advertising != null) {
                 getDate(advertising);
             }
             welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
@@ -152,27 +153,37 @@ public class HtmlActivity extends BaseActivity  {
                 titleName.setText(welfare.getName());
                 ivBack.setVisibility(View.VISIBLE);
                 getUrl(welfare.getId());
+                setListen();
+                initSlide();
             }
             Class_Special.DataBean.MdseBean aClass = (Class_Special.DataBean.MdseBean) getIntent().getSerializableExtra("class");
-            if(aClass!=null){
-                DateStatisticsUtils.addApplyDate(this,String.valueOf(aClass.getId()));
+            if (aClass != null) {
+                DateStatisticsUtils.addApplyDate(this, String.valueOf(aClass.getId()));
 
                 titleName.setText(aClass.getMdse_name());
                 getDate(aClass.getMdse_h5_link());
             }
             String safe = getIntent().getStringExtra("safe");
-            if(safe!=null){
+            if (safe != null) {
                 titleName.setText("安全小贴士");
-                getDate(Urls.HTML_URL+safe);
+                getDate(Urls.HTML_URL + safe);
             }
 
             CashActivityBean.DataBean.ActivityBean cashActivityBean = (CashActivityBean.DataBean.ActivityBean) getIntent().getSerializableExtra("cashActivityBean");
-            if(cashActivityBean!=null){
+            if (cashActivityBean != null) {
                 titleName.setText(cashActivityBean.getTitle());
                 getDate(cashActivityBean.getUrl());
             }
+            String insurance = getIntent().getStringExtra("Insurance");
+            if(insurance!=null){
+                String link = getIntent().getStringExtra("link");
+                getDate(link);
+                setListen();
+                initSlide();
+            }
+
         } else {
-            ToastUtils.showToast(this,"网络异常");
+            ToastUtils.showToast(this, "网络异常");
         }
     }
 
@@ -199,6 +210,7 @@ public class HtmlActivity extends BaseActivity  {
                             }
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -209,7 +221,7 @@ public class HtmlActivity extends BaseActivity  {
     }
 
     private void getDate(String url) {
-      // url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
+        // url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
         if (url != null) {
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
@@ -226,6 +238,8 @@ public class HtmlActivity extends BaseActivity  {
             webSettings.setNeedInitialFocus(false);
             webSettings.setLoadsImagesAutomatically(true);
             webSettings.setBuiltInZoomControls(false);
+
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mWebView.getSettings().setMixedContentMode(
                         WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
@@ -237,9 +251,10 @@ public class HtmlActivity extends BaseActivity  {
             mWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
                     if (parseScheme(url)) {
 
-                    }else {
+                    } else {
 
                         WebView.HitTestResult hitTestResult = view.getHitTestResult();
                         if (!TextUtils.isEmpty(url) && hitTestResult == null) {
@@ -255,6 +270,16 @@ public class HtmlActivity extends BaseActivity  {
                     handler.proceed();
 
                 }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    String insurance = getIntent().getStringExtra("Insurance");
+                    if(insurance!=null){
+                        titleName.setText(view.getTitle());
+                    }
+
+                }
             });
 
             mWebView.setWebChromeClient(new MyWebChromeClient());
@@ -262,6 +287,8 @@ public class HtmlActivity extends BaseActivity  {
 
         }
     }
+
+
     public boolean parseScheme(String url) {
         if (url.contains("platformapi/startapp")) {
             try {
@@ -300,7 +327,7 @@ public class HtmlActivity extends BaseActivity  {
                 Toast.makeText(HtmlActivity.this, "请安装最新版应用宝", Toast.LENGTH_SHORT).show();
             }
             return true;
-        }else if(url.endsWith(".apk")){
+        } else if (url.endsWith(".apk")) {
             downloadApk(url);
             return true;
 
@@ -316,23 +343,36 @@ public class HtmlActivity extends BaseActivity  {
     private void downloadApk(String url) {
 
         Intent intent = new Intent(this, DownAPKService.class);
-        intent.putExtra("apk_url",url);
+        intent.putExtra("apk_url", url);
         startService(intent);
 
     }
 
 
-
-    @OnClick({R.id.iv_back, R.id.web_container})
+    @OnClick({R.id.iv_back, R.id.web_container,R.id.layout_wx, R.id.layout_friend,R.id.layoutGo})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.web_container:
-                if(welfare!=null){
+                if (welfare != null) {
                     getUrl(welfare.getId());
                 }
+                break;
+            case R.id.layout_wx:
+                shareWechat(WXShareContent.WXSession);
+
+                break;
+            case R.id.layout_friend:
+                shareWechat(WXShareContent.WXTimeline);
+
+                break;
+            case R.id.layoutGo:
+                slideUp.hide();
+                break;
+            default:
+
                 break;
         }
     }
@@ -347,19 +387,154 @@ public class HtmlActivity extends BaseActivity  {
             if (newProgress == 100) {
                 mProgressBar.setVisibility(View.GONE);
             } else {
-                if (mProgressBar.getVisibility() != View.VISIBLE)
+                if (mProgressBar.getVisibility() != View.VISIBLE) {
                     mProgressBar.setVisibility(View.VISIBLE);
+                }
                 mProgressBar.setProgress(newProgress);
             }
         }
     }
 
+    private void initSlide() {
+        slideUp = new SlideUp.Builder(cashSlideView)
+                .withListeners(new SlideUp.Listener.Slide() {
+                    @Override
+                    public void onSlide(float percent) {
+                    }
+                })
+                .withStartGravity(Gravity.BOTTOM)
+                .withLoggingEnabled(true)
+                .withStartState(SlideUp.State.HIDDEN)
+                .build();
+    }
+
+    private void setListen() {
+        btShare.setVisibility(View.VISIBLE);
+        TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
+        wxManager = new WXManager(this);
+        StateListener<String> wxStateListener = new StateListener<String>() {
+            @Override
+            public void onComplete(String s) {
+                ToastUtils.showToast(HtmlActivity.this, s);
+            }
+
+            @Override
+            public void onError(String err) {
+                ToastUtils.showToast(HtmlActivity.this, err);
+            }
+
+            @Override
+            public void onCancel() {
+                ToastUtils.showToast(HtmlActivity.this, "取消");
+            }
+        };
+
+        wxManager.setListener(wxStateListener);
+
+        btShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setShared_Collection();
+            }
+        });
+    }
+
+    /**
+     * 分享菜单
+     */
+    private void setShared_Collection() {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem("跳过"));
+        menuItems.add(new MenuItem("分享"));
+        TopRightMenu mTopRightMenu = new TopRightMenu(this,R.layout.html_item_popup_menu_list);
+        mTopRightMenu
+                //显示菜单图标，默认为true
+                .showIcon(false)     //显示菜单图标，默认为true
+                .dimBackground(true)           //背景变暗，默认为true
+                .needAnimationStyle(true)   //显示动画，默认为true
+                .setWidth(320)
+                .setAnimationStyle(R.style.TRM_ANIM_STYLE)  //默认为R.style.TRM_ANIM_STYLE
+                .addMenuList(menuItems)
+                .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(int position) {
+                        switch (position) {
+                            case 0:
+                                exit();
+                                break;
+                            case 1:
+                                slideUp.show();
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
+                })
+                .showAsDropDown(btShare, -225, 0);
+    }
+    private SafeInformationDialog safeSettingDialog;
+    private void exit() {
+
+        safeSettingDialog = new SafeInformationDialog(this);
+        safeSettingDialog.setTitle("跳过保险");
+        safeSettingDialog.setMessage("如跳过申请\n"+"稍后可在“福利”-“免费百万险”\n"+"中获取或查询");
+        safeSettingDialog.setYesOnclickListener("跳过", new SafeInformationDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                safeSettingDialog.dismiss();
+                WelfareBean.DataBean welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
+                if(welfare!=null){
+                    finish();
+                }else {
+                    MainActivity.launch(HtmlActivity.this);
+                    finish();
+                }
+            }
+        });
+        safeSettingDialog.setNoOnclickListener("留下", new SafeInformationDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+
+
+                safeSettingDialog.dismiss();
+
+            }
+        });
+        safeSettingDialog.show();
+
+    }
+
+    /**
+     * 微信分享
+     */
+    private WXManager wxManager;
+
+    private void shareWechat(int scence) {
+
+        WXShareContent contentWX = new WXShareContent();
+        contentWX.setScene(scence)
+                .setType(WXShareContent.share_type.WebPage)
+                .setWeb_url(Urls.share.htmlInsurance)
+                .setTitle("安稳钱包")
+                .setDescription("最高百万保险我送你了")
+                .setText("当意外在所难免，尽可能安稳的回到正轨")
+                .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
+        wxManager.share(contentWX);
+
+    }
+
+
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
+        if (slideUp.isVisible()) {
+            slideUp.hide();
         } else {
-            super.onBackPressed();
+            if (mWebView.canGoBack()) {
+                mWebView.goBack();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 

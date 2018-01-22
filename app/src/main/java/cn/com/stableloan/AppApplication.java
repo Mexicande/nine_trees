@@ -14,12 +14,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiniu.android.storage.UploadManager;
-import com.squareup.leakcanary.LeakCanary;
-import com.tencent.bugly.Bugly;
+import com.rong360.app.crawler.CrawlerManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.uuch.adlibrary.utils.DisplayUtil;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ import java.util.logging.Level;
 
 import cn.com.stableloan.utils.SPUtils;
 
-import static com.tencent.bugly.beta.tinker.TinkerManager.getApplication;
 
 
 /**
@@ -66,11 +63,7 @@ public class AppApplication extends Application {
     public static Handler mHandler;
     public static AppApplication sApp;
     String channel="test";
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this) ;
-    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -95,12 +88,11 @@ public class AppApplication extends Application {
         instance = this;
 
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
-        //诸葛io
-        ZhugeSDK.getInstance().init(this,"24520d39b750437b97f026353aa80aea",channel);
 
         //Bugly
-        Bugly.setAppChannel(this, channel);
+       /* Bugly.setAppChannel(this, channel);
         Bugly.init(getApplication(), "e0e8b8baa1", false);
+        */
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
 
         //友盟
@@ -112,7 +104,7 @@ public class AppApplication extends Application {
 
         Fresco.initialize(this);
         initDisplayOpinion();
-
+        //CrawlerManager.initSDK(this);
 
     }
 

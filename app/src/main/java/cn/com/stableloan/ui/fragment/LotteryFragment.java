@@ -21,7 +21,6 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,7 +97,7 @@ public class LotteryFragment extends ImmersionFragment {
     }
 
     private void SetListener() {
-        JSONObject eventObject = new JSONObject();
+  /*      JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("福利", "");
         } catch (JSONException e) {
@@ -106,7 +105,7 @@ public class LotteryFragment extends ImmersionFragment {
         }
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "福利", eventObject);
-
+*/
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {

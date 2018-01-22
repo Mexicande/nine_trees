@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -143,7 +142,7 @@ public class User_Professional_Fragment extends Fragment {
 
     private void getDate() {
 
-        JSONObject eventObject = new JSONObject();
+    /*    JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("persmaterials3", "");
         } catch (JSONException e) {
@@ -151,7 +150,7 @@ public class User_Professional_Fragment extends Fragment {
         }
         //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "身份信息第三页", eventObject);
-
+*/
         String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         Map<String, String> parms = new HashMap<>();

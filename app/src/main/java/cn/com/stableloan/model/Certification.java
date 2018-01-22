@@ -74,6 +74,33 @@ public class Certification implements Serializable{
         private int CapStatus;
         private int AliStatus;
         private String Aliaccount;
+        private String name;
+        private String userphone;
+        private String idcard;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getUserphone() {
+            return userphone;
+        }
+
+        public void setUserphone(String userphone) {
+            this.userphone = userphone;
+        }
+
+        public String getIdcard() {
+            return idcard;
+        }
+
+        public void setIdcard(String idcard) {
+            this.idcard = idcard;
+        }
 
         public String getAliaccount() {
             return Aliaccount;

@@ -237,6 +237,7 @@
                     android:textColor="@color/select_text_color"
                     />
                 <TextView
+                    android:id="@+id/tv_procedure"
                     android:layout_marginTop="8dp"
                     android:textSize="14sp"
                     android:layout_below="@id/tv_limiteScope"

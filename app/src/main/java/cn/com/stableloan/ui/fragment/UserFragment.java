@@ -17,14 +17,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -120,7 +117,7 @@ public class UserFragment extends ImmersionFragment {
 
     private void getUserInfo() {
 
-
+/*
         JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("我的", "");
@@ -128,7 +125,7 @@ public class UserFragment extends ImmersionFragment {
             e.printStackTrace();
         }
 //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "我的", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "我的", eventObject);*/
         String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {
@@ -205,11 +202,6 @@ public class UserFragment extends ImmersionFragment {
         if (!event.userNick.isEmpty()) {
             tvNick.setText(event.userNick);
         }
-       /* if(event.phone!=null){
-            if (event.phone.equals("1")) {
-                TextUser();
-            }
-        }*/
 
     }
 
@@ -245,12 +237,10 @@ public class UserFragment extends ImmersionFragment {
             case R.id.layout_Integral:
                 startActivityForResult(new Intent(getActivity(),IntegralActivity.class),200);
 
-                //IntegralActivity.launch(getActivity());
                 break;
             case R.id.laout_Money:
                 startActivityForResult(new Intent(getActivity(),CashActivity.class),200);
 
-              //  CashActivity.launch(getActivity());
                 break;
             case R.id.invite:
                 startActivityForResult(new Intent(getActivity(),InviteFriendsActivity.class).putExtra("nick",tvNick.getText().toString()),200);
@@ -288,6 +278,8 @@ public class UserFragment extends ImmersionFragment {
                     }
                 });
                 wechat_dialog.show();
+                break;
+            default:
                 break;
 
         }
@@ -339,6 +331,8 @@ public class UserFragment extends ImmersionFragment {
                                } else {
                                    startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation"));
                                }
+                               break;
+                           default:
                                break;
                        }
 

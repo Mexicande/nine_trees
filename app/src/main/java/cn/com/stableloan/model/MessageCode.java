@@ -16,17 +16,17 @@ public class MessageCode  implements Serializable{
      * error_message :
      */
 
-    private String code;
+    private int code;
     private String message;
     private GtDateBean data;
     private int error_code;
     private String error_message;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

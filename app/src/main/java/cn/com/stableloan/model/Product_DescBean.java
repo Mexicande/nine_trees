@@ -20,7 +20,7 @@ public class Product_DescBean implements Serializable {
      */
 
     private int code;
-    private int message;
+    private String message;
     private DataBean data;
     private int error_code;
     private String error_message;
@@ -34,11 +34,11 @@ public class Product_DescBean implements Serializable {
         this.code = code;
     }
 
-    public int getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(int message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

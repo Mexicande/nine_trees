@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.com.stableloan.ui.fragment.ThreeElementsFragment">
+    <TextView
+        android:paddingRight="@dimen/_20dp"
+        android:paddingLeft="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_30dp"
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_setting"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:text="资料未完善请先完善基本资料" />
+    <View
+        android:id="@+id/view"
+        android:layout_marginTop="@dimen/_30dp"
+        android:layout_below="@id/tv_desc"
+        android:layout_width="match_parent"
+        android:background="@color/frame_color"
+        android:layout_height="1dp"/>
+    <RelativeLayout
+        android:layout_below="@id/view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tv_go"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="立即填写"
+            android:textColor="@color/select_text_color"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

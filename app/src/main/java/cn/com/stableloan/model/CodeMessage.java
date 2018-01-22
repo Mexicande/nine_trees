@@ -78,9 +78,26 @@ public class CodeMessage implements Serializable{
          * status : 1
          * token : dasfsadfasdfsadfdasfaskakflka
          */
-
+        private int is_insure;
         private String status;
         private String token;
+        private String link;
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public int getIs_insure() {
+            return is_insure;
+        }
+
+        public void setIs_insure(int is_insure) {
+            this.is_insure = is_insure;
+        }
 
         public String getStatus() {
             return status;

@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -107,14 +106,14 @@ public class CashActivity extends BaseActivity {
     }
 
     private void zhuGe() {
-        JSONObject eventObject = new JSONObject();
+       /* JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("cash", "");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ZhugeSDK.getInstance().track(this, "现金", eventObject);
+        ZhugeSDK.getInstance().track(this, "现金", eventObject);*/
     }
 
     private void initFragments() {

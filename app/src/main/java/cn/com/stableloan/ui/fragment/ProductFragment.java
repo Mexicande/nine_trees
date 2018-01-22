@@ -27,7 +27,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
 import com.qiniu.android.utils.Json;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -131,14 +130,14 @@ public class ProductFragment extends ImmersionFragment {
         initRecyclView();
         setListener();
         getDate(1, ACTION_DOWN);
-        JSONObject eventObject = new JSONObject();
+      /*  JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("产品列表", "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "产品列表", eventObject);
+        ZhugeSDK.getInstance().track(getActivity(), "产品列表", eventObject);*/
         EventBus.getDefault().register(this);
 
         return view;
@@ -169,8 +168,6 @@ public class ProductFragment extends ImmersionFragment {
                                         inflate.removeView(mTextView);
                                         mTextView.setText(s);
 
-                                       /* TextView view = (TextView) getActivity().getLayoutInflater().inflate(R.layout.tag_item, null);
-                                        view.setText(s);*/
 
                                         return mTextView;
                                     }
@@ -218,6 +215,8 @@ public class ProductFragment extends ImmersionFragment {
                                                 classify_recycler_adapter.addData(json.getProduct());
                                             }
                                             classify_recycler_adapter.loadMoreComplete();
+                                            break;
+                                        default:
                                             break;
                                     }
 
@@ -272,8 +271,6 @@ public class ProductFragment extends ImmersionFragment {
         idFlowlayout.setAdapter(new TagAdapter<String>(mVals) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
-              /*  TextView view = (TextView) getActivity().getLayoutInflater().inflate(R.layout.tv, null);
-                view.setText(s);*/
                 LinearLayout inflate = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.tag_item, null);
                 TextView mTextView = (TextView) inflate.findViewById(R.id.tv_tag);
                 inflate.removeView(mTextView);
@@ -513,14 +510,9 @@ public class ProductFragment extends ImmersionFragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
                                 classify_recycler_adapter.setEmptyView(errorView);
                                 ToastUtils.showToast(getActivity(), "服务器异常");
                             }
-                        });
-                    }
                 });
     }
 

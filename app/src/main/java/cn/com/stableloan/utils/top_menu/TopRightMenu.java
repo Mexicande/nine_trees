@@ -38,9 +38,10 @@ public class TopRightMenu {
     private int animationStyle;
 
     private float alpha = 0.75f;
-
-    public TopRightMenu(Activity context) {
+    private int layout;
+    public TopRightMenu(Activity context,int layout) {
         this.mContext = context;
+        this.layout=layout;
         init();
     }
 
@@ -56,7 +57,7 @@ public class TopRightMenu {
 
         mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         menuItemList = new ArrayList<>();
-        mAdapter = new TRMenuAdapter(mContext, this, menuItemList, showIcon);
+        mAdapter = new TRMenuAdapter(mContext, this, menuItemList, showIcon,layout);
     }
 
     private PopupWindow getPopupWindow(){

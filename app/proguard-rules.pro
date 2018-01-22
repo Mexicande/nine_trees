@@ -24,13 +24,23 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-#okhttp
--dontwarn okhttp3.**
--keep class okhttp3.**{*;}
+# Glide图片库的混淆处理
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
 
-#okio
--dontwarn okio.**
--keep class okio.**{*;}
+
+# Gson混淆脚本
+-keep class com.google.gson.stream.** {*;}
+-keep class com.youyou.uuelectric.renter.Network.user.** {*;}
+
+
+# butterknife混淆脚本
+-dontwarn butterknife.internal.**
+-keep class **$$ViewInjector { *; }
+-keepnames class * { @butterknife.InjectView *;}
 
 
 -keep class de.greenrobot.dao.** { *; }
@@ -43,7 +53,34 @@ public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
 
+# -------------系统类不需要混淆 --------------------------
+-keep public class * extends Android.app.Fragment
+-keep public class * extends Android.app.Activity
+-keep public class * extends Android.app.Application
+-keep public class * extends Android.app.Service
+-keep public class * extends Android.content.BroadcastReceiver
+-keep public class * extends Android.content.ContentProvider
+-keep public class * extends Android.app.backup.BackupAgentHelper
+-keep public class * extends Android.preference.Preference
+-keep public class * extends Android.support.**
+-keep public class com.Android.vending.licensing.ILicensingService
 
+-keepclasseswithmembernames class * { # 保持native方法不被混淆
+    native <methods>;
+}
+-keepclasseswithmembernames class * { # 保持自定义控件不被混淆
+    public <init>(Android.content.Context, Android.util.AttributeSet);
+}
+-keepclasseswithmembernames class * { # 保持自定义控件不被混淆
+    public <init>(Android.content.Context, Android.util.AttributeSet, int);
+}
+-keepclassmembers enum * { # 保持枚举enum类不被混淆
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class * implements Android.os.Parcelable { # 保持Parcelable不被混淆
+  public static final Android.os.Parcelable$Creator *;
+}
 
 
 -dontwarn com.jeremyfeinstein.slidingmenu.lib.**
@@ -63,10 +100,10 @@ public static java.lang.String TABLENAME;
 
 #-keep class com.nostra13.universalimageloader.** { *; }
 
+
+
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
-
--keep class android.support.**{*;}
 
 #指定压缩级别
 -optimizationpasses 5
@@ -400,3 +437,177 @@ public static java.lang.String TABLENAME;
 -dontwarn javax.annotation.**
 -dontwarn com.android.volley.toolbox.**
 -dontwarn com.facebook.infer.**
+
+
+# --------- 忽略异常提示 --------------------
+-dontwarn butterknife.internal.**
+-dontwarn com.alipay.**
+-dontwarn com.mikepenz.**
+-dontwarn org.apache.**
+-dontwarn com.amap.**
+-dontwarn com.Android.volley.**
+-dontwarn com.rey.**
+-dontwarn com.testin.**
+-dontwarn jp.wasabeef.**
+
+# ---------------- eventbus避免混淆 ------------
+-keepclassmembers class ** {
+    public void onEvent*(**);
+    void onEvent*(**);
+}
+
+
+# --------------- 友盟统计避免混淆 -------------------------
+-dontwarn Android.support.v4.**
+-dontwarn org.apache.commons.net.**
+-dontwarn com.tencent.**
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keepclasseswithmembernames class * {
+    public <init>(Android.content.Context, Android.util.AttributeSet);
+}
+-keepclasseswithmembernames class * {
+    public <init>(Android.content.Context, Android.util.AttributeSet, int);
+}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class * implements Android.os.Parcelable {
+  public static final Android.os.Parcelable$Creator *;
+}
+-keepclasseswithmembers class * {
+    public <init>(Android.content.Context);
+}
+-dontshrink
+-dontoptimize
+-dontwarn com.google.Android.maps.**
+-dontwarn Android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+-keep public class com.umeng.socialize.* {*;}
+-keep public class javax.**
+-keep public class Android.webkit.**
+-keep class com.facebook.**
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+-keep public class [your_pkg].R$*{
+    public static final int *;
+}
+
+# 热修复混淆
+-keep class * extends java.lang.annotation.Annotation
+-keep class com.alipay.euler.andfix.** { *; }
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keep class  tv.sisi.live.customviews.ZanView{ *; }
+-keep class  tv.sisi.live.customviews.ZanBean{ *; }
+
+-dontwarn com.**
+-dontwarn java.**
+-dontwarn org.**
+
+# KsyMediaPlayer
+-keep class com.ksyun.** {
+  *;
+}
+-keep class com.ksy.statlibrary.** {
+  *;
+}
+-keep class io.agora.** {
+  *;
+}
+
+
+##---------------Begin: proguard configuration for fastjson  ----------
+
+-keepnames  public class * implements java.io.Serializable
+-keep public class * implements java.io.Serializable {
+        public *;
+}
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-dontskipnonpubliclibraryclassmembers
+-dontskipnonpubliclibraryclasses
+
+-keep class com.alibaba.fastjson.** { *; }
+
+-keepclassmembers class * {
+    public <methods>;
+}
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+##---------------End: proguard configuration for fastjson  ----------
+-dontoptimize
+-dontpreverify
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+-dontwarn com.google.**
+-keep class com.google.gson.** {*;}
+-keep class com.google.protobuf.** {*;}
+#okhttp
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
+
+-keep public class pl.droidsonroids.gif.GifIOException{<init>(int);}
+-keep class pl.droidsonroids.gif.GifInfoHandle{<init>(long,int,int,int);}
+
+
+# ---start keep SDK第三方代码---
+#zxing
+-dontwarn com.google.zxing.**
+-keep class com.google.zxing.** {*;}
+#gson
+-keep class com.google.gson.** { *; }
+# okhttp
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.** {*;}
+-keep interface com.squareup.okhttp.** { *; }
+# x5core
+-dontwarn com.tencent.**
+-keep class com.tencent.**{*;}
+-keep interface com.tencent.**{*;}
+#crawler sdk
+-dontwarn com.rong360.**
+-keep class com.rong360.** {*;}
+-keep interface com.rong360.** {*;}
+# ---end keep SDK第三方代码---

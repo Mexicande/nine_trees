@@ -28,7 +28,6 @@ import com.rong360.app.crawler.CrawlerManager;
 import com.rong360.app.crawler.CrawlerStatus;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +44,7 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Certification;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
+import cn.com.stableloan.ui.fragment.ThreeElementsFragment;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
@@ -75,15 +75,13 @@ public class CertificationActivity extends BaseActivity {
     SuperTextView contact;
     @Bind(R.id.loction)
     SuperTextView loction;
-    /* @Bind(R.id.jd)
-     SuperTextView jd;*/
     private static  final  int IMAGE_RESULT=110;
     private static final int WITHDRAW_CODE = 1;
 
     private String phone;
     private KProgressHUD hud;
     private CrawlerStatus crawlerStatus = new CrawlerStatus();
-
+    private  Certification certification=new Certification();
     public static void launch(Context context) {
         context.startActivity(new Intent(context, CertificationActivity.class));
     }
@@ -101,19 +99,11 @@ public class CertificationActivity extends BaseActivity {
 
     private void getStatus() {
         titleName.setText("授权材料");
-        JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("persmaterials2", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(this, "授权材料页", eventObject);
 
 
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
+                .setLabel(getResources().getString(R.string.wait))
                 .setCancellable(true)
                 .show();
         String token = (String) SPUtils.get(this, "token", "1");
@@ -125,12 +115,19 @@ public class CertificationActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         Gson gson = new Gson();
-                        Certification fromJson = gson.fromJson(s, Certification.class);
-                        int error_code = fromJson.getError_code();
+                        certification = gson.fromJson(s, Certification.class);
+
+                        int error_code = certification.getError_code();
                         hud.dismiss();
                         if (error_code == 0) {
-                            Certification.DataBean data = fromJson.getData();
-                            if (data != null) {
+
+                            Certification.DataBean data = certification.getData();
+
+
+                            crawlerStatus.real_name = data.getName();//姓名
+                            crawlerStatus.id_card = data.getIdcard();//身份证
+                            crawlerStatus.cellphone = data.getUserphone();//手机
+
                                 if (data.getAliStatus() == 1) {
                                     alipay.setLeftBottomString(data.getAliaccount());
                                     Drawable drawable = ContextCompat.getDrawable(CertificationActivity.this, R.drawable.button_succeed);
@@ -160,11 +157,10 @@ public class CertificationActivity extends BaseActivity {
                                     mobile.setTextBackground(drawable);
                                     mobile.setRightString("未完成");
                                 }
-                            }
 
                         }else if(error_code==2){
                                 Intent intent=new Intent(CertificationActivity.this,LoginActivity.class);
-                                intent.putExtra("message",fromJson.getError_message());
+                                intent.putExtra("message",certification.getError_message());
                                 intent.putExtra("from","CertificationActivity");
                                 startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
 
@@ -174,21 +170,19 @@ public class CertificationActivity extends BaseActivity {
                             intent.putExtra("from","1136");
                             startActivity(intent);
                             finish();
-
-                        } else {
-                            ToastUtils.showToast(CertificationActivity.this, fromJson.getError_message());
+                        }else if(error_code==Urls.ERROR_CODE.CER_SATAS_ELEMENTS){
+                            ThreeElementsFragment recordFragment = ThreeElementsFragment.newInstance();
+                            recordFragment.show(getSupportFragmentManager(),"recordFragment");
+                            recordFragment.setCancelable(false);
+                        }else {
+                            ToastUtils.showToast(CertificationActivity.this, certification.getError_message());
                         }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        CertificationActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
                                 hud.dismiss();
-                            }
-                        });
 
                     }
                 });
@@ -196,23 +190,25 @@ public class CertificationActivity extends BaseActivity {
     }
 
     private void initView() {
-        AndPermission.with(this)
+
+        AndPermission.with(CertificationActivity.this)
                 .requestCode(200)
                 .permission(Manifest.permission.READ_CONTACTS)
                 .callback(listener)
                 .start();
 
-        TinyDB tinyDB = new TinyDB(this);
-        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
+        TinyDB tinyDB = new TinyDB(CertificationActivity.this);
+        String userphone = (String) SPUtils.get(CertificationActivity.this, Urls.lock.USER_PHONE, "1");
         UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
         phone = user.getUserphone();
-        HashMap<String, String> params = new HashMap<>();
-        params.put("user_id", phone);
         crawlerStatus.privatekey = Urls.CreditrePort.PRIVATE_KEY;
         crawlerStatus.merchant_id = Urls.CreditrePort.APP_ID;// "1000053";
         crawlerStatus.appname = Urls.CreditrePort.APP_NAME;//  "CreditReport";
-        crawlerStatus.hashMap = params;
         crawlerStatus.taskid = String.valueOf(System.currentTimeMillis());
+
+        crawlerStatus.obtainExtraParams().put("user_id", phone);
+
+
 
     }
 
@@ -251,6 +247,7 @@ public class CertificationActivity extends BaseActivity {
 
     @OnClick({R.id.mobile, R.id.alipay, R.id.taobao, R.id.layout_go})
     public void onViewClicked(View view) {
+        Certification.DataBean data = certification.getData();
         switch (view.getId()) {
             case R.id.layout_go:
                 String from = getIntent().getStringExtra("from");
@@ -266,45 +263,63 @@ public class CertificationActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.mobile:
+                if(data.getName()==null||data.getIdcard()==null||data.getUserphone()==null){
+                    ThreeElementsFragment recordFragment = ThreeElementsFragment.newInstance();
+                    recordFragment.show(getSupportFragmentManager(),"recordFragment");
+                    recordFragment.setCancelable(false);
+                }else {
 
-                CrawlerCallBack callBack = new CrawlerCallBack() {
-                    @Override
-                    public void onStatus(CrawlerStatus crawlerStatus) {
-                        LogUtils.i("mobile", crawlerStatus.status);
-                        switch (crawlerStatus.status) {
-                            case 2:
-                                ToastUtils.showToast(CertificationActivity.this, "认证需要几分钟,请稍后再来查看");
-                                break;
-                            case 3:
-                                break;
-                            case 4:
-                                ToastUtils.showToast(CertificationActivity.this, "抓取失败,请重新抓取");
-                                break;
+                    CrawlerCallBack callBack = new CrawlerCallBack() {
+                        @Override
+                        public void onStatus(CrawlerStatus crawlerStatus) {
+                            LogUtils.i("mobile", crawlerStatus.status);
+                            switch (crawlerStatus.status) {
+                                case 2:
+                                    ToastUtils.showToast(CertificationActivity.this, "认证需要几分钟,请稍后再来查看");
+                                    break;
+                                case 3:
+                                    break;
+                                case 4:
+                                    ToastUtils.showToast(CertificationActivity.this, "抓取失败,请重新抓取");
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
-                };
-                crawlerStatus.type = "mobile";
-                CrawlerManager.getInstance(this.getApplication()).startCrawlerByType(callBack, crawlerStatus);
+                    };
+                    crawlerStatus.type = "mobile";
+                    CrawlerManager.getInstance().startCrawlerByType(callBack, crawlerStatus);
+                }
                 break;
             case R.id.taobao:
-                CrawlerCallBack taobaoCallBack = new CrawlerCallBack() {
-                    @Override
-                    public void onStatus(CrawlerStatus crawlerStatus) {
-                        LogUtils.i("taobao", crawlerStatus.status);
-                        switch (crawlerStatus.status) {
-                            case 2:
-                                ToastUtils.showToast(CertificationActivity.this, "认证需要几分钟,请稍后再来查看");
-                                break;
-                            case 3:
-                                break;
-                            case 4:
-                                ToastUtils.showToast(CertificationActivity.this, "认证失败,请重新认证");
-                                break;
+
+                if(data.getName()==null||data.getIdcard()==null||data.getUserphone()==null){
+                    ThreeElementsFragment recordFragment = ThreeElementsFragment.newInstance();
+                    recordFragment.show(getSupportFragmentManager(),"recordFragment");
+                    recordFragment.setCancelable(false);
+                }else {
+
+                    CrawlerCallBack taobaoCallBack = new CrawlerCallBack() {
+                        @Override
+                        public void onStatus(CrawlerStatus crawlerStatus) {
+                            LogUtils.i("taobao", crawlerStatus.status);
+                            switch (crawlerStatus.status) {
+                                case 2:
+                                    ToastUtils.showToast(CertificationActivity.this, "认证需要几分钟,请稍后再来查看");
+                                    break;
+                                case 3:
+                                    break;
+                                case 4:
+                                    ToastUtils.showToast(CertificationActivity.this, "认证失败,请重新认证");
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
-                };
-                crawlerStatus.type = "taobao";
-                CrawlerManager.getInstance(this.getApplication()).startCrawlerByType(taobaoCallBack, crawlerStatus);
+                    };
+                    crawlerStatus.type = "taobao";
+                    CrawlerManager.getInstance().startCrawlerByType(taobaoCallBack, crawlerStatus);
+                }
                 break;
             case R.id.alipay:
                 String mApiKey = Urls.Api_Id;
@@ -328,6 +343,8 @@ public class CertificationActivity extends BaseActivity {
                                 case 2:
                                     ToastUtils.showToast(CertificationActivity.this, "认证失败,请重新认证");
                                     break;
+                                default:
+                                    break;
                             }
                             moxieContext.finish();
                             return true;
@@ -336,6 +353,9 @@ public class CertificationActivity extends BaseActivity {
                     }
                 });
 
+                break;
+
+            default:
                 break;
         }
     }
@@ -359,7 +379,7 @@ public class CertificationActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        CrawlerManager.getInstance(this.getApplication()).unregistAllCallBack();
+        CrawlerManager.getInstance().unRegisterAllCallBack();
     }
 
     @Override

@@ -26,7 +26,6 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -496,14 +495,14 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     private void zhuGe() {
 
-        JSONObject eventObject = new JSONObject();
+      /*  JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("tixianbutton", "");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ZhugeSDK.getInstance().track(this, "提现", eventObject);
+        ZhugeSDK.getInstance().track(this, "提现", eventObject);*/
     }
 
     @Override

@@ -23,12 +23,14 @@ public class TRMenuAdapter extends RecyclerView.Adapter<TRMenuAdapter.TRMViewHol
     private boolean showIcon;
     private TopRightMenu mTopRightMenu;
     private TopRightMenu.OnMenuItemClickListener onMenuItemClickListener;
+    private int layout;
 
-    public TRMenuAdapter(Context context, TopRightMenu topRightMenu, List<MenuItem> menuItemList, boolean show) {
+    public TRMenuAdapter(Context context, TopRightMenu topRightMenu, List<MenuItem> menuItemList, boolean show,int mLayout) {
         this.mContext = context;
         this.mTopRightMenu = topRightMenu;
         this.menuItemList = menuItemList;
         this.showIcon = show;
+        this.layout=mLayout;
     }
 
     public void setData(List<MenuItem> data){
@@ -43,7 +45,7 @@ public class TRMenuAdapter extends RecyclerView.Adapter<TRMenuAdapter.TRMViewHol
 
     @Override
     public TRMViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.trm_item_popup_menu_list, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(layout, parent, false);
         return new TRMViewHolder(view);
     }
 

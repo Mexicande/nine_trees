@@ -25,13 +25,13 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -150,6 +150,8 @@ public class ProductDesc extends BaseActivity {
     TextView tvDescLimit;
     @Bind(R.id.view_line)
     View viewLine;
+    @Bind(R.id.tv_procedure)
+    TextView tvProcedure;
     private int pid;
 
     private Product_DescBean descBean;
@@ -176,7 +178,6 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        ZhugeSDK.getInstance().init(getApplicationContext());
         initToolbar();
         pid = getIntent().getIntExtra("pid", 0);
         if (pid != 0) {
@@ -266,11 +267,18 @@ public class ProductDesc extends BaseActivity {
 
             LogUtils.i("aDouble====", aDouble / 100 + "");
             double v1 = aDouble * time / 100 * mony + descBean.getData().getFee();
-            int zeroRate = (int) v1;
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            String format = decimalFormat.format(v1);
 
-            String valueOf = String.valueOf(zeroRate);
+            /*int zeroRate = (int) v1;
 
-            zeroAlgorithm.setText(valueOf + "元");
+            String valueOf = String.valueOf(zeroRate);*/
+            int i = format.indexOf(".");
+            if (i == 0) {
+                zeroAlgorithm.setText("0" + format + "元");
+            } else {
+                zeroAlgorithm.setText(format + "元");
+            }
 
 
             double v2 = (mony + v1) / time;
@@ -319,11 +327,11 @@ public class ProductDesc extends BaseActivity {
                                     Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
                                     intent.putExtra("message", error_message);
                                     intent.putExtra("from", "DescError");
-                                    startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
-                                }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                                    Intent intent=new Intent(ProductDesc.this,LoginActivity.class);
-                                    intent.putExtra("message","1136");
-                                    intent.putExtra("from","1136");
+                                    startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
+                                } else if (error_code == Urls.ERROR_CODE.FREEZING_CODE) {
+                                    Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
+                                    intent.putExtra("message", "1136");
+                                    intent.putExtra("from", "1136");
                                     startActivity(intent);
                                     finish();
 
@@ -363,14 +371,6 @@ public class ProductDesc extends BaseActivity {
         if (collectioStatus == 1) {
             shareFlag = true;
         }
-        JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("产品", product.getPname() + "detail");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(this, "产品详情页", eventObject);
 
         List<Product_DescBean.DataBean.LabelsBean> labels = product.getLabels();
 
@@ -568,8 +568,8 @@ public class ProductDesc extends BaseActivity {
                             //指纹功能是否可用
                             boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
                             if (registeredFingerprint && fingerprintEnable) {
-                                Intent fingerintent=new Intent(this,FingerActivity.class);
-                                fingerintent.putExtra("from","apply");
+                                Intent fingerintent = new Intent(this, FingerActivity.class);
+                                fingerintent.putExtra("from", "apply");
                                 fingerintent.putExtra("product", descBean);
                                 startActivityForResult(fingerintent, APPLY_VAIL);
                             } else {
@@ -601,7 +601,7 @@ public class ProductDesc extends BaseActivity {
             public void onYesClick() {
                 descDialog.dismiss();
                 sendIO();
-                if(descBean!=null){
+                if (descBean != null) {
                     startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                 }
             }
@@ -620,7 +620,7 @@ public class ProductDesc extends BaseActivity {
         } else {
             menuItems.add(new MenuItem(R.mipmap.iv_collection, "收藏"));
         }
-        TopRightMenu mTopRightMenu = new TopRightMenu(this);
+        TopRightMenu mTopRightMenu = new TopRightMenu(this,R.layout.trm_item_popup_menu_list);
         mTopRightMenu
                 .showIcon(true)     //显示菜单图标，默认为true
                 .dimBackground(true)           //背景变暗，默认为true
@@ -710,7 +710,7 @@ public class ProductDesc extends BaseActivity {
                                     intent.putExtra("message", json.getString("error_message"));
                                     intent.putExtra("from", "ProductDescError");
                                     intent.putExtra("collection", status);
-                                    startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
+                                    startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
                                 } else {
                                     String error_message = json.getString("error_message");
                                     ToastUtils.showToast(ProductDesc.this, error_message);
@@ -726,14 +726,14 @@ public class ProductDesc extends BaseActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                                ToastUtils.showToast(ProductDesc.this, "服务器异常");
+                        ToastUtils.showToast(ProductDesc.this, "服务器异常");
                     }
                 });
 
     }
 
     private void sendIO() {
-        JSONObject eventObject = new JSONObject();
+     /*   JSONObject eventObject = new JSONObject();
         try {
             eventObject.put("产品名称", descBean.getData().getPname());
             ZhugeSDK.getInstance().track(getApplicationContext(), "立即申请",
@@ -741,7 +741,7 @@ public class ProductDesc extends BaseActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Subscribe
@@ -758,7 +758,6 @@ public class ProductDesc extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
 
-        ZhugeSDK.getInstance().flush(getApplicationContext());
         if (flag) {
             EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
         }

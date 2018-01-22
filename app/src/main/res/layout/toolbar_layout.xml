@@ -23,18 +23,35 @@
         android:paddingTop="@dimen/_5dp"
         android:paddingBottom="@dimen/_5dp"
         android:src="@mipmap/back"/>
-    <TextView
-        android:id="@+id/tv_save"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="保存"
-        android:paddingLeft="@dimen/_10dp"
-        android:paddingRight="@dimen/_10dp"
-        android:textSize="18sp"
+    <RelativeLayout
         android:layout_gravity="right"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginRight="@dimen/_10dp"
-        android:textColor="@color/white"/>
+        android:layout_marginRight="15dp"
+        android:layout_width="100dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/_10dp"
+            android:paddingRight="@dimen/_10dp"
+            android:textSize="18sp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:textColor="@color/white"/>
+        <ImageView
+            android:id="@+id/bt_share"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="20dp"
+            android:layout_height="45dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:src="@mipmap/iv_product_desc_menu"/>
+    </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

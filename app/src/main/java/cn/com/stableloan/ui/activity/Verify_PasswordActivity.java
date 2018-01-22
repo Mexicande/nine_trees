@@ -196,7 +196,7 @@ public class Verify_PasswordActivity extends BaseActivity {
         if (!password.isEmpty()) {
             hud = KProgressHUD.create(this)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                    .setLabel("Please wait.....")
+                    .setLabel(getResources().getString(R.string.wait))
                     .setCancellable(true)
                     .show();
             String md5ToString = EncryptUtils.encryptMD5ToString(password);
@@ -310,12 +310,7 @@ public class Verify_PasswordActivity extends BaseActivity {
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
-                            Verify_PasswordActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
                                     hud.dismiss();
-                                }
-                            });
                         }
                     });
 

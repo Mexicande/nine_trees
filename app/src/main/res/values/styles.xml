@@ -10,6 +10,11 @@
         <item name="android:listDivider">@drawable/recycler_divider</item>
 
     </style>
+    <style name="CheckTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorControlNormal">@color/gay</item>
+        <item name="colorControlActivated">#03A9F4</item>
+    </style>
 
     <style name="activityAnimation" parent="@android:style/Animation">
         <item name="android:activityOpenEnterAnimation">@anim/slide_right_in</item>

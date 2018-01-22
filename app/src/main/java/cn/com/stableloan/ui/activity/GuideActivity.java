@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,7 +44,6 @@ public class GuideActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_guide);
         ButterKnife.bind(this);
-        ZhugeSDK.getInstance().init(getApplicationContext());
 
         setListener();
         processLogic();
@@ -70,7 +68,6 @@ public class GuideActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ZhugeSDK.getInstance().flush(getApplicationContext());
 
     }
 }

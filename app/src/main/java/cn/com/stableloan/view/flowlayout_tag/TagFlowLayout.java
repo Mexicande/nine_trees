@@ -143,20 +143,39 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                 tagViewContainer.setLayoutParams(lp);
             }
 
+            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            tagView.setLayoutParams(lp);
             tagViewContainer.addView(tagView);
             addView(tagViewContainer);
 
 
             if (preCheckedList.contains(i))
             {
-                tagViewContainer.setChecked(true);
+                setChildChecked(i, tagViewContainer);
+
+               // tagViewContainer.setChecked(true);
             }
 
             if (mTagAdapter.setSelected(i, adapter.getItem(i)))
             {
-                mSelectedView.add(i);
-                tagViewContainer.setChecked(true);
+                setChildChecked(i, tagViewContainer);
+
+              /*  mSelectedView.add(i);
+                tagViewContainer.setChecked(true);*/
             }
+            tagView.setClickable(false);
+            final TagView finalTagViewContainer = tagViewContainer;
+            final int position = i;
+            tagViewContainer.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doSelect(finalTagViewContainer, position);
+                    if (mOnTagClickListener != null) {
+                        mOnTagClickListener.onTagClick(finalTagViewContainer, position,
+                                TagFlowLayout.this);
+                    }
+                }
+            });
         }
         mSelectedView.addAll(preCheckedList);
 
@@ -229,14 +248,20 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                     mSelectedView.add(position);
                 } else
                 {
-                    if (mSelectedMax > 0 && mSelectedView.size() >= mSelectedMax)
+                    if (mSelectedMax > 0 && mSelectedView.size() >= mSelectedMax){
+
                         return;
-                    child.setChecked(true);
+                    }
+                    setChildChecked(position, child);
+
+                    //child.setChecked(true);
                     mSelectedView.add(position);
                 }
             } else
             {
-                child.setChecked(false);
+               // child.setChecked(false);
+                setChildUnChecked(position, child);
+
                 mSelectedView.remove(position);
             }
             if (mOnSelectListener != null)
@@ -300,8 +325,12 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                     mSelectedView.add(index);
 
                     TagView tagView = (TagView) getChildAt(index);
-                    if (tagView != null)
-                        tagView.setChecked(true);
+                    if (tagView != null){
+                       // tagView.setChecked(true);
+                        setChildChecked(index, tagView);
+
+
+                    }
                 }
 
             }

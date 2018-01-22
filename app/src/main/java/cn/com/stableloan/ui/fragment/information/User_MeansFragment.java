@@ -28,7 +28,6 @@ import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.zaaach.citypicker.CityPickerActivity;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -158,7 +157,6 @@ public class User_MeansFragment extends Fragment {
         mLocationClient = new LocationClient(getActivity().getApplicationContext());
         mLocationClient.registerLocationListener(myListener);
         initSpinner();
-        setListenter();
         return view;
     }
 
@@ -173,9 +171,9 @@ public class User_MeansFragment extends Fragment {
     }
 
 
-    /**
+ /*   *//**
      * 诸葛io
-     */
+     *//*
     private void setListenter() {
 
         JSONObject eventObject = new JSONObject();
@@ -187,7 +185,7 @@ public class User_MeansFragment extends Fragment {
 //记录事件
         ZhugeSDK.getInstance().track(getActivity(), "身份信息第一页", eventObject);
 
-    }
+    }*/
 
     private void setSuperText(SuperTextView superText, int type) {
                 Intent intent = new Intent(getActivity(), DateChangeActivity.class);
@@ -296,8 +294,6 @@ public class User_MeansFragment extends Fragment {
                                     if (("1").equals(identity.getData().getStatus())) {
                                         str=s;
                                         identityBean = identity.getData().getIdentity();
-
-
                                         APP_CODE=identity.getData().getApp_code();
                                         if (identityBean != null) {
                                             inputText(etName,identityBean.getName());
