@@ -383,7 +383,7 @@ public class User_MeansFragment extends Fragment {
 
     }
     private void inputText(SuperTextView view,String str){
-        if(str!=null){
+        if(view!=null&&str!=null){
             view.setRightString(str);
         }
     }

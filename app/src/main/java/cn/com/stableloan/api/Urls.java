@@ -5,7 +5,7 @@ package cn.com.stableloan.api;
  */
 
 public interface Urls {
-    String API="http://test.";
+    String API="http://";
 
     String Ip_url=API+"api.anwenqianbao.com/v1/";
 
@@ -16,7 +16,7 @@ public interface Urls {
     String NEW_URL=API+"api.shoujijiekuan.com/Home/";
 
     String HTML_URL=API+"m.anwenqianbao.com/";
-
+    String logoUrl="http://p2y9on3t5.bkt.clouddn.com/iv_logo.png";
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
             "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4";
@@ -102,7 +102,7 @@ public interface Urls {
         String Save_Setting="SaveSetting/setting";
     }
     interface share{
-        String htmlInsurance="http://event.anwenqianbao.com/m/landing5/index.html";
+        String htmlInsurance="http://event.anwenqianbao.com/m/landing5/index.html?channel=zengxian";
     }
 
     interface  HOME_FRAGMENT{

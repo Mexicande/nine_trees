@@ -170,11 +170,11 @@ public class CertificationActivity extends BaseActivity {
                             intent.putExtra("from","1136");
                             startActivity(intent);
                             finish();
-                        }else if(error_code==Urls.ERROR_CODE.CER_SATAS_ELEMENTS){
+                        }/*else if(error_code==Urls.ERROR_CODE.CER_SATAS_ELEMENTS){
                             ThreeElementsFragment recordFragment = ThreeElementsFragment.newInstance();
                             recordFragment.show(getSupportFragmentManager(),"recordFragment");
                             recordFragment.setCancelable(false);
-                        }else {
+                        }*/else {
                             ToastUtils.showToast(CertificationActivity.this, certification.getError_message());
                         }
                     }

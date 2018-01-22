@@ -107,7 +107,10 @@ public class HtmlActivity extends BaseActivity {
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mWebView.setLayoutParams(lp);
         mContainer.addView(mWebView, 0);
+        initSlide();
+
         CheckInternet();
+
     }
 
 
@@ -154,7 +157,6 @@ public class HtmlActivity extends BaseActivity {
                 ivBack.setVisibility(View.VISIBLE);
                 getUrl(welfare.getId());
                 setListen();
-                initSlide();
             }
             Class_Special.DataBean.MdseBean aClass = (Class_Special.DataBean.MdseBean) getIntent().getSerializableExtra("class");
             if (aClass != null) {
@@ -179,7 +181,6 @@ public class HtmlActivity extends BaseActivity {
                 String link = getIntent().getStringExtra("link");
                 getDate(link);
                 setListen();
-                initSlide();
             }
 
         } else {
@@ -406,6 +407,7 @@ public class HtmlActivity extends BaseActivity {
                 .withLoggingEnabled(true)
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
+
     }
 
     private void setListen() {
@@ -517,9 +519,8 @@ public class HtmlActivity extends BaseActivity {
                 .setType(WXShareContent.share_type.WebPage)
                 .setWeb_url(Urls.share.htmlInsurance)
                 .setTitle("安稳钱包")
-                .setDescription("最高百万保险我送你了")
-                .setText("当意外在所难免，尽可能安稳的回到正轨")
-                .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
+                .setDescription("最高百万保险我送你了,当意外在所难免，尽可能安稳的回到正轨")
+                .setImage_url(Urls.logoUrl);
         wxManager.share(contentWX);
 
     }
@@ -527,7 +528,7 @@ public class HtmlActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (slideUp.isVisible()) {
+        if (slideUp!=null&&slideUp.isVisible()) {
             slideUp.hide();
         } else {
             if (mWebView.canGoBack()) {

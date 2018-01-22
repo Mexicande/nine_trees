@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -236,6 +237,7 @@ public class ProductDesc extends BaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
+
                     computations();
                 }
             }
@@ -258,21 +260,27 @@ public class ProductDesc extends BaseActivity {
             if (lim > Integer.parseInt(maximum_amount)) {
                 etMaxLimit.setText(maximum_amount);
             }
-            int time = Integer.parseInt(hint);
 
-            int mony = Integer.parseInt(str);
+            int time = Integer.parseInt(hint);
+            if(time==0){
+                etMaxTime.setText(descBean.getData().getMin_cycle());
+                time= Integer.parseInt(descBean.getData().getMin_cycle());
+            }else {
+                etMaxTime.setText(time+"");
+            }
             String min_algorithm = descBean.getData().getMin_algorithm();
 
             Double aDouble = Double.valueOf(min_algorithm);
 
-            LogUtils.i("aDouble====", aDouble / 100 + "");
-            double v1 = aDouble * time / 100 * mony + descBean.getData().getFee();
+
+            String fee = descBean.getData().getFee();
+            int i1 = fee.lastIndexOf(".");
+            String substring = fee.substring(0, i1);
+
+            double v1 = aDouble * time / 100 * lim + Integer.parseInt(substring);
+
             DecimalFormat decimalFormat = new DecimalFormat("#.00");
             String format = decimalFormat.format(v1);
-
-            /*int zeroRate = (int) v1;
-
-            String valueOf = String.valueOf(zeroRate);*/
             int i = format.indexOf(".");
             if (i == 0) {
                 zeroAlgorithm.setText("0" + format + "元");
@@ -281,9 +289,10 @@ public class ProductDesc extends BaseActivity {
             }
 
 
-            double v2 = (mony + v1) / time;
+            double v2 = (lim + v1) / time;
 
             int everyRate = (int) v2;
+
             String everyTime = String.valueOf(everyRate);
 
             tvDescTerminally.setText(everyTime + "元");
@@ -396,12 +405,12 @@ public class ProductDesc extends BaseActivity {
             viewLine.setVisibility(View.VISIBLE);
         }
 
-        if (product.getActivity() == 1) {
+        if ("1".equals(product.getActivity())) {
             ivHots.setVisibility(View.VISIBLE);
         } else {
             ivHots.setVisibility(View.GONE);
         }
-        if (product.getOnline() == 1) {
+        if ("1".equals(product.getOnline())) {
             ivNews.setVisibility(View.VISIBLE);
         } else {
             ivNews.setVisibility(View.GONE);
@@ -419,8 +428,8 @@ public class ProductDesc extends BaseActivity {
         String product_prepayment = product.getPrepayment();
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
-        int interest_algorithm = product.getInterest_algorithm();
-        if (interest_algorithm == 0) {
+        String interest_algorithm = product.getInterest_algorithm();
+        if ("0".equals(interest_algorithm )) {
             tvInterestAlgorithm.setText("参考日利率");
             tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle() + "日");
             tvDescLimit.setText("贷款期限(日)");
@@ -481,7 +490,7 @@ public class ProductDesc extends BaseActivity {
 
         }
         if (min != null && max != null) {
-            if (interest_algorithm == 0) {
+            if ("0".equals(interest_algorithm)) {
                 setTextViewColor(interestAlgorithm, "利息算法: 日利率");
             } else {
                 setTextViewColor(interestAlgorithm, "利息算法: 月利率");
@@ -502,7 +511,7 @@ public class ProductDesc extends BaseActivity {
             String replace = details.replace("aaa", "\n");
             productDetails.setText(replace);
         }
-        if (product.getFee() != 0) {
+        if (!"0".equals(product.getFee() )) {
             tvDesccharge.setText(product.getFee() + "元");
         }
         computations();
@@ -669,7 +678,7 @@ public class ProductDesc extends BaseActivity {
                 .setWeb_url(Urls.KEY.PageWeb + descBean.getData().getId())
                 .setTitle("安稳钱包")
                 .setDescription(descBean.getData().getProduct_introduction())
-                .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
+                .setImage_url(Urls.logoUrl);
         wxManager.share(contentWX);
 
     }

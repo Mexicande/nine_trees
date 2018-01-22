@@ -120,9 +120,9 @@ public class Product_DescBean implements Serializable {
          * crowds : ["0","1","2","3"]
          */
         private String ad_image;
-        private int id;
+        private String id;
         private String pname;
-        private int pl_id;
+        private String pl_id;
 
         public String getAd_image() {
             return ad_image;
@@ -141,14 +141,14 @@ public class Product_DescBean implements Serializable {
         private String fastest_time;
         private String average_time;
         private String review;
-        private int index;
-        private int interest_algorithm;
+        private String index;
+        private String interest_algorithm;
         private String min_algorithm;
         private String max_algorithm;
         private String min_cycle;
         private String max_cycle;
-        private int text_supplement;
-        private int fee;
+        private String text_supplement;
+        private String fee;
         private String actual_account;
         private String repayment;
         private String repayment_channels;
@@ -163,7 +163,7 @@ public class Product_DescBean implements Serializable {
         private String create_time;
         private String created_at;
         private String updated_at;
-        private int status;
+        private String status;
         private String actual_accounts;
         private String repayments;
         private String prepayments;
@@ -171,30 +171,30 @@ public class Product_DescBean implements Serializable {
         private PlatformdetailBean platformdetail;
         private List<LabelsBean> labels;
         private List<String> crowds;
-        private int activity;
-        private int online;
+        private String activity;
+        private String online;
 
-        public int getActivity() {
+        public String getActivity() {
             return activity;
         }
 
-        public void setActivity(int activity) {
+        public void setActivity(String activity) {
             this.activity = activity;
         }
 
-        public int getOnline() {
+        public String getOnline() {
             return online;
         }
 
-        public void setOnline(int online) {
+        public void setOnline(String online) {
             this.online = online;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -206,11 +206,11 @@ public class Product_DescBean implements Serializable {
             this.pname = pname;
         }
 
-        public int getPl_id() {
+        public String getPl_id() {
             return pl_id;
         }
 
-        public void setPl_id(int pl_id) {
+        public void setPl_id(String pl_id) {
             this.pl_id = pl_id;
         }
 
@@ -286,19 +286,19 @@ public class Product_DescBean implements Serializable {
             this.review = review;
         }
 
-        public int getIndex() {
+        public String getIndex() {
             return index;
         }
 
-        public void setIndex(int index) {
+        public void setIndex(String index) {
             this.index = index;
         }
 
-        public int getInterest_algorithm() {
+        public String getInterest_algorithm() {
             return interest_algorithm;
         }
 
-        public void setInterest_algorithm(int interest_algorithm) {
+        public void setInterest_algorithm(String interest_algorithm) {
             this.interest_algorithm = interest_algorithm;
         }
 
@@ -334,19 +334,19 @@ public class Product_DescBean implements Serializable {
             this.max_cycle = max_cycle;
         }
 
-        public int getText_supplement() {
+        public String getText_supplement() {
             return text_supplement;
         }
 
-        public void setText_supplement(int text_supplement) {
+        public void setText_supplement(String text_supplement) {
             this.text_supplement = text_supplement;
         }
 
-        public int getFee() {
+        public String getFee() {
             return fee;
         }
 
-        public void setFee(int fee) {
+        public void setFee(String fee) {
             this.fee = fee;
         }
 
@@ -462,11 +462,11 @@ public class Product_DescBean implements Serializable {
             this.updated_at = updated_at;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 

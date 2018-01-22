@@ -104,7 +104,7 @@ public class AppApplication extends Application {
 
         Fresco.initialize(this);
         initDisplayOpinion();
-        //CrawlerManager.initSDK(this);
+        CrawlerManager.initSDK(this);
 
     }
 

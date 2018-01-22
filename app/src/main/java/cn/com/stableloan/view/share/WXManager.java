@@ -211,11 +211,11 @@ public class WXManager {
                 if (bitmap != null){
                     if (isNeedScale){
                         req.message.thumbData = WXUtil.bmpToByteArray(
-                                WXUtil.scaleCenterCrop(bitmap, THUMB_SIZE, THUMB_SIZE), true);
+                                bitmap, true);
                     }else {
                         req.message.mediaObject = new WXImageObject(bitmap);
                         req.message.thumbData = WXUtil.bmpToByteArray(
-                                WXUtil.scaleCenterCrop(bitmap, THUMB_SIZE, THUMB_SIZE), true);
+                               bitmap, true);
                     }
                     bitmap.recycle();
                 }
@@ -257,7 +257,6 @@ public class WXManager {
     public static IWXAPI getWXAPI(){
         return mAPI;
     }
-
     /**
      * get StateListener
      * @return
@@ -265,7 +264,6 @@ public class WXManager {
     public static StateListener<String> getStateListener(){
         return mListener;
     }
-
     /**
      * build transaction
      * @param type
