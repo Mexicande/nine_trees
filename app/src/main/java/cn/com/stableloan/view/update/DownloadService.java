@@ -259,6 +259,7 @@ public class DownloadService extends Service {
                     //App前台运行
                     mNotificationManager.cancel(NOTIFY_ID);
                     AppUpdateUtils.installApp(DownloadService.this, file);
+
                 } else {
                     //App后台运行
                     //更新参数,注意flags要使用FLAG_UPDATE_CURRENT

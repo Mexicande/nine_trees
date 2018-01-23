@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import java.io.File;
 
 import cn.com.stableloan.R;

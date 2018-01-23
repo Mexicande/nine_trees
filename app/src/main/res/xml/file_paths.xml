@@ -8,5 +8,7 @@
             name="camera_photos"
             path="" />
     </paths>
-
+    <external-path
+        name="lib_update_app_files"
+        path="."/>
 </paths>

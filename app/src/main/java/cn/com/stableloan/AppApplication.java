@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import cn.com.stableloan.utils.SPUtils;
-
+import cn.com.stableloan.utils.Utils;
 
 
 /**
@@ -72,7 +72,6 @@ public class AppApplication extends Application {
         mHandler = new Handler();
 
         initTypeface();
-
         OkGo.init(this);
         try {
             OkGo.getInstance()

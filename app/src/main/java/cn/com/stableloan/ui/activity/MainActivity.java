@@ -202,6 +202,8 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                     }
                 });
 
+
+
     }
 
     private void initView() {

@@ -23,6 +23,10 @@ import android.util.DisplayMetrics;
 import java.io.File;
 import java.util.List;
 
+import cn.com.stableloan.AppApplication;
+import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.Utils;
+
 /**
  * Created by Vector
  * on 2017/6/6 0006.
@@ -74,7 +78,8 @@ public class AppUpdateUtils {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileProvider", appFile);
+                LogUtils.d("content", AppApplication.getApp().getPackageName());
+                Uri fileUri = FileProvider.getUriForFile(context,  AppApplication.getApp().getPackageName() + ".provider", appFile);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
             } else {
@@ -116,25 +121,12 @@ public class AppUpdateUtils {
         return "";
     }
 
-   /* public static int getVersionCode(Context context) {
+    public static int getVersionCode(Context context) {
         PackageInfo packageInfo = getPackageInfo(context);
         if (packageInfo != null) {
             return packageInfo.versionCode;
         }
         return 0;
-    }*/
-
-    public static int getVersionCode(Context context){
-        PackageManager packageManager=context.getPackageManager();
-        PackageInfo packageInfo;
-        int versionCode=0;
-        try {
-            packageInfo=packageManager.getPackageInfo(context.getPackageName(),0);
-            versionCode=packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return versionCode;
     }
 
     public static PackageInfo getPackageInfo(Context context) {
