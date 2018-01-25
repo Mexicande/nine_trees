@@ -86,9 +86,17 @@ public class UserInfromBean implements Serializable{
         private String userphone;
         private int identity;
         private String token;
-
+        private String link;
         private String credits;  //integral
         private String total;   //amount
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
 
         public String getCredits() {
             return credits;

@@ -716,7 +716,6 @@ public class MessageFragment extends Fragment {
                                 Intent intent=new Intent(getActivity(), SettingPassWordActivity.class);
                                 intent.putExtra("userPhone", etPhone.getText().toString());
                                 intent.putExtra("is_insure",codeMessage.getData().getIs_insure());
-                                intent.putExtra("link",codeMessage.getData().getLink());
                                 startActivity(intent);
                             }
                         }  else if (codeMessage.getError_code() == 1130) {

@@ -203,10 +203,9 @@ public class SettingPassWordActivity extends AppCompatActivity {
                                         ActivityStackManager.getInstance().popActivity(LoginActivity.class);
                                         EventBus.getDefault().post(new InformationEvent("user3"));
                                         if(checkbox.isChecked()){
-                                            String link = getIntent().getStringExtra("link");
                                             Intent intent=new Intent(SettingPassWordActivity.this,HtmlActivity.class);
                                             intent.putExtra("Insurance","1");
-                                            intent.putExtra("link",link);
+                                            intent.putExtra("link",fromJson.getData().getLink());
                                             startActivity(intent);
                                         }
                                         finish();
