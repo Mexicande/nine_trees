@@ -31,10 +31,6 @@ import com.google.gson.JsonSyntaxException;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.uuch.adlibrary.AdConstant;
-import com.uuch.adlibrary.AdManager;
-import com.uuch.adlibrary.bean.AdInfo;
-import com.uuch.adlibrary.transformer.DepthPageTransformer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -65,6 +61,7 @@ import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
+import cn.com.stableloan.ui.fragment.dialogfragment.AdialogFragment;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TimeUtils;
@@ -208,6 +205,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         re_View.setAdapter(rc_adapter);
                                         rc_adapter.setNewData(seckillBean.getData());
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
@@ -244,30 +243,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void showAdvertising(final AdvertisingBean bean) {
 
-        AdInfo adInfo = new AdInfo();
         long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
         if (today) {
 
         } else {
-            adInfo.setActivityImg(bean.getData().getImg());
-            advList = new ArrayList<>();
-            advList.add(adInfo);
-            final AdManager adManager = new AdManager(getActivity(), advList);
-            adManager.setOverScreen(true)
-                    .setWidthPerHeight(Float.parseFloat(bean.getData().getAspectRatio()))
-                    .setBackViewColor(Color.parseColor("#AA333333"))
-                    .setPageTransformer(new DepthPageTransformer())
-                    .setOnImageClickListener(new AdManager.OnImageClickListener() {
-                        @Override
-                        public void onImageClick(View view, AdInfo advInfo) {
-                            if (!bean.getData().getUrl().isEmpty()) {
-                                startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("advertising", bean.getData().getUrl()));
-                            }
-                            adManager.dismissAdDialog();
-                        }
-                    })
-                    .showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
+
+            AdialogFragment adialogFragment= AdialogFragment.newInstance(bean);
+            adialogFragment.show(getFragmentManager(),"adialogFragment");
+
+
             long timeMillis = System.currentTimeMillis();
             SPUtils.put(getActivity(), "AdvertTime", timeMillis);
         }
@@ -354,7 +339,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     /**
      * 首页新品
      */
-    private List<AdInfo> advList = null;
 
     private void getDate() {
 

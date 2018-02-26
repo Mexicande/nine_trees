@@ -64,6 +64,13 @@ public class AppApplication extends Application {
     public static AppApplication sApp;
     String channel="test";
 
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this) ;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

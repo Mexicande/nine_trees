@@ -33,10 +33,8 @@ public class DownAPKService extends Service {
     private NotificationCompat.Builder builder;
     int oldRate = 0;
 
-    // 文件下载路径
-    private String APK_url = "";
     // 文件保存路径(如果有SD卡就保存SD卡,如果没有SD卡就保存到手机包名下的路径)
-    private String APK_dir = "";
+    private String apkDir = "";
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -50,27 +48,32 @@ public class DownAPKService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("onStartCommand");
         // 接收Intent传来的参数:
-        APK_url = intent.getStringExtra("apk_url");
-        DownFile(APK_url, APK_dir );
+        String apkUrl = intent.getStringExtra("apk_url");
+        if(apkUrl !=null){
+            downFile(apkUrl, apkDir);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
-
+    /**
+     * 创建路径的时候一定要用[/],不能使用[\],但是创建文件夹加文件的时候可以使用[\].
+     * [/]符号是Linux系统路径分隔符,而[\]是windows系统路径分隔符 Android内核是Linux.
+     */
     private void initAPKDir() {
-        /**
-         * 创建路径的时候一定要用[/],不能使用[\],但是创建文件夹加文件的时候可以使用[\].
-         * [/]符号是Linux系统路径分隔符,而[\]是windows系统路径分隔符 Android内核是Linux.
-         */
-        if (isHasSdcard())// 判断是否插入SD卡
+
+        if (isHasSdcard())
+            // 判断是否插入SD卡
         {
-            APK_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Club/download/";// 保存到SD卡路径下
+            apkDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Club/download/";
+            // 保存到SD卡路径下
         }
         else{
-            APK_dir = getApplicationContext().getFilesDir().getAbsolutePath() + "/Club/download/";// 保存到app的包名路径下
+            apkDir = getApplicationContext().getFilesDir().getAbsolutePath() + "/Club/download/";
+            // 保存到app的包名路径下
         }
-        File destDir = new File(APK_dir);
-        if (!destDir.exists()) {// 判断文件夹是否存在
+        File destDir = new File(apkDir);
+        if (!destDir.exists()) {
+            // 判断文件夹是否存在
             destDir.mkdirs();
         }
     }
@@ -88,13 +91,12 @@ public class DownAPKService extends Service {
         }
     }
 
-    private void DownFile(String file_url, String target_name) {
+    private void downFile(String fileUrl, String targetName) {
 
-        OkGo.<File>get(file_url).execute(new com.lzy.okgo.callback.FileCallback(target_name,System.currentTimeMillis()+".apk") {
+        OkGo.<File>get(fileUrl).execute(new com.lzy.okgo.callback.FileCallback(targetName,System.currentTimeMillis()+".apk") {
             @Override
             public void onSuccess(File file, Call call, okhttp3.Response response) {
                 Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                System.out.println(file.getPath());
                 Uri uri = Uri.fromFile(new File(file.getPath()));
                 installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
                 installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -104,7 +106,8 @@ public class DownAPKService extends Service {
                 builder.setContentIntent(mPendingIntent);
                 mNotificationManager.notify(NotificationID, builder.build());
                 stopSelf();
-                startActivity(installIntent);// 下载完成之后自动弹出安装界面
+                startActivity(installIntent);
+                // 下载完成之后自动弹出安装界面
                 mNotificationManager.cancel(NotificationID);
             }
 
@@ -173,9 +176,10 @@ public class DownAPKService extends Service {
      * @Description:返回百分之值
      */
     private String getPercent(int x, int total) {
-        String result = "";// 接受百分比的值
-        double x_double = x * 1.0;
-        double tempresult = x_double / total;
+        String result = "";
+        // 接受百分比的值
+        double xDouble = x * 1.0;
+        double tempresult = xDouble / total;
         // 百分比格式，后面不足2位的用0补齐 ##.00%
         DecimalFormat df1 = new DecimalFormat("0.00%");
         result = df1.format(tempresult);
@@ -195,8 +199,8 @@ public class DownAPKService extends Service {
         } catch (PackageManager.NameNotFoundException e) {
             applicationInfo = null;
         }
-        String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
-        return applicationName;
+
+        return (String) packageManager.getApplicationLabel(applicationInfo);
     }
 
 

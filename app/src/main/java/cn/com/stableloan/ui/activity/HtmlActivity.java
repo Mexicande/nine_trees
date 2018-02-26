@@ -69,6 +69,8 @@ public class HtmlActivity extends BaseActivity {
     TextView titleName;
     @Bind(R.id.iv_back)
     ImageView ivBack;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Bind(R.id.web_progress_bar)
     ProgressBar mProgressBar;
