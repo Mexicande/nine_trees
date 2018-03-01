@@ -500,27 +500,31 @@ public class User_Bank_Fragment extends Fragment {
                     if (data != null) {
                         String type = data.getStringExtra("card_num");
                         StringBuffer buffer = new StringBuffer(type);
-                        switch (type.length()){
-                            case 16:
-                                buffer.insert(4," ");
-                                buffer.insert(9," ");
-                                buffer.insert(14," ");
-                                break;
-                            case 17:
-                                buffer.insert(6," ");
-                                buffer.insert(11," ");
-                                break;
-                            case 19:
-                                buffer.insert(6," ");
-                                break;
-                            default:
-                                break;
-                        }
-                        etBankCard1.setRightString(buffer);
-                        if (type.length() > 6) {
-                            // 获取银行卡的信息
-                            String name = BankUtils.getNameOfBank(type);
-                            etSelectBank1.setRightString(name);
+                        if(type!=null){
+                            switch (type.length()){
+                                case 16:
+                                    buffer.insert(4," ");
+                                    buffer.insert(9," ");
+                                    buffer.insert(14," ");
+                                    break;
+                                case 17:
+                                    buffer.insert(6," ");
+                                    buffer.insert(11," ");
+                                    break;
+                                case 19:
+                                    buffer.insert(6," ");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            etBankCard1.setRightString(buffer);
+                            if (type.length() > 6) {
+                                // 获取银行卡的信息
+                                String name = BankUtils.getNameOfBank(type);
+                                etSelectBank1.setRightString(name);
+                            }
+
+
                         }
                     }
                     break;

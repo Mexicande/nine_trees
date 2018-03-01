@@ -250,15 +250,15 @@ public class ProductDesc extends BaseActivity {
 
         String hint = etMaxTime.getText().toString();
         String str = etMaxLimit.getText().toString();
-        String minimum_amount = descBean.getData().getMinimum_amount();
-        String maximum_amount = descBean.getData().getMaximum_amount();
-        if (!hint.isEmpty() && !str.isEmpty() && minimum_amount != null && maximum_amount != null) {
+        String minimumAmount = descBean.getData().getMinimum_amount();
+        String maximumAmount = descBean.getData().getMaximum_amount();
+        if (!hint.isEmpty() && !str.isEmpty() && minimumAmount != null && maximumAmount != null) {
             int lim = Integer.parseInt(str);
-            if (lim < Integer.parseInt(minimum_amount)) {
-                etMaxLimit.setText(minimum_amount);
+            if (lim < Integer.parseInt(minimumAmount)) {
+                etMaxLimit.setText(minimumAmount);
             }
-            if (lim > Integer.parseInt(maximum_amount)) {
-                etMaxLimit.setText(maximum_amount);
+            if (lim > Integer.parseInt(maximumAmount)) {
+                etMaxLimit.setText(maximumAmount);
             }
 
             int time = Integer.parseInt(hint);
@@ -329,8 +329,8 @@ public class ProductDesc extends BaseActivity {
                                 if (error_code == 0) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
-                                    if (descBean != null) {
-                                        dateInset(descBean);
+                                    if (descBean != null&&descBean.getData()!=null) {
+                                                    dateInset(descBean);
                                     }
                                 } else if (error_code == 2) {
                                     Intent intent = new Intent(ProductDesc.this, LoginActivity.class);

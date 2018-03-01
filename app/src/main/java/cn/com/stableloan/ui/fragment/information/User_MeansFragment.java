@@ -644,9 +644,6 @@ public class User_MeansFragment extends Fragment {
         identityBean2.setContact(contact);
 
 
-        LogUtils.i("bean1===",identityBean2.toString());
-
-        LogUtils.i("identityBean===",identityBean.toString());
 
 
         if(identityBean.equals(identityBean2)){
@@ -929,9 +926,9 @@ public class User_MeansFragment extends Fragment {
             int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
             contact[0] = cursor.getString(nameFieldColumnIndex);
             //取得电话号码
-            String ContactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            String contactid = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
             Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + contactid, null, null);
 
 
             if (phone != null && phone.getCount() > 0) {
