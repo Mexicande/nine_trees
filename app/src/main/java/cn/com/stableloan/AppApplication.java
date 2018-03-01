@@ -7,17 +7,15 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
-import android.util.DisplayMetrics;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.model.HttpHeaders;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiniu.android.storage.UploadManager;
 import com.rong360.app.crawler.CrawlerManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
-import com.uuch.adlibrary.utils.DisplayUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.Utils;
+import cn.com.stableloan.view.update.AppUpdateUtils;
 
 
 /**
@@ -63,8 +61,6 @@ public class AppApplication extends Application {
     public static Handler mHandler;
     public static AppApplication sApp;
     String channel="test";
-
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -80,25 +76,28 @@ public class AppApplication extends Application {
 
         initTypeface();
         OkGo.init(this);
-        try {
-            OkGo.getInstance()
-                    .setCertificates()
-                    .debug("OkGo", Level.INFO, true)
-                    .setCacheMode(CacheMode.NO_CACHE);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         uploadManager=new UploadManager();
         instance = this;
 
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
 
-        //Bugly
-       /* Bugly.setAppChannel(this, channel);
-        Bugly.init(getApplication(), "e0e8b8baa1", false);
-        */
+        String versionName = AppUpdateUtils.getVersionName(this);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.put("channel", channel);
+        headers.put("os", versionName);
+        OkGo.init(this);
+        try {
+            OkGo.getInstance()
+                    .setCertificates()
+                    .debug("OkGo", Level.INFO, true)
+                    .setCacheMode(CacheMode.NO_CACHE)
+                    //公共header不支持中文
+                    .addCommonHeaders(headers);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
 
         //友盟
@@ -108,23 +107,10 @@ public class AppApplication extends Application {
         //只能被本应用访问
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);
 
-        Fresco.initialize(this);
-        initDisplayOpinion();
         CrawlerManager.initSDK(this);
 
     }
 
-    private void initDisplayOpinion() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        DisplayUtil.density = dm.density;
-        DisplayUtil.densityDPI = dm.densityDpi;
-        DisplayUtil.screenWidthPx = dm.widthPixels;
-        DisplayUtil.screenhightPx = dm.heightPixels;
-        DisplayUtil.screenWidthDip = DisplayUtil.px2dip(getApplicationContext(), dm.widthPixels);
-        DisplayUtil.screenHightDip = DisplayUtil.px2dip(getApplicationContext(), dm.heightPixels);
-
-
-    }
 
     private void initTypeface(){
         try {
@@ -144,9 +130,7 @@ public class AppApplication extends Application {
 
     public static String getToken(){
 
-        String token = (String) SPUtils.get(instance, "token", "1");
-
-        return token;
+        return (String) SPUtils.get(instance, "token", "1");
 
     }
 
