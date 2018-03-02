@@ -158,7 +158,6 @@ public class ProductDesc extends BaseActivity {
     private Product_DescBean descBean;
 
     private boolean shareFlag = false;
-    private KProgressHUD hud;
     private static final int COLLECTION = 2000;
     private static final int APPLY_VAIL = 1000;
     private static final int Token_Fail = 3000;
@@ -308,11 +307,6 @@ public class ProductDesc extends BaseActivity {
             params.put("token", token);
         }
         params.put("terminal", "1");
-        hud = KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait.....")
-                .setCancellable(true)
-                .show();
         final JSONObject jsonObject = new JSONObject(params);
         OkGo.post(Urls.NEW_Ip_url + Urls.product.Productdetail)
                 .tag(this)
@@ -352,14 +346,12 @@ public class ProductDesc extends BaseActivity {
                             }
 
                         }
-                        hud.dismiss();
 
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        hud.dismiss();
 
                     }
                 });
@@ -590,6 +582,8 @@ public class ProductDesc extends BaseActivity {
                                     showApplyDialog();
                                 }
                             }
+                            break;
+                        default:
                             break;
                     }
                 }

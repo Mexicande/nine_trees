@@ -50,7 +50,6 @@ public class PlatformInfoActivity extends BaseActivity {
     }
 
     private ViewDataBinding dataBinding;
-    private KProgressHUD hud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +63,6 @@ public class PlatformInfoActivity extends BaseActivity {
             LogUtils.i("PlatformInfoActivity", pid);
             HashMap<String, String> params = new HashMap<>();
             params.put("pl_id", pid);
-            hud = KProgressHUD.create(this)
-                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                    .setLabel("Please wait.....")
-                    .setCancellable(true)
-                    .show();
             final JSONObject jsonObject = new JSONObject(params);
             OkGo.post(Urls.puk_URL + Urls.product.GetSlotdetail).tag(this)
                     .upJson(jsonObject.toString())
@@ -98,13 +92,11 @@ public class PlatformInfoActivity extends BaseActivity {
 
                             }
 
-                            hud.dismiss();
                         }
 
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
-                            hud.dismiss();
 
                         }
                     });
