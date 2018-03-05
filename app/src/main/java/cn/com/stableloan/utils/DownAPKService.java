@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.lzy.okgo.request.BaseRequest;
 import java.io.File;
 import java.text.DecimalFormat;
 
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import okhttp3.Call;
 
@@ -53,7 +56,7 @@ public class DownAPKService extends Service {
         if(apkUrl !=null){
             downFile(apkUrl, apkDir);
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
     }
     /**
      * 创建路径的时候一定要用[/],不能使用[\],但是创建文件夹加文件的时候可以使用[\].
@@ -98,13 +101,23 @@ public class DownAPKService extends Service {
             public void onSuccess(File file, Call call, okhttp3.Response response) {
                 Intent installIntent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri.fromFile(new File(file.getPath()));
-                installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
                 installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    LogUtils.d("content", AppApplication.getApp().getPackageName());
+                    Uri fileUri = FileProvider.getUriForFile(DownAPKService.this,  AppApplication.getApp().getPackageName() + ".provider", file);
+                    installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    installIntent.setDataAndType(fileUri, "application/vnd.android.package-archive");
+                } else {
+                    installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
+                }
 
                 PendingIntent mPendingIntent = PendingIntent.getActivity(DownAPKService.this, 0, installIntent, 0);
                 builder.setContentText("下载完成,请点击安装");
                 builder.setContentIntent(mPendingIntent);
+                builder .setChannelId(NotificationID+"");
                 mNotificationManager.notify(NotificationID, builder.build());
+
                 stopSelf();
                 startActivity(installIntent);
                 // 下载完成之后自动弹出安装界面
@@ -124,6 +137,8 @@ public class DownAPKService extends Service {
                 builder.setContentText("正在下载,请稍后...");
                 builder.setNumber(0);
                 builder.setAutoCancel(true);
+                builder .setChannelId(NotificationID+"");
+
                 mNotificationManager.notify(NotificationID, builder.build());
             }
 
@@ -146,6 +161,7 @@ public class DownAPKService extends Service {
                     int totalS = Long.valueOf(totalSize).intValue();
                     builder.setProgress(totalS, x, false);
                     builder.setContentInfo(getPercent(x, totalS));
+
                     mNotificationManager.notify(NotificationID, builder.build());
 /*
                     System.out.println("文件下载中");

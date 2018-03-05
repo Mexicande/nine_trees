@@ -346,6 +346,11 @@ public class HtmlActivity extends BaseActivity {
         Intent intent = new Intent(this, DownAPKService.class);
         intent.putExtra("apk_url", url);
         startService(intent);
+        /*Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        startActivity(intent);*/
 
     }
 

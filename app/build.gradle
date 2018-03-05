@@ -20,7 +20,7 @@ android {
         applicationId "cn.com.stableloan"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 13
+        versionCode 12
         multiDexEnabled true
         versionName "2.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
