@@ -20,9 +20,9 @@ android {
         applicationId "cn.com.stableloan"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 12
+        versionCode 14
         multiDexEnabled true
-        versionName "2.3.1"
+        versionName "2.3.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的SO库架构
@@ -43,6 +43,9 @@ android {
 
     signingConfigs {
 
+        debug {
+
+        }
         release {
             v1SigningEnabled true
             v2SigningEnabled true

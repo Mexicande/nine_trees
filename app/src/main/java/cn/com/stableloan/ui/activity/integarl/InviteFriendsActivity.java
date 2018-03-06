@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -231,7 +232,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 contentQQ.setShareType(QQShare.SHARE_TO_QQ_TYPE_DEFAULT)
                         .setTitle("安稳钱包")
                         .setTarget_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode()+"go_home=1")
-                        .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png")
+                        .setImage_url(Urls.logoUrl)
                         .setSummary("只需身份证,无需抵押无需面审急速放款!");
                 qqManager.share(contentQQ);
                 break;
@@ -243,6 +244,9 @@ public class InviteFriendsActivity extends BaseActivity {
                 break;
             case R.id.layout_Send_Contacts:
                 getPermission(1);
+                break;
+
+            default:
                 break;
         }
     }
@@ -286,14 +290,19 @@ public class InviteFriendsActivity extends BaseActivity {
 
     private void shareWechat(int scence) {
 
-        WXShareContent contentWX = new WXShareContent();
-        contentWX.setScene(scence)
-                .setType(WXShareContent.share_type.WebPage)
-                .setWeb_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode()+"go_home=1")
-                .setTitle("安稳钱包")
-                .setDescription("只需身份证,无需抵押无需面审急速放款!")
-                .setImage_url("http://orizavg5s.bkt.clouddn.com/logo.png");
-        wxManager.share(contentWX);
+        if(friendList.getData().getInviteCode()!=null){
+            WXShareContent contentWX = new WXShareContent();
+            contentWX.setScene(scence)
+                    .setType(WXShareContent.share_type.WebPage)
+                    .setWeb_url(Urls.KEY.SHARE_INCODE + friendList.getData().getInviteCode()+"go_home=1")
+                    .setTitle("安稳钱包")
+                    .setDescription("只需身份证,无需抵押无需面审急速放款!")
+                    .setImage_url(Urls.logoUrl);
+            wxManager.share(contentWX);
+        }else {
+            ToastUtils.showToast(this,"网络不佳,请稍后再试");
+        }
+
 
 
     }
