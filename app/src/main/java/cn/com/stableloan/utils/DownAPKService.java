@@ -100,15 +100,14 @@ public class DownAPKService extends Service {
             @Override
             public void onSuccess(File file, Call call, okhttp3.Response response) {
                 Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.fromFile(new File(file.getPath()));
-                installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     LogUtils.d("content", AppApplication.getApp().getPackageName());
                     Uri fileUri = FileProvider.getUriForFile(DownAPKService.this,  AppApplication.getApp().getPackageName() + ".provider", file);
-                    installIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     installIntent.setDataAndType(fileUri, "application/vnd.android.package-archive");
                 } else {
+                    Uri uri = Uri.fromFile(new File(file.getPath()));
                     installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
                 }
 
