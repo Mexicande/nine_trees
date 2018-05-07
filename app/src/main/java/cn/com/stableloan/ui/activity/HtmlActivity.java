@@ -28,6 +28,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -43,6 +44,7 @@ import cn.com.stableloan.api.DateStatisticsUtils;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.cash.CashActivityBean;
+import cn.com.stableloan.common.Api;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
@@ -50,6 +52,7 @@ import cn.com.stableloan.model.WelfareShutBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.js.JsInteration;
 import cn.com.stableloan.utils.DownAPKService;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.NetworkUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -91,9 +94,6 @@ public class HtmlActivity extends BaseActivity {
 
     private WebView mWebView;
     private WelfareBean.DataBean welfare;
-    String path = "";
-    private File file;
-
     public static void launch(Context context) {
         context.startActivity(new Intent(context, HtmlActivity.class));
     }
@@ -108,11 +108,8 @@ public class HtmlActivity extends BaseActivity {
         mWebView.setLayoutParams(lp);
         mContainer.addView(mWebView, 0);
         initSlide();
-
         CheckInternet();
-
     }
-
 
     private void CheckInternet() {
 
@@ -329,7 +326,7 @@ public class HtmlActivity extends BaseActivity {
             }
             return true;
         } else if (url.endsWith(".apk")) {
-            downloadApk(url);
+                downloadApk(url);
             return true;
 
         } else {
@@ -346,11 +343,6 @@ public class HtmlActivity extends BaseActivity {
         Intent intent = new Intent(this, DownAPKService.class);
         intent.putExtra("apk_url", url);
         startService(intent);
-        /*Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        Uri uri = Uri.parse(url);
-        intent.setData(uri);
-        startActivity(intent);*/
 
     }
 

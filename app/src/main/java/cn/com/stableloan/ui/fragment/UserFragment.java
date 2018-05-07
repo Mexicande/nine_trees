@@ -26,7 +26,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +35,6 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.UpdateEvent;
 import cn.com.stableloan.bean.UserEvent;
 import cn.com.stableloan.model.MessageEvent;
-import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.model.UserInfromBean;
 import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
@@ -51,12 +49,9 @@ import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.ui.activity.safe.FingerActivity;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.utils.constant.Constant;
 import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;

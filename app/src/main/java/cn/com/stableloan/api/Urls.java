@@ -14,8 +14,8 @@ public interface Urls {
     String puk_URL=API+"api.shoujijiekuan.com/Home/ApiLogin/";
 
     String NEW_URL=API+"api.shoujijiekuan.com/Home/";
-
-    String HTML_URL=API+"m.anwenqianbao.com/";
+    String Html_Down_Status=NEW_Ip_url+"audit";
+            String HTML_URL=API+"m.anwenqianbao.com/";
     String logoUrl="http://p2y9on3t5.bkt.clouddn.com/iv_logo.png";
     String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
             "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
@@ -239,9 +239,6 @@ public interface Urls {
     }
     interface REQUEST_CODE{
         int PULLBLIC_CODE                                                                          =100;
-    }
-    interface DEVICE{
-        String MEIZU=                                                                               "Meizu";
     }
     interface statistics{
         String Deliver         =                                                                "deliver/countDeliver";

@@ -165,6 +165,7 @@ public class ProductDesc extends BaseActivity {
 
     private boolean flag = false;
     private FingerprintIdentify mFingerprintIdentify;
+    private int type=0;
 
 
     public static void launch(Context context) {
@@ -177,7 +178,6 @@ public class ProductDesc extends BaseActivity {
         setContentView(R.layout.activity_desc);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-
         initToolbar();
         pid = getIntent().getIntExtra("pid", 0);
         if (pid != 0) {
@@ -546,7 +546,8 @@ public class ProductDesc extends BaseActivity {
                             Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
                             if (dialog != null && dialog) {
                                 sendIO();
-                                startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+
                             } else {
                                 showApplyDialog();
                             }
@@ -577,7 +578,7 @@ public class ProductDesc extends BaseActivity {
                                 Boolean dialog2 = (Boolean) SPUtils.get(this, "dialog", false);
                                 if (dialog2 != null && dialog2) {
                                     sendIO();
-                                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                                 } else {
                                     showApplyDialog();
                                 }
@@ -605,7 +606,7 @@ public class ProductDesc extends BaseActivity {
                 descDialog.dismiss();
                 sendIO();
                 if (descBean != null) {
-                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                 }
             }
         });
@@ -676,7 +677,6 @@ public class ProductDesc extends BaseActivity {
         wxManager.share(contentWX);
 
     }
-
 
     private void CollectionProduct(final String status) {
 
@@ -813,8 +813,9 @@ public class ProductDesc extends BaseActivity {
             case Urls.REQUEST_CODE.PULLBLIC_CODE:
                 getProductDate();
                 break;
+            default:
+                break;
         }
     }
-
 
 }

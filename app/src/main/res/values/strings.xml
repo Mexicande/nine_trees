@@ -7,6 +7,7 @@
     <string name="header_pull_over">释放立即刷新</string>
     <string name="header_refreshing">加载中…</string>
     <string name="header_completed">加载中…</string>
+    <string name="error_net">网络异常</string>
 
     <string name="captcha_btn_resend">重发验证码</string>
     <string name="validate_btn_hint">获取验证码</string>
