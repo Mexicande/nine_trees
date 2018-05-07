@@ -60,7 +60,6 @@ import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.IdentityinformationActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
-import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
@@ -68,7 +67,6 @@ import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.pickerview.PickerViewUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
@@ -116,7 +114,6 @@ public class User_MeansFragment extends Fragment {
     @Bind(R.id.line_platform)
     View linePlatform;
 
-    private ACache aCache;
     private UserBean user;
 
     private String str="";
@@ -151,7 +148,6 @@ public class User_MeansFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user__means, container, false);
         ButterKnife.bind(this, view);
-        aCache = ACache.get(getActivity());
         EventBus.getDefault().register(this);
         getDate();
         mLocationClient = new LocationClient(getActivity().getApplicationContext());
@@ -291,7 +287,6 @@ public class User_MeansFragment extends Fragment {
                             Identity identity = gson.fromJson(s, Identity.class);
                             if (identity.getError_code() == 0) {
                                 if (("1").equals(identity.getData().getIsSuccess())) {
-                                    if (("1").equals(identity.getData().getStatus())) {
                                         str=s;
                                         identityBean = identity.getData().getIdentity();
                                         APP_CODE=identity.getData().getApp_code();
@@ -346,20 +341,6 @@ public class User_MeansFragment extends Fragment {
 
                                             }
                                         }
-                                    } else {
-
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                        startActivity(intent);
-
-                                      /*  if (gesturePassword == null || "".equals(gesturePassword)) {
-                                            Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "UserInformation");
-                                            startActivity(intent);
-                                        } else {
-                                            Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "UserInformation");
-                                            startActivity(intent);
-                                        }*/
-
-                                    }
                                 }
                             } else if (identity.getError_code() == 2) {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);

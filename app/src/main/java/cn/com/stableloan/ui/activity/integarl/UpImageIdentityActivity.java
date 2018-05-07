@@ -52,17 +52,11 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ImageDataBean;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.PicStatusEvent;
-import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.PictureActivity;
-import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.cache.ACache;
 import okhttp3.Call;
 import okhttp3.Response;
 

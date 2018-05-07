@@ -8,6 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -47,12 +48,10 @@ import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Product_DescBean;
-import cn.com.stableloan.ui.activity.safe.FingerActivity;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
 import cn.com.stableloan.view.RecyclerViewDecoration;
@@ -164,8 +163,6 @@ public class ProductDesc extends BaseActivity {
 
 
     private boolean flag = false;
-    private FingerprintIdentify mFingerprintIdentify;
-    private int type=0;
 
 
     public static void launch(Context context) {
@@ -194,12 +191,6 @@ public class ProductDesc extends BaseActivity {
      */
     private void setListener() {
 
-        outView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-
-            }
-        });
 
         TPManager.getInstance().initAppConfig(Urls.KEY.WEICHAT_APPID, null, null, null);
         wxManager = new WXManager(this);
@@ -535,57 +526,15 @@ public class ProductDesc extends BaseActivity {
                 startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
                 break;
             case R.id.apply:
-                String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-                if (token == null || "1".equals(token)) {
+                String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, null);
+                if (TextUtils.isEmpty(token)) {
                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "DescError"), Token_Fail);
                 } else {
-                    String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
-                    int apply = (int) SPUtils.get(this, userphone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
-                    switch (apply) {
-                        case Urls.lock.NO_VERIFICATION:
-                            Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                            if (dialog != null && dialog) {
-                                sendIO();
-                                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-
-                            } else {
-                                showApplyDialog();
-                            }
-                            break;
-                        case Urls.lock.PW_VERIFICATION:
-                            Intent intent = new Intent(this, Verify_PasswordActivity.class);
-                            intent.putExtra("from", "apply");
-                            startActivityForResult(intent, APPLY_VAIL);
-                            break;
-                        case Urls.lock.GESTURE_VERIFICATION:
-                            Intent intent1 = new Intent(this, GestureLoginActivity.class);
-                            intent1.putExtra("from", "apply");
-                            intent1.putExtra("product", descBean);
-                            startActivityForResult(intent1, APPLY_VAIL);
-                            break;
-                        case Urls.lock.GESTURE_FINGER:
-                            mFingerprintIdentify = new FingerprintIdentify(this);
-                            //硬件设备是否已录入指纹
-                            boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
-                            //指纹功能是否可用
-                            boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                            if (registeredFingerprint && fingerprintEnable) {
-                                Intent fingerintent = new Intent(this, FingerActivity.class);
-                                fingerintent.putExtra("from", "apply");
-                                fingerintent.putExtra("product", descBean);
-                                startActivityForResult(fingerintent, APPLY_VAIL);
-                            } else {
-                                Boolean dialog2 = (Boolean) SPUtils.get(this, "dialog", false);
-                                if (dialog2 != null && dialog2) {
-                                    sendIO();
-                                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-                                } else {
-                                    showApplyDialog();
-                                }
-                            }
-                            break;
-                        default:
-                            break;
+                    Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
+                    if (dialog != null && dialog) {
+                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                    } else {
+                        showApplyDialog();
                     }
                 }
                 break;
@@ -600,14 +549,10 @@ public class ProductDesc extends BaseActivity {
     private void showApplyDialog() {
         descDialog = new DescDialog(this);
         descDialog.setMessage("确定退出登陆?");
-        descDialog.setYesOnclickListener("确定", new DescDialog.onYesOnclickListener() {
-            @Override
-            public void onYesClick() {
-                descDialog.dismiss();
-                sendIO();
-                if (descBean != null) {
-                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-                }
+        descDialog.setYesOnclickListener("确定", () -> {
+            descDialog.dismiss();
+            if (descBean != null) {
+                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
             }
         });
 
@@ -626,36 +571,39 @@ public class ProductDesc extends BaseActivity {
         }
         TopRightMenu mTopRightMenu = new TopRightMenu(this,R.layout.trm_item_popup_menu_list);
         mTopRightMenu
-                .showIcon(true)     //显示菜单图标，默认为true
-                .dimBackground(true)           //背景变暗，默认为true
-                .needAnimationStyle(true)   //显示动画，默认为true
-                .setAnimationStyle(R.style.TRM_ANIM_STYLE)  //默认为R.style.TRM_ANIM_STYLE
+                .showIcon(true)
+                //显示菜单图标，默认为true
+                .dimBackground(true)
+                //背景变暗，默认为true
+                .needAnimationStyle(true)
+                //显示动画，默认为true
+                .setAnimationStyle(R.style.TRM_ANIM_STYLE)
+                //默认为R.style.TRM_ANIM_STYLE
                 .addMenuList(menuItems)
-                .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
-                    @Override
-                    public void onMenuItemClick(int position) {
-                        switch (position) {
-                            case 0:
-                                shareWechat(WXShareContent.WXSession);
-                                break;
-                            case 1:
-                                shareWechat(WXShareContent.WXTimeline);
-                                break;
-                            case 2:
-                                String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-                                if (token == null || "1".equals(token)) {
-                                    startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
+                .setOnMenuItemClickListener(position -> {
+                    switch (position) {
+                        case 0:
+                            shareWechat(WXShareContent.WXSession);
+                            break;
+                        case 1:
+                            shareWechat(WXShareContent.WXTimeline);
+                            break;
+                        case 2:
+                            String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
+                            if (token == null || "1".equals(token)) {
+                                startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
+                            } else {
+                                if (shareFlag) {
+                                    CollectionProduct("2");
                                 } else {
-                                    if (shareFlag) {
-                                        CollectionProduct("2");
-                                    } else {
-                                        CollectionProduct("1");
-                                    }
+                                    CollectionProduct("1");
                                 }
-                                break;
-                        }
-
+                            }
+                            break;
+                        default:
+                            break;
                     }
+
                 })
                 .showAsDropDown(btShare, -245, 0);
 
@@ -678,6 +626,10 @@ public class ProductDesc extends BaseActivity {
 
     }
 
+    /**
+     * 收藏
+     * @param status
+     */
     private void CollectionProduct(final String status) {
 
         String token = (String) SPUtils.get(this, "token", "1");
@@ -735,17 +687,6 @@ public class ProductDesc extends BaseActivity {
 
     }
 
-    private void sendIO() {
-     /*   JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("产品名称", descBean.getData().getPname());
-            ZhugeSDK.getInstance().track(getApplicationContext(), "立即申请",
-                    eventObject);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-    }
 
     @Subscribe
     public void updateEvent(DescEvent msg) {
@@ -782,7 +723,6 @@ public class ProductDesc extends BaseActivity {
                         } else {
                             ToastUtils.showToast(this, "已经收藏过了");
                         }
-                        // startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                     }
                 }
                 break;
@@ -792,7 +732,6 @@ public class ProductDesc extends BaseActivity {
                     if ("ok".equals(ok)) {
                         Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
                         if (dialog != null && dialog) {
-                            sendIO();
                             startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
                         } else {
                             showApplyDialog();

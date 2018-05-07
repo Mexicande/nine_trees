@@ -5,19 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.mancj.slideup.SlideUp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,17 +31,10 @@ import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
-import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
-import cn.com.stableloan.ui.activity.settingdate.SwitchPassWordActivity;
-import cn.com.stableloan.ui.fragment.dialogfragment.FingerFragment;
-import cn.com.stableloan.ui.fragment.dialogfragment.SettingFingerFragment;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
-import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.WaitTimeUtils;
-import cn.com.stableloan.utils.cache.ACache;
-import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 import cn.com.stableloan.view.dialog.SelfDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -55,9 +42,10 @@ import okhttp3.Response;
 
 /**
  * 安全设置
+ * @author apple
  */
 
-public class SafeSettingActivity extends BaseActivity implements FingerFragment.FragmentListener, SettingFingerFragment.FragmentListener {
+public class SafeSettingActivity extends BaseActivity   {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -65,16 +53,6 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
     ImageView ivBack;
     @Bind(R.id.st_VersionCode)
     SuperTextView stVersionCode;
-    @Bind(R.id.sv_ChangePW)
-    SuperTextView svChangePW;
-    @Bind(R.id.sv_ChangeGesture)
-    SuperTextView svChangeGesture;
-    @Bind(R.id.sv_UnLockLogin)
-    SuperTextView svUnLockLogin;
-    @Bind(R.id.sv_UnLockApply)
-    SuperTextView svUnLockApply;
-    @Bind(R.id.sv_UnLockCat)
-    SuperTextView svUnLockCat;
     @Bind(R.id.sv_Terminal)
     SuperTextView svTerminal;
     @Bind(R.id.sv_DateTime)
@@ -83,61 +61,12 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
     SuperTextView svSafeNurse;
     @Bind(R.id.sv_QuitLogin)
     SuperTextView svQuitLogin;
-    @Bind(R.id.cat_SlideImage)
-    RelativeLayout catSlideImage;
-    @Bind(R.id.RB_NO)
-    RadioButton RBNO;
-    @Bind(R.id.RB_PW)
-    RadioButton RBPW;
-    @Bind(R.id.RB_GE)
-    RadioButton RBGE;
-    @Bind(R.id.slide_title)
-    TextView slideTitle;
-    @Bind(R.id.apply_title)
-    TextView applyTitle;
-    @Bind(R.id.apply_NO)
-    RadioButton applyNO;
-    @Bind(R.id.apply_PW)
-    RadioButton applyPW;
-    @Bind(R.id.apply_GE)
-    RadioButton applyGE;
-    @Bind(R.id.apply_ViewImage)
-    LinearLayout applyViewImage;
-    @Bind(R.id.login_NO)
-    RadioButton loginNO;
-    @Bind(R.id.login_PW)
-    RadioButton loginPW;
-    @Bind(R.id.login_GE)
-    RadioButton loginGE;
-    @Bind(R.id.login_ViewImage)
-    LinearLayout loginViewImage;
-    @Bind(R.id.login_SlideImage)
-    RelativeLayout loginSlideImage;
-    @Bind(R.id.apply_SlideImage)
-    RelativeLayout applySlideImage;
-    @Bind(R.id.login_Finder)
-    RadioButton loginFinder;
-    @Bind(R.id.RB_Finder)
-    RadioButton RBFinder;
-    @Bind(R.id.apply_Finder)
-    RadioButton applyFinder;
-    /*@Bind(R.id.st_fingerprint)
-    SuperTextView stFingerprint;*/
     private SaveBean saveBean;
     private String[] managedList;
     private Context mContext;
-    private ACache aCache;
-    private UserBean user;
-    private SlideUp cat_SlideUp;
-    private SlideUp apply_SlideUp;
-    private SlideUp login_SlideUp;
-    private TinyDB tinyDB;
-    private String userPhone;
     private static final int REQUEST_CODE = 110;
     private static final int TOKEN_FAIL = 120;
-    private FingerprintIdentify mFingerprintIdentify;
 
-    private SettingFingerFragment mSettingFingerFragment;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeSettingActivity.class));
@@ -149,7 +78,6 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
         setContentView(R.layout.activity_safe_setting_activty);
         ButterKnife.bind(this);
         mContext = this;
-        aCache = ACache.get(this);
         initToolbar();
         initDate();
         getDate();
@@ -159,75 +87,13 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
 
     private void initToolbar() {
 
-
         titleName.setText("安全设置");
-        mFingerprintIdentify = new FingerprintIdentify(this);
-      /*  mFingerprintIdentify = new FingerprintIdentify(this);
 
-        boolean hardwareEnable = mFingerprintIdentify.isHardwareEnable();
-        if(hardwareEnable){
-            stFingerprint.setVisibility(View.VISIBLE);
-        }*/
-
-
-        cat_SlideUp = new SlideUp.Builder(catSlideImage)
-                .withListeners(new SlideUp.Listener.Slide() {
-                    @Override
-                    public void onSlide(float percent) {
-                    }
-                })
-                .withStartGravity(Gravity.BOTTOM)
-                .withLoggingEnabled(true)
-                .withStartState(SlideUp.State.HIDDEN)
-                .build();
-        apply_SlideUp = new SlideUp.Builder(applySlideImage)
-                .withListeners(new SlideUp.Listener.Slide() {
-                    @Override
-                    public void onSlide(float percent) {
-                    }
-                })
-                .withStartGravity(Gravity.BOTTOM)
-                .withLoggingEnabled(true)
-                .withStartState(SlideUp.State.HIDDEN)
-                .build();
-        login_SlideUp = new SlideUp.Builder(loginSlideImage)
-                .withListeners(new SlideUp.Listener.Slide() {
-                    @Override
-                    public void onSlide(float percent) {
-                    }
-                })
-                .withStartGravity(Gravity.BOTTOM)
-                .withLoggingEnabled(true)
-                .withStartState(SlideUp.State.HIDDEN)
-                .build();
-
-/*
-        RBNO.setChecked(true);
-*/
 
     }
 
     private void setListener() {
-      /*  stFingerprint.setSwitchCheckedChangeListener(new SuperTextView.OnSwitchCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
-                    if(!registeredFingerprint){
-                        openFingerPrintSettingPage();
-                    }else {
-                        if(mFingerFragment==null){
-                            mFingerFragment=new FingerFragment();
-                        }
-                        Bundle bundle=new Bundle();
-                        bundle.putString("from","safe");
-                        mFingerFragment.setArguments(bundle);
-                        mFingerFragment.show(getSupportFragmentManager(),"LoginDialogFragment");
-                        SPUtils.put(SafeSettingActivity.this, userPhone + Urls.lock.LOGIN, Urls.lock.GESTURE_FINGER);
-                    }
-                }
-            }
-        });*/
+
 
         svDateTime.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
@@ -242,39 +108,8 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
             }
         });
 
-        svQuitLogin.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                exit();
-            }
-        });
-        svTerminal.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                DeviceActivity.launch(SafeSettingActivity.this);
-            }
-        });
-        //修改密码
-        svChangePW.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                AppApplication.addDestoryActivity(SafeSettingActivity.this, "SafeSetting");
-
-                startActivity(new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class).putExtra("from", "updatePassword"));
-
-            }
-        });
-        /**
-         * 手势密码
-         */
-        svChangeGesture.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                //SwitchPassWordActivity.launch(mContext);
-                startActivityForResult(new Intent(mContext, SwitchPassWordActivity.class), REQUEST_CODE);
-
-            }
-        });
+        svQuitLogin.setOnSuperTextViewClickListener(superTextView -> exit());
+        svTerminal.setOnSuperTextViewClickListener(superTextView -> DeviceActivity.launch(SafeSettingActivity.this));
         //贴心小护士
         svSafeNurse.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
@@ -283,63 +118,10 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
             }
         });
 
-        //资料查看
-        svUnLockCat.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                cat_SlideUp.show();
-
-            }
-        });
-        //登陆方式
-        svUnLockLogin.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                login_SlideUp.show();
-            }
-        });
-        //申请方式
-        svUnLockApply.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
-            @Override
-            public void onClickListener(SuperTextView superTextView) {
-                apply_SlideUp.show();
-            }
-        });
-
-        login_SlideUp.addSlideListener(new SlideUp.Listener.Events() {
-            @Override
-            public void onSlide(float percent) {
-
-            }
-
-            @Override
-            public void onVisibilityChanged(int visibility) {
-
-                if (visibility == View.VISIBLE) {
-                    boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                    if (!fingerprintEnable) {
-                        setLogin_Mode();
-                    }
-                }
-            }
-        });
-    }
-
-
-    /**
-     * 跳转至设置指纹
-     *
-     * @param
-     */
-    private void openFingerPrintSettingPage() {
-
-        if (mSettingFingerFragment == null) {
-            mSettingFingerFragment = new SettingFingerFragment();
-        }
-        mSettingFingerFragment.show(getSupportFragmentManager(), "LoginDialogFragment");
-
 
     }
+
+
 
     private void initDate() {
         String versionName = getVersionCode(this);
@@ -361,149 +143,6 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
     }
 
     private void getDate() {
-
-        boolean registeredFingerprint = mFingerprintIdentify.isHardwareEnable();
-        if (registeredFingerprint) {
-            loginFinder.setVisibility(View.VISIBLE);
-            RBFinder.setVisibility(View.VISIBLE);
-            applyFinder.setVisibility(View.VISIBLE);
-        } else {
-            loginFinder.setVisibility(View.GONE);
-            RBFinder.setVisibility(View.GONE);
-            applyFinder.setVisibility(View.GONE);
-        }
-
-       /* boolean registeredFingerprint1 = mFingerprintIdentify.isRegisteredFingerprint();
-        if(registeredFingerprint1){
-            loginFinder.setEnabled(true);
-        }else {
-            loginFinder.setEnabled(false);
-        }*/
-
-
-        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
-
-        tinyDB = new TinyDB(this);
-
-        user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-
-        userPhone = user.getUserphone();
-
-        String gesturePassword = aCache.getAsString(userphone);
-
-        if (gesturePassword != null) {
-            RBGE.setEnabled(true);
-            loginGE.setEnabled(true);
-            applyGE.setEnabled(true);
-        } else {
-            RBGE.setEnabled(false);
-            applyGE.setEnabled(false);
-            loginGE.setEnabled(false);
-        }
-        int cat = (int) SPUtils.get(this, userPhone + Urls.lock.CAT, 0);
-
-        switch (cat) {
-            case Urls.lock.NO_VERIFICATION:
-                svUnLockCat.setRightString("无验证");
-                RBNO.setChecked(true);
-                break;
-            case Urls.lock.PW_VERIFICATION:
-                svUnLockCat.setRightString("密码验证");
-                RBPW.setChecked(true);
-                break;
-            case Urls.lock.GESTURE_VERIFICATION:
-                svUnLockCat.setRightString("手势验证");
-                if (gesturePassword == null) {
-                    RBGE.setEnabled(false);
-                } else {
-                    RBGE.setChecked(true);
-                }
-                break;
-            case Urls.lock.GESTURE_FINGER:
-                boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                if (fingerprintEnable) {
-                    svUnLockCat.setRightString("指纹验证");
-                    RBFinder.setChecked(true);
-                } else {
-                    svUnLockCat.setRightString("无验证");
-                    RBNO.setChecked(true);
-                }
-                //  stFingerprint.setSwitchIsChecked(true);
-                break;
-        }
-        int apply = (int) SPUtils.get(this, userPhone + Urls.lock.APPLY, 0);
-        switch (apply) {
-            case Urls.lock.NO_VERIFICATION:
-                svUnLockApply.setRightString("无验证");
-                applyNO.setChecked(true);
-                break;
-            case Urls.lock.PW_VERIFICATION:
-                svUnLockApply.setRightString("密码验证");
-                applyPW.setChecked(true);
-                break;
-            case Urls.lock.GESTURE_VERIFICATION:
-                svUnLockApply.setRightString("手势验证");
-                if (gesturePassword == null) {
-                    applyGE.setEnabled(false);
-                } else {
-                    applyGE.setChecked(true);
-                }
-                break;
-            case Urls.lock.GESTURE_FINGER:
-
-                boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                if (fingerprintEnable) {
-                    svUnLockApply.setRightString("指纹验证");
-                    applyFinder.setChecked(true);
-                } else {
-                    svUnLockApply.setRightString("无验证");
-                    applyNO.setChecked(true);
-                }
-                //  stFingerprint.setSwitchIsChecked(true);
-                break;
-        }
-        int login = (int) SPUtils.get(this, userPhone + Urls.lock.LOGIN, 6);
-        switch (login) {
-            case Urls.lock.NO_VERIFICATION:
-                svUnLockLogin.setRightString("无验证");
-                loginNO.setChecked(true);
-                //stFingerprint.setSwitchIsChecked(false);
-
-                break;
-            case Urls.lock.PW_VERIFICATION:
-                svUnLockLogin.setRightString("密码验证");
-                loginPW.setChecked(true);
-                // stFingerprint.setSwitchIsChecked(false);
-                break;
-            case Urls.lock.GESTURE_VERIFICATION:
-                svUnLockLogin.setRightString("手势验证");
-                if (gesturePassword == null) {
-                    loginGE.setEnabled(false);
-                } else {
-                    loginGE.setChecked(true);
-                }
-                //  stFingerprint.setSwitchIsChecked(false);
-                break;
-            case Urls.lock.GESTURE_FINGER:
-
-                boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                if (fingerprintEnable) {
-                    svUnLockLogin.setRightString("指纹验证");
-                    loginFinder.setChecked(true);
-                } else {
-                    svUnLockLogin.setRightString("密码验证");
-                    loginPW.setChecked(true);
-                }
-                //  stFingerprint.setSwitchIsChecked(true);
-                break;
-        }
-
-
-        if (gesturePassword != null && !"".equals(gesturePassword)) {
-            svChangeGesture.setRightString("已设置");
-        } else {
-            svChangeGesture.setRightString("未设置");
-        }
 
 
         String token = (String) SPUtils.get(this, "token", "1");
@@ -542,10 +181,6 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
                                         svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
                                     }
                                 }
-                            } else if ("3".equals(isSuccess)) {
-                                Intent intent = new Intent(SafeSettingActivity.this, Verify_PasswordActivity.class);
-                                intent.putExtra("from", "attestation");
-                                startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -563,21 +198,13 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
 
 
         selfDialog = new SelfDialog(this);
-        selfDialog.setYesOnclickListener("确定", new SelfDialog.onYesOnclickListener() {
-            @Override
-            public void onYesClick() {
-                selfDialog.dismiss();
-                SPUtils.remove(mContext, Urls.lock.TOKEN);
-                startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
-                finish();
-            }
+        selfDialog.setYesOnclickListener("确定", () -> {
+            selfDialog.dismiss();
+            SPUtils.remove(mContext, Urls.lock.TOKEN);
+            startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
+            finish();
         });
-        selfDialog.setNoOnclickListener("取消", new SelfDialog.onNoOnclickListener() {
-            @Override
-            public void onNoClick() {
-                selfDialog.dismiss();
-            }
-        });
+        selfDialog.setNoOnclickListener("取消", () -> selfDialog.dismiss());
         selfDialog.show();
     }
 
@@ -590,47 +217,14 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
                 case Urls.SettingResultCode.SAFE_DATE:
                     getDate();
                     break;
-                case 100:
-                    int lock = data.getIntExtra("lock", 0);
-                    if (lock == 1) {
-                        svChangeGesture.setRightString("未设置");
-                        if (RBGE.isChecked()) {
-                            RBGE.setChecked(false);
-                            RBNO.setChecked(true);
-                            svUnLockCat.setRightString("无验证");
-
-                        }
-                        if (loginGE.isChecked()) {
-                            loginGE.setChecked(false);
-                            loginPW.setChecked(true);
-                            //stFingerprint.setSwitchIsChecked(false);
-
-                            svUnLockLogin.setRightString("密码验证");
-                        }
-                        if (applyGE.isChecked()) {
-                            applyGE.setChecked(false);
-                            applyNO.setChecked(true);
-                            svUnLockApply.setRightString("无验证");
-                        }
-                        RBGE.setEnabled(false);
-                        loginGE.setEnabled(false);
-                        applyGE.setEnabled(false);
-                    } else if (lock == 2) {
-                        svChangeGesture.setRightString("已设置");
-                        RBGE.setEnabled(true);
-                        loginGE.setEnabled(true);
-                        //stFingerprint.setSwitchIsChecked(false);
-
-                        applyGE.setEnabled(true);
-                    }
-                    break;
                 case TOKEN_FAIL:
                     int token = data.getIntExtra(Urls.TOKEN, 0);
                     if (token == 1) {
                         getDate();
                     }
-
                     break;
+                 default:
+                     break;
 
 
             }
@@ -640,249 +234,20 @@ public class SafeSettingActivity extends BaseActivity implements FingerFragment.
         }
     }
 
-    @OnClick({R.id.RB_NO, R.id.RB_PW, R.id.RB_GE, R.id.login_Finder, R.id.image_Visiable
-            , R.id.iv_back, R.id.Apply_Visiable, R.id.login_NO, R.id.login_PW,
-            R.id.login_GE, R.id.login_image_Visiable, R.id.apply_NO, R.id.apply_PW,
-            R.id.apply_GE, R.id.apply_ViewImage,R.id.apply_Finder,R.id.RB_Finder})
+    @OnClick({
+             R.id.iv_back
+            })
     public void onViewClicked(View view) {
-        mFingerprintIdentify = new FingerprintIdentify(this);
-
-        boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
-
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            //查看个人资料
-            case R.id.RB_NO:
-                SPUtils.put(this, userPhone + Urls.lock.CAT, Urls.lock.NO_VERIFICATION);
-                svUnLockCat.setRightString("无验证");
-                cat_SlideUp.hide();
-                break;
-            case R.id.RB_PW:
-                SPUtils.put(this, userPhone + Urls.lock.CAT, Urls.lock.PW_VERIFICATION);
-                svUnLockCat.setRightString("密码验证");
-                cat_SlideUp.hide();
-                break;
-            case R.id.RB_GE:
-                String gesturePassword = aCache.getAsString(userPhone);
-                if (gesturePassword == null) {
-                    ToastUtils.showToast(this, "请先设置手势密码");
-                } else {
-                    SPUtils.put(this, userPhone + Urls.lock.CAT, Urls.lock.GESTURE_VERIFICATION);
-                    svUnLockCat.setRightString("手势验证");
-                    cat_SlideUp.hide();
-                }
-                break;
-            case R.id.RB_Finder:
-
-                if (registeredFingerprint) {
-                    SPUtils.put(this, userPhone + Urls.lock.CAT, Urls.lock.GESTURE_FINGER);
-                    svUnLockCat.setRightString("指纹验证");
-                } else {
-                    openFingerPrintSettingPage();
-                }
-                cat_SlideUp.hide();
-
-                break;
-            case R.id.image_Visiable:
-                cat_SlideUp.hide();
-                break;
-            case R.id.apply_NO:
-                SPUtils.put(this, userPhone + Urls.lock.APPLY, Urls.lock.NO_VERIFICATION);
-                svUnLockApply.setRightString("无验证");
-                apply_SlideUp.hide();
-
-                break;
-            case R.id.apply_PW:
-                SPUtils.put(this, userPhone + Urls.lock.APPLY, Urls.lock.PW_VERIFICATION);
-                svUnLockApply.setRightString("密码验证");
-                apply_SlideUp.hide();
-                break;
-            case R.id.apply_GE:
-                String gesturePassword2 = aCache.getAsString(userPhone);
-                if (gesturePassword2 == null) {
-                    ToastUtils.showToast(this, "请先设置手势密码");
-                } else {
-                    SPUtils.put(this, userPhone + Urls.lock.APPLY, Urls.lock.GESTURE_VERIFICATION);
-                    svUnLockApply.setRightString("手势验证");
-                    apply_SlideUp.hide();
-                }
-
-                break;
-            case R.id.apply_Finder:
-                if (registeredFingerprint) {
-                    SPUtils.put(this, userPhone + Urls.lock.APPLY, Urls.lock.GESTURE_FINGER);
-                    svUnLockApply.setRightString("指纹验证");
-                } else {
-                    openFingerPrintSettingPage();
-                }
-                apply_SlideUp.hide();
-                break;
-            case R.id.Apply_Visiable:
-                apply_SlideUp.hide();
-                break;
-            case R.id.login_NO:
-                SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.NO_VERIFICATION);
-                svUnLockLogin.setRightString("无验证");
-                //stFingerprint.setSwitchIsChecked(false);
-
-                login_SlideUp.hide();
-
-                break;
-            case R.id.login_PW:
-                SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.PW_VERIFICATION);
-                svUnLockLogin.setRightString("密码验证");
-                //stFingerprint.setSwitchIsChecked(false);
-
-                login_SlideUp.hide();
-                break;
-            case R.id.login_GE:
-                String gesturePassword3 = aCache.getAsString(userPhone);
-                if (gesturePassword3 == null) {
-                    ToastUtils.showToast(this, "请先设置手势密码");
-                } else {
-                    SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.GESTURE_VERIFICATION);
-                    svUnLockLogin.setRightString("手势验证");
-                    //stFingerprint.setSwitchIsChecked(false);
-                    login_SlideUp.hide();
-                }
-
-                break;
-            case R.id.login_Finder:
-                if (registeredFingerprint) {
-                    SPUtils.put(this, userPhone + Urls.lock.LOGIN, Urls.lock.GESTURE_FINGER);
-                    svUnLockLogin.setRightString("指纹验证");
-                } else {
-                    openFingerPrintSettingPage();
-                }
-                login_SlideUp.hide();
-
-                break;
-
-
-            case R.id.login_image_Visiable:
-                login_SlideUp.hide();
+            default:
                 break;
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (cat_SlideUp.isVisible()) {
-            cat_SlideUp.hide();
-        } else if (apply_SlideUp.isVisible()) {
-            apply_SlideUp.hide();
-        } else if (login_SlideUp.isVisible()) {
-            login_SlideUp.hide();
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
-        return false;
-    }
 
-
-    @Override
-    public void verify(int type) {
-        if (type == 1) {
-            //stFingerprint.setSwitchIsChecked(false);
-        }
-    }
-
-    @Override
-    public void setting() {
-        setLogin_Mode();
-    }
-
-    private void setLogin_Mode() {
-        int login = (int) SPUtils.get(this, userPhone + Urls.lock.LOGIN, 6);
-        switch (login) {
-            case Urls.lock.NO_VERIFICATION:
-                svUnLockLogin.setRightString("无验证");
-                loginNO.setChecked(true);
-                //stFingerprint.setSwitchIsChecked(false);
-                break;
-            case Urls.lock.PW_VERIFICATION:
-                svUnLockLogin.setRightString("密码验证");
-                loginPW.setChecked(true);
-                // stFingerprint.setSwitchIsChecked(false);
-                break;
-            case Urls.lock.GESTURE_VERIFICATION:
-                String gesturePassword4 = aCache.getAsString(userPhone);
-                svUnLockLogin.setRightString("手势验证");
-                if (gesturePassword4 == null) {
-                    loginGE.setEnabled(false);
-                } else {
-                    loginGE.setChecked(true);
-                }
-                break;
-        }
-
-        userPhone = user.getUserphone();
-
-        String gesturePassword = aCache.getAsString(userPhone);
-
-        int cat = (int) SPUtils.get(this, userPhone + Urls.lock.CAT, 0);
-
-        switch (cat) {
-            case Urls.lock.NO_VERIFICATION:
-                svUnLockCat.setRightString("无验证");
-                RBNO.setChecked(true);
-                break;
-            case Urls.lock.PW_VERIFICATION:
-                svUnLockCat.setRightString("密码验证");
-                RBPW.setChecked(true);
-                break;
-            case Urls.lock.GESTURE_VERIFICATION:
-                svUnLockCat.setRightString("手势验证");
-                if (gesturePassword == null) {
-                    RBGE.setEnabled(false);
-                } else {
-                    RBGE.setChecked(true);
-                }
-                break;
-            case Urls.lock.GESTURE_FINGER:
-                boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                if (fingerprintEnable) {
-                    svUnLockCat.setRightString("指纹验证");
-                    RBFinder.setChecked(true);
-                } else {
-                    svUnLockCat.setRightString("无验证");
-                    RBNO.setChecked(true);
-                }
-                break;
-        }
-        int apply = (int) SPUtils.get(this, userPhone + Urls.lock.APPLY, 0);
-        switch (apply) {
-            case Urls.lock.NO_VERIFICATION:
-                svUnLockApply.setRightString("无验证");
-                applyNO.setChecked(true);
-                break;
-            case Urls.lock.PW_VERIFICATION:
-                svUnLockApply.setRightString("密码验证");
-                applyPW.setChecked(true);
-                break;
-            case Urls.lock.GESTURE_VERIFICATION:
-                svUnLockApply.setRightString("手势验证");
-                if (gesturePassword == null) {
-                    applyGE.setEnabled(false);
-                } else {
-                    applyGE.setChecked(true);
-                }
-                break;
-            case Urls.lock.GESTURE_FINGER:
-
-                boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                if (fingerprintEnable) {
-                    svUnLockApply.setRightString("指纹验证");
-                    applyFinder.setChecked(true);
-                } else {
-                    svUnLockApply.setRightString("无验证");
-                    applyNO.setChecked(true);
-                }
-                break;
-        }
-    }
 
 }
 

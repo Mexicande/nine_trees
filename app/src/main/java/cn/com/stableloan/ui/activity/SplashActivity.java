@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 
@@ -14,15 +15,15 @@ import com.umeng.analytics.MobclickAgent;
 import java.lang.ref.WeakReference;
 
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.ui.activity.safe.FingerActivity;
+import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
-import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 
 
 /**
  * 闪屏页
  *
+ * @author apple
  */
 public class SplashActivity extends AppCompatActivity {
 
@@ -48,7 +49,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private static class SwitchHandler extends Handler {
-        private FingerprintIdentify mFingerprintIdentify;
 
         private WeakReference<SplashActivity> mWeakReference;
 
@@ -61,46 +61,7 @@ public class SplashActivity extends AppCompatActivity {
             if (activity != null) {
                 switch (msg.what) {
                     case 1:
-                        String userphone = (String) SPUtils.get(activity, Urls.lock.USER_PHONE, "1");
-                        String token = (String) SPUtils.get(activity, Urls.lock.TOKEN, "0");
-                        if (token == null || "0".equals(token)) {
-                            MainActivity.launch(activity);
-                            activity.finish();
-                        } else {
-                            int loginCode = (int) SPUtils.get(activity, userphone + Urls.lock.LOGIN, 5);
-
-                            switch (loginCode) {
-                                case Urls.lock.PW_VERIFICATION:
-                                    activity.startActivity(new Intent(activity, Verify_PasswordActivity.class).putExtra("from", "splash"));
-                                    activity.finish();
-                                    break;
-                                case Urls.lock.GESTURE_VERIFICATION:
-                                    activity.startActivity(new Intent(activity, GestureLoginActivity.class).putExtra("from", "splash"));
-                                    activity.finish();
-                                    break;
-                                case Urls.lock.GESTURE_FINGER:
-                                    mFingerprintIdentify = new FingerprintIdentify(activity);
-
-                                    //硬件设备是否已录入指纹
-                                    boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
-                                    //指纹功能是否可用
-                                    boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                                    if (registeredFingerprint && fingerprintEnable) {
-                                        Intent intent=new Intent(activity,FingerActivity.class);
-                                        intent.putExtra("from","splash");
-                                        activity.startActivity(intent);
-                                        activity.finish();
-                                    } else {
-                                        activity.startActivity(new Intent(activity, Verify_PasswordActivity.class).putExtra("from", "splash"));
-                                        activity.finish();
-                                    }
-                                    break;
-                                default:
-                                    MainActivity.launch(activity);
-                                    activity.finish();
-                                    break;
-                            }
-                        }
+                        ActivityUtils.startActivity(MainActivity.class);
                         break;
                     default:
                         break;

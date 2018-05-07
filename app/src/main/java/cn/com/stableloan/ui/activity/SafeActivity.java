@@ -85,14 +85,6 @@ public class SafeActivity extends BaseActivity {
         setLisenter();
     }
 
-   /* @Subscribe
-    public void onMessageEvent(MsgEvent event) {
-        if (event.msg != null && "ok".equals(event.msg)) {
-            lock.setText(list[0]);
-        } else if (event.msg == null) {
-            lock.setText(list[1]);
-        }
-    }*/
 
 
     private void setLisenter() {
@@ -141,7 +133,6 @@ public class SafeActivity extends BaseActivity {
     }
 
     private void setTimes(int times) {
-        LogUtils.i("time----", list1[times]);
             settingTime(times);
 
     }
@@ -191,17 +182,6 @@ public class SafeActivity extends BaseActivity {
         String of = String.valueOf(l2 + ls);
         String date = stampToDate(of);
         Save(index, date);
-       /* if (l2 > l1) {
-            String of = String.valueOf(l2 + ls);
-            String date = stampToDate(of);
-            Save(index, date);
-        } else {
-            String of = String.valueOf(l2 + ls);
-            String date = stampToDate(of);
-            saveBean.setPeriod(date);
-            tv_time.setText("当前档案将于 "+date+" 日后自动清除");
-            Save(index, date);
-        }*/
     }
 
 
@@ -255,9 +235,6 @@ public class SafeActivity extends BaseActivity {
                             String isSuccess = object.getString("isSuccess");
                             String msg = object.getString("msg");
                             if ("1".equals(isSuccess)) {
-                                //period=date;
-                              /*  saveBean.setPeriod(date);
-                                saveBean.setManaged(man)*/;
                                 tv_time.setText("当前档案将于 "+date+" 日后自动清除");
                                 selectTime.setRightString(list1[managed]);
                                 ToastUtils.showToast(SafeActivity.this, "修改清档日期成功");
@@ -327,32 +304,8 @@ public class SafeActivity extends BaseActivity {
             case R.id.time_Visiable:
                 timeSlideUp.hide();
                 break;
-          /*  case R.id.tv_HeaderLock:
-                waySlideUp.hide();
-               // lock.setText(list[0]);
-                final TinyDB tinyDB = new TinyDB(this);
-                UserBean user = (UserBean) tinyDB.getObject("user", UserBean.class);
-                String userphone = user.getUserphone();
-             *//*   if (lock.getText().toString().equals(list[0])) {
-                    String gesturePassword = aCache.getAsString(userphone);
-                    if (gesturePassword == null || "".equals(gesturePassword)) {
-                        startActivity(new Intent(SafeActivity.this, CreateGestureActivity.class).putExtra("ok", "1"));
-                    }
-                }*//*
-                break;*/
-           /* case R.id.tv_WordLock:
-                waySlideUp.hide();
-               // lock.setText(list[1]);
-                break;*/
-          /*  case R.id.bt_CancelWay:
-                waySlideUp.hide();
-                break;*/
-         /*   case R.id.way_Visiable:
-                waySlideUp.hide();
-                break;
-            case R.id.tv_save:
-                Save();
-                break;*/
+             default:
+                 break;
         }
     }
 

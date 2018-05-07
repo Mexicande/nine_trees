@@ -54,6 +54,10 @@ import cn.com.stableloan.view.supertextview.SuperTextView;
 
 import static org.greenrobot.eventbus.EventBus.getDefault;
 
+/**
+ * @author apple
+ * 身份材料
+ */
 public class IdentityinformationActivity extends AutoLayoutActivity implements IdentitySaveFragment.SaveFragmentListener{
     @Bind(R.id.title_name)
     TextView titleName;
@@ -255,7 +259,9 @@ public class IdentityinformationActivity extends AutoLayoutActivity implements I
         Fragment fragment = mFragmentManager.findFragmentByTag(fragmentName);
 
         if (fragment != null) {
-            if (fragment == mCurrentFragment) return;
+            if (fragment == mCurrentFragment) {
+                return;
+            }
 
             mFragmentManager.beginTransaction().show(fragment).commit();
         } else {

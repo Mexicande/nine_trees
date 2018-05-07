@@ -161,14 +161,8 @@ public class CarmeraResultActivity extends AppCompatActivity {
                             String isSuccess = object.getString("isSuccess");
                             if ("1".equals(isSuccess)) {
                                 String status = object.getString("status");
-                                if ("1".equals(status)) {
                                     String qiNiuToken = object.getString("token");
                                     savePicture(qiNiuToken);
-                                } else {
-                                    hd.dismiss();
-                                    Intent intent = new Intent(CarmeraResultActivity.this, Verify_PasswordActivity.class).putExtra("from", "IdentityUpload");
-                                    startActivity(intent);
-                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

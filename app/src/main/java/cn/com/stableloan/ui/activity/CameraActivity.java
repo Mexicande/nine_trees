@@ -284,14 +284,8 @@ public class CameraActivity extends AutoLayoutActivity {
                             String isSuccess = object.getString("isSuccess");
                             if ("1".equals(isSuccess)) {
                                 String status = object.getString("status");
-                                if ("1".equals(status)) {
                                     String qiNiuToken = object.getString("token");
                                     savePicture(path,qiNiuToken,num);
-                                } else {
-                                    hd.dismiss();
-                                    Intent intent = new Intent(CameraActivity.this, Verify_PasswordActivity.class).putExtra("from", "IdentityUpload");
-                                    startActivity(intent);
-                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

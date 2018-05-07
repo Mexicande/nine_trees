@@ -38,6 +38,10 @@ import cn.com.stableloan.view.update.AppUpdateUtils;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * @author apple
+ * 意见反馈
+ */
 public class FeedbackActivity extends BaseActivity {
 
     @Bind(R.id.title_name)

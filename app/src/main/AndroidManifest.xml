@@ -52,7 +52,7 @@
         <service android:name=".view.update.DownloadService" />
 
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -121,18 +121,6 @@
             android:name=".ui.activity.StrateActivity"
             android:screenOrientation="portrait" />
         <!-- 密码找回 -->
-        <activity
-            android:name=".ui.activity.ForgetWordActivity"
-            android:screenOrientation="portrait" />
-
-        <!--
-        <meta-data
-            android:name="ZHUGE_APPKEY"
-            android:value="24520d39b750437b97f026353aa80aea" />
-        <meta-data
-            android:name="ZHUGE_CHANNEL"
-            android:value="vivo" />
-        -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="5KizzImryGritdSFV3nNNGPYpm6AAFDB" />
@@ -165,28 +153,16 @@
             android:name=".ui.activity.SafeActivity"
             android:screenOrientation="portrait" />
         <!-- 手势解锁创建 -->
-        <activity
-            android:name=".ui.activity.CreateGestureActivity"
-            android:screenOrientation="portrait" />
         <!-- 手势登陆 -->
-        <activity
-            android:name=".ui.activity.GestureLoginActivity"
-            android:screenOrientation="portrait" />
         <!-- 安全验证 -->
-        <activity
-            android:name=".ui.activity.Verify_PasswordActivity"
-            android:screenOrientation="portrait" />
         <!-- 银行卡照片 -->
 
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <!-- 密码设置 -->
 
-        <activity
-            android:name=".ui.activity.SettingPassWordActivity"
-            android:screenOrientation="portrait" />
         <!-- 三方认证 -->
         <activity
             android:name=".ui.activity.CertificationActivity"
@@ -271,11 +247,8 @@
             android:name=".ui.activity.cash.GetCashRule"
             android:screenOrientation="portrait" />
         <!-- 设置手势密码 -->
-        <activity
-            android:name=".ui.activity.settingdate.SwitchPassWordActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.cash.CashFlowActivity" />
-        <activity android:name=".ui.activity.safe.FingerActivity"></activity>
+
     </application>
 
 </manifest>

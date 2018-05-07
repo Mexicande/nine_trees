@@ -32,15 +32,13 @@ public class CaptchaTimeCount extends CountDownTimer {
 	    validate_btn.setClickable(false);
 	    validate_btn.setText(millisUntilFinished / 1000 + "s后重发");//   改为  60秒倒计时
 	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.gay)); //颜色
-	    validate_btn.setBackgroundResource(R.drawable.login_editext_bacground);//背景颜色
 	}
 	@Override
 	public void onFinish() {
 
 	    validate_btn.setClickable(true); 
 	    validate_btn.setText(R.string.captcha_btn_resend);//@color/color_63b953
-	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.colorPrimary));
-		validate_btn.setBackgroundResource(R.drawable.login_editext_bacground);//背景颜色
+	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.white));
 	}
 	/**
 	 * 重置
@@ -48,7 +46,6 @@ public class CaptchaTimeCount extends CountDownTimer {
 	public void reset(){
 		 validate_btn.setClickable(true);
 		 validate_btn.setText(R.string.validate_btn_hint);
-		 validate_btn.setTextColor(context.getResources().getColorStateList(R.color.window_background));
-		 validate_btn.setBackgroundResource(R.drawable.fastloginbutton);
+		 validate_btn.setTextColor(context.getResources().getColorStateList(R.color.white));
 	}
 }

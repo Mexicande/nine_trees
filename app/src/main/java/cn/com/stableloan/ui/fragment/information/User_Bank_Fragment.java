@@ -2,7 +2,6 @@ package cn.com.stableloan.ui.fragment.information;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -39,25 +38,18 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentitySave;
-import cn.com.stableloan.interfaceutils.Identivity_interface;
 import cn.com.stableloan.model.Bank;
 import cn.com.stableloan.model.BankInformation;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
-import cn.com.stableloan.ui.activity.GestureLoginActivity;
-import cn.com.stableloan.ui.activity.IdentityinformationActivity;
-import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
-import cn.com.stableloan.ui.fragment.dialogfragment.FingerFragment;
 import cn.com.stableloan.utils.BankUtils;
 import cn.com.stableloan.utils.CommonUtils;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.cache.ACache;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -95,7 +87,6 @@ public class User_Bank_Fragment extends Fragment {
     private TimePickerView pvTime;
 
     private Bank bankBean;
-    private ACache aCache;
 
     private static final int REQUEST_CODE = 20000;
     private static final int REQUEST_BANK = 200;
@@ -118,7 +109,6 @@ public class User_Bank_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user__bank, container, false);
         ButterKnife.bind(this, view);
-        aCache = ACache.get(getActivity());
 
         EventBus.getDefault().register(this);
 
@@ -221,7 +211,6 @@ public class User_Bank_Fragment extends Fragment {
                             BankInformation information = gson.fromJson(s, BankInformation.class);
                             if (information.getError_code() == 0) {
                                 APP_CODE=information.getData().getApp_code();
-                                if (("1").equals(information.getData().getStatus())) {
                                     bankBean = information.getData();
 
                                     String dnumber = bankBean.getBank().getDebit().getDnumber();
@@ -289,23 +278,6 @@ public class User_Bank_Fragment extends Fragment {
                                     etSelectBank2.setRightString(bankBean.getBank().getCredit().getCbank());
                                     etValidityTime2.setRightString(bankBean.getBank().getCredit().getCperiod());
 
-                                } else {
-                                    String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
-
-                                    final TinyDB tinyDB = new TinyDB(getActivity());
-                                    UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-                                    String phone = user.getUserphone();
-                                    String gesturePassword = aCache.getAsString(phone);
-                                    String lock = aCache.getAsString("lock");
-
-                                    if (gesturePassword == null || "".equals(gesturePassword) || "off".equals(lock)) {
-                                        Intent intent = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "bankinformation");
-                                        startActivity(intent);
-                                    } else {
-                                        Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "bankinformation");
-                                        startActivity(intent);
-                                    }
-                                }
                             } else {
                                 ToastUtils.showToast(getActivity(), information.getError_message());
                             }

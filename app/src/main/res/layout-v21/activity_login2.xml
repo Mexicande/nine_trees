@@ -6,87 +6,249 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context="cn.com.stableloan.ui.activity.LoginActivity">
+    <android.support.v7.widget.Toolbar
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/back"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_goback"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登录"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
     <LinearLayout
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/layout"
-            android:layout_marginTop="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginLeft="@dimen/_10dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp">
-            <ImageView
-                android:layout_centerInParent="true"
-                android:id="@+id/back"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/ic_goback"/>
-        </RelativeLayout>
         <ImageView
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:elevation="2dp"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:src="@mipmap/iv_logo"/>
-  <!--      <cn.com.stableloan.utils.SwitchMultiButton
-            android:id="@+id/switchmultibutton"
-            android:layout_gravity="center_horizontal"
-            android:layout_below="@id/view_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="70dp"
-            android:layout_marginLeft="70dp"
-            android:layout_marginBottom="2dp"
-            android:background="@drawable/switch_button_bacground"
+        <RelativeLayout
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="80dp"
+            android:id="@+id/login_phone_r2"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            app:strokeRadius="7dp"
-            app:selectedTab="0"
-            app:strokeWidthSwitch="0dp"
-            app:selectedColor="#6392c6"
-            app:textSize="16sp"/>
-
-      &lt;!&ndash;  <include layout="@layout/login_password"
-            />
-        <include layout="@layout/login_code"
-            android:visibility="gone"/>
-        <include layout="@layout/login_message"
+            android:layout_height="45dp"
+            >
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/tv_phone"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="手机号:"/>
+            <Button
+                android:id="@+id/bt_code"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:textSize="15sp"
+                android:background="@drawable/button_sure"
+                android:textColor="@color/white"
+                android:text="验证"/>
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@id/bt_code"
+                android:layout_toRightOf="@id/tv_phone"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:lines="1"
+                android:maxLength="11"
+                android:background="@null"
+                android:textSize="13sp"
+                android:hint="请输入手机号"
+                android:digits="0123456789"
+                android:inputType="phone"
+                />
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gay"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_code"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            >
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/tv_code"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="短信验证码:"/>
+            <EditText
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@id/tv_code"
+                android:id="@+id/et_code"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:lines="1"
+                android:maxLength="4"
+                android:background="@null"
+                android:textSize="13sp"
+                android:hint="请输入验证码"
+                android:inputType="number"
+                />
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gay"
+                />
+        </RelativeLayout>
+        <cn.com.stableloan.view.SlideView
+            android:id="@+id/slideview"
             android:visibility="gone"
-            />&ndash;&gt;
-        <FrameLayout
-            android:id="@+id/fragment"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="80dp">
-        </FrameLayout>
--->
-        <net.lucode.hackware.magicindicator.MagicIndicator
-            android:id="@+id/login_magicindicator"
-            android:layout_marginRight="@dimen/_50dp"
-            android:layout_marginLeft="@dimen/_50dp"
-            android:layout_marginTop="@dimen/_20dp"
+            android:layout_height="wrap_content"
+            app:bg_text="滑动开始确认"
+            app:bg_text_color="@color/white"
+            app:bg_text_size="15sp"
+            app:bg_text_complete="松开即可确认"
+            app:icon_drawable="@drawable/btn_confirm"
+            app:min_height="45dp"
+            app:icon_ratio="0.15"
+            app:enable_when_full="true"
+            app:reset_not_full="true"
+            app:secondary_color="@color/colorPrimary"
+            app:bg_drawable="@drawable/bg_slide_view"
+            app:gradient_color1="#0a0a0a"
+            app:gradient_color2="#FFFFFF"
+            app:gradient_color3="#0a0a0a"/>
+        <LinearLayout
+            android:id="@+id/layout_name"
+            android:visibility="gone"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="51dp"
-            android:layout_gravity="center_horizontal" />
-      <!--  <android.support.v4.view.ViewPager
-            android:id="@+id/login_Viewpager"
-            android:layout_marginTop="@dimen/_10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="80dp"/>-->
-        <FrameLayout
-            android:id="@+id/fragment"
-            android:layout_marginTop="@dimen/_10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="80dp">
-        </FrameLayout>
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                >
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tv_name"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="姓名:"/>
+                <EditText
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/tv_name"
+                    android:id="@+id/et_name"
+                    android:theme="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:lines="1"
+                    android:maxLength="4"
+                    android:background="@null"
+                    android:textSize="13sp"
+                    android:hint="请输入姓名"
+                    android:inputType="number"
+                    />
+            </RelativeLayout>
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/diver"
+                />
+            <RelativeLayout
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                >
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tv_card"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="身份证号:"/>
+                <EditText
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/tv_card"
+                    android:id="@+id/et_card"
+                    android:theme="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:lines="1"
+                    android:maxLength="4"
+                    android:background="@null"
+                    android:textSize="13sp"
+                    android:hint="请输入身份证号"
+                    android:inputType="number"
+                    />
+            </RelativeLayout>
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/diver"
+                />
+            <cn.com.stableloan.view.supertextview.SuperButton
+                android:layout_marginTop="30dp"
+                android:id="@+id/bt_login"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_height="45dp"
+                android:text="登录"
+                android:textSize="17sp"
+                app:sCornersRadius="5dp"
+                android:textColor="@color/white"
+                app:sSelectorDisableColor="@color/diver"
+                app:sUseSelector="true"
+                app:sSelectorNormalColor="@color/colorPrimary"
+                app:sSelectorPressedColor="@color/normalcolorPrimary"
+                />
+        </LinearLayout>
+
     </LinearLayout>
+
     <TextView
         android:layout_marginBottom="50dp"
         android:layout_centerHorizontal="true"

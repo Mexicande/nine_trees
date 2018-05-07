@@ -64,6 +64,19 @@ public interface Urls {
         String captchaURL = "geetes/captcha";
         String validateURL = "geetes/verification";
 
+        /**
+         * 新老用户验证
+         */
+        String IS_OLD_USER =NEW_Ip_url+ "quick/isOldUser";
+        /**
+         * 验证码获取
+         */
+        String GET_CODE=Ip_url+"sms/getcode";
+        /**
+         * 验证码效验
+         */
+        String CHECK_CODE =Ip_url+"sms/checkCode";
+
     }
     interface CreditrePort{
 
@@ -243,5 +256,7 @@ public interface Urls {
     interface statistics{
         String Deliver         =                                                                "deliver/countDeliver";
     }
+
+
 
 }

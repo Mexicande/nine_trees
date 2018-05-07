@@ -2,74 +2,88 @@ package cn.com.stableloan.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import net.lucode.hackware.magicindicator.FragmentContainerHelper;
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.buildins.UIUtil;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.Arrays;
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
-import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.interfaceutils.Touch_login;
+import cn.com.stableloan.api.ApiService;
+import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.common.Constants;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
+import cn.com.stableloan.interfaceutils.VerListener;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
-import cn.com.stableloan.ui.fragment.LoginFragment;
-import cn.com.stableloan.ui.fragment.MessageFragment;
+import cn.com.stableloan.ui.fragment.dialogfragment.VerificationFragment;
 import cn.com.stableloan.utils.ActivityStackManager;
-import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.CaptchaTimeCount;
+import cn.com.stableloan.utils.CommonUtil;
+import cn.com.stableloan.utils.StatusBarUtil;
 import cn.com.stableloan.utils.ToastUtils;
+import cn.com.stableloan.view.SlideView;
 import cn.com.stableloan.view.dialog.Login_DeviceDialog;
+import cn.com.stableloan.view.supertextview.SuperButton;
 
-public class LoginActivity extends BaseActivity implements Touch_login {
+/**
+ * @author apple
+ *         登陆
+ */
+public class LoginActivity extends AppCompatActivity implements VerListener {
 
 
-    private static final String[] CHANNELS = new String[]{"短信快捷登录", "账号登录"};
     @Bind(R.id.back)
     ImageView back;
-    public static CommonNavigator commonNavigator ;
-   private MagicIndicator loginMagicindicator;
-    private FragmentManager mFragmentManager;
-
-    private Fragment mCurrentFragment;
+    @Bind(R.id.tv_phone)
+    TextView tvPhone;
+    @Bind(R.id.bt_code)
+    Button btCode;
+    @Bind(R.id.et_phone)
+    EditText etPhone;
+    @Bind(R.id.tv_code)
+    TextView tvCode;
+    @Bind(R.id.et_code)
+    EditText etCode;
+    @Bind(R.id.layout_code)
+    RelativeLayout layoutCode;
+    @Bind(R.id.slideview)
+    SlideView slideview;
+    @Bind(R.id.tv_name)
+    TextView tvName;
+    @Bind(R.id.et_name)
+    EditText etName;
+    @Bind(R.id.tv_card)
+    TextView tvCard;
+    @Bind(R.id.et_card)
+    EditText etCard;
+    @Bind(R.id.bt_login)
+    SuperButton btLogin;
+    @Bind(R.id.layout_name)
+    LinearLayout layoutName;
+    @Bind(R.id.login_phone_r2)
+    RelativeLayout loginPhoneR2;
     private Login_DeviceDialog dialog;
-
-
-    private boolean Flag = false;
+    private String phone;
     private final int Flag_User = 3000;
     private final int LOTTERY_CODE = 500;
-    private List<String> mDataList = Arrays.asList(CHANNELS);
+    private CaptchaTimeCount captchaTimeCount;
 
-    private FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
+    private int oldNew = 0;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -79,152 +93,88 @@ public class LoginActivity extends BaseActivity implements Touch_login {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        StatusBarUtil.setTransparent(this);
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
-        //AppApplication.addDestoryActivity(this, "login");
-        transparentStatusBar();
+        captchaTimeCount = new CaptchaTimeCount(Constants.MILLIS_IN_TOTAL, Constants.COUNT_DOWN_INTERVAL, btCode, this);
         initView();
-        initFragments();
-        String message = getIntent().getStringExtra("message");
-        if(message!=null){
-            if("1136".equals(message)){
-                initViewDialog(R.string.freezing_error_title, R.string.freezing_error_desc);
-            }else if("switch".equals(message)){
 
-            }else {
-                initViewDialog(R.string.token_error_title,R.string.token_error_desc);
-
-            }
-        }
-        mFragmentContainerHelper.attachMagicIndicator(loginMagicindicator);
     }
-    private void initViewDialog(int title,int desc) {
+
+    private void initView() {
+        String code = etCode.getText().toString();
+        slideview.addSlideListener(() -> {
+            if (layoutCode.getVisibility() == View.VISIBLE) {
+                if (!TextUtils.isEmpty(code) && code.length() == 4) {
+                    verCode(code);
+                } else {
+                    slideview.reset();
+                    ToastUtils.showToast(AppApplication.getApp(), "验证码错误");
+                }
+            } else {
+                loginPhoneR2.setVisibility(View.GONE);
+                layoutName.setVisibility(View.VISIBLE);
+                slideview.setVisibility(View.GONE);
+                slideview.reset();
+            }
+        });
+
+    }
+
+    /**
+     * 验证码效验
+     */
+    private void verCode(String code) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userphone", phone);
+            jsonObject.put("code", code);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiService.GET_SERVICE(Urls.Login.CHECK_CODE, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    JSONObject date = data.getJSONObject("data");
+                    String msg = date.getString("msg");
+                    String isSucess = date.getString("isSucess");
+                    if ("1".equals(isSucess)) {
+                        layoutName.setVisibility(View.VISIBLE);
+                        slideview.setVisibility(View.GONE);
+                        loginPhoneR2.setVisibility(View.GONE);
+                    } else {
+                        slideview.reset();
+                    }
+                    ToastUtils.showToast(AppApplication.getApp(), msg);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+                slideview.reset();
+                ToastUtils.showToast(AppApplication.getApp(), msg);
+            }
+        });
+
+    }
+
+    private void initViewDialog(int title, int desc) {
         dialog = new Login_DeviceDialog(this);
         dialog.setTitle(getResources().getString(title));
         dialog.setMessage(getResources().getString(desc));
-        dialog.setYesOnclickListener("知道了", new Login_DeviceDialog.onYesOnclickListener() {
-            @Override
-            public void onYesClick() {
-                dialog.dismiss();
-            }
-        });
+        dialog.setYesOnclickListener("知道了", () -> dialog.dismiss());
 
         dialog.show();
 
     }
-     protected void transparentStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-//            window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS); // 新增滑动返回，舍弃过渡动效
 
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS |
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    private void initFragments() {
-        loginMagicindicator= (MagicIndicator) findViewById(R.id.login_magicindicator);
-        commonNavigator = new CommonNavigator(this);
-        commonNavigator.setAdjustMode(true);
-        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return mDataList == null ? 0 : mDataList.size();
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, final int i) {
-                BadgePagerTitleView badgePagerTitleView = new BadgePagerTitleView(context);
-
-                SimplePagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
-                simplePagerTitleView.setText(mDataList.get(i));
-                simplePagerTitleView.setNormalColor(Color.parseColor("#999999"));
-                simplePagerTitleView.setSelectedColor(Color.parseColor("#333333"));
-                simplePagerTitleView.setTextSize(16);
-                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switchMenu(getFragmentName(i+1));
-                        LogUtils.i("LogUtils----",i);
-
-                    }
-                });
-                badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
-                return badgePagerTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
-                indicator.setColors(Color.parseColor("#fd2021"));
-                indicator.setLineWidth(UIUtil.dip2px(context, 100));
-                indicator.setLineHeight(UIUtil.dip2px(context, 2));
-
-                return indicator;
-            }
-
-        });
-        loginMagicindicator.setNavigator(commonNavigator);
-        LinearLayout titleContainer = commonNavigator.getTitleContainer();
-        titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        titleContainer.setDividerPadding(UIUtil.dip2px(this, 15));
-        titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.simple_splitter));
-
-        mFragmentContainerHelper.setInterpolator(new OvershootInterpolator(1.0f));
-        mFragmentContainerHelper.setDuration(300);
-    }
-
-    private void initView() {
-        mCurrentFragment = new MessageFragment();
-        mFragmentManager = getSupportFragmentManager();
-
-        mFragmentManager.beginTransaction().add(R.id.fragment, mCurrentFragment).commitAllowingStateLoss();
-
-
-    }
-
-    private String getFragmentName(int menuId) {
-        switch (menuId) {
-            case 1:
-               mFragmentContainerHelper.handlePageSelected(0);
-                return MessageFragment.class.getName();
-            case 2:
-                mFragmentContainerHelper.handlePageSelected(1);
-                return LoginFragment.class.getName();
-            default:
-                return null;
-        }
-    }
-
-    private void switchMenu(String fragmentName) {
-
-        Fragment fragment = mFragmentManager.findFragmentByTag(fragmentName);
-
-        if (fragment != null) {
-            if (fragment == mCurrentFragment) return;
-
-            mFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss();
-        } else {
-            fragment = Fragment.instantiate(this, fragmentName);
-            mFragmentManager.beginTransaction().add(R.id.fragment, fragment, fragmentName).commitAllowingStateLoss();
-        }
-
-        if (mCurrentFragment != null) {
-            mFragmentManager.beginTransaction().hide(mCurrentFragment).commitAllowingStateLoss();
-        }
-        mCurrentFragment = fragment;
-    }
-
-    private long mLastBackTime = 0;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -246,61 +196,169 @@ public class LoginActivity extends BaseActivity implements Touch_login {
                 } else if (("user2").equals(from)) {
                     EventBus.getDefault().post(new InformationEvent("user2"));
                     finish();
-                }else {
-                    if(message!=null){
-                        int count = ActivityStackManager.getInstance().getCount();
-                        LogUtils.i("ActivityStackManager===",count+"");
+                } else {
+                    if (message != null) {
                         ActivityStackManager.getInstance().popAllActivity();
-                       // ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
                         MainActivity.launch(this);
                         finish();
-                    }else {
+                    } else {
                         finish();
                     }
                 }
             }
         }
-        return super.onKeyDown(keyCode, event) ;
+        return super.onKeyDown(keyCode, event);
     }
-
-    @OnClick(R.id.layout)
-    public void onViewClicked() {
-        String from = getIntent().getStringExtra("from");
-        String message = getIntent().getStringExtra("message");
-        if (from != null) {
-            if (("user").equals(from)) {
-                UserBean userBean = new UserBean();
-                setResult(Flag_User, new Intent().putExtra("user", userBean));
-                finish();
-            } else if (("123").equals(from)) {
-                setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
-                finish();
-            } else if (("user1").equals(from)) {
-                UserBean userBean = new UserBean();
-                setResult(4000, new Intent().putExtra("user", userBean));
-                finish();
-            } else if (("user2").equals(from)) {
-                EventBus.getDefault().post(new InformationEvent("user2"));
-                finish();
-            }else {
-                if(message!=null){
-                    ActivityStackManager.getInstance().popAllActivity();
-                    //ActivityStackManager.getInstance().popAllActivityUntillOne(LoginActivity.class);
-                    MainActivity.launch(this);
-                    finish();
-                }else {
-                    finish();
-                }
-            }
-        } else {
-            finish();
-        }
-    }
-
 
 
     @Override
-    public void showProByName(int index) {
-        switchMenu(getFragmentName(index));
+    public void success() {
+        isOldUser();
+    }
+
+    /**
+     * isOldUser
+     * 新老用户
+     */
+    private void isOldUser() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userphone", phone);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiService.GET_SERVICE(Urls.Login.IS_OLD_USER, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    JSONObject date = data.getJSONObject("data");
+                    oldNew = date.getInt("isolduser");
+                    fillData(oldNew);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+                ToastUtils.showToast(AppApplication.getApp(), msg);
+            }
+        });
+    }
+
+    /**
+     * 新老用户
+     *
+     * @param isolduser 1：老用户 0：新用户
+     */
+    private void fillData(int isolduser) {
+        if (isolduser == 1) {
+            if (layoutCode.getVisibility() == View.VISIBLE) {
+                layoutCode.setVisibility(View.GONE);
+            }
+            slideview.setVisibility(View.VISIBLE);
+        } else {
+            layoutCode.setVisibility(View.VISIBLE);
+            layoutName.setVisibility(View.GONE);
+            getCode();
+        }
+
+    }
+
+    /**
+     * 验证码获取
+     */
+    private void getCode() {
+        captchaTimeCount.start();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userphone", phone);
+            jsonObject.put("terminal", Constants.terminal);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiService.GET_SERVICE(Urls.Login.GET_CODE, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    JSONObject date = data.getJSONObject("data");
+                    String msg = date.getString("msg");
+                    String isSucess = date.getString("isSucess");
+                    if ("1".equals(isSucess)) {
+                        slideview.setVisibility(View.VISIBLE);
+                    }
+                    ToastUtils.showToast(AppApplication.getApp(), msg);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+                ToastUtils.showToast(AppApplication.getApp(), msg);
+            }
+        });
+
+    }
+
+
+    @OnClick({R.id.back, R.id.bt_code})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                String from = getIntent().getStringExtra("from");
+                String message = getIntent().getStringExtra("message");
+                if (from != null) {
+                    if (("user").equals(from)) {
+                        UserBean userBean = new UserBean();
+                        setResult(Flag_User, new Intent().putExtra("user", userBean));
+                        finish();
+                    } else if (("123").equals(from)) {
+                        setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
+                        finish();
+                    } else if (("user1").equals(from)) {
+                        UserBean userBean = new UserBean();
+                        setResult(4000, new Intent().putExtra("user", userBean));
+                        finish();
+                    } else if (("user2").equals(from)) {
+                        EventBus.getDefault().post(new InformationEvent("user2"));
+                        finish();
+                    } else {
+                        if (message != null) {
+                            ActivityStackManager.getInstance().popAllActivity();
+                            MainActivity.launch(this);
+                            finish();
+                        } else {
+                            finish();
+                        }
+                    }
+                } else {
+                    finish();
+                }
+                break;
+            case R.id.bt_code:
+                verPhone();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void verPhone() {
+        phone = etPhone.getText().toString();
+        boolean b = CommonUtil.checkPhone(phone, true);
+        if (b) {
+            VerificationFragment verification = new VerificationFragment();
+            verification.show(getSupportFragmentManager(), "ver");
+        }
+    }
+
+    @OnClick(R.id.bt_login)
+    public void onViewClicked() {
     }
 }

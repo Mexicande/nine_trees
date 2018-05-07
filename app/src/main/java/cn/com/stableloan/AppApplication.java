@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.view.update.AppUpdateUtils;
 
@@ -75,7 +76,7 @@ public class AppApplication extends Application {
         mHandler = new Handler();
 
         initTypeface();
-        OkGo.init(this);
+
         uploadManager=new UploadManager();
         instance = this;
 
@@ -86,6 +87,7 @@ public class AppApplication extends Application {
         HttpHeaders headers = new HttpHeaders();
         headers.put("channel", channel);
         headers.put("os", versionName);
+        headers.put("terminal", Constants.terminal);
         OkGo.init(this);
         try {
             OkGo.getInstance()
@@ -137,9 +139,6 @@ public class AppApplication extends Application {
 
     private static List<Activity> myActivity = new ArrayList<>();
     private static Map<String,Activity> destoryMap = new HashMap<>();
-    public void addToList(Activity activity){
-        myActivity.add(activity);
-    }
 
     public static void addDestoryActivity(Activity activity,String activityName) {
         destoryMap.put(activityName,activity);

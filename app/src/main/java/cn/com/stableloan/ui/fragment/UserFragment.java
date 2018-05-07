@@ -40,19 +40,16 @@ import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
-import cn.com.stableloan.ui.activity.GestureLoginActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
-import cn.com.stableloan.ui.activity.Verify_PasswordActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
-import cn.com.stableloan.ui.activity.safe.FingerActivity;
+import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.utils.fingerprint.FingerprintIdentify;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -76,12 +73,9 @@ public class UserFragment extends ImmersionFragment {
     TextView btMoney;
 
     private Wechat_dialog wechat_dialog;
-
-    private  boolean ONRESUEM=false;
     public UserFragment() {
 
     }
-    private FingerprintIdentify mFingerprintIdentify;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,15 +106,6 @@ public class UserFragment extends ImmersionFragment {
 
     private void getUserInfo() {
 
-/*
-        JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("我的", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "我的", eventObject);*/
         String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
         final TinyDB tinyDB = new TinyDB(getActivity());
         if (!"1".equals(token)) {
@@ -215,7 +200,7 @@ public class UserFragment extends ImmersionFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
-                TextUser();
+                ActivityUtils.startActivity(UserInformationActivity.class);
                 break;
             case R.id.iv_Edit:
                 startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class),100);
@@ -281,8 +266,10 @@ public class UserFragment extends ImmersionFragment {
     }
 
     public static boolean isWeixinAvilible(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        final PackageManager packageManager = context.getPackageManager();
+        // 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        // 获取所有已安装程序的包信息
         if (pinfo != null) {
             for (int i = 0; i < pinfo.size(); i++) {
                 String pn = pinfo.get(i).packageName;
@@ -294,44 +281,6 @@ public class UserFragment extends ImmersionFragment {
         return false;
     }
 
-    private void TextUser() {
-             String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
-                    int cat = (int) SPUtils.get(getActivity(), userphone+Urls.lock.CAT, 0);
-                       switch (cat){
-                           case Urls.lock.NO_VERIFICATION:
-                               startActivityForResult(new Intent(getActivity(),UserInformationActivity.class),200);
-                              // UserInformationActivity.launch(getActivity());
-                               break;
-                           case Urls.lock.GESTURE_VERIFICATION:
-                               startActivityForResult(new Intent(getActivity(),GestureLoginActivity.class).putExtra("from", "userinformation"),200);
-                              /* Intent intent = new Intent(getActivity(), GestureLoginActivity.class).putExtra("from", "userinformation");
-                               startActivity(intent);*/
-                               break;
-                           case Urls.lock.PW_VERIFICATION:
-                               startActivityForResult(new Intent(getActivity(),Verify_PasswordActivity.class).putExtra("from", "userinformation"),200);
-                              /* Intent intent2 = new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation");
-                               startActivity(intent2);*/
-                               break;
-                           case Urls.lock.GESTURE_FINGER:
-                               mFingerprintIdentify = new FingerprintIdentify(getActivity());
-
-                               //硬件设备是否已录入指纹
-                               boolean registeredFingerprint = mFingerprintIdentify.isRegisteredFingerprint();
-                               //指纹功能是否可用
-                               boolean fingerprintEnable = mFingerprintIdentify.isFingerprintEnable();
-                               if (registeredFingerprint && fingerprintEnable) {
-                                   Intent intent=new Intent(getActivity(),FingerActivity.class);
-                                   intent.putExtra("from","userinformation");
-                                   startActivity(intent);
-                               } else {
-                                   startActivity(new Intent(getActivity(), Verify_PasswordActivity.class).putExtra("from", "userinformation"));
-                               }
-                               break;
-                           default:
-                               break;
-                       }
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
