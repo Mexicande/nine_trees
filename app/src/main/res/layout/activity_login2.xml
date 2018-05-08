@@ -182,11 +182,11 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="10dp"
                     android:lines="1"
-                    android:maxLength="4"
+                    android:maxLength="10"
                     android:background="@null"
                     android:textSize="13sp"
                     android:hint="请输入姓名"
-                    android:inputType="number"
+                    android:inputType="textPersonName"
                     />
             </RelativeLayout>
             <View
@@ -220,11 +220,10 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="10dp"
                     android:lines="1"
-                    android:maxLength="4"
+                    android:maxLength="18"
                     android:background="@null"
                     android:textSize="13sp"
                     android:hint="请输入身份证号"
-                    android:inputType="number"
                     />
             </RelativeLayout>
             <View

@@ -168,7 +168,6 @@ public class ProductFragment extends ImmersionFragment {
                                         inflate.removeView(mTextView);
                                         mTextView.setText(s);
 
-
                                         return mTextView;
                                     }
                                 });

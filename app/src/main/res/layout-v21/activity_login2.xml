@@ -90,6 +90,7 @@
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/layout_code"
+            android:visibility="gone"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
@@ -176,11 +177,11 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="10dp"
                     android:lines="1"
-                    android:maxLength="4"
+                    android:maxLength="10"
                     android:background="@null"
                     android:textSize="13sp"
                     android:hint="请输入姓名"
-                    android:inputType="number"
+                    android:inputType="textPersonName"
                     />
             </RelativeLayout>
             <View
@@ -214,11 +215,10 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="10dp"
                     android:lines="1"
-                    android:maxLength="4"
+                    android:maxLength="18"
                     android:background="@null"
                     android:textSize="13sp"
                     android:hint="请输入身份证号"
-                    android:inputType="number"
                     />
             </RelativeLayout>
             <View

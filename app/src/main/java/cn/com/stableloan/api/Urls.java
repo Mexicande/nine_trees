@@ -57,7 +57,6 @@ public interface Urls {
 
         String SettingPassWord="set/password";
         //验证码发送
-        String LOGIN="login/login";
         String USER_INFOMATION="person/lockPassword";
         String GET_SIGNATURE="Mine/GetSignature";
         String QUICK_LOGIN="quick/login";
@@ -76,6 +75,11 @@ public interface Urls {
          * 验证码效验
          */
         String CHECK_CODE =Ip_url+"sms/checkCode";
+        /**
+         * 登陆
+         */
+        String LOGIN =NEW_Ip_url+"quick/login";
+
 
     }
     interface CreditrePort{

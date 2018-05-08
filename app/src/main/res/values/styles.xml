@@ -13,7 +13,7 @@
     <style name="CheckTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorControlNormal">@color/gay</item>
-        <item name="colorControlActivated">#03A9F4</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
     <style name="activityAnimation" parent="@android:style/Animation">

@@ -24,9 +24,9 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
-    <uses-permission android:name="com.fingerprints.service.ACCESS_FINGERPRINT_MANAGER"/>
-    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="com.fingerprints.service.ACCESS_FINGERPRINT_MANAGER" />
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
 
     <application
         android:name=".AppApplication"
@@ -52,7 +52,7 @@
         <service android:name=".view.update.DownloadService" />
 
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -158,10 +158,11 @@
         <!-- 银行卡照片 -->
 
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <!-- 密码设置 -->
+
 
         <!-- 三方认证 -->
         <activity
@@ -248,7 +249,7 @@
             android:screenOrientation="portrait" />
         <!-- 设置手势密码 -->
         <activity android:name=".ui.activity.cash.CashFlowActivity" />
-
+        <activity android:name=".ui.activity.CareerChoiceActivity"></activity>
     </application>
 
 </manifest>

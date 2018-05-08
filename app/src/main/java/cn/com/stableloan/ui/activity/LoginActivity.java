@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.meituan.android.walle.WalleChannelReader;
+
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.common.Api;
 import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.interfaceutils.VerListener;
@@ -32,8 +35,12 @@ import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.dialogfragment.VerificationFragment;
 import cn.com.stableloan.utils.ActivityStackManager;
+import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.CommonUtil;
+import cn.com.stableloan.utils.EncryptUtils;
+import cn.com.stableloan.utils.RegexUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.StatusBarUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SlideView;
@@ -271,7 +278,6 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
      * 验证码获取
      */
     private void getCode() {
-        captchaTimeCount.start();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userphone", phone);
@@ -288,6 +294,7 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                     String msg = date.getString("msg");
                     String isSucess = date.getString("isSucess");
                     if ("1".equals(isSucess)) {
+                        captchaTimeCount.start();
                         slideview.setVisibility(View.VISIBLE);
                     }
                     ToastUtils.showToast(AppApplication.getApp(), msg);
@@ -307,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     }
 
 
-    @OnClick({R.id.back, R.id.bt_code})
+    @OnClick({R.id.back, R.id.bt_code,R.id.bt_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -344,9 +351,92 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
             case R.id.bt_code:
                 verPhone();
                 break;
+            case R.id.bt_login:
+                submitLogin();
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * name  card
+     */
+    private void submitLogin() {
+
+        String name = etName.getText().toString();
+        String card = etCard.getText().toString();
+
+        if(TextUtils.isEmpty(name)){
+            etName.requestFocus();
+            ToastUtils.showToast(this,"姓名不能为空");
+            return;
+        }
+        boolean idCard18 = RegexUtils.isIDCard18(card);
+        if(TextUtils.isEmpty(name)){
+            etCard.requestFocus();
+            ToastUtils.showToast(this,"身份证不能为空");
+            return;
+        }
+        if(!idCard18){
+            etCard.requestFocus();
+            ToastUtils.showToast(this,"身份证错误");
+            return;
+        }
+
+        String channel = WalleChannelReader.getChannel(this.getApplicationContext());
+        String phone = AppUtils.getPhone(this);
+        String model = AppUtils.getModel();
+        String androidVersion = AppUtils.getSDKVersion();
+
+        JSONObject jsonObject=new JSONObject();
+
+        try {
+            jsonObject.put("name",name);
+            jsonObject.put("idcard",card);
+            jsonObject.put("userphone",phone);
+            jsonObject.put("channel",channel);
+            jsonObject.put("terminal",Constants.terminal);
+            jsonObject.put("device",model);
+            jsonObject.put("version_number",androidVersion);
+            jsonObject.put("validatePhone",phone);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiService.GET_SERVICE(Urls.Login.LOGIN, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    JSONObject date = data.getJSONObject("data");
+                    String token = date.getString("token");
+                    String userphone = date.getString("userphone");
+                    int isInsure = date.getInt("is_insure");
+
+                    SPUtils.put(LoginActivity.this, Urls.lock.TOKEN, token);
+                    SPUtils.put(LoginActivity.this, Urls.lock.USER_PHONE, userphone);
+                    Intent intent=new Intent(LoginActivity.this, CareerChoiceActivity.class);
+                    intent.putExtra("userPhone", etPhone.getText().toString());
+                    intent.putExtra("is_insure",isInsure);
+                    startActivity(intent);
+                    finish();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
+            }
+        });
+
+
     }
 
     private void verPhone() {
@@ -356,9 +446,5 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
             VerificationFragment verification = new VerificationFragment();
             verification.show(getSupportFragmentManager(), "ver");
         }
-    }
-
-    @OnClick(R.id.bt_login)
-    public void onViewClicked() {
     }
 }

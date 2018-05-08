@@ -30,8 +30,8 @@ public class CaptchaTimeCount extends CountDownTimer {
 	@Override//开始
 	public void onTick(long millisUntilFinished) {
 	    validate_btn.setClickable(false);
-	    validate_btn.setText(millisUntilFinished / 1000 + "s后重发");//   改为  60秒倒计时
-	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.gay)); //颜色
+	    validate_btn.setText(millisUntilFinished / 1000 + "s");//   改为  60秒倒计时
+	    validate_btn.setTextColor(context.getResources().getColorStateList(R.color.white)); //颜色
 	}
 	@Override
 	public void onFinish() {
