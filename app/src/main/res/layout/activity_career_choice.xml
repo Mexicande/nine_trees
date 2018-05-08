@@ -8,19 +8,15 @@
     android:orientation="vertical"
     xmlns:zhy="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.activity.CareerChoiceActivity">
-    <android.support.v7.widget.Toolbar
+    <TextView
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <TextView
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/text_color"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:text="@string/perfect_title"/>
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:textColor="@drawable/text_color"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="@string/perfect_title"/>
     <LinearLayout
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
@@ -28,15 +24,84 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:layout_gravity="center_vertical"
             android:textColor="@color/text_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="信 用 卡:"/>
+            android:text="信  用  卡:"/>
         <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
             android:id="@+id/id_flowlayout"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            zhy:max_select="1"
+            app:gravity="left"
+            android:layout_height="wrap_content">
+        </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名下房产:"/>
+        <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
+            android:id="@+id/house_flowlayout"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            zhy:max_select="1"
+            app:gravity="left"
+            android:layout_height="wrap_content">
+        </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名下汽车:"/>
+        <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
+            android:id="@+id/car_flowlayout"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            zhy:max_select="1"
+            app:gravity="left"
+            android:layout_height="wrap_content">
+        </cn.com.stableloan.view.flowlayout_tag.TagFlowLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您的职业:"/>
+        <cn.com.stableloan.view.flowlayout_tag.TagFlowLayout
+            android:id="@+id/occupation_flowlayout"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             zhy:max_select="1"
@@ -47,6 +112,7 @@
 
     <LinearLayout
         android:id="@+id/layoutCheck"
+        android:visibility="gone"
         android:layout_marginTop="30dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -72,22 +138,31 @@
              android:text="@string/insurance"/>-->
     </LinearLayout>
 
-    <cn.com.stableloan.view.supertextview.SuperButton
-        android:id="@+id/bt_login"
-        android:layout_below="@id/layoutCheck"
+   <!-- <Button
         android:layout_marginTop="30dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:enabled="false"
-        android:text="去借款"
-        android:textStyle="bold"
-        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:text="立即申请"
+        android:textSize="17sp"
         android:textColor="@color/white"
-        app:sCornersRadius="5dp"
-        app:sSelectorDisableColor="@color/Normal_Button"
+        android:background="@drawable/button_sure"
+        />-->
+
+    <cn.com.stableloan.view.supertextview.SuperButton
+        android:id="@+id/bt_login"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="立即申请"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        app:sCornersRadius="10dp"
         app:sSelectorNormalColor="@color/colorPrimary"
-        app:sSelectorPressedColor="@color/normalcolorPrimary"
-        app:sUseSelector="true" />
+        app:sSelectorPressedColor="@color/colorPrimaryDark"
+        app:sUseSelector="true"
+        />
 </LinearLayout>
