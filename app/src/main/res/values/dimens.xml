@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="product_desc">14sp</dimen>
 
+    <dimen name="statusbar_view_height">0dp</dimen>
 
     <dimen name="drawable_size">76dp</dimen>
 

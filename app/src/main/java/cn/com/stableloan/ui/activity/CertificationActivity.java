@@ -91,7 +91,6 @@ public class CertificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certification);
         ButterKnife.bind(this);
-
         getStatus();
         initView();
 

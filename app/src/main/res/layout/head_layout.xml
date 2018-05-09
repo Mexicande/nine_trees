@@ -9,7 +9,7 @@
             <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/banner_fresco_demo_content"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="170dp"
                 style="@style/BannerDefaultStyle"
                 app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
                 app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
@@ -18,10 +18,6 @@
                 app:banner_transitionEffect="defaultEffect"
                 >
             </cn.bingoogolapple.bgabanner.BGABanner>
-            <View
-                android:background="@color/base_white"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_10dp"/>
             <android.support.v7.widget.CardView
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -30,12 +26,12 @@
                 android:layout_gravity="center"
                 card_view:cardCornerRadius="0dp"
                 android:foreground="?android:attr/selectableItemBackground"
-                card_view:cardBackgroundColor="@color/white"
                 card_view:cardUseCompatPadding="true">
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:paddingBottom="@dimen/_20dp"
+                    android:background="@color/color_f9"
                     android:layout_height="wrap_content">
                     <include layout="@layout/home_header_item"
                         />
@@ -118,13 +114,6 @@
                     android:textColor="@color/select_text_color"
                     />
             </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-            </android.support.v7.widget.RecyclerView>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"

@@ -84,15 +84,11 @@ public class UserFragment extends ImmersionFragment {
     }
 
     private void getUserInfo() {
-        token = (String) SPUtils.get(getActivity(), Urls.TOKEN, null);
-        if(TextUtils.isEmpty(token)){
-            Intent intent=new Intent(getActivity(),LoginActivity.class);
-            intent.putExtra("user","UserFragment");
-            startActivity(intent);
-        }else {
+        token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+        if(getToken()){
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("token", token);
+                jsonObject.put(Urls.lock.TOKEN, token);
                 ApiService.GET_SERVICE(Urls.user.USERT_INFO, jsonObject, new OnRequestDataListener() {
                     @Override
                     public void requestSuccess(int code, JSONObject data) {
@@ -149,7 +145,7 @@ public class UserFragment extends ImmersionFragment {
     }
 
     @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
-            R.id.layout_Integral, R.id.laout_Money,R.id.invite,R.id.iv_Edit,R.id.layout_attention})
+            R.id.layout_Integral, R.id.laout_Money,R.id.invite,R.id.tv_vip,R.id.layout_attention})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
@@ -157,7 +153,8 @@ public class UserFragment extends ImmersionFragment {
                     ActivityUtils.startActivity(UserInformationActivity.class);
                 }
                 break;
-            case R.id.iv_Edit:
+            case R.id.tv_vip:
+
                 break;
             case R.id.layout_setting:
                 if(getToken()){

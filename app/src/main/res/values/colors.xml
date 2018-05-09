@@ -9,10 +9,14 @@
     <color name="desc_text_color">#686868</color>
     <color name="information_title">#17326b</color>
     <color name="information_title1">#290f41</color>
-
+    <color name="vip_bg_color">#E54CFC</color>
     <color name="color_e3">#e3e3e3</color>
+    <color name="color_f4">#f4f4f4</color>
+    <color name="color_55">#555555</color>
    <!-- 产品list-->
+    <color name="color_f9">#F9F9F9</color>
     <color name="white">#FFFFFF</color>
+    <color name="yellow_f4">#F4B63C</color>
     <color name="product_name_color">#2d2d2d</color>
     <color name="product_limit">#999999</color>
     <color name="select_text_color">#333333</color>

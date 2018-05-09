@@ -60,16 +60,6 @@
             android:layout_marginBottom="@dimen/_1dp"
             android:textColor="@color/black"
             />
-   <!--     <TextView
-            android:layout_marginBottom="@dimen/_1dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/_2dp"
-            android:id="@+id/tv_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            android:background="@drawable/time_bg"/>-->
         <cn.com.stableloan.view.countdownview.EasyCountDownView
             android:id="@+id/countdownhour"
             android:layout_marginBottom="@dimen/_1dp"

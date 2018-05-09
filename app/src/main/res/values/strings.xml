@@ -109,5 +109,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="perfect_title">── 完善信息, 您可以获得更多贷款 ──</string>
+    <string name="open_vip">开通会员</string>
+    <string name="vip_center_title">会员中心</string>
+    <string name="vip_pay_str">在线支付成功后，服务自动开通\n服务一经开通，不予退款，敬请谅解</string>
 
 </resources>

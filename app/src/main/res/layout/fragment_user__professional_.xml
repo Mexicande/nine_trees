@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:stv="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cn.com.stableloan.ui.fragment.information.User_Professional_Fragment">
     <LinearLayout
@@ -24,18 +23,18 @@
                 android:id="@+id/bt_SelectProfession"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                stv:sLeftTextSize="16sp"
-                stv:sLeftViewMarginLeft="5dp"
-                stv:sDividerLineColor="@color/frame_color"
-                stv:sLeftTextString="其他"
-                stv:sLeftTextIsBold="true"
-                stv:sRightTextColor="@color/select_text_color"
-                stv:sRightTextSize="@dimen/information_textSize"
-                stv:sRightTvDrawableRight="@mipmap/iv_toggle"
-                stv:sBottomDividerLineMarginRight="10dp"
-                stv:sDividerLineHeight="1dp"
-                stv:sDividerLineType="none"
-                stv:sRightTextString="切换身份"
+                app:sLeftTextSize="16sp"
+                app:sLeftViewMarginLeft="5dp"
+                app:sDividerLineColor="@color/frame_color"
+                app:sLeftTextString="其他"
+                app:sLeftTextIsBold="true"
+                app:sRightTextColor="@color/select_text_color"
+                app:sRightTextSize="@dimen/information_textSize"
+                app:sRightTvDrawableRight="@mipmap/iv_toggle"
+                app:sBottomDividerLineMarginRight="10dp"
+                app:sDividerLineHeight="1dp"
+                app:sDividerLineType="none"
+                app:sRightTextString="切换身份"
                 />
         </LinearLayout>
 
@@ -48,34 +47,34 @@
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_School"
                 style="@style/identity_style"
-                stv:sLeftTextString="学校名称"
-                stv:sMaxEms="13"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
-                stv:sDividerLineType="both"
-                stv:sTopDividerLineMarginLeft="10dp"
-                stv:sTopDividerLineMarginRight="10dp"
+                app:sLeftTextString="学校名称"
+                app:sMaxEms="13"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
+                app:sDividerLineType="both"
+                app:sTopDividerLineMarginLeft="10dp"
+                app:sTopDividerLineMarginRight="10dp"
                 />
 
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_SchoolAddress"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="学校地址"
-                stv:sMaxEms="13"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="学校地址"
+                app:sMaxEms="13"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_Teacher"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="座机电话"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="座机电话"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
         </LinearLayout>
         <LinearLayout
@@ -89,56 +88,56 @@
                 android:id="@+id/et_company"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="单位名称"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
-                stv:sMaxEms="13"
-                stv:sDividerLineType="both"
-                stv:sTopDividerLineMarginLeft="10dp"
-                stv:sTopDividerLineMarginRight="10dp"
+                app:sLeftTextString="单位名称"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
+                app:sMaxEms="13"
+                app:sDividerLineType="both"
+                app:sTopDividerLineMarginLeft="10dp"
+                app:sTopDividerLineMarginRight="10dp"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_location"
-                stv:sLeftTextString="单位地址"
-                stv:sMaxEms="13"
+                app:sLeftTextString="单位地址"
+                app:sMaxEms="13"
                 style="@style/identity_style"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_fixedline"
                 style="@style/identity_style"
-                stv:sLeftTextString="单位固定电话"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="单位固定电话"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_years"
                 style="@style/identity_style"
-                stv:sLeftTextString="工作年限"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="工作年限"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
 
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_email"
                 style="@style/identity_style"
-                stv:sLeftTextString="邮箱地址"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="邮箱地址"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_Cincome"
                 style="@style/identity_style"
-                stv:sLeftTextString="月收入(税后)"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="月收入(税后)"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
         </LinearLayout>
         <LinearLayout
@@ -150,51 +149,51 @@
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/Business_company"
                 style="@style/identity_style"
-                stv:sLeftTextString="单位名称"
-                stv:sMaxEms="13"
+                app:sLeftTextString="单位名称"
+                app:sMaxEms="13"
 
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
-                stv:sDividerLineType="both"
-                stv:sTopDividerLineMarginLeft="10dp"
-                stv:sTopDividerLineMarginRight="10dp"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
+                app:sDividerLineType="both"
+                app:sTopDividerLineMarginLeft="10dp"
+                app:sTopDividerLineMarginRight="10dp"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/Business_location"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="单位地址"
-                stv:sMaxEms="13"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="单位地址"
+                app:sMaxEms="13"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/etBusiness_fixedline"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="单位固定电话"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="单位固定电话"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/Business_years"
                 style="@style/identity_style"
-                stv:sLeftTextString="工作年限"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="工作年限"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/Business_email"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="企业邮箱"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="企业邮箱"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
 
 
@@ -203,18 +202,18 @@
                 android:id="@+id/Business_Cincome"
                 style="@style/identity_style"
 
-                stv:sLeftTextString="月收入(税后)"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="月收入(税后)"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
             <cn.com.stableloan.view.supertextview.SuperTextView
                 android:id="@+id/et_operations"
                 style="@style/identity_style"
-                stv:sLeftTextString="经营年限"
-                stv:sRightIconRes="@mipmap/iv_black_arrow_right"
-                stv:sRightTextColor="@color/text_setting"
-                stv:sRightTextSize="@dimen/information_textSize"
+                app:sLeftTextString="经营年限"
+                app:sRightIconRes="@mipmap/iv_black_arrow_right"
+                app:sRightTextColor="@color/text_setting"
+                app:sRightTextSize="@dimen/information_textSize"
                 />
 
             <RelativeLayout

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/integral"
     tools:context="cn.com.stableloan.ui.activity.integarl.RuleDescActivity">
@@ -72,20 +71,20 @@
             android:layout_marginTop="@dimen/_10dp"
             android:textColor="@color/text_setting"
             android:text="相关问题"/>
-    <com.allen.library.SuperTextView
+    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/feedback"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        stv:sLeftIconRes="@mipmap/feedback"
-        stv:sBottomLineMargin="0dp"
+        app:sLeftIconRes="@mipmap/feedback"
+        app:sBottomLineMargin="0dp"
         android:textSize="16sp"
-        stv:sLeftIconHeight="25dp"
-        stv:sLeftTextColor="#363636"
-        stv:sLeftIconWidth="25dp"
-        stv:sRightIconRes="@mipmap/iv_left"
-        stv:sRightIconHeight="17dp"
-        stv:sRightIconWidth="17dp"
-        stv:sLeftTextSize="18dp"
-        stv:sLeftTextString="意见反馈" />
+        app:sLeftIconHeight="25dp"
+        app:sLeftTextColor="#363636"
+        app:sLeftIconWidth="25dp"
+        app:sRightIconRes="@mipmap/iv_left"
+        app:sRightIconHeight="17dp"
+        app:sRightIconWidth="17dp"
+        app:sLeftTextSize="18dp"
+        app:sLeftTextString="意见反馈" />
 </LinearLayout>

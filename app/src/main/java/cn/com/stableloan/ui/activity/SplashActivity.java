@@ -15,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.lang.ref.WeakReference;
 
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
@@ -62,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 1:
                         ActivityUtils.startActivity(MainActivity.class);
+                        activity.finish();
                         break;
                     default:
                         break;

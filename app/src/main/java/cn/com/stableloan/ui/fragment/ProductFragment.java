@@ -3,6 +3,7 @@ package cn.com.stableloan.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -64,6 +66,8 @@ import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author apple
+ * 产品列表
  */
 public class ProductFragment extends ImmersionFragment {
 
@@ -102,7 +106,6 @@ public class ProductFragment extends ImmersionFragment {
         // Required empty public constructor
     }
 
-    private StateLayout stateLayout;
 
     private View errorView;
     private View notDataView;
@@ -123,8 +126,6 @@ public class ProductFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         ButterKnife.bind(this, view);
-        stateLayout = (StateLayout) view.findViewById(R.id.stateLayout);
-        stateLayout.setViewSwitchAnimProvider(new FadeViewAnimProvider());
         initViewTitle();
         getTagFlowData();
         initRecyclView();
@@ -176,9 +177,6 @@ public class ProductFragment extends ImmersionFragment {
     }
 
     private void getDate(final int var, final int action) {
-        if (var == 1) {
-            stateLayout.showProgressView();
-        }
         HashMap<String, Integer> params = new HashMap<>();
         params.put("var", var);
         final JSONObject jsonObject = new JSONObject(params);
@@ -197,11 +195,9 @@ public class ProductFragment extends ImmersionFragment {
                                     Class_ListProductBean json = gson.fromJson(s, Class_ListProductBean.class);
                                     switch (action) {
                                         case ACTION_DOWN:
-                                            stateLayout.showContentView();
                                            classify_recycler_adapter.setNewData(json.getProduct());
                                             break;
                                         case ACTION_UP:
-                                            stateLayout.showContentView();
                                             if (json.getProduct().size() > 0) {
                                                 classify_recycler_adapter.addData(json.getProduct());
                                             }
@@ -229,7 +225,6 @@ public class ProductFragment extends ImmersionFragment {
 
     @Subscribe
     public void onPicSatus(IdentityProduct event) {
-        LogUtils.i("amount",event.amount);
         int msg = event.msg;
         String[] s = new String[]{String.valueOf(msg)};
         idFlowlayout.getAdapter().setSelectedList(msg - 1);
@@ -300,6 +295,31 @@ public class ProductFragment extends ImmersionFragment {
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", classify_recycler_adapter.getData().get(position).getId()));
             }
         });
+        //header
+        View view = getActivity().getLayoutInflater().inflate(R.layout.product_header_layout, null);
+        //footer
+        View footer = getActivity().getLayoutInflater().inflate(R.layout.product_footer_layout, null);
+        classify_recycler_adapter.addHeaderView(view);
+        classify_recycler_adapter.addFooterView(footer);
+        ImageView mCloseHeader = view.findViewById(R.id.iv_close);
+        TextView tvOpen = view.findViewById(R.id.tv_vip);
+        tvOpen.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        mCloseHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                classify_recycler_adapter.removeAllHeaderView();
+            }
+        });
+
+        classify_recycler_adapter.getFooterLayout().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showToast(getActivity(),"开通会员");
+            }
+        });
+
+
+
     }
 
 
@@ -308,7 +328,6 @@ public class ProductFragment extends ImmersionFragment {
         seekbarWithIntervals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                LogUtils.i("progress=====",progress+"");
 
                 AMOUT=progress;
             }
@@ -355,14 +374,6 @@ public class ProductFragment extends ImmersionFragment {
             }
         }, classifyRecycl);
 
-        stateLayout.setErrorAction(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                getDate(1, ACTION_DOWN);
-
-            }
-        });
     }
 
 
@@ -422,7 +433,6 @@ public class ProductFragment extends ImmersionFragment {
             param.setAmount(money);
         }
         if (ident == null) {
-            stateLayout.showProgressView();
             Set<Integer> idenlist = idFlowlayout.getSelectedList();
             if (idenlist.size() > 0) {
                 Integer[] arr = new Integer[1];
@@ -466,7 +476,6 @@ public class ProductFragment extends ImmersionFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        stateLayout.showContentView();
                         try {
                             JSONObject json = new JSONObject(s);
                             int error_code = json.getInt("error_code");

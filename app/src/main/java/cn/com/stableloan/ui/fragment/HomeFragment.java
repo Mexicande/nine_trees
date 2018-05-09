@@ -10,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,14 +55,17 @@ import cn.com.stableloan.model.home.Seckill_Bean;
 import cn.com.stableloan.model.home.SpecialClassBean;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.NoticeActivity;
 import cn.com.stableloan.ui.activity.ProductClassifyActivity;
 import cn.com.stableloan.ui.activity.ProductDesc;
+import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.ui.fragment.dialogfragment.AdialogFragment;
+import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.TimeUtils;
@@ -305,9 +309,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (specialClassBean.getData().get(position).getProject_name() != null) {
-                    startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", specialClassBean.getData().get(position)));
+                String  token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+                if(TextUtils.isEmpty(token)){
+                    ActivityUtils.startActivity(LoginActivity.class);
+                }else {
+                    ActivityUtils.startActivity(VipActivity.class);
                 }
+/*                if (specialClassBean.getData().get(position).getProject_name() != null) {
+                    startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", specialClassBean.getData().get(position)));
+                }*/
             }
         });
 
@@ -367,9 +377,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                 RequestOptions options = new RequestOptions()
                         .dontAnimate()
-                        .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
-
                 Glide.with(getActivity())
                         .load(model.getPictrue())
                         .apply(options)
@@ -429,7 +437,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         OkGo.post(Urls.puk_URL + Urls.HOME_FRAGMENT.BANNER_HOT)
                 .tag(getActivity())
-                .connTimeOut(5000)      // 设置当前请求的连接超时时间
+                .connTimeOut(5000)
+                // 设置当前请求的连接超时时间
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -527,16 +536,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-  /*      JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("职业", professional);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-*/
         switch (v.getId()) {
             case R.id.iv_free:
-                //ZhugeSDK.getInstance().track(getActivity(), "职业搜索-逍遥客", eventObject);
                 professional = "xiaoyaoke";
                 EventBus.getDefault().post(new IdentityProduct(3,100));
                 MainActivity.navigationController.setSelect(1);
@@ -544,18 +545,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.iv_work:
                 professional = "shangbanzu";
-               // ZhugeSDK.getInstance().track(getActivity(), "职业搜索-上班族", eventObject);
                 EventBus.getDefault().post(new IdentityProduct(1,100));
                 MainActivity.navigationController.setSelect(1);
 
                 break;
             case R.id.bussiones:
                 professional = "qiyezhu";
-              //  ZhugeSDK.getInstance().track(getActivity(), "职业搜索-企业主", eventObject);
                 EventBus.getDefault().post(new IdentityProduct(4,100));
                 MainActivity.navigationController.setSelect(1);
                 break;
-
+            default:
+                break;
 
         }
 

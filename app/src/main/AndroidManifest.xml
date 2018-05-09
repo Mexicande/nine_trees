@@ -237,7 +237,8 @@
             android:screenOrientation="portrait" />
         <!-- 设置手势密码 -->
         <activity android:name=".ui.activity.cash.CashFlowActivity" />
-        <activity android:name=".ui.activity.CareerChoiceActivity"></activity>
+        <activity android:name=".ui.activity.CareerChoiceActivity" />
+        <activity android:name=".ui.activity.vip.VipActivity"></activity>
     </application>
 
 </manifest>

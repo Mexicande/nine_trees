@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/base_white"
     tools:context="cn.com.stableloan.ui.fragment.ProductFragment">
     <include layout="@layout/product_toolbar_layout"/>
     <android.support.v4.widget.SwipeRefreshLayout
@@ -18,11 +19,5 @@
     </android.support.v4.widget.SwipeRefreshLayout>
     <include layout="@layout/content_slide_down_view"
         />
-    <cn.com.stableloan.view.statuslayout.StateLayout
-        android:id="@+id/stateLayout"
-        android:layout_centerInParent="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </cn.com.stableloan.view.statuslayout.StateLayout>
 </cn.com.stableloan.view.statuslayout.StateLayout>

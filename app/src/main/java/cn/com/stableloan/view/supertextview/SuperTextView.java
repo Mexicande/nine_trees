@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import cn.com.stableloan.R;
 
+
 /**
  * Created by Allen on 2017/7/1.
  * <p>
@@ -300,7 +301,7 @@ public class SuperTextView extends RelativeLayout {
     }
 
     private void getAttr(AttributeSet attrs) {
-        TypedArray typedArray = mContext.obtainStyledAttributes(attrs,R.styleable.SuperTextView);
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.SuperTextView);
 
         /////////////////////////////////////////////////
         mLeftTextString = typedArray.getString(R.styleable.SuperTextView_sLeftTextString);
