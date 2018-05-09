@@ -67,9 +67,9 @@ public class IntegarlTaskFragment extends Fragment {
     }
 
     private void getInDate() {
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
         HashMap<String, String> params = new HashMap<>();
-        params.put("token", token);
+        params.put(Urls.lock.TOKEN, token);
         JSONObject object = new JSONObject(params);
         OkGo.<String>post(Urls.NEW_Ip_url + Urls.Integarl.getAccumulatePoints)
                 .upJson(object)
@@ -122,11 +122,6 @@ public class IntegarlTaskFragment extends Fragment {
                                     inviteThird.setRightString("+250");
                                 }
                                 EventBus.getDefault().post(new IntregarlEvent(bean.getData().getOffical(), bean.getData().getCredits(), bean.getData().getTopCredits()));
-                            } else if (bean.getCode() == 0) {
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                intent.putExtra("message", bean.getError_message());
-                                intent.putExtra("from", "IntegarlError");
-                                startActivity(intent);
                             } else {
                                 ToastUtils.showToast(getActivity(), bean.getError_message());
                             }
@@ -145,15 +140,6 @@ public class IntegarlTaskFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
-
 
     @OnClick({R.id.User_information, R.id.invite_first, R.id.invite_second, R.id.invite_third})
     public void onViewClicked(View view) {
@@ -177,6 +163,8 @@ public class IntegarlTaskFragment extends Fragment {
                 Intent FriendIntent3=new Intent(getActivity(),InviteFriendsActivity.class);
                 FriendIntent3.putExtra("from","invite");
                 startActivityForResult(FriendIntent3,REQUEST_CODE);
+                break;
+            default:
                 break;
         }
     }

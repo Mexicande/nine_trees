@@ -41,14 +41,12 @@ import cn.com.stableloan.bean.IdentitySave;
 import cn.com.stableloan.model.Bank;
 import cn.com.stableloan.model.BankInformation;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
 import cn.com.stableloan.utils.BankUtils;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -146,16 +144,6 @@ public class User_Bank_Fragment extends Fragment {
 
     private void initTime() {
         int color = getResources().getColor(R.color.colorPrimary);
-
-      /*  JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("persmaterials2", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息第二页", eventObject);
-*/
         pvTime = new TimePickerView.Builder(getActivity(), (date, v) -> {
             SuperTextView btn = (SuperTextView) v;
             btn.setRightString(getTime(date));
@@ -193,7 +181,7 @@ public class User_Bank_Fragment extends Fragment {
     private void getDate() {
 
         Map<String, String> parms = new HashMap<>();
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         parms.put("token", token);
         parms.put("signature", signature);

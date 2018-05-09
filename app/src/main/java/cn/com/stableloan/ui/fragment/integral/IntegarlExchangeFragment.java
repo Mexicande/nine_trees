@@ -75,8 +75,8 @@ public class IntegarlExchangeFragment extends Fragment {
                 .setCancellable(true)
                 .show();
         HashMap<String, String> params = new HashMap<>();
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
-        params.put(Urls.TOKEN, token);
+        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+        params.put(Urls.lock.TOKEN, token);
         params.put("type", type);
         JSONObject object = new JSONObject(params);
         OkGo.post(Urls.Ip_url+Urls.Integarl.EXCHANGEPOINTS)

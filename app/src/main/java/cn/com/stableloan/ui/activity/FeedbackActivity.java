@@ -28,8 +28,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -108,15 +110,16 @@ public class FeedbackActivity extends BaseActivity {
             case R.id.bt_login:
                 sendMessageFeed();
                 break;
+            default:
+                break;
         }
     }
 
     private void sendMessageFeed() {
         String message = etMessage.getText().toString();
-        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
-
+        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, null);
         if (!TextUtils.isEmpty(message)) {
-            String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
+            String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
             String versionName = AppUpdateUtils.getVersionName(this);
             Point point = new Point();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -137,55 +140,31 @@ public class FeedbackActivity extends BaseActivity {
                 params.put("browser", "android");
                 params.put("screen", format);
                 JSONObject jsonObject = new JSONObject(params);
-                OkGo.<String>post(Urls.NEW_Ip_url + Urls.user.FEEDBACK)
-                        .tag(this)
-                        .upJson(jsonObject)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                try {
-                                    JSONObject object = new JSONObject(s);
-                                    int error_code = object.getInt("error_code");
-                                    if (error_code==0) {
-                                        ToastUtils.showToast(FeedbackActivity.this, "提交成功");
-                                        finish();
-                                    }else if(error_code==2){
-                                        Intent intent=new Intent(FeedbackActivity.this,LoginActivity.class);
-                                        intent.putExtra("message",object.getString("error_message"));
-                                        intent.putExtra("from","FeedbackActivity");
-                                        startActivityForResult(intent,REQUEST_CODE);
-                                    } else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                                        Intent intent=new Intent(FeedbackActivity.this,LoginActivity.class);
-                                        intent.putExtra("message","1136");
-                                        intent.putExtra("from","1136");
-                                        startActivity(intent);
-                                        finish();
 
-                                    } else{
-                                        ToastUtils.showToast(FeedbackActivity.this, object.getString("error_message"));
-                                    }
+            ApiService.GET_SERVICE(Urls.user.FEEDBACK, jsonObject, new OnRequestDataListener() {
+                @Override
+                public void requestSuccess(int code, JSONObject data) {
+                    try {
+                        int error_code = data.getInt("error_code");
+                        if (error_code==0) {
+                            ToastUtils.showToast(FeedbackActivity.this, "提交成功");
+                            finish();
+                        } else{
+                            ToastUtils.showToast(FeedbackActivity.this, data.getString("error_message"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                @Override
+                public void requestFailure(int code, String msg) {
+
+                }
+            });
 
             } else {
                 ToastUtils.showToast(this, "信息不能为空");
             }
         }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CODE){
-            switch (resultCode){
-                case RESULT_CODE:
-                    sendMessageFeed();
-                    break;
-            }
-        }
-
-    }
 }

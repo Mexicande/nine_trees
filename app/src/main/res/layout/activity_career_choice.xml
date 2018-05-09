@@ -159,10 +159,11 @@
         android:layout_height="40dp"
         android:text="立即申请"
         android:textSize="17sp"
+        app:sSelectorDisableColor="@color/diver"
         android:textColor="@color/white"
         app:sCornersRadius="10dp"
-        app:sSelectorNormalColor="@color/colorPrimary"
-        app:sSelectorPressedColor="@color/colorPrimaryDark"
         app:sUseSelector="true"
+        app:sSelectorNormalColor="@color/colorPrimary"
+        app:sSelectorPressedColor="@color/normalcolorPrimary"
         />
 </LinearLayout>

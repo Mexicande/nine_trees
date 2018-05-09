@@ -139,15 +139,8 @@ public class GetCash_Fragment extends Fragment {
                             Gson gson = new Gson();
                              cashBean = gson.fromJson(s, CashActivityBean.class);
                             if (cashBean.getError_code() == 0) {
-                              /*  EventBus.getDefault().post(new CashEvent("¥" + cashBean.getData().getTotal()));
-                                getAdapter.addData(cashBean.getData().get);*/
                                 getAdapter.setNewData(cashBean.getData().getActivity());
-                            } else if (cashBean.getError_code() == 2) {
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                intent.putExtra("message", cashBean.getError_message());
-                                intent.putExtra("from", "CashError");
-                                startActivityForResult(intent,REQUEST_CODE);
-                            } else {
+                            }  else {
                                 ToastUtils.showToast(getActivity(), cashBean.getError_message());
                             }
 

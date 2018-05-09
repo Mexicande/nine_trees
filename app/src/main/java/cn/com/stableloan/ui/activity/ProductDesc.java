@@ -49,6 +49,7 @@ import cn.com.stableloan.bean.DescEvent;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
+import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
@@ -87,8 +88,6 @@ public class ProductDesc extends BaseActivity {
     TextView interestAlgorithm;
     @Bind(R.id.prepayment)
     TextView prepayment;
-    @Bind(R.id.platform_desc)
-    TextView platformDesc;
     @Bind(R.id.min_algorithm)
     TextView minAlgorithm;
 
@@ -130,8 +129,6 @@ public class ProductDesc extends BaseActivity {
     EditText etMaxLimit;
     @Bind(R.id.et_MaxTime)
     EditText etMaxTime;
-    @Bind(R.id.tv_platform)
-    TextView tvPlatform;
     @Bind(R.id.tv_Desccharge)
     TextView tvDesccharge;
     @Bind(R.id.zero_algorithm)
@@ -164,7 +161,7 @@ public class ProductDesc extends BaseActivity {
 
     private boolean flag = false;
 
-
+    private String token;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
     }
@@ -176,6 +173,7 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initToolbar();
+         token = (String) SPUtils.get(this, Urls.lock.TOKEN, null);
         pid = getIntent().getIntExtra("pid", 0);
         if (pid != 0) {
             getProductDate();
@@ -290,8 +288,6 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void getProductDate() {
-        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
-
         HashMap<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(pid));
         if (!"1".equals(token)) {
@@ -308,27 +304,15 @@ public class ProductDesc extends BaseActivity {
                         if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                                int error_code = object.getInt("error_code");
+                                int errorCode = object.getInt("error_code");
                                 String error_message = object.getString("error_message");
 
-                                if (error_code == 0) {
+                                if (errorCode == 0) {
                                     Gson gson = new Gson();
                                     descBean = gson.fromJson(s, Product_DescBean.class);
                                     if (descBean != null&&descBean.getData()!=null) {
-                                                    dateInset(descBean);
+                                         dateInset(descBean);
                                     }
-                                } else if (error_code == 2) {
-                                    Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
-                                    intent.putExtra("message", error_message);
-                                    intent.putExtra("from", "DescError");
-                                    startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
-                                } else if (error_code == Urls.ERROR_CODE.FREEZING_CODE) {
-                                    Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
-                                    intent.putExtra("message", "1136");
-                                    intent.putExtra("from", "1136");
-                                    startActivity(intent);
-                                    finish();
-
                                 } else {
                                     ToastUtils.showToast(ProductDesc.this, error_message);
                                 }
@@ -346,6 +330,7 @@ public class ProductDesc extends BaseActivity {
 
                     }
                 });
+
     }
 
 
@@ -408,7 +393,7 @@ public class ProductDesc extends BaseActivity {
         String product_repayment_channels = product.getRepayment_channels();
         String min = product.getMin_algorithm();
         String max = product.getMax_algorithm();
-        String product_prepayment = product.getPrepayment();
+        String productPrepayment = product.getPrepayment();
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
         String interest_algorithm = product.getInterest_algorithm();
@@ -444,7 +429,6 @@ public class ProductDesc extends BaseActivity {
 
         etMaxLimit.setText(minimum_amount);
         etMaxTime.setText(product.getMin_cycle());
-        tvPlatform.setText(product.getPlatformdetail().getPl_name());
         if (product.getActual_account() != null && !product.getActual_account().isEmpty()) {
             setTextViewColor(arrive, "到账方式: " + product.getActual_account());
         } else {
@@ -482,9 +466,9 @@ public class ProductDesc extends BaseActivity {
             interestAlgorithm.setVisibility(View.GONE);
 
         }
-        if (product_prepayment != null && !product_prepayment.isEmpty()) {
+        if (productPrepayment != null && !productPrepayment.isEmpty()) {
             prepayment.setVisibility(View.VISIBLE);
-            setTextViewColor(prepayment, "提前还款: " + product_prepayment);
+            setTextViewColor(prepayment, "提前还款: " + productPrepayment);
         } else {
             prepayment.setVisibility(View.GONE);
         }
@@ -515,18 +499,14 @@ public class ProductDesc extends BaseActivity {
 
     private DescDialog descDialog;
 
-    @OnClick({R.id.iv_back, R.id.platform_desc, R.id.apply, R.id.bt_share
+    @OnClick({R.id.iv_back, R.id.apply, R.id.bt_share
     })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.platform_desc:
-                startActivity(new Intent(this, PlatformInfoActivity.class).putExtra("pid", String.valueOf(descBean.getData().getPl_id())));
-                break;
             case R.id.apply:
-                String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, null);
                 if (TextUtils.isEmpty(token)) {
                     startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "DescError"), Token_Fail);
                 } else {
@@ -631,59 +611,61 @@ public class ProductDesc extends BaseActivity {
      * @param status
      */
     private void CollectionProduct(final String status) {
+        if(TextUtils.isEmpty(token)){
+            ActivityUtils.startActivity(LoginActivity.class);
+        }else {
 
-        String token = (String) SPUtils.get(this, "token", "1");
-        Map<String, String> parms1 = new HashMap<>();
+            Map<String, String> parms1 = new HashMap<>();
+            parms1.put("token", token);
+            parms1.put("status", status);
+            parms1.put("product_id", String.valueOf(pid));
+            JSONObject jsonObject = new JSONObject(parms1);
 
-        parms1.put("token", token);
-        parms1.put("status", status);
-        parms1.put("product_id", String.valueOf(pid));
-        JSONObject jsonObject = new JSONObject(parms1);
-
-        OkGo.post(Urls.Ip_url + Urls.product.CollectionDesc)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            try {
-                                JSONObject json = new JSONObject(s);
-                                int error_code = json.getInt("error_code");
-                                if (error_code == 0) {
-                                    flag = true;
-                                    EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
-                                    if (("1").equals(status)) {
-                                        shareFlag = true;
-                                        ToastUtils.showToast(ProductDesc.this, "收藏成功");
+            OkGo.post(Urls.Ip_url + Urls.product.CollectionDesc)
+                    .tag(this)
+                    .upJson(jsonObject)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            if (s != null) {
+                                try {
+                                    JSONObject json = new JSONObject(s);
+                                    int error_code = json.getInt("error_code");
+                                    if (error_code == 0) {
+                                        flag = true;
+                                        EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
+                                        if (("1").equals(status)) {
+                                            shareFlag = true;
+                                            ToastUtils.showToast(ProductDesc.this, "收藏成功");
+                                        } else {
+                                            shareFlag = false;
+                                            ToastUtils.showToast(ProductDesc.this, "取消成功");
+                                        }
+                                    } else if (error_code == 2) {
+                                        Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
+                                        intent.putExtra("message", json.getString("error_message"));
+                                        intent.putExtra("from", "ProductDescError");
+                                        intent.putExtra("collection", status);
+                                        startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
                                     } else {
-                                        shareFlag = false;
-                                        ToastUtils.showToast(ProductDesc.this, "取消成功");
+                                        String error_message = json.getString("error_message");
+                                        ToastUtils.showToast(ProductDesc.this, error_message);
                                     }
-                                } else if (error_code == 2) {
-                                    Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
-                                    intent.putExtra("message", json.getString("error_message"));
-                                    intent.putExtra("from", "ProductDescError");
-                                    intent.putExtra("collection", status);
-                                    startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
-                                } else {
-                                    String error_message = json.getString("error_message");
-                                    ToastUtils.showToast(ProductDesc.this, error_message);
-                                }
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+
                         }
 
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        ToastUtils.showToast(ProductDesc.this, "服务器异常");
-                    }
-                });
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            ToastUtils.showToast(ProductDesc.this, "服务器异常");
+                        }
+                    });
+        }
 
     }
 
@@ -701,7 +683,6 @@ public class ProductDesc extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-
         if (flag) {
             EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
         }

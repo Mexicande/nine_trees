@@ -95,17 +95,6 @@ public class CashFlowActivity extends AppCompatActivity {
                                     resault.setText(data.getResault());
                                     status.setText(data.getStatus());
                                 }
-                            }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(CashFlowActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-                            }else if(error_code==2){
-                                    Intent intent = new Intent(CashFlowActivity.this, LoginActivity.class);
-                                    intent.putExtra("message", cashFlowBean.getError_message());
-                                    intent.putExtra("from", "CashFlowActivity");
-                                    startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
                             }else {
                                 ToastUtils.showToast(CashFlowActivity.this,cashFlowBean.getError_message());
                             }

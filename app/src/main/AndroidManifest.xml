@@ -99,13 +99,7 @@
             android:name=".ui.activity.ProductDesc"
             android:screenOrientation="portrait" />
         <!-- 密码修改 -->
-        <activity
-            android:name=".ui.activity.UpdatePassWordActivity"
-            android:screenOrientation="portrait" />
         <!-- 职业修改 -->
-        <activity
-            android:name=".ui.activity.UpdataProfessionActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.PlatformInfoActivity"
             android:screenOrientation="portrait" />
@@ -116,9 +110,6 @@
         <!-- 通知公告 -->
         <activity
             android:name=".ui.activity.NoticeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.StrateActivity"
             android:screenOrientation="portrait" />
         <!-- 密码找回 -->
         <meta-data
@@ -240,9 +231,6 @@
             android:name=".ui.activity.settingdate.DeviceActivity"
             android:screenOrientation="portrait" />
         <!-- 密码修改 -->
-        <activity
-            android:name=".ui.activity.UpdatePWActivity"
-            android:screenOrientation="portrait" />
         <!-- 现金规则 -->
         <activity
             android:name=".ui.activity.cash.GetCashRule"

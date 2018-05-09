@@ -101,19 +101,7 @@ public class CashActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         mFragmentContainerHelper.attachMagicIndicator(cashIndicator);
-        zhuGe();
         initFragments();
-    }
-
-    private void zhuGe() {
-       /* JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("cash", "");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        ZhugeSDK.getInstance().track(this, "现金", eventObject);*/
     }
 
     private void initFragments() {
@@ -203,18 +191,6 @@ public class CashActivity extends BaseActivity {
             }
         }
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CODE:
-                if (resultCode == RESULT_CODE) {
-                    getDate();
-                }
-                break;
-        }
-    }*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

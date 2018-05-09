@@ -48,7 +48,6 @@ public class VerificationFragment extends DialogFragment {
     private String etYanZhengCode;
     private VerListener listener;
     public VerificationFragment() {
-        // Required empty public constructor
     }
 
     @Override

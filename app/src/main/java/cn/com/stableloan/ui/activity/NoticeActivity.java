@@ -21,14 +21,20 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.NoticeBean;
 import cn.com.stableloan.ui.adapter.NoticeAdapter;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * @author apple
+ * 消息通知
+ */
 public class NoticeActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
@@ -86,6 +92,33 @@ public class NoticeActivity extends BaseActivity {
 
 
     private void getDate() {
+
+        ApiService.GET_SERVICE(Urls.notice.Announcement, new JSONObject(), new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    String success = data.getString("isSuccess");
+                    if(("1").equals(success)){
+                        Gson gson = new Gson();
+                        NoticeBean noticeBean = gson.fromJson(data.toString(), NoticeBean.class);
+                        noticeAdapter.setNewData(noticeBean.getAnnouncements());
+
+                    } else {
+                        String msg = data.getString("msg");
+                        ToastUtils.showToast(NoticeActivity.this, msg);
+                    }
+                    SwipeRefreshLayout.setRefreshing(false);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
+            }
+        });
 
         OkGo.post(Urls.puk_URL + Urls.notice.Announcement)
                 .tag(this)

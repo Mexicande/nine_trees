@@ -110,8 +110,6 @@ public class InviteFriendsActivity extends BaseActivity {
         listAdapter = new InviteListAdapter(null);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactRecyclerView.setAdapter(listAdapter);
-      /*  View view = getLayoutInflater().inflate(R.layout.invite_layout_friend, null);
-        listAdapter.addHeaderView(view,0);*/
 
     }
 
@@ -322,21 +320,16 @@ public class InviteFriendsActivity extends BaseActivity {
                     Cursor cursor = contentResolver.query(uri,
                             null, null, null, null);
                     while (cursor.moveToNext()) {
-
                         num = cursor.getString(cursor.getColumnIndex("data1"));
-                        Log.i("num", "phone：" + num + "");
-
                         int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
                         name = cursor.getString(nameFieldColumnIndex);
-
-                        Log.i("num", "name：" + name + "");
 
                     }
                     cursor.close();
                     if (num != null) {
-                        num = num.replaceAll("-", "");//替换的操作,555-6 -> 5556
-                        Log.i("num", "联系人：" + num + "---" + name);
-                        String replace = num.replace(" ", "");
+                        num = num.replaceAll("-", "");
+                        //替换的操作,555-6 -> 5556
+                            String replace = num.replace(" ", "");
                         inviteFriends(replace);
                     }
                     break;
@@ -345,6 +338,8 @@ public class InviteFriendsActivity extends BaseActivity {
                 break;
             case REQUEST_CODE:
                     getInviteList();
+                break;
+            default:
                 break;
 
         }
@@ -372,11 +367,6 @@ public class InviteFriendsActivity extends BaseActivity {
                             InviteFriendsBean friendsBean = gson.fromJson(s, InviteFriendsBean.class);
                             if (friendsBean.getError_code() == 0) {
                                 ToastUtils.showToast(InviteFriendsActivity.this, friendsBean.getData().getMsg());
-                            }else if(friendsBean.getError_code()==1136){
-                                Intent intent=new Intent(InviteFriendsActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
                             } else {
                                 ToastUtils.showToast(InviteFriendsActivity.this, friendsBean.getError_message());
                             }

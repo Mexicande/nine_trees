@@ -79,6 +79,10 @@ public interface Urls {
          * 登陆
          */
         String LOGIN =NEW_Ip_url+"quick/login";
+        /**
+         * 完善更新用户申请信息
+         */
+        String BASIC_IDENTITY =NEW_Ip_url+"quick/addBasicIdentity";
 
 
     }
@@ -135,12 +139,18 @@ public interface Urls {
     interface product{
         //产品详情
         String Productdetail="product/detail";
-        String GetSlotdetail ="GetSlotdetail";
+        /**
+         * 平台详情
+         */
+        String GetSlotdetail =puk_URL+"GetSlotdetail";
         String ClassProduct="project/information";
         String ProductList="ProductList";
         String ProTagFlow="product/getlabels";
         String ProductSelect="product/screening";
-        String ProductCollectionList="product/getlist";
+        /**
+         * 我的收藏
+         */
+        String ProductCollectionList=NEW_Ip_url+"product/getlist";
         String CollectionDesc="product/collection";
     }
     interface update{
@@ -151,15 +161,24 @@ public interface Urls {
         String DELETE_DATE="set/updatePeriod";
     }
     interface user{
-        String USERT_INFO="person/getPerson";
-        String USER_STATUS="status/getStatus";
-        String FEEDBACK="feedback/opinion";
+        String USERT_INFO=Ip_url+"person/getPerson";
+        /**
+         * 申请材料
+         */
+        String USER_STATUS=Ip_url+"status/getStatus";
+        /**
+         * 意见反馈
+         */
+        String FEEDBACK=NEW_Ip_url+"feedback/opinion";
         String DEVICE="set/getComDevice";
         String DELETE_DEVICE="set/delComDevice";
         String OPEN_DEVICE="set/fetchComDevice";
     }
     interface  notice{
-        String Announcement="Announcement";
+        /**
+         * 消息通知
+         */
+        String Announcement=puk_URL+"Announcement";
     }
     interface  LOTTERY{
         String GetLottery="welfare/getwelfare";

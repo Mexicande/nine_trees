@@ -138,9 +138,6 @@ public class SafeActivity extends BaseActivity {
     }
 
     private void settingTime(int index) {
-       // long l = 0l;
-
-        //l = dateToStamp(period);
         long ls = 0;
         switch (index) {
             case 0:
@@ -218,7 +215,7 @@ public class SafeActivity extends BaseActivity {
 
     private void Save(int managed, String date) {
         String man = String.valueOf(managed);
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         parms.put("managed", man);
@@ -239,7 +236,6 @@ public class SafeActivity extends BaseActivity {
                                 selectTime.setRightString(list1[managed]);
                                 ToastUtils.showToast(SafeActivity.this, "修改清档日期成功");
                             } else {
-
                                 ToastUtils.showToast(SafeActivity.this, msg);
                             }
 
@@ -364,18 +360,6 @@ public class SafeActivity extends BaseActivity {
                                     setResult(Urls.SettingResultCode.SAFE_DATE, intent);
                                     finish();
                                 }
-                            }else if(code==2){
-                                Intent intent=new Intent(SafeActivity.this,LoginActivity.class);
-                                intent.putExtra("message",msg);
-                                intent.putExtra("from","SafeActivity");
-                                startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
-                            }else if(code==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(SafeActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-
                             } else {
                                 ToastUtils.showToast(SafeActivity.this, msg);
                             }

@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,43 +18,33 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.UpdateEvent;
-import cn.com.stableloan.bean.UserEvent;
-import cn.com.stableloan.model.MessageEvent;
-import cn.com.stableloan.model.UserInfromBean;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
 import cn.com.stableloan.ui.activity.CollectionActivity;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.UpdataProfessionActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,7 +62,7 @@ public class UserFragment extends ImmersionFragment {
     TextView tvIntegral;
     @Bind(R.id.bt_Money)
     TextView btMoney;
-
+    private String token;
     private Wechat_dialog wechat_dialog;
     public UserFragment() {
 
@@ -83,70 +74,49 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         return view;
     }
     @Override
     public void onHiddenChanged(boolean hidden) {
-        if (hidden) {
-            //相当于Fragment的onPause
+        if (!hidden) {
             getUserInfo();
-
-        } else {
-            getUserInfo();
-            // 相当于Fragment的onResume
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getUserInfo();
     }
 
     private void getUserInfo() {
-
-        String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
-        final TinyDB tinyDB = new TinyDB(getActivity());
-        if (!"1".equals(token)) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("token", token);
-            JSONObject jsonObject = new JSONObject(params);
-            OkGo.post(Urls.Ip_url + Urls.user.USERT_INFO)
-                    .tag(this)
-                    .upJson(jsonObject.toString())
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            if(s!=null){
-                                Gson gson=new Gson();
-                                Personal personal = gson.fromJson(s, Personal.class);
-                                if(personal.getError_code()==0){
-                                    String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
-                                    tinyDB.putObject(userphone, personal.getData());
-                                    tvNick.setText(personal.getData().getNickname());
-                                    tvIntegral.setText(personal.getData().getCredits());
-                                    btMoney.setText(personal.getData().getTotal());
-                                }else if(personal.getError_code()==2){
-                                    Intent intent=new Intent(getActivity(),LoginActivity.class);
-                                    intent.putExtra("message",personal.getError_message());
-                                    intent.putExtra("from","error_UserFragment");
-                                    startActivityForResult(intent,200);
-                                }else if(personal.getError_code()==1136){
-                                    Intent intent=new Intent(getActivity(),LoginActivity.class);
-                                    intent.putExtra("message","1136");
-                                    intent.putExtra("from","1136");
-                                    startActivity(intent);
-                                    getActivity().finish();
-                                } else {
-                                    ToastUtils.showToast(getActivity(),personal.getError_message());
-                                }
-                            }
-
+        token = (String) SPUtils.get(getActivity(), Urls.TOKEN, null);
+        if(TextUtils.isEmpty(token)){
+            Intent intent=new Intent(getActivity(),LoginActivity.class);
+            intent.putExtra("user","UserFragment");
+            startActivity(intent);
+        }else {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("token", token);
+                ApiService.GET_SERVICE(Urls.user.USERT_INFO, jsonObject, new OnRequestDataListener() {
+                    @Override
+                    public void requestSuccess(int code, JSONObject data) {
+                        Gson gson=new Gson();
+                        Personal personal = gson.fromJson(data.toString(), Personal.class);
+                        if(personal.getError_code()==0){
+                            tvNick.setText(personal.getData().getNickname());
+                            tvIntegral.setText(personal.getData().getCredits());
+                            btMoney.setText(personal.getData().getTotal());
+                        } else {
+                            ToastUtils.showToast(getActivity(),personal.getError_message());
                         }
-                    });
-        }
+                    }
 
+                    @Override
+                    public void requestFailure(int code, String msg) {
+
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
@@ -157,15 +127,6 @@ public class UserFragment extends ImmersionFragment {
         ButterKnife.unbind(this);
     }
 
-    @Subscribe
-    public  void updateEvent(UpdateEvent msg){
-        if(msg!=null){
-            if("user".equals(msg.msg)){
-                getUserInfo();
-            }
-        }
-
-    }
 
     @Override
     protected void immersionInit() {
@@ -176,23 +137,15 @@ public class UserFragment extends ImmersionFragment {
                 .init();
     }
 
-
-    @Subscribe
-    public void onMessageEvent(MessageEvent event) {
-        if (!event.userNick.isEmpty()) {
-            tvNick.setText(event.userNick);
+    private boolean getToken(){
+        if(TextUtils.isEmpty(token)){
+            Intent intent=new Intent(getActivity(),LoginActivity.class);
+            intent.putExtra("user","UserFragment");
+            startActivity(intent);
+        }else {
+            return true;
         }
-
-    }
-
-    @Subscribe
-    public void onUserEvent(UserEvent event) {
-        UserInfromBean userNick = event.userNick;
-        if (userNick != null) {
-            tvNick.setText(userNick.getData().getNickname());
-            tvIntegral.setText(userNick.getData().getCredits());
-            btMoney.setText(userNick.getData().getTotal());
-        }
+        return false;
     }
 
     @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
@@ -200,30 +153,42 @@ public class UserFragment extends ImmersionFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
-                ActivityUtils.startActivity(UserInformationActivity.class);
+                if(getToken()){
+                    ActivityUtils.startActivity(UserInformationActivity.class);
+                }
                 break;
             case R.id.iv_Edit:
-                startActivityForResult(new Intent(getActivity(), UpdataProfessionActivity.class),100);
                 break;
             case R.id.layout_setting:
-                SafeSettingActivity.launch(getActivity());
+                if(getToken()){
+                    ActivityUtils.startActivity(SafeSettingActivity.class);
+                }
                 break;
             case R.id.feedback:
-                FeedbackActivity.launch(getActivity());
+                if(getToken()){
+                    ActivityUtils.startActivity(FeedbackActivity.class);
+                }
                 break;
             case R.id.layout_collection:
-                CollectionActivity.launch(getActivity());
+                if(getToken()){
+                    ActivityUtils.startActivity(CollectionActivity.class);
+                }
                 break;
             case R.id.layout_Integral:
-                startActivityForResult(new Intent(getActivity(),IntegralActivity.class),200);
-
+                if(getToken()){
+                    startActivityForResult(new Intent(getActivity(),IntegralActivity.class),200);
+                }
                 break;
             case R.id.laout_Money:
-                startActivityForResult(new Intent(getActivity(),CashActivity.class),200);
+                if(getToken()){
+                    startActivityForResult(new Intent(getActivity(),CashActivity.class),200);
+                }
 
                 break;
             case R.id.invite:
-                startActivityForResult(new Intent(getActivity(),InviteFriendsActivity.class).putExtra("nick",tvNick.getText().toString()),200);
+                if(getToken()){
+                    startActivityForResult(new Intent(getActivity(),InviteFriendsActivity.class).putExtra("nick",tvNick.getText().toString()),200);
+                }
                 break;
             case R.id.layout_attention:
                 wechat_dialog = new Wechat_dialog(getActivity());
@@ -231,7 +196,7 @@ public class UserFragment extends ImmersionFragment {
                     @Override
                     public void onYesClick() {
                         wechat_dialog.dismiss();
-                       if(isWeixinAvilible(getActivity())){
+                       if(isWeiringAvailable(getActivity())){
                            Intent intent = new Intent();
                            ComponentName cmp=new ComponentName("com.tencent.mm","com.tencent.mm.ui.LauncherUI");
                            intent.setAction(Intent.ACTION_MAIN);
@@ -251,10 +216,7 @@ public class UserFragment extends ImmersionFragment {
                 wechat_dialog.setNoOnclickListener("取消", new Wechat_dialog.onNoOnclickListener() {
                     @Override
                     public void onNoClick() {
-
                         wechat_dialog.dismiss();
-
-
                     }
                 });
                 wechat_dialog.show();
@@ -265,7 +227,7 @@ public class UserFragment extends ImmersionFragment {
         }
     }
 
-    public static boolean isWeixinAvilible(Context context) {
+    public static boolean isWeiringAvailable(Context context) {
         final PackageManager packageManager = context.getPackageManager();
         // 获取packagemanager
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
@@ -285,26 +247,9 @@ public class UserFragment extends ImmersionFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100){
-            switch (resultCode){
-                case 100:
-                    if(data!=null){
-                        String nick = data.getStringExtra("nick");
-                        if(nick!=null){
-                            tvNick.setText(nick);
-                        }
-                    }
-                    break;
-            }
-        }
         if(requestCode==200){
             getUserInfo();
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }

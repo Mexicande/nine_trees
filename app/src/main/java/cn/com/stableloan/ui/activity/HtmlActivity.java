@@ -186,7 +186,7 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getUrl(int id) {
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("id", String.valueOf(id));
@@ -219,7 +219,6 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getDate(String url) {
-        // url="https://b.jianbing.com/hd/20170913_jdhh_2?channel=xjd51";
         if (url != null) {
             WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);

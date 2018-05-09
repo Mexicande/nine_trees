@@ -178,14 +178,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         mCardView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                              /*  JSONObject eventObject = new JSONObject();
-                                                try {
-                                                    eventObject.put("miaosha", "");
-
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                ZhugeSDK.getInstance().track(getActivity(), "安稳秒杀--第1款产品点击", eventObject);*/
                                                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(0).getProduct_id()));
                                             }
                                         });
@@ -303,14 +295,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recylerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-/*
-                JSONObject eventObject = new JSONObject();
-                try {
-                    eventObject.put("xinshangxian", productAdapter.getData().get(position).getPname());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ZhugeSDK.getInstance().track(getActivity(), "热门推荐--"+productAdapter.getData().get(position).getPname(), eventObject);*/
 
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
 
@@ -322,13 +306,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (specialClassBean.getData().get(position).getProject_name() != null) {
-   /*                 JSONObject eventObject = new JSONObject();
-                    try {
-                        eventObject.put("fenleizhuanti", specialClassBean.getData().get(position).getProject_name());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    ZhugeSDK.getInstance().track(getActivity(), "分类专题--专题"+position, eventObject);*/
                     startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", specialClassBean.getData().get(position)));
                 }
             }
@@ -391,7 +368,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 RequestOptions options = new RequestOptions()
                         .dontAnimate()
                         .centerCrop()
-                        .transform(new GlideRoundTransform(getActivity(), 10))
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
 
                 Glide.with(getActivity())
@@ -419,14 +395,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-              /*  JSONObject eventObject = new JSONObject();
-                try {
-                    eventObject.put("miaosha", seckillBean.getData().get(position).getProduct_name());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ZhugeSDK.getInstance().track(getActivity(), "安稳秒杀--第"+position+"款产品点击", eventObject);*/
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getProduct_id()));
             }
         });

@@ -78,7 +78,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
-        EventBus.getDefault().register(this);
         statistics();
         updateDiy();
         initView();
@@ -224,35 +223,11 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
 
     }
 
-    @Subscribe
-    public void onMessageEvent(InformationEvent event){
-        if(("user2").equals(event.message)){
-            navigationController.setSelect(0);
-        }else if(("user4").equals(event.message)){
-            navigationController.setSelect(3);
-        }else if(("user3").equals(event.message)){
-            int selected = navigationController.getSelected();
-            switchMenu(getFragmentName(selected+1));
-        }else if(("userinform").equals(event.message)){
-            navigationController.setSelect(3);
-        }else if(("userinfor").equals(event.message)){
-            navigationController.setSelect(3);
-        }
-    }
 
     OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
         @Override
         public void onSelected(int index, int old) {
-            if(index==3){
-                String token = (String) SPUtils.get(MainActivity.this, Urls.lock.TOKEN, "1");
-                if ("1".equals(token)) {
-                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class).putExtra("from", "user"), FLAG_LOGIN);
-                }else {
-                    switchMenu(getFragmentName(4));
-                }
-            }else {
-                switchMenu(getFragmentName(index + 1));
-            }
+            switchMenu(getFragmentName(index + 1));
         }
         @Override
         public void onRepeat(int index) {
@@ -295,35 +270,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         }
         mCurrentFragment = fragment;
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case FLAG_LOGIN:
-                if (SEND_LOGIN == resultCode) {
-                    UserBean user = (UserBean) data.getSerializableExtra("user");
-                    if(user!=null&&user.getNickname()!=null){
-                        switchMenu(getFragmentName(4));
-                    }else {
-                        navigationController.setSelect(0);
-                    }
-                }
-                break;
-            case LOTTERY_SNED:
-                if (LOTTERY_CODE == resultCode) {
-                    String loffery = data.getStringExtra("Loffery");
-                    if (!("1").equals(loffery)) {
-                        switchMenu(getFragmentName(3));
-                    }else {
-                       navigationController.setSelect(0);
-                    }
-
-                }
-                break;
-
-        }
-
-    }
 
     //创建一个Item
     private BaseTabItem newItem(int drawable, int checkedDrawable, String text){
@@ -356,7 +302,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                 ToastUtils.showToast(this, "再按一次退出");
             }
         }
-
 
     }
 

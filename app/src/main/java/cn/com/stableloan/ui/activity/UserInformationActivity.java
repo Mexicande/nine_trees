@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,19 +16,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,23 +29,18 @@ import butterknife.OnClick;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.UpdateEvent;
-import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.UserBean;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.integarl.StatusBean;
 import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * 申请材料
+ * @author apple
  */
 public class UserInformationActivity extends Activity{
     private ImmersionBar immersionBar;
@@ -84,12 +71,11 @@ public class UserInformationActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
         ButterKnife.bind(this);
-        immersionBar = ImmersionBar.with(this);
+              immersionBar = ImmersionBar.with(this);
               immersionBar.statusBarColor(R.color.information_title1)
                 .fitsSystemWindows(true)
                 .statusBarAlpha(0.3f)
                 .init();
-        EventBus.getDefault().register(this);
         initToolbar();
         getStatus();
     }
@@ -99,7 +85,6 @@ public class UserInformationActivity extends Activity{
         titleName.setText("申请材料");
 
         views = new ArrayList<>();
-
         views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1));
         views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_information_top_bg));
         BGABanner viewById = (BGABanner) findViewById(R.id.informationBgabanner);
@@ -119,7 +104,7 @@ public class UserInformationActivity extends Activity{
 
         viewById.setData(Arrays.asList(String.valueOf(R.drawable.user_infomation_top1),String.valueOf(R.drawable.user_information_top_bg)),null);
 
-viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -128,12 +113,10 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
     @Override
     public void onPageSelected(int position) {
         if(position==0){
-                             immersionBar.statusBarColor(R.color.information_title1)
-                                       .init();
-                       }else if(position==1){
-                            immersionBar.statusBarColor(R.color.information_title)
-                                                .init();
-                            }
+            immersionBar.statusBarColor(R.color.information_title1).init();
+        }else if(position==1){
+            immersionBar.statusBarColor(R.color.information_title).init();
+        }
     }
 
     @Override
@@ -141,94 +124,67 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
     }
 });
-     /*   JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("mymaterials", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(this, "申请材料", eventObject);
-*/
 
     }
 
-   /* @Override
-    protected void onRestart() {
-        super.onRestart();
-        getStatus();
-    }*/
-
+    /**
+     * 资料完成状态
+     */
     private void getStatus() {
-        Map<String, String> parms = new HashMap<>();
-        String token = (String) SPUtils.get(this, "token", "1");
-        parms.put("token", token);
-        JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.Ip_url + Urls.user.USER_STATUS)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtils.i("Status--", s);
-                        if (s != null) {
-                            Gson gson = new Gson();
-                            StatusBean statusBean = gson.fromJson(s, StatusBean.class);
-                            if (statusBean.getError_code() == 0) {
-                                StatusBean.DataBean data = statusBean.getData();
-                                if ("1".equals(data.getStep1())) {
-                                    Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
-                                    UserInformation.setTextBackground(drawable);
-                                    UserInformation.setRightString("已完成");
-                                } else {
-                                    Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
-                                    UserInformation.setTextBackground(drawable);
-                                    UserInformation.setRightString("未完成");
-                                }
-                                if ("1".equals(data.getStep2())) {
-                                    Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
-                                    UserAuthorization.setTextBackground(drawable);
-                                    UserAuthorization.setRightString("已完成");
-                                } else {
-                                    Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
-                                    UserAuthorization.setTextBackground(drawable);
-                                    UserAuthorization.setRightString("未完成");
-                                }
-                                if ("1".equals(data.getStep3())) {
-                                    Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
-                                    UserPic.setTextBackground(drawable);
-                                    UserPic.setRightString("已完成");
-                                } else {
-                                    Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
-                                    UserPic.setTextBackground(drawable);
-                                    UserPic.setRightString("未完成");
-                                }
 
-                            }else if(statusBean.getError_code()==2){
-                                Intent intent=new Intent(UserInformationActivity.this,LoginActivity.class);
-                                intent.putExtra("message",statusBean.getError_message());
-                                intent.putExtra("from","UserInformationActivity");
-                                startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
-                            }else if(statusBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(UserInformationActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-
-                            } else{
-                                ToastUtils.showToast(UserInformationActivity.this, statusBean.getError_message());
-                            }
-
+        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, null);
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            ApiService.GET_SERVICE(Urls.user.USER_STATUS, jsonObject, new OnRequestDataListener() {
+                @Override
+                public void requestSuccess(int code, JSONObject s) {
+                    Gson gson = new Gson();
+                    StatusBean statusBean = gson.fromJson(s.toString(), StatusBean.class);
+                    if (statusBean.getError_code() == 0) {
+                        StatusBean.DataBean data = statusBean.getData();
+                        if ("1".equals(data.getStep1())) {
+                            Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
+                            UserInformation.setTextBackground(drawable);
+                            UserInformation.setRightString("已完成");
+                        } else {
+                            Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
+                            UserInformation.setTextBackground(drawable);
+                            UserInformation.setRightString("未完成");
                         }
-                    }
+                        if ("1".equals(data.getStep2())) {
+                            Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
+                            UserAuthorization.setTextBackground(drawable);
+                            UserAuthorization.setRightString("已完成");
+                        } else {
+                            Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
+                            UserAuthorization.setTextBackground(drawable);
+                            UserAuthorization.setRightString("未完成");
+                        }
+                        if ("1".equals(data.getStep3())) {
+                            Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_succeed);
+                            UserPic.setTextBackground(drawable);
+                            UserPic.setRightString("已完成");
+                        } else {
+                            Drawable drawable = ContextCompat.getDrawable(UserInformationActivity.this, R.drawable.button_fail);
+                            UserPic.setTextBackground(drawable);
+                            UserPic.setRightString("未完成");
+                        }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-
+                    } else{
+                        ToastUtils.showToast(UserInformationActivity.this, statusBean.getError_message());
                     }
-                });
+                }
+
+                @Override
+                public void requestFailure(int code, String msg) {
+
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -237,20 +193,11 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                EventBus.getDefault().post(new UpdateEvent("user"));
                 finish();
                 break;
             case R.id.User_information:
-                String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, "1");
-                TinyDB tinyDB = new TinyDB(this);
-                UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-                int identity = user.getIdentity();
-                if (identity == 0) {
-                    startActivity(new Intent(this, UpdataProfessionActivity.class).putExtra("from", "identity"));
-                } else {
-                    Intent identityintent=new Intent(this,IdentityinformationActivity.class);
-                    startActivityForResult(identityintent,IMAGE_REQUEST);
-                }
+                Intent identityIntent=new Intent(this, IdentityinformationActivity.class);
+                startActivityForResult(identityIntent,IMAGE_REQUEST);
                 break;
             case R.id.User_Authorization:
                 Intent autointent=new Intent(this,CertificationActivity.class);
@@ -260,16 +207,11 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 Intent intent=new Intent(this,UpImageIdentityActivity.class);
                 startActivityForResult(intent,IMAGE_REQUEST);
                 break;
+             default:
+                 break;
         }
     }
 
-    @Subscribe
-    public void onMessageEvent(InformationEvent event) {
-        String message = event.message;
-        if ("informationStatus".equals(message)) {
-            getStatus();
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -277,33 +219,19 @@ viewById.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
         if(requestCode==IMAGE_REQUEST){
             switch (resultCode){
                 case IMAGE_RESULT:
-                    int ok = data.getIntExtra("ok", 0);
-                    if(ok==1){
-                        getStatus();
-                    }
+                    getStatus();
                     break;
+                 default:
+                     break;
 
             }
         }
-       /* if(requestCode==Urls.REQUEST_CODE.PULLBLIC_CODE){
-            getStatus();
-        }*/
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            EventBus.getDefault().post(new UpdateEvent("user"));
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-
     }
 
 }

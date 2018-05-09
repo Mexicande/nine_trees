@@ -48,6 +48,8 @@ import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author apple
+ * 职业信息
  */
 public class User_Professional_Fragment extends Fragment {
 
@@ -141,17 +143,7 @@ public class User_Professional_Fragment extends Fragment {
     }
 
     private void getDate() {
-
-    /*    JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("persmaterials3", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息第三页", eventObject);
-*/
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
+        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
@@ -196,6 +188,8 @@ public class User_Professional_Fragment extends Fragment {
                                             setVisibilityProfession(layoutFreelancer);
                                             id = FREE;
                                             break;
+                                        default:
+                                            break;
                                     }
                                     WorkInformation.DataBean.OccupationBean occupation = work.getOccupation();
                                     WorkInformation.DataBean.OccupationBean.StudentBean student = occupation.getStudent();
@@ -205,8 +199,6 @@ public class User_Professional_Fragment extends Fragment {
                                     if (!student.getTeacherphone().isEmpty()) {
                                         etTeacher.setRightString(student.getPreTeacherphone() + "-" + student.getTeacherphone());
                                     }
-
-                                    // et_PreTeacherphone.setText(student.getPreTeacherphone());
                                     WorkInformation.DataBean.OccupationBean.CompanyBean company = occupation.getCompany();
                                     etCompany.setRightString(company.getCompany());
                                     etLocation.setRightString(company.getLocation());

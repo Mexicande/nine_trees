@@ -54,7 +54,6 @@ import cn.com.stableloan.interfaceutils.Identivity_interface;
 import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.IdentityinformationActivity;
@@ -114,11 +113,10 @@ public class User_MeansFragment extends Fragment {
     @Bind(R.id.line_platform)
     View linePlatform;
 
-    private UserBean user;
 
     private String str="";
-
-
+    private String phone;
+    private String token;
     private List<String> marrieList;
     private List<String> relationList;
     private String[] list1;
@@ -166,22 +164,6 @@ public class User_MeansFragment extends Fragment {
 
     }
 
-
- /*   *//**
-     * 诸葛io
-     *//*
-    private void setListenter() {
-
-        JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("persmaterials1", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "身份信息第一页", eventObject);
-
-    }*/
 
     private void setSuperText(SuperTextView superText, int type) {
                 Intent intent = new Intent(getActivity(), DateChangeActivity.class);
@@ -260,16 +242,10 @@ public class User_MeansFragment extends Fragment {
     }
 
     private void getDate() {
-        String userphone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
-
-        TinyDB tinyDB = new TinyDB(getActivity());
-
-        user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-
-        userPhone.setRightString(user.getUserphone());
-
+        phone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
+        token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, "1");
+        userPhone.setRightString(phone);
         Map<String, String> parms = new HashMap<>();
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
         String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         parms.put("token", token);
         parms.put("signature", signature);
@@ -342,19 +318,8 @@ public class User_MeansFragment extends Fragment {
                                             }
                                         }
                                 }
-                            } else if (identity.getError_code() == 2) {
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                intent.putExtra("message", identity.getError_message());
-                                intent.putExtra("from", "IdentityError");
-                                startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
-
-                            }else if(identity.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(getActivity(),LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                getActivity().finish();
-                            } else {
+                            }
+                              else {
                                 ToastUtils.showToast(getActivity(), identity.getError_message());
                             }
                         }
@@ -634,12 +599,6 @@ public class User_MeansFragment extends Fragment {
         }
 
 
-       /* if (!changeTest()) {
-            commitChange(identity1, identity2, identity3);
-        } else {
-            ToastUtils.showToast(getActivity(), "无修改内容");
-        }*/
-
     }
 
     private void commitChange(Identity.DataBean.IdentityBean identity1, Identity.DataBean.IdentityBean.ContactBean identity2,
@@ -664,14 +623,11 @@ public class User_MeansFragment extends Fragment {
         list.add(identity2);
         list.add(identity3);
         identity1.setContact(list);
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
         Identity.DataBean date = new Identity.DataBean();
         date.setIdentity(identity1);
         date.setToken(token);
 
-        if (user != null) {
-            identity1.setUserphone(user.getUserphone());
-        }
+        identity1.setUserphone(phone);
         JSONObject object = new JSONObject();
         try {
             object.put("identity", identity1);
@@ -701,7 +657,6 @@ public class User_MeansFragment extends Fragment {
                                 String msg = object1.getString("msg");
                                 if(!b){
                                     ToastUtils.showToast(getActivity(), msg);
-
                                 }
                             } else {
                                 String msg = object.getString("error_message");

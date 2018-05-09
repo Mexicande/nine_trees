@@ -42,6 +42,7 @@ import okhttp3.Response;
 
 /**
  * 现金明细
+ * @author apple
  */
 public class DetailCash_Fragment extends Fragment {
 
@@ -113,9 +114,9 @@ public class DetailCash_Fragment extends Fragment {
                 .setLabel("Please wait.....")
                 .setCancellable(true)
                 .show();
-        String token = (String) SPUtils.get(getActivity(), Urls.TOKEN, "1");
+        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
         HashMap<String, String> params = new HashMap<>();
-        params.put("token", token);
+        params.put(Urls.lock.TOKEN, token);
         params.put("page", String.valueOf(page));
         JSONObject object = new JSONObject(params);
         OkGo.<String>post(Urls.Ip_url + Urls.Integarl.GETCASH)
@@ -130,7 +131,6 @@ public class DetailCash_Fragment extends Fragment {
                             if (cashBean.getError_code() == 0) {
 
                                 EventBus.getDefault().post(new CashEvent("¥" + cashBean.getData().getTotal()));
-                                //cashAdapter.setNewData(cashBean.getData().getCashRecord());
                                 if(cashBean.getData().getCashRecord().size()==0){
                                     cashAdapter.loadMoreEnd();
                                 }else {
@@ -147,13 +147,7 @@ public class DetailCash_Fragment extends Fragment {
 
                                     }
                                 }
-                            } else if (cashBean.getError_code() == 2) {
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                intent.putExtra("message", cashBean.getError_message());
-                                intent.putExtra("from", "CashError");
-                                startActivityForResult(intent,REQUEST_CODE);
-
-                            } else {
+                            }  else {
                                 ToastUtils.showToast(getActivity(), cashBean.getError_message());
                             }
 

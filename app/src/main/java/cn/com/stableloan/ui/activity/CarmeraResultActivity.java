@@ -254,7 +254,6 @@ public class CarmeraResultActivity extends AppCompatActivity {
             parms.put("type", "1");
             parms.put("token",tolen);
             parms.put("source", "");
-            // parms.put("signature",signature);
             JSONObject jsonObject = new JSONObject(parms);
             OkGo.<String>post(Urls.Ip_url + Urls.Pictrue.UpLoadImage)
                     .tag(this)

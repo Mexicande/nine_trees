@@ -30,9 +30,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
@@ -43,6 +45,10 @@ import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * @author apple
+ * 我的收藏
+ */
 public class CollectionActivity extends BaseActivity {
 
     @Bind(R.id.title_name)
@@ -69,7 +75,6 @@ public class CollectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
         initToolber();
         initData();
         setListener();
@@ -102,82 +107,49 @@ public class CollectionActivity extends BaseActivity {
 
     }
 
-    @Subscribe
-    public void onCollection(ProcuctCollectionEvent event) {
-        if ("ok".equals(event.msg)) {
-            initData();
-        }
-
-    }
 
     private void initData() {
 
-        String token = (String) SPUtils.get(this, "token", "1");
-
+        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         JSONObject jsonObject = new JSONObject(parms1);
-        OkGo.<String>post(Urls.NEW_Ip_url + Urls.product.ProductCollectionList)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        stateLayout.showContentView();
-                        try {
-                            JSONObject json = new JSONObject(s);
-                            int error_code = json.getInt("error_code");
-                            if (error_code == 0) {
-                                String data = json.getString("data");
-                                Gson gson = new Gson();
-                                Class_Special.DataBean.ProductBean[] productBeen = gson.fromJson(data, Class_Special.DataBean.ProductBean[].class);
-                                if (productBeen.length == 0) {
-                                    classify_recycler_adapter.setNewData(null);
-                                    classify_recycler_adapter.setEmptyView(notDataView);
-                                } else {
-                                    classify_recycler_adapter.setNewData(Arrays.asList(productBeen));
-                                    recyclerView.smoothScrollToPosition(0);
-                                }
-                            }else if(error_code==2){
-                                Intent intent=new Intent(CollectionActivity.this,LoginActivity.class);
-                                intent.putExtra("message",json.getString("error_message"));
-                                intent.putExtra("from","CollectionActivity");
-                                startActivityForResult(intent,RERQUEST_CAODE);
 
-                            } else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(CollectionActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-
-                            }else{
+        ApiService.GET_SERVICE(Urls.product.ProductCollectionList, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                stateLayout.showContentView();
+                    try {
+                        String date = data.getString("data");
+                        int error_code = data.getInt("error_code");
+                        if (error_code == 0) {
+                            Gson gson = new Gson();
+                            Class_Special.DataBean.ProductBean[] productBeen = gson.fromJson(data.toString(), Class_Special.DataBean.ProductBean[].class);
+                            if (productBeen.length == 0) {
                                 classify_recycler_adapter.setNewData(null);
                                 classify_recycler_adapter.setEmptyView(notDataView);
-                                String error_message = json.getString("error_message");
-                                ToastUtils.showToast(CollectionActivity.this, error_message);
+                            } else {
+                                classify_recycler_adapter.setNewData(Arrays.asList(productBeen));
+                                recyclerView.smoothScrollToPosition(0);
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            classify_recycler_adapter.setNewData(null);
+                            classify_recycler_adapter.setEmptyView(notDataView);
+                            String error_message = data.getString("error_message");
+                            ToastUtils.showToast(CollectionActivity.this, error_message);
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                classify_recycler_adapter.setEmptyView(errorView);
-                                ToastUtils.showToast(CollectionActivity.this, "服务器异常");
-                            }
-                        });
-                    }
-                });
+                }
+            @Override
+            public void requestFailure(int code, String msg) {
+                    classify_recycler_adapter.setEmptyView(errorView);
+                    ToastUtils.showToast(CollectionActivity.this, "服务器异常");
+            }
+        });
 
     }
-
     private void initToolber() {
         titleName.setText("我的收藏");
         ivBack.setVisibility(View.VISIBLE);
@@ -202,13 +174,5 @@ public class CollectionActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==RERQUEST_CAODE){
-            initData();
-        }
     }
 }

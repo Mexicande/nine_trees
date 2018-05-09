@@ -154,9 +154,9 @@ public class WithdrawalCashActivity extends BaseActivity {
 
     private void getUserPopo() {
 
-        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
+        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, null);
         HashMap<String, String> params = new HashMap<>();
-        params.put("token", token);
+        params.put(Urls.lock.TOKEN, token);
         params.put("position", "2");
         params.put("type", "1");
         JSONObject object = new JSONObject(params);
@@ -172,21 +172,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                                 if (("1").equals(outBean.getData().getStatus())) {
                                     RuleDialog(outBean.getData().getName(), outBean.getData().getDescription());
                                 }
-                            } else if(outBean.getError_code() == 2) {
-                                Intent intent = new Intent(WithdrawalCashActivity.this, LoginActivity.class);
-                                intent.putExtra("message", cashBean.getError_message());
-                                intent.putExtra("from", "CashWithError");
-                                startActivityForResult(intent,REQUESTION_CODE);
-
-                            }else if(outBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-
                             }else {
-
                                     ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());
                             }
 
@@ -239,19 +225,6 @@ public class WithdrawalCashActivity extends BaseActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
-                            } else  if(outBean.getError_code()==2){
-                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
-                                intent.putExtra("message", cashBean.getError_message());
-                                intent.putExtra("from", "CashWithError");
-                                startActivityForResult(intent,REQUESTION_CODE);
-
-                            }else if(outBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(WithdrawalCashActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
 
                             } else{
                                 ToastUtils.showToast(WithdrawalCashActivity.this, outBean.getError_message());

@@ -65,9 +65,6 @@ public class LotteryFragment extends ImmersionFragment {
 
     private WelfareAdapter welfareAdapter;
 
-    private static final int LOTTERY_CODE = 500;
-    private static final int LOTTERY_SNED = 5000;
-
 
     public LotteryFragment() {
         // Required empty public constructor
@@ -97,15 +94,6 @@ public class LotteryFragment extends ImmersionFragment {
     }
 
     private void SetListener() {
-  /*      JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("福利", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "福利", eventObject);
-*/
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {

@@ -130,14 +130,6 @@ public class ProductFragment extends ImmersionFragment {
         initRecyclView();
         setListener();
         getDate(1, ACTION_DOWN);
-      /*  JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("产品列表", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //记录事件
-        ZhugeSDK.getInstance().track(getActivity(), "产品列表", eventObject);*/
         EventBus.getDefault().register(this);
 
         return view;

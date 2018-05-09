@@ -61,7 +61,7 @@ public class SplashActivity extends AppCompatActivity {
             if (activity != null) {
                 switch (msg.what) {
                     case 1:
-                        ActivityUtils.startActivity(CareerChoiceActivity.class);
+                        ActivityUtils.startActivity(MainActivity.class);
                         break;
                     default:
                         break;

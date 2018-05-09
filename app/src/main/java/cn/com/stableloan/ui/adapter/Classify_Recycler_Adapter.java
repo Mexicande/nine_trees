@@ -21,7 +21,10 @@ import cn.com.stableloan.model.home.SpecialClassBean;
 
 
 /**
- * Created by apple on 2017/4/11.
+ *
+ * @author apple
+ * @date 2017/4/11
+ * 分类
  */
 
 public class Classify_Recycler_Adapter extends BaseQuickAdapter<SpecialClassBean.DataBean,BaseViewHolder> {
@@ -40,12 +43,7 @@ public class Classify_Recycler_Adapter extends BaseQuickAdapter<SpecialClassBean
         RequestOptions options = new RequestOptions()
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-
-        helper.setText(R.id.project_name, item.getProject_name())
-                .setText(R.id.title, item.getTitle())
-                .setText(R.id.preface,item.getPreface())
-                .setText(R.id.total_amount,"共"+item.getProduct_amount()+"款产品");
-
+        helper.setText(R.id.project_name, item.getProject_name());
         Glide.with(mContext).load(item.getProject_logo()).apply(options).into((ImageView)helper.getView(R.id.project_logo));
 
     }

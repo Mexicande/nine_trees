@@ -53,6 +53,10 @@ import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXManager;
 import cn.com.stableloan.view.share.WXShareContent;
 
+/**
+ * @author apple
+ * 积分
+ */
 public class IntegralActivity extends BaseActivity {
 
     @Bind(R.id.magic_indicator)
@@ -103,7 +107,6 @@ public class IntegralActivity extends BaseActivity {
         if (from != null && "cash".equals(from)) {
             magicIndicator.onPageSelected(1);
             viewPager.setCurrentItem(1);
-            //viewPager.setCurrentItem(1);
 
         }
     }
@@ -219,15 +222,6 @@ public class IntegralActivity extends BaseActivity {
         }
     }
 
-  /*  @Subscribe
-    public void onMessageEvent(ShareEvent event) {
-        if (event != null) {
-            if (event.type == 1) {
-                shareUrl = event.shareUrl;
-                slideUp.show();
-            }
-        }
-    }*/
 
     private WXManager wxManager;
 
@@ -282,18 +276,10 @@ public class IntegralActivity extends BaseActivity {
             case R.id.layout_friend:
                 shareWechat(WXShareContent.WXTimeline);
                 break;
+            default:
+                break;
         }
     }
-/*
-    @OnClick({R.id.layout_wx, R.id.layout_friend})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.layout_wx:
-                break;
-            case R.id.layout_friend:
-                break;
-        }
-    }*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

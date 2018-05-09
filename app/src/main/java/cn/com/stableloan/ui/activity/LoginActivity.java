@@ -1,8 +1,11 @@
 package cn.com.stableloan.ui.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -15,10 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meituan.android.walle.WalleChannelReader;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,13 +39,11 @@ import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.interfaceutils.VerListener;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.dialogfragment.VerificationFragment;
 import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.CommonUtil;
-import cn.com.stableloan.utils.EncryptUtils;
 import cn.com.stableloan.utils.RegexUtils;
 import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.StatusBarUtil;
@@ -186,32 +191,11 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            String message = getIntent().getStringExtra("message");
-            String from = getIntent().getStringExtra("from");
-            if (from != null) {
-                if (("user").equals(from)) {
-                    UserBean userBean = new UserBean();
-                    setResult(Flag_User, new Intent().putExtra("user", userBean));
-                    finish();
-                } else if (("123").equals(from)) {
-                    setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
-                    finish();
-                } else if (("user1").equals(from)) {
-                    UserBean userBean = new UserBean();
-                    setResult(4000, new Intent().putExtra("user", userBean));
-                    finish();
-                } else if (("user2").equals(from)) {
-                    EventBus.getDefault().post(new InformationEvent("user2"));
-                    finish();
-                } else {
-                    if (message != null) {
-                        ActivityStackManager.getInstance().popAllActivity();
-                        MainActivity.launch(this);
-                        finish();
-                    } else {
-                        finish();
-                    }
-                }
+            String user = getIntent().getStringExtra("user");
+            if (!TextUtils.isEmpty(user)) {
+                ActivityStackManager.getInstance().popAllActivity();
+                MainActivity.launch(this);
+                finish();
             }
         }
         return super.onKeyDown(keyCode, event);
@@ -318,46 +302,44 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
-                String from = getIntent().getStringExtra("from");
-                String message = getIntent().getStringExtra("message");
-                if (from != null) {
-                    if (("user").equals(from)) {
-                        UserBean userBean = new UserBean();
-                        setResult(Flag_User, new Intent().putExtra("user", userBean));
-                        finish();
-                    } else if (("123").equals(from)) {
-                        setResult(LOTTERY_CODE, new Intent().putExtra("Loffery", "1"));
-                        finish();
-                    } else if (("user1").equals(from)) {
-                        UserBean userBean = new UserBean();
-                        setResult(4000, new Intent().putExtra("user", userBean));
-                        finish();
-                    } else if (("user2").equals(from)) {
-                        EventBus.getDefault().post(new InformationEvent("user2"));
-                        finish();
-                    } else {
-                        if (message != null) {
-                            ActivityStackManager.getInstance().popAllActivity();
-                            MainActivity.launch(this);
-                            finish();
-                        } else {
-                            finish();
-                        }
-                    }
-                } else {
-                    finish();
-                }
+                finish();
                 break;
             case R.id.bt_code:
                 verPhone();
                 break;
             case R.id.bt_login:
-                submitLogin();
+                AndPermission.with(this)
+                        .requestCode(200)
+                        .permission(Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .callback(listener)
+                        .start();
                 break;
             default:
                 break;
         }
     }
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if (requestCode == 200) {
+                submitLogin();
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            ToastUtils.showToast(LoginActivity.this, "为了您的账号安全,请打开设备权限");
+            if (requestCode == 200) {
+                if ((AndPermission.hasAlwaysDeniedPermission(LoginActivity.this, deniedPermissions))) {
+                    AndPermission.defaultSettingDialog(LoginActivity.this, 500).show();
+
+                }
+            }
+        }
+    };
 
     /**
      * name  card
@@ -412,21 +394,16 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                     JSONObject date = data.getJSONObject("data");
                     String token = date.getString("token");
                     String userphone = date.getString("userphone");
-                    int isInsure = date.getInt("is_insure");
-
-                    SPUtils.put(LoginActivity.this, Urls.lock.TOKEN, token);
                     SPUtils.put(LoginActivity.this, Urls.lock.USER_PHONE, userphone);
                     Intent intent=new Intent(LoginActivity.this, CareerChoiceActivity.class);
                     intent.putExtra("userPhone", etPhone.getText().toString());
-                    intent.putExtra("is_insure",isInsure);
+                    intent.putExtra(Urls.lock.TOKEN,token);
                     startActivity(intent);
                     finish();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
 
             }
 
@@ -445,6 +422,24 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
         if (b) {
             VerificationFragment verification = new VerificationFragment();
             verification.show(getSupportFragmentManager(), "ver");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 500:
+                // 这个400就是上面defineSettingDialog()的第二个参数。
+                // 你可以在这里检查你需要的权限是否被允许，并做相应的操作。
+                if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    submitLogin();
+                } else {
+                    ToastUtils.showToast(LoginActivity.this, "获取权限失败");
+                }
+                break;
+            default:
+                break;
         }
     }
 }

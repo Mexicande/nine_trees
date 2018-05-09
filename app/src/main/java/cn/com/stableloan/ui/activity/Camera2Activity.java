@@ -977,7 +977,6 @@ public class Camera2Activity extends AutoLayoutActivity {
                                 JSONObject object = new JSONObject(s);
                                 String isSuccess = object.getString("isSuccess");
                                 if ("1".equals(isSuccess)) {
-                                    String status = object.getString("status");
                                         String qiNiuToken = object.getString("token");
                                         savePicture(path,qiNiuToken,num);
                                 }
@@ -1057,10 +1056,6 @@ public class Camera2Activity extends AutoLayoutActivity {
                                 if (error_code==0) {
                                     String data = object.getString("data");
                                     JSONObject json=new JSONObject(data);
-                                    String msg = json.getString("msg");
-                                /*    if (flag) {
-                                        EventBus.getDefault().post(new CameraEvent(value));
-                                    }*/
                                     Intent intent=new Intent();
                                     intent.putExtra("card_num",num);
                                     setResult(Integer.parseInt(var),intent);

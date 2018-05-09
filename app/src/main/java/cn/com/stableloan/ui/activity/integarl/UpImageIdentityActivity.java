@@ -188,34 +188,8 @@ public class UpImageIdentityActivity extends BaseActivity {
                                         fillImageView(am_photo, ivIdentityHead, "手持身份证");
                                     }
                                 } else{
-                                  /*  String userphone = (String) SPUtils.get(getApplicationContext(), Urls.lock.USER_PHONE, "1");
-                                    final TinyDB tinyDB = new TinyDB(getApplicationContext());
-                                    UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-                                    String phone = user.getUserphone();
-                                    String gesturePassword = aCache.getAsString(phone);
-                                    String lock = aCache.getAsString("lock");
 
-                                    if(gesturePassword == null || "".equals(gesturePassword)||"off".equals(lock)) {
-                                        Intent intent = new Intent(getApplicationContext(), Verify_PasswordActivity.class).putExtra("from", "CardUpload");
-                                        startActivity(intent);
-                                    } else {
-                                        Intent intent = new Intent(getApplicationContext(), GestureLoginActivity.class).putExtra("from", "CardUpload");
-                                        startActivity(intent);
-                                    }*/
                                 }
-                            }else if(imageDataBean.getError_code()==2){
-                                Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
-                                intent.putExtra("message",imageDataBean.getError_message());
-                                intent.putExtra("from","UpImageError");
-                                startActivity(intent);
-
-                            }else if(imageDataBean.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-
                             } else {
                                 ToastUtils.showToast(mContext, imageDataBean.getError_message());
                             }
@@ -264,19 +238,6 @@ public class UpImageIdentityActivity extends BaseActivity {
     }
 
     private void initToolbar() {
-/*
-
-        JSONObject eventObject = new JSONObject();
-        try {
-            eventObject.put("persmaterials2", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//记录事件
-        ZhugeSDK.getInstance().track(this, "图片材料页", eventObject);
-*/
-
-
         options = new RequestOptions()
                 .centerCrop()
                 .error(R.mipmap.iv_error_image)
@@ -464,20 +425,12 @@ public class UpImageIdentityActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject object = new JSONObject(s);
-                            int error_code = object.getInt("error_code");
-                            String error_message = object.getString("error_message");
-                            if (error_code==0) {
-
+                            int errorCode = object.getInt("error_code");
+                            String errorMessage = object.getString("error_message");
+                            if (errorCode==0) {
                                 ToastUtils.showToast(getApplicationContext(), "上传成功");
-                            }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                                Intent intent=new Intent(UpImageIdentityActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
-
                             } else {
-                                ToastUtils.showToast(getApplicationContext(), error_message);
+                                ToastUtils.showToast(getApplicationContext(), errorMessage);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

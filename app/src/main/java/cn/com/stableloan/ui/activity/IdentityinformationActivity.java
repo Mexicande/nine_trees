@@ -132,9 +132,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity implements I
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_identityinformation);
         ButterKnife.bind(this);
-      /*  if (this instanceof IdentitytListener) {
-            listener = ((IdentitytListener) this);
-        }*/
         ImmersionBar.with(this).statusBarColor(R.color.colorPrimary)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
@@ -303,10 +300,6 @@ public class IdentityinformationActivity extends AutoLayoutActivity implements I
                 getDefault().post(new ProfessionalSelectEvent(BUSINESS));
                 slideUp.hide();
                 break;
-           /* case R.id.tv_Student:
-                EventBus.getDefault().post(new ProfessionalSelectEvent(STUDENT));
-                slideUp.hide();
-                break;*/
             case R.id.tv_Freelancer:
                 getDefault().post(new ProfessionalSelectEvent(FREE));
                 slideUp.hide();
@@ -330,6 +323,8 @@ public class IdentityinformationActivity extends AutoLayoutActivity implements I
                 setResult(IMAGE_RESULT, intent);
                 finish();
                 }
+                break;
+            default:
                 break;
         }
     }

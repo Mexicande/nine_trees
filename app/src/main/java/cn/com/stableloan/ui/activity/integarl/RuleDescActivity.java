@@ -13,6 +13,9 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.ui.activity.FeedbackActivity;
 
+/**
+ * @author apple
+ */
 public class RuleDescActivity extends AppCompatActivity {
     public static void launch(Context context) {
         context.startActivity(new Intent(context, RuleDescActivity.class));

@@ -8,14 +8,27 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
+import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
+import cn.com.stableloan.utils.ActivityUtils;
+import cn.com.stableloan.utils.LogUtils;
+import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.StatusBarUtil;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.flowlayout_tag.FlowLayout;
 import cn.com.stableloan.view.flowlayout_tag.TagAdapter;
 import cn.com.stableloan.view.flowlayout_tag.TagFlowLayout;
@@ -45,7 +58,7 @@ public class CareerChoiceActivity extends AppCompatActivity {
     private ArrayList<String> houseList;
     private ArrayList<String> carList;
     private ArrayList<String> workList;
-
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +71,8 @@ public class CareerChoiceActivity extends AppCompatActivity {
     }
 
     private void initDate() {
+        token = getIntent().getStringExtra(Urls.lock.TOKEN);
+
         list = new ArrayList<>();
         list.add("有卡");
         list.add("无卡");
@@ -81,7 +96,70 @@ public class CareerChoiceActivity extends AppCompatActivity {
         houseFlowlayout.getAdapter().setSelectedList(0);
         carFlowlayout.getAdapter().setSelectedList(0);
         occupationFlowlayout.getAdapter().setSelectedList(0);
+        JSONObject jsonObject = new JSONObject();
+        idFlowlayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                return false;
+            }
+        });
 
+
+        btLogin.setOnClickListener(v -> {
+            Set<Integer> isSelected = idFlowlayout.getSelectedList();
+            Set<Integer> houseSelected = houseFlowlayout.getSelectedList();
+            Set<Integer> carList = carFlowlayout.getSelectedList();
+            Set<Integer> occselectedList = occupationFlowlayout.getSelectedList();
+            try {
+                for (Integer s : isSelected) {
+                    jsonObject.put("is_credit", (s + 1));
+                }
+                for (Integer s : houseSelected) {
+                    jsonObject.put("has_house", (s + 1));
+                }
+                for (Integer s : carList) {
+                    jsonObject.put("has_car", (s + 1));
+                }
+                for (Integer s : occselectedList) {
+                    if (s == 0) {
+                        jsonObject.put("professional", (s + 1));
+                    } else {
+                        jsonObject.put("professional", (s + 2));
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            ApiService.GET_SERVICE(Urls.Login.BASIC_IDENTITY, jsonObject, new OnRequestDataListener() {
+                @Override
+                public void requestSuccess(int code, JSONObject data) {
+                    try {
+                        JSONObject date = data.getJSONObject("data");
+                        String msg = date.getString("msg");
+                        String isSucess = date.getString("isSucess");
+                        if ("1".equals(isSucess)) {
+                            SPUtils.put(CareerChoiceActivity.this, Urls.lock.TOKEN, token);
+                            finish();
+                        } else {
+                            ToastUtils.showToast(AppApplication.getApp(), msg);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                @Override
+                public void requestFailure(int code, String msg) {
+
+                }
+            });
+
+        });
     }
 
     private void initView() {
@@ -131,12 +209,4 @@ public class CareerChoiceActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.bt_login)
-    public void onViewClicked() {
-        boolean checked = checkbox.isChecked();
-        Set<Integer> selectedList = idFlowlayout.getSelectedList();
-
-
-
-    }
 }

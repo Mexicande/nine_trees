@@ -116,7 +116,6 @@ public class CertificationActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         Gson gson = new Gson();
                         certification = gson.fromJson(s, Certification.class);
-
                         int error_code = certification.getError_code();
                         hud.dismiss();
                         if (error_code == 0) {
@@ -158,23 +157,7 @@ public class CertificationActivity extends BaseActivity {
                                     mobile.setRightString("未完成");
                                 }
 
-                        }else if(error_code==2){
-                                Intent intent=new Intent(CertificationActivity.this,LoginActivity.class);
-                                intent.putExtra("message",certification.getError_message());
-                                intent.putExtra("from","CertificationActivity");
-                                startActivityForResult(intent,Urls.REQUEST_CODE.PULLBLIC_CODE);
-
-                        }else if(error_code==Urls.ERROR_CODE.FREEZING_CODE){
-                            Intent intent=new Intent(CertificationActivity.this,LoginActivity.class);
-                            intent.putExtra("message","1136");
-                            intent.putExtra("from","1136");
-                            startActivity(intent);
-                            finish();
-                        }/*else if(error_code==Urls.ERROR_CODE.CER_SATAS_ELEMENTS){
-                            ThreeElementsFragment recordFragment = ThreeElementsFragment.newInstance();
-                            recordFragment.show(getSupportFragmentManager(),"recordFragment");
-                            recordFragment.setCancelable(false);
-                        }*/else {
+                        }else {
                             ToastUtils.showToast(CertificationActivity.this, certification.getError_message());
                         }
                     }
@@ -197,13 +180,12 @@ public class CertificationActivity extends BaseActivity {
                 .callback(listener)
                 .start();
 
-        TinyDB tinyDB = new TinyDB(CertificationActivity.this);
-        String userphone = (String) SPUtils.get(CertificationActivity.this, Urls.lock.USER_PHONE, "1");
-        UserBean user = (UserBean) tinyDB.getObject(userphone, UserBean.class);
-        phone = user.getUserphone();
+        phone = (String) SPUtils.get(CertificationActivity.this, Urls.lock.USER_PHONE, "1");
         crawlerStatus.privatekey = Urls.CreditrePort.PRIVATE_KEY;
-        crawlerStatus.merchant_id = Urls.CreditrePort.APP_ID;// "1000053";
-        crawlerStatus.appname = Urls.CreditrePort.APP_NAME;//  "CreditReport";
+        crawlerStatus.merchant_id = Urls.CreditrePort.APP_ID;
+        // "1000053";
+        crawlerStatus.appname = Urls.CreditrePort.APP_NAME;
+        //  "CreditReport";
         crawlerStatus.taskid = String.valueOf(System.currentTimeMillis());
 
         crawlerStatus.obtainExtraParams().put("user_id", phone);
@@ -292,7 +274,6 @@ public class CertificationActivity extends BaseActivity {
                 }
                 break;
             case R.id.taobao:
-
                 if(data.getName()==null||data.getIdcard()==null||data.getUserphone()==null){
                     ThreeElementsFragment recordFragment = ThreeElementsFragment.newInstance();
                     recordFragment.show(getSupportFragmentManager(),"recordFragment");

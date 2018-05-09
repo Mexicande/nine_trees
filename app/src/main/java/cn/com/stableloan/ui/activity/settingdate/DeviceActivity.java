@@ -74,7 +74,7 @@ public class DeviceActivity extends BaseActivity {
     }
 
     private void getDate() {
-        token = (String) SPUtils.get(this, "token", "1");
+        token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         JSONObject jsonObject = new JSONObject(parms);
@@ -99,17 +99,6 @@ public class DeviceActivity extends BaseActivity {
                                         deviceInt=0;
                                     }
                                     mDeviceAdapter.addData(device.getData().getList());
-                                }else if(device.getError_code()==2){
-                                    Intent intent=new Intent(DeviceActivity.this,LoginActivity.class);
-                                    intent.putExtra("message",device.getError_message());
-                                    intent.putExtra("from","DeviceError");
-                                    startActivityForResult(intent,1000);
-                                }else if(device.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                    Intent intent=new Intent(DeviceActivity.this,LoginActivity.class);
-                                    intent.putExtra("message","1136");
-                                    intent.putExtra("from","1136");
-                                    startActivity(intent);
-                                    finish();
                                 }else {
                                     ToastUtils.showToast(DeviceActivity.this,device.getError_message());
                                 }
@@ -201,21 +190,6 @@ public class DeviceActivity extends BaseActivity {
                                     mDeviceAdapter.remove(position-1);
                                     ToastUtils.showToast(DeviceActivity.this,"成功删除");
 
-                                }else if(error_code==2) {
-                                    String error_message = object.getString("error_message");
-
-                                    Intent intent = new Intent(DeviceActivity.this, LoginActivity.class);
-                                    intent.putExtra("message", error_message);
-                                    intent.putExtra("from", "CertificationActivity");
-                                    startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
-
-                                } else if(device.getError_code()==Urls.ERROR_CODE.FREEZING_CODE){
-                                    Intent intent=new Intent(DeviceActivity.this,LoginActivity.class);
-                                    intent.putExtra("message","1136");
-                                    intent.putExtra("from","1136");
-                                    startActivity(intent);
-                                    finish();
-
                                 }else{
                                     String error_message = object.getString("error_message");
                                     ToastUtils.showToast(DeviceActivity.this,error_message);
@@ -249,6 +223,8 @@ public class DeviceActivity extends BaseActivity {
                 }
                 mDeviceAdapter.setVisiable(flag);
                 mDeviceAdapter.notifyDataSetChanged();
+                break;
+            default:
                 break;
         }
     }
