@@ -92,7 +92,10 @@ public interface Urls {
          * 支付方式
          */
         String PAYMENT =NEW_Ip_url+"recharge/payment";
-
+        /**
+         * 消息通知
+         */
+        String NOTICE_NEWS=NEW_Ip_url+"vip/news";
     }
 
 
@@ -205,7 +208,7 @@ public interface Urls {
         /**
          * 微信
          */
-        String WEICHAT_APPID="wxe90a89b17657d1ae";
+        String WEICHAT_APPID="wxd8a11cffdc98f84b";
         /**
          * QQ
          */

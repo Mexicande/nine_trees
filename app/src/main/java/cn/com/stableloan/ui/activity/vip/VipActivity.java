@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -29,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -40,9 +40,9 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.Login;
 import cn.com.stableloan.bean.PayEvent;
-import cn.com.stableloan.common.Api;
 import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
+import cn.com.stableloan.model.Notification;
 import cn.com.stableloan.model.VipBean;
 import cn.com.stableloan.pay.alipay.Alipay;
 import cn.com.stableloan.pay.alipay.PayResult;
@@ -52,12 +52,11 @@ import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.adapter.PayVipAdapter;
 import cn.com.stableloan.utils.ActivityUtils;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.OnClickStatistics;
 import cn.com.stableloan.utils.SPUtil;
-import cn.com.stableloan.utils.StatusBarUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.ProductItemDecoration;
+import cn.com.stableloan.view.marqueeview.MarqueeView;
 
 /**
  * @author apple
@@ -70,6 +69,8 @@ public class VipActivity extends BaseActivity {
     RecyclerView payRecycler;
     @Bind(R.id.bt_open)
     TextView btOpen;
+    @Bind(R.id.marqueeView)
+    MarqueeView marqueeView;
     private ImmersionBar mImmersionBar;
 
     private PayVipAdapter mPayVipAdapter;
@@ -103,18 +104,22 @@ public class VipActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        marqueeView.startFlipping();
+
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        marqueeView.stopFlipping();
     }
 
     @Subscribe
     public void onMessageEvent(Login event) {
         if (event != null) {
-           vip = SPUtil.getString(VipActivity.this, Constants.VIP);
-            mToken= SPUtil.getString(VipActivity.this, Urls.lock.TOKEN);
+            vip = SPUtil.getString(VipActivity.this, Constants.VIP);
+            mToken = SPUtil.getString(VipActivity.this, Urls.lock.TOKEN);
             if (TextUtils.isEmpty(vip) || "0".equals(vip)) {
                 btOpen.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else if (!TextUtils.isEmpty(vip) && "1".equals(vip)) {
@@ -123,15 +128,16 @@ public class VipActivity extends BaseActivity {
             }
         }
     }
+
     @Subscribe
-    public  void  onPayRusult(PayEvent type){
-        if(type.type==1){
-            SPUtil.putString(this,Constants.VIP,"1");
-            vip="1";
+    public void onPayRusult(PayEvent type) {
+        if (type.type == 1) {
+            SPUtil.putString(this, Constants.VIP, "1");
+            vip = "1";
             btOpen.setBackgroundColor(getResources().getColor(R.color.gay));
             btOpen.setText("已开通");
             btOpen.setEnabled(false);
-        }else {
+        } else {
             mBottomSheetDialog.dismiss();
         }
     }
@@ -139,7 +145,7 @@ public class VipActivity extends BaseActivity {
 
     private void initView() {
         vip = SPUtil.getString(VipActivity.this, Constants.VIP);
-        mToken= SPUtil.getString(VipActivity.this, Urls.lock.TOKEN);
+        mToken = SPUtil.getString(VipActivity.this, Urls.lock.TOKEN);
         if (TextUtils.isEmpty(vip) || "0".equals(vip)) {
             btOpen.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else if (!TextUtils.isEmpty(vip) && "1".equals(vip)) {
@@ -158,24 +164,24 @@ public class VipActivity extends BaseActivity {
         mBottomSheetDialog.setContentView(view);
         mBottomSheetDialog.setCanceledOnTouchOutside(true);
 
-        mAlipay=view.findViewById(R.id.pay_aplipay);
-        mWeiChat=view.findViewById(R.id.pay_weichat);
+        mAlipay = view.findViewById(R.id.pay_aplipay);
+        mWeiChat = view.findViewById(R.id.pay_weichat);
     }
 
 
     private void getDate() {
-         //支付方式
+        //支付方式
         ApiService.GET_SERVICE(Urls.Vip.PAYMENT, new JSONObject(), new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 try {
                     JSONObject data1 = data.getJSONObject("data");
                     String wechat = data1.getString("wechat");
-                    if("0".equals(wechat)){
+                    if ("0".equals(wechat)) {
                         mWeiChat.setVisibility(View.GONE);
                     }
                     String alipay = data1.getString("alipay");
-                    if("0".equals(alipay)){
+                    if ("0".equals(alipay)) {
                         mAlipay.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
@@ -214,6 +220,26 @@ public class VipActivity extends BaseActivity {
             }
         });
 
+        ApiService.GET_SERVICE(Urls.Vip.NOTICE_NEWS, new JSONObject(), new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    String data1 = data.getString("data");
+                    Gson gson = new Gson();
+                    Notification[] notification = gson.fromJson(data1, Notification[].class);
+                    List<Notification> notifications = Arrays.asList(notification);
+                    marqueeView.startWithList(notifications);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
+            }
+        });
     }
 
     private void setListener() {
@@ -225,13 +251,13 @@ public class VipActivity extends BaseActivity {
                 VipBean.ServiceBean serviceBean = data.get(position);
                 if (TextUtils.isEmpty(mToken)) {
                     ActivityUtils.startActivity(LoginActivity.class);
-                }else if(TextUtils.isEmpty(vip)||"0".equals(vip)){
-                    ToastUtils.showToast(VipActivity.this,"请先开通Vip才能享受特权");
+                } else if (TextUtils.isEmpty(vip) || "0".equals(vip)) {
+                    ToastUtils.showToast(VipActivity.this, "请先开通Vip才能享受特权");
                 } else {
                     switch (serviceBean.getExplain()) {
                         case "double":
-                            Intent lotteryIntent=new Intent(VipActivity.this,LotteryActivity.class);
-                            lotteryIntent.putExtra("title",serviceBean.getTitle());
+                            Intent lotteryIntent = new Intent(VipActivity.this, LotteryActivity.class);
+                            lotteryIntent.putExtra("title", serviceBean.getTitle());
                             startActivity(lotteryIntent);
                             break;
                         case "product":
@@ -244,13 +270,13 @@ public class VipActivity extends BaseActivity {
                             getCredit(serviceBean.getTitle());
                             break;
                         case "card":
-                            Intent creditIntent=new Intent(VipActivity.this,VipCreditActivity.class);
-                            creditIntent.putExtra("title",serviceBean.getTitle());
+                            Intent creditIntent = new Intent(VipActivity.this, VipCreditActivity.class);
+                            creditIntent.putExtra("title", serviceBean.getTitle());
                             startActivity(creditIntent);
                             break;
                         default:
                             Intent htmIntent = new Intent(VipActivity.this, HtmlActivity.class);
-                            if(!TextUtils.isEmpty(serviceBean.getLink())){
+                            if (!TextUtils.isEmpty(serviceBean.getLink())) {
                                 htmIntent.putExtra("link", serviceBean.getLink());
                                 htmIntent.putExtra("title", serviceBean.getTitle());
                                 startActivity(htmIntent);
@@ -267,7 +293,7 @@ public class VipActivity extends BaseActivity {
      * 信用报告
      */
     private void getCredit(String title) {
-        JSONObject jsonObjec=new JSONObject();
+        JSONObject jsonObjec = new JSONObject();
         try {
             jsonObjec.put(Urls.lock.TOKEN, mToken);
 
@@ -287,7 +313,7 @@ public class VipActivity extends BaseActivity {
 
                 @Override
                 public void requestFailure(int code, String msg) {
-                    ToastUtils.showToast(VipActivity.this,msg);
+                    ToastUtils.showToast(VipActivity.this, msg);
                 }
             });
 
@@ -297,7 +323,7 @@ public class VipActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.id_payAgreement, R.id.bt_open,R.id.back})
+    @OnClick({R.id.id_payAgreement, R.id.bt_open, R.id.back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.id_payAgreement:
@@ -339,11 +365,11 @@ public class VipActivity extends BaseActivity {
 
     }
 
-    private  void payMoney(int type){
-        JSONObject jsonObject=new JSONObject();
+    private void payMoney(int type) {
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(Urls.lock.TOKEN,mToken);
-            jsonObject.put("type",type);
+            jsonObject.put(Urls.lock.TOKEN, mToken);
+            jsonObject.put("type", type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -351,16 +377,16 @@ public class VipActivity extends BaseActivity {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 try {
-                    if (type==1){
+                    if (type == 1) {
                         JSONObject payInfo1 = data.getJSONObject("data");
                         Wechat wechat = new Wechat(VipActivity.this);
                         wechat.pay(payInfo1.toString());
-                    }else if (type==2){
+                    } else if (type == 2) {
                         String payInfo = data.getString("data");
                         Alipay alipay = new Alipay(VipActivity.this);
                         alipay.setHander(mHandler);
                         alipay.pay(payInfo);
-                    }else {
+                    } else {
                         String payInfo2 = data.getString("data");
                         Intent intent = new Intent();
                         intent.setAction("android.intent.action.VIEW");
@@ -375,7 +401,7 @@ public class VipActivity extends BaseActivity {
 
             @Override
             public void requestFailure(int code, String msg) {
-                ToastUtils.showToast(VipActivity.this,msg);
+                ToastUtils.showToast(VipActivity.this, msg);
             }
         });
 
@@ -432,8 +458,6 @@ public class VipActivity extends BaseActivity {
             }
         }
     }
-
-
 
 
 }

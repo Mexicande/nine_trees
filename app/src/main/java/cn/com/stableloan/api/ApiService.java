@@ -14,6 +14,8 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.utils.ActivityUtils;
+import cn.com.stableloan.utils.SPUtil;
+import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 
 
@@ -46,6 +48,8 @@ public class ApiService {
                                 if(code==0){
                                     listener.requestSuccess(code, jsonObject);
                                 }else  if(code==Urls.ERROR_CODE.LOSE_CODE){
+                                    SPUtil.contains(AppApplication.getApp(),Urls.lock.TOKEN);
+                                    ToastUtils.showToast(AppApplication.getApp(),jsonObject.getString("error_message"));
                                     ActivityUtils.startActivity(LoginActivity.class);
                                 }else {
                                     listener.requestFailure(code, jsonObject.getString("error_message"));

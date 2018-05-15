@@ -79,7 +79,6 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-        getUserInfo();
         return view;
     }
 
@@ -157,9 +156,7 @@ public class UserFragment extends ImmersionFragment {
                 ActivityUtils.startActivity(VipActivity.class);
                 break;
             case R.id.layout_setting:
-                if(getToken()){
                     ActivityUtils.startActivity(SafeSettingActivity.class);
-                }
                 break;
             case R.id.feedback:
                 if(getToken()){

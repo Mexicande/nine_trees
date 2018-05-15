@@ -89,7 +89,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="wxe90a89b17657d1ae" />
+                <data android:scheme="wxd8a11cffdc98f84b" />
             </intent-filter>
         </activity>
         <!-- Alipay -->

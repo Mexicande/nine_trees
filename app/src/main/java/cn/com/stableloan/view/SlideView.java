@@ -519,7 +519,7 @@ public class SlideView extends ViewGroup {
                 }
                 mMatrix.setTranslate(mTranleate, 0);
                 mLinearGradient.setLocalMatrix(mMatrix);
-                postInvalidateDelayed(250);
+                postInvalidateDelayed(500);
             }
         }
     }

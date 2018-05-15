@@ -174,7 +174,9 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                     if ("1".equals(isSucess)) {
                         layoutName.setVisibility(View.VISIBLE);
                         slideview.setVisibility(View.GONE);
+                        layoutCode.setVisibility(View.GONE);
                         loginPhoneR2.setVisibility(View.GONE);
+
                     } else {
                         slideview.reset();
                     }

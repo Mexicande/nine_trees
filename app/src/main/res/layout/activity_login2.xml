@@ -7,7 +7,6 @@
     android:background="@color/white"
     tools:context="cn.com.stableloan.ui.activity.LoginActivity">
     <android.support.v7.widget.Toolbar
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="50dp">

@@ -50,14 +50,7 @@ public class AppApplication extends Application {
         return uploadManager;
     }
 
-    /**
-     * 启动照相Intent的RequestCode.自定义相机.
-     */
-    public static final int TAKE_PHOTO_CUSTOM = 100;
-    /**
-     * 启动照相Intent的RequestCode.系统相机.
-     */
-    public static final int TAKE_PHOTO_SYSTEM = 200;
+
     /**
      * 主线程Handler.
      */
@@ -94,9 +87,8 @@ public class AppApplication extends Application {
         OkGo.init(this);
         try {
             OkGo.getInstance()
-                    .setCertificates()
                     .debug("OkGo", Level.INFO, true)
-                    .setCacheMode(CacheMode.NO_CACHE)
+                    .setCertificates()
                     //公共header不支持中文
                     .addCommonHeaders(headers);
 

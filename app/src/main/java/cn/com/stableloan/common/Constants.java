@@ -26,7 +26,7 @@ public class Constants {
      */
     public static final  int WECHAT_TYPE=1;
     public static final  int ALIPAY_TYPE=2;
-    public static final  String WEICHAT_ID="3846f6f1e99e4f1b958111fda257c368";
+    public static final  String WEICHAT_ID="e051831188f1181e89ae75facc19d6ce";
     //余额不足时支付成功
     public static final String INTENT_EXTRA_PAY_SUCESS = "com.xinhe.intent.action.PAY_SUCESS";
     //充值成功

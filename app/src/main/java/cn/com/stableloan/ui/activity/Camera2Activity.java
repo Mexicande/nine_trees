@@ -868,7 +868,6 @@ public class Camera2Activity extends AutoLayoutActivity {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(file -> {
                                 file1 = file;
-                                Log.i("file-----",file1.getAbsolutePath());
                                 AppApplication.mHandler.post(() -> {
                                     mFinishCalled = true;
                                     AppApplication.destoryActivity("CarmeraResultActivity");
