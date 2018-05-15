@@ -27,9 +27,8 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IntregarlEvent;
 import cn.com.stableloan.model.integarl.IntegarlBean;
 import cn.com.stableloan.ui.activity.IdentityinformationActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -67,7 +66,7 @@ public class IntegarlTaskFragment extends Fragment {
     }
 
     private void getInDate() {
-        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+        String token = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
         HashMap<String, String> params = new HashMap<>();
         params.put(Urls.lock.TOKEN, token);
         JSONObject object = new JSONObject(params);

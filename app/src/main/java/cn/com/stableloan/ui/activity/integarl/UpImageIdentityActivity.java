@@ -52,10 +52,9 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.ImageDataBean;
 import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.PictureActivity;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -139,11 +138,10 @@ public class UpImageIdentityActivity extends BaseActivity {
         ivBusiness.measure(w, h);
         HEIGHT = ivBusiness.getMeasuredHeight();
         WIDTH = ivBusiness.getMeasuredWidth();
-        token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
-        String signature = (String) SPUtils.get(this, "signature", "1");
+        token = SPUtil.getString(this, Urls.lock.TOKEN);
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
-        parms1.put("signature", signature);
+        parms1.put("signature", "");
         parms1.put("source", "");
         JSONObject json = new JSONObject(parms1);
         OkGo.<String>post(Urls.Ip_url + Urls.Pictrue.Get_Pictrue)
@@ -485,11 +483,10 @@ public class UpImageIdentityActivity extends BaseActivity {
     }
 
     private void getToken() {
-        token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
-        String signature = (String) SPUtils.get(this, "signature", "1");
+        token = SPUtil.getString(this, Urls.lock.TOKEN);
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
-        parms.put("signature", signature);
+        parms.put("signature", "");
         parms.put("source", "");
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_URL + Urls.Pictrue.GET_QINIUTOKEN)

@@ -3,8 +3,10 @@
 buildscript {
     repositories {
         jcenter()
-
         google()
+        maven {
+            url "http://mvn.leancloud.cn/nexus/content/repositories/public"
+        }
     }
     dependencies {
 
@@ -22,6 +24,9 @@ allprojects {
     repositories {
         maven {
             url "https://jitpack.io"
+        }
+        maven {
+            url "http://mvn.leancloud.cn/nexus/content/repositories/public"
         }
         flatDir {
             dirs 'libs'

@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 
+import com.avos.avoscloud.AVOSCloud;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.HttpHeaders;
@@ -25,8 +26,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.common.Constants;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.view.update.AppUpdateUtils;
 
 
@@ -72,14 +74,13 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sApp = this;
+        instance = this;
 
         mHandler = new Handler();
 
         initTypeface();
-
         uploadManager=new UploadManager();
-        instance = this;
-
+        AVOSCloud.initialize(this,Urls.KEY.LEAN_ID,Urls.KEY.LEAN_KEY);
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
 
         String versionName = AppUpdateUtils.getVersionName(this);
@@ -88,6 +89,8 @@ public class AppApplication extends Application {
         headers.put("channel", channel);
         headers.put("os", versionName);
         headers.put("terminal", Constants.terminal);
+        headers.put("linkType", Constants.LINK_TYPE);
+
         OkGo.init(this);
         try {
             OkGo.getInstance()
@@ -101,7 +104,6 @@ public class AppApplication extends Application {
             e.printStackTrace();
         }
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
-
         //友盟
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,"5a14ef858f4a9d5bd300006c"
         ,channel));
@@ -132,7 +134,7 @@ public class AppApplication extends Application {
 
     public static String getToken(){
 
-        return (String) SPUtils.get(instance, "token", "1");
+        return SPUtil.getString(instance, Urls.lock.TOKEN, "1");
 
     }
 

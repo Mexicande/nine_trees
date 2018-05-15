@@ -1,6 +1,5 @@
 package cn.com.stableloan.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,13 +45,12 @@ import butterknife.OnClick;
 import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.base.BaseCameraActivity;
 import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.InputBean;
 import cn.com.stableloan.utils.BitmapUtils;
 import cn.com.stableloan.utils.CameraUtils;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.CameraPreview;
 import io.reactivex.BackpressureStrategy;
@@ -101,12 +99,6 @@ public class CameraActivity extends AutoLayoutActivity {
     ImageView ivCameraButton;
     private  File file1;
 
-  /*  @Override
-    protected int getContentViewResId() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        return R.layout.activity_camera;
-    }*/
-
     private void preInitData() {
 
         mFile = new File(getIntent().getStringExtra("file"));
@@ -122,11 +114,15 @@ public class CameraActivity extends AutoLayoutActivity {
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aVoid -> {
-                    if (mCamera == null) return;
+                    if (mCamera == null) {
+                        return;
+                    }
                     mCamera.takePicture(null, null, (data, camera) -> Flowable
                             .create((FlowableOnSubscribe<Integer>) emitter -> {
                                 try {
-                                    if (mFile.exists()) mFile.delete();
+                                    if (mFile.exists()) {
+                                        mFile.delete();
+                                    }
                                     FileOutputStream fos = new FileOutputStream(mFile);
                                     fos.write(data);
                                     try {
@@ -160,9 +156,9 @@ public class CameraActivity extends AutoLayoutActivity {
                                                 Log.i("file-----",file1.getAbsolutePath());
                                                 AppApplication.mHandler.post(() -> {
                                                     mFinishCalled = true;
-                                                    String camera2 = (String) SPUtils.get(CameraActivity.this, "camera", "1");
+                                                    String camera2 = SPUtil.getString(CameraActivity.this, "camera");
                                                     if(camera2==null||("1").equals(camera2)){
-                                                        SPUtils.put(CameraActivity.this,"camera1","ok");
+                                                        SPUtil.putString(CameraActivity.this,"camera1","ok");
                                                         bankPhoto(file1.getAbsolutePath(),type);
                                                     }
                                                 });
@@ -183,10 +179,10 @@ public class CameraActivity extends AutoLayoutActivity {
                                                 Log.i("file-----",file1.getAbsolutePath());
                                                 AppApplication.mHandler.post(() -> {
                                                     mFinishCalled = true;
-                                                    String camera2 = (String) SPUtils.get(CameraActivity.this, "camera1", "1");
+                                                    String camera2 = SPUtil.getString(CameraActivity.this, "camera1" );
 
                                                     if(camera2==null||("1").equals(camera2)){
-                                                        SPUtils.put(CameraActivity.this,"camera1","ok");
+                                                        SPUtil.putString(CameraActivity.this,"camera1","ok");
                                                         identifyPhoto(file1.getAbsolutePath());
                                                     }
                                                 });
@@ -238,16 +234,12 @@ public class CameraActivity extends AutoLayoutActivity {
                         CardBean cardBean = gson1.fromJson(s3, CardBean.class);
                         CardBean.OutputsBean.OutputValueBean.DataValueBean value = cardBean.getOutputs().get(0).getOutputValue().getDataValue();
                         if(cardBean.getOutputs().get(0).getOutputValue().getDataValue().isSuccess()){
-                            SPUtils.remove(CameraActivity.this,"camera1");
+                            SPUtil.remove(CameraActivity.this,"camera1");
                             upImageBank(path,value.getCard_num());
 
-                          /*  Intent intent=new Intent();
-                            intent.putExtra("card_num",value.getCard_num());
-                            setResult(type,intent);
-                            finish();*/
                         }else {
                             ToastUtils.showToast(CameraActivity.this,"解析失败,请重新扫描");
-                            SPUtils.remove(CameraActivity.this,"camera1");
+                            SPUtil.remove(CameraActivity.this,"camera1");
                         }
                     }
 
@@ -255,7 +247,7 @@ public class CameraActivity extends AutoLayoutActivity {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         ToastUtils.showToast(CameraActivity.this,"解析失败,请重新扫描");
-                        SPUtils.remove(CameraActivity.this,"camera1");
+                        SPUtil.remove(CameraActivity.this,"camera1");
                         hd.dismiss();
                     }
                 });
@@ -266,11 +258,10 @@ public class CameraActivity extends AutoLayoutActivity {
 
     private  void upImageBank( String path,String num){
         hd.show();
-        String userToken = (String) SPUtils.get(this, "token", "1");
-        String signature = (String) SPUtils.get(this, "signature", "1");
+        String   userToken = SPUtil.getString(this, Urls.lock.TOKEN);
         Map<String, String> parms = new HashMap<>();
         parms.put("token", userToken);
-        parms.put("signature", signature);
+        parms.put("signature", "");
         parms.put("source", "");
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.NEW_URL + Urls.Pictrue.GET_QINIUTOKEN)
@@ -321,7 +312,7 @@ public class CameraActivity extends AutoLayoutActivity {
                         String key1 = response.getString("key");
 
                         int type = getIntent().getIntExtra("type", 0);
-                        String token = (String) SPUtils.get(CameraActivity.this, Urls.TOKEN, "1");
+                        String token = SPUtil.getString(CameraActivity.this,Urls.lock.TOKEN, "1");
                         switch (type) {
                             case DEBIT_CODE:
                                 UpLoadImage(token, key1,String.valueOf(DEBIT_CODE), "debit_photo",num);
@@ -437,13 +428,13 @@ public class CameraActivity extends AutoLayoutActivity {
                             Bundle bundle=new Bundle();
                             bundle.putSerializable("carmera",value);
                             bundle.putString("path",path);
-                            SPUtils.remove(CameraActivity.this,"camera1");
+                            SPUtil.remove(CameraActivity.this,"camera1");
                             startActivity(new Intent(CameraActivity.this,CarmeraResultActivity.class).putExtra("bundle",bundle));
                             mFinishCalled = true;
                             finish();
                         }else {
                             ToastUtils.showToast(CameraActivity.this,"解析失败,请重新扫描");
-                            SPUtils.remove(CameraActivity.this,"camera1");
+                            SPUtil.remove(CameraActivity.this,"camera1");
                             finish();
                         }
                     }
@@ -452,7 +443,7 @@ public class CameraActivity extends AutoLayoutActivity {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                                 ToastUtils.showToast(CameraActivity.this,"解析失败,请重新扫描");
-                                SPUtils.remove(CameraActivity.this,"camera1");
+                                SPUtil.remove(CameraActivity.this,"camera1");
                                 hd.dismiss();
                         finish();
                     }

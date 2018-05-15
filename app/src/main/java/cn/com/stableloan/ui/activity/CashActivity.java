@@ -6,18 +6,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.kaopiz.kprogresshud.KProgressHUD;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -33,35 +26,23 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
-import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.ui.activity.integarl.RuleDescActivity;
-import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.fragment.cash.DetailCash_Fragment;
 import cn.com.stableloan.ui.fragment.cash.GetCash_Fragment;
-import cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment;
-import cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment;
-import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.ToastUtils;
-import cn.com.stableloan.view.supertextview.SuperButton;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * 我的现金

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +22,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
+import cn.com.stableloan.utils.OnClickStatistics;
+import cn.com.stableloan.utils.SPUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,8 +106,14 @@ public class AdialogFragment extends DialogFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fl_content_container:
-                if (!"".equals(popupBean.getData().getUrl())) {
-                    startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("advertising", popupBean.getData().getUrl()));
+                String mToken = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
+                OnClickStatistics.buriedStatistics(mToken, Constants.ADIALOG);
+
+                if (!TextUtils.isEmpty(popupBean.getData().getUrl())) {
+                    Intent intent = new Intent(getActivity(), HtmlActivity.class);
+                    intent.putExtra("link", popupBean.getData().getUrl());
+                    intent.putExtra("title", popupBean.getData().getName());
+                    startActivity(intent);
                     dismiss();
                 }
                 break;

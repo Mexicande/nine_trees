@@ -43,10 +43,12 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.IntregarlEvent;
+import cn.com.stableloan.bean.Login;
 import cn.com.stableloan.bean.ShareEvent;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.fragment.integral.IntegarlExchangeFragment;
 import cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
@@ -245,27 +247,11 @@ public class IntegralActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-
-    }
-
     @OnClick({R.id.iv_back, R.id.layoutGo, R.id.layout_wx, R.id.layout_friend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                String from = getIntent().getStringExtra("from");
-                if(from!=null&&"cash".equals(from)){
-                    Intent intent=new Intent();
-                    setResult(INVITE_CODE,intent);
-                    finish();
-                }else {
-                    Intent intent=new Intent();
-                    setResult(INVITE_CODE,intent);
-                    finish();
-                }
+                finish();
                 break;
             case R.id.layoutGo:
                 slideUp.hide();
@@ -281,22 +267,20 @@ public class IntegralActivity extends BaseActivity {
         }
     }
 
+
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            String from = getIntent().getStringExtra("from");
-            if(from!=null&&"cash".equals(from)){
-                Intent intent=new Intent();
-                setResult(INVITE_CODE,intent);
-                finish();
-            }else {
-                Intent intent=new Intent();
-                setResult(INVITE_CODE,intent);
-                finish();
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }    }
+
+
 }

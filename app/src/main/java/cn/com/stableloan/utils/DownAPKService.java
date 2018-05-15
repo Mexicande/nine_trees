@@ -132,7 +132,7 @@ public class DownAPKService extends Service {
                 builder = new NotificationCompat.Builder(getApplicationContext());
                 builder.setSmallIcon(R.mipmap.iv_logo);
                 builder.setTicker("正在下载新版本");
-                builder.setContentTitle(getApplicationName());
+                builder.setContentTitle(AppUtils.getAppName());
                 builder.setContentText("正在下载,请稍后...");
                 builder.setNumber(0);
                 builder.setAutoCancel(true);
@@ -201,22 +201,6 @@ public class DownAPKService extends Service {
         return result;
     }
 
-    /**
-     * @return
-     * @Description:获取当前应用的名称
-     */
-    private String getApplicationName() {
-        PackageManager packageManager = null;
-        ApplicationInfo applicationInfo = null;
-        try {
-            packageManager = getApplicationContext().getPackageManager();
-            applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            applicationInfo = null;
-        }
-
-        return (String) packageManager.getApplicationLabel(applicationInfo);
-    }
 
 
     @Override

@@ -5,19 +5,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.ref.WeakReference;
 
-import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.utils.ActivityUtils;
-import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.SharedPreferencesUtil;
 
 
@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
         ImmersionBar.with(this).transparentBar()
                 .init();
         setWelcome();
+
     }
 
 

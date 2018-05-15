@@ -70,7 +70,7 @@
                 android:layout_below="@id/layou5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                    <cn.com.stableloan.view.supertextview.SuperTextView
+                    <com.coorchice.library.SuperTextView
                         android:id="@+id/label1"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
@@ -83,7 +83,7 @@
                         app:corner="2dp"
                         app:stroke_width="1dp"
                         />
-                    <cn.com.stableloan.view.supertextview.SuperTextView
+                    <com.coorchice.library.SuperTextView
                         android:id="@+id/label2"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
@@ -97,7 +97,7 @@
                         app:corner="2dp"
                         app:stroke_width="1dp"
                         />
-                    <cn.com.stableloan.view.supertextview.SuperTextView
+                    <com.coorchice.library.SuperTextView
                         android:id="@+id/label3"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
@@ -111,7 +111,7 @@
                         app:corner="2dp"
                         app:stroke_width="1dp"
                         />
-                    <cn.com.stableloan.view.supertextview.SuperTextView
+                    <com.coorchice.library.SuperTextView
                         android:id="@+id/label4"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"

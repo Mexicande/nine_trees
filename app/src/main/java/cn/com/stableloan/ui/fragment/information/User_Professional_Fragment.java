@@ -29,15 +29,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentitySave;
-import cn.com.stableloan.interfaceutils.Identivity_interface;
-import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.model.WorkInformation;
 import cn.com.stableloan.model.event.ProfessionalSelectEvent;
-import cn.com.stableloan.ui.activity.IdentityinformationActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SmoothCheckBox;
 import cn.com.stableloan.view.SmoothCompoundButton;
@@ -137,17 +133,16 @@ public class User_Professional_Fragment extends Fragment {
         EventBus.getDefault().register(this);
         getDate();
         initBetter();
-        token = (String) SPUtils.get(getActivity(), "token", "1");
+
+        token = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
 
         return view;
     }
 
     private void getDate() {
-        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
-        String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
-        parms.put("signature", signature);
+        parms.put("signature", "");
         parms.put("source", "");
         JSONObject object = new JSONObject(parms);
         OkGo.<String>post(Urls.Ip_url + Urls.Identity.GetOccupation)
@@ -373,7 +368,6 @@ public class User_Professional_Fragment extends Fragment {
         if(!b){
             ToastUtils.showToast(getActivity(),"没有修改内容");
         }else {
-            String token = (String) SPUtils.get(getActivity(), "token", "1");
             final WorkInformation.DataBean workBean = new WorkInformation.DataBean();
             workBean.setToken(token);
             WorkInformation.DataBean.OccupationBean occupationBean = new WorkInformation.DataBean.OccupationBean();

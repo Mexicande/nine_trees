@@ -5,4 +5,15 @@
         <item name="android:colorControlHighlight">#AFFFFFFF</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+        <item name="android:listDivider">@drawable/recycler_divider</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+
+    </style>
+
 </resources>

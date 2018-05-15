@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -34,16 +34,17 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.adapter.WelfareAdapter;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.view.statuslayout.StateLayout;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
+ *
  * A simple {@link Fragment} subclass.
+ * @author apple
+ * 福利
  */
 public class LotteryFragment extends ImmersionFragment {
 
@@ -65,7 +66,7 @@ public class LotteryFragment extends ImmersionFragment {
 
     private WelfareAdapter welfareAdapter;
 
-
+    private String mToken;
     public LotteryFragment() {
         // Required empty public constructor
     }
@@ -85,6 +86,8 @@ public class LotteryFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lottery, container, false);
         ButterKnife.bind(this, view);
+        mToken= SPUtil.getString(getActivity(), Urls.lock.TOKEN);
+
         titleName.setText("福利");
         ivBack.setVisibility(View.GONE);
         CheckInternet();
@@ -97,8 +100,8 @@ public class LotteryFragment extends ImmersionFragment {
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, "1");
-                if ("1".equals(token)||token == null) {
+
+                if (TextUtils.isEmpty(mToken)) {
                         startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
                     } else {
                         startActivity(new Intent(getActivity(), HtmlActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
@@ -126,9 +129,8 @@ public class LotteryFragment extends ImmersionFragment {
 
     private void CheckInternet() {
         stateLayout.showProgressView();
-        String token = (String) SPUtils.get(getActivity(), "token", "1");
         HashMap<String, String> params = new HashMap<>();
-        params.put("token", token);
+        params.put("token", mToken);
         final JSONObject jsonObject = new JSONObject(params);
         OkGo.post(Urls.Ip_url + Urls.LOTTERY.GetLottery)
                 .tag(this)

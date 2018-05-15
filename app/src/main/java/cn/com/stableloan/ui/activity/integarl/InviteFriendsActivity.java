@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -29,6 +28,8 @@ import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -39,14 +40,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.Login;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.integarl.InviteFriendList;
 import cn.com.stableloan.model.integarl.InviteFriendsBean;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.adapter.InviteListAdapter;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.dialog.Qr_Dialog;
 import cn.com.stableloan.view.share.QQManager;
@@ -80,12 +84,11 @@ public class InviteFriendsActivity extends BaseActivity {
     private InviteFriendList friendList;
     private WXManager wxManager;
     private QQManager qqManager;
-
+    private String token;
     private InviteListAdapter listAdapter;
     private String base_str;
     private Qr_Dialog qr_dialog;
     private static final  int REQUEST_CODE=100;
-    private static final int TOKEN_FAIL = 120;
     private static final int INVITE_CODE=200;
 
     public static void launch(Context context) {
@@ -117,41 +120,29 @@ public class InviteFriendsActivity extends BaseActivity {
      * 邀请好友列表
      */
     private void getInviteList() {
-        String token = (String) SPUtils.get(this, "token", "1");
+        token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         JSONObject jsonObject = new JSONObject(parms);
-        OkGo.post(Urls.Ip_url + Urls.Invite.INVITE_LIST)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            Gson gson = new Gson();
-                            friendList = gson.fromJson(s, InviteFriendList.class);
-                            if (friendList.getError_code() == 0) {
-                                listAdapter.addData(friendList.getData().getInviteLog());
-                                base_str = friendList.getData().getQrCode();
-                            }else if(friendList.getError_code()==2){
-                                Intent intent=new Intent(InviteFriendsActivity.this, LoginActivity.class);
-                                intent.putExtra("message",friendList.getError_message());
-                                intent.putExtra("from","Friend");
-                                startActivityForResult(intent,REQUEST_CODE);
-                            }else if(friendList.getError_code()==1136){
-                                Intent intent=new Intent(InviteFriendsActivity.this,LoginActivity.class);
-                                intent.putExtra("message","1136");
-                                intent.putExtra("from","1136");
-                                startActivity(intent);
-                                finish();
 
-                            }else {
-                                ToastUtils.showToast(InviteFriendsActivity.this, friendList.getError_message());
-                            }
-
-                        }
+        ApiService.GET_SERVICE(Urls.Invite.INVITE_LIST, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                    Gson gson = new Gson();
+                    friendList = gson.fromJson(data.toString(), InviteFriendList.class);
+                    if(!friendList.getData().getInviteLog().isEmpty()){
+                        listAdapter.addData(friendList.getData().getInviteLog());
+                        base_str = friendList.getData().getQrCode();
                     }
-                });
+
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+                ToastUtils.showToast(InviteFriendsActivity.this, msg);
+
+            }
+        });
 
     }
 
@@ -210,12 +201,8 @@ public class InviteFriendsActivity extends BaseActivity {
                 if(from!=null&&"cash".equals(from)){
                     Intent intent=new Intent();
                     setResult(INVITE_CODE,intent);
-                }else {
-                    Intent intent=new Intent();
-                    setResult(100,intent);
                 }
                 finish();
-
                 break;
             case R.id.layout_Share_WeChat:
                 shareWechat(WXShareContent.WXSession);
@@ -350,8 +337,7 @@ public class InviteFriendsActivity extends BaseActivity {
      */
     private void inviteFriends(String phone) {
 
-        LogUtils.i("invite--phone", phone);
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         parms.put("invitePhone", phone);
@@ -416,12 +402,34 @@ public class InviteFriendsActivity extends BaseActivity {
                 setResult(INVITE_CODE,intent);
             }else {
                     Intent intent=new Intent();
-                    setResult(100,intent);
+                setResult(100,intent);
             }
             finish();
 
         }
         return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }    }
+
+
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        token= SPUtil.getString(this, Urls.lock.TOKEN);
+        getInviteList();
     }
 }

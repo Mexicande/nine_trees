@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,14 +25,19 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.Login;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.SaveBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.SafeActivity;
 import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.ActivityUtils;
+import cn.com.stableloan.utils.SPUtil;
+import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.WaitTimeUtils;
 import cn.com.stableloan.view.dialog.SelfDialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
@@ -63,7 +70,6 @@ public class SafeSettingActivity extends BaseActivity   {
     private Context mContext;
     private static final int REQUEST_CODE = 110;
     private static final int TOKEN_FAIL = 120;
-
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, SafeSettingActivity.class));
@@ -111,7 +117,10 @@ public class SafeSettingActivity extends BaseActivity   {
         svSafeNurse.setOnSuperTextViewClickListener(new SuperTextView.OnSuperTextViewClickListener() {
             @Override
             public void onClickListener(SuperTextView superTextView) {
-                startActivity(new Intent(mContext, HtmlActivity.class).putExtra("safe", "#/minTips"));
+                Intent intent = new Intent(SafeSettingActivity.this, HtmlActivity.class);
+                intent.putExtra("link", Urls.HTML_URL+"#/minTips");
+                intent.putExtra("title", "安全小贴士");
+                startActivity(intent);
             }
         });
 
@@ -141,50 +150,52 @@ public class SafeSettingActivity extends BaseActivity   {
 
     private void getDate() {
 
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
 
-        String token = (String) SPUtils.get(this, "token", "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         JSONObject jsonObject = new JSONObject(parms);
-        OkGo.<String>post(Urls.NEW_URL + Urls.STATUS.Getsetting)
-                .tag(this)
-                .upJson(jsonObject)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            String isSuccess = object.getString("isSuccess");
-                            if ("1".equals(isSuccess)) {
-                                Gson gson = new Gson();
-                                saveBean = gson.fromJson(s, SaveBean.class);
 
-                                String token = saveBean.getToken();
+        ApiService.GET_SERVICE(Urls.STATUS.Getsetting, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    String     isSuccess = data.getString("isSuccess");
+                    if ("1".equals(isSuccess)) {
+                        Gson gson = new Gson();
+                        saveBean = gson.fromJson(data.toString(), SaveBean.class);
 
-                                if (token != null && "0".equals(token)) {
-                                    Intent intent = new Intent(mContext, LoginActivity.class);
-                                    intent.putExtra("message", "登陆失效,请重新登陆");
-                                    intent.putExtra("from", "SafeDate");
-                                    startActivityForResult(intent, REQUEST_CODE);
-                                } else {
-                                    String managed = saveBean.getManaged();
-                                    if (managed != null && managed.length() == 1) {
-                                        int i = Integer.parseInt(managed);
-                                        svDateTime.setRightString(managedList[i]);
-                                    }
-                                    if (saveBean.getPeriod().length() < 2) {
-                                        svDateTime.setLeftBottomString("自动清档时间:无数据");
-                                    } else {
-                                        svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
-                                    }
-                                }
+                        String token = saveBean.getToken();
+                        if (token != null && "0".equals(token)) {
+                            ToastUtils.showToast(SafeSettingActivity.this,"登陆失效,请重新登陆");
+                            ActivityUtils.startActivity(LoginActivity.class);
+                        } else {
+                            String managed = saveBean.getManaged();
+                            if (managed != null && managed.length() == 1) {
+                                int i = Integer.parseInt(managed);
+                                svDateTime.setRightString(managedList[i]);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
+                            if (saveBean.getPeriod().length() < 2) {
+                                svDateTime.setLeftBottomString("自动清档时间:无数据");
+                            } else {
+                                svDateTime.setLeftBottomString("自动清档时间:" + saveBean.getPeriod());
+                            }
                         }
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
+            }
+        });
+
+
+
 
 
     }
@@ -197,7 +208,7 @@ public class SafeSettingActivity extends BaseActivity   {
         selfDialog = new SelfDialog(this);
         selfDialog.setYesOnclickListener("确定", () -> {
             selfDialog.dismiss();
-            SPUtils.remove(mContext, Urls.lock.TOKEN);
+            SPUtil.clear(this);
             startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
             finish();
         });
@@ -215,7 +226,7 @@ public class SafeSettingActivity extends BaseActivity   {
                     getDate();
                     break;
                 case TOKEN_FAIL:
-                    int token = data.getIntExtra(Urls.TOKEN, 0);
+                    int token = data.getIntExtra(Urls.lock.TOKEN, 0);
                     if (token == 1) {
                         getDate();
                     }
@@ -244,7 +255,27 @@ public class SafeSettingActivity extends BaseActivity   {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        getDate();
+
+    }
 
 }
 

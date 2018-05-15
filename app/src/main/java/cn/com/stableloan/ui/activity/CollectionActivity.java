@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,17 +31,14 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.bean.Login;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
-import cn.com.stableloan.model.Class_ListProductBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.statuslayout.FadeViewAnimProvider;
 import cn.com.stableloan.view.statuslayout.StateLayout;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * @author apple
@@ -62,10 +57,10 @@ public class CollectionActivity extends BaseActivity {
     @Bind(R.id.SwipeLayout)
     SwipeRefreshLayout SwipeLayout;
     private Recycler_Classify_Adapter classify_recycler_adapter;
-
+    private String   token;
     private View errorView;
     private View notDataView;
-    private  static final int RERQUEST_CAODE=100;
+    private String from;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, CollectionActivity.class));
     }
@@ -76,7 +71,15 @@ public class CollectionActivity extends BaseActivity {
         setContentView(R.layout.activity_collection);
         ButterKnife.bind(this);
         initToolber();
-        initData();
+        from = getIntent().getStringExtra("from");
+        if("vip".equals(from)){
+            String title = getIntent().getStringExtra("title");
+            titleName.setText(title);
+            initData(Urls.Vip.VIPPRODUCT);
+        }else {
+            titleName.setText("我的收藏");
+            initData(Urls.product.ProductCollectionList);
+        }
         setListener();
 
     }
@@ -91,7 +94,11 @@ public class CollectionActivity extends BaseActivity {
                 SwipeLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        initData();
+                        if("vip".equals(from)) {
+                            initData(Urls.Vip.VIPPRODUCT);
+                        }else {
+                            initData(Urls.product.ProductCollectionList);
+                        }
                         SwipeLayout.setRefreshing(false);
                     }
                 }, 1000);
@@ -108,23 +115,21 @@ public class CollectionActivity extends BaseActivity {
     }
 
 
-    private void initData() {
-
-        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
+    private void initData(String url) {
+        token = SPUtil.getString(this, Urls.lock.TOKEN);
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         JSONObject jsonObject = new JSONObject(parms1);
 
-        ApiService.GET_SERVICE(Urls.product.ProductCollectionList, jsonObject, new OnRequestDataListener() {
+        ApiService.GET_SERVICE(url, jsonObject, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 stateLayout.showContentView();
                     try {
-                        String date = data.getString("data");
-                        int error_code = data.getInt("error_code");
-                        if (error_code == 0) {
+
                             Gson gson = new Gson();
-                            Class_Special.DataBean.ProductBean[] productBeen = gson.fromJson(data.toString(), Class_Special.DataBean.ProductBean[].class);
+                            String data1 = data.getString("data");
+                            Class_Special.DataBean.ProductBean[] productBeen = gson.fromJson(data1, Class_Special.DataBean.ProductBean[].class);
                             if (productBeen.length == 0) {
                                 classify_recycler_adapter.setNewData(null);
                                 classify_recycler_adapter.setEmptyView(notDataView);
@@ -132,12 +137,6 @@ public class CollectionActivity extends BaseActivity {
                                 classify_recycler_adapter.setNewData(Arrays.asList(productBeen));
                                 recyclerView.smoothScrollToPosition(0);
                             }
-                        } else {
-                            classify_recycler_adapter.setNewData(null);
-                            classify_recycler_adapter.setEmptyView(notDataView);
-                            String error_message = data.getString("error_message");
-                            ToastUtils.showToast(CollectionActivity.this, error_message);
-                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -151,8 +150,6 @@ public class CollectionActivity extends BaseActivity {
 
     }
     private void initToolber() {
-        titleName.setText("我的收藏");
-        ivBack.setVisibility(View.VISIBLE);
 
         notDataView = getLayoutInflater().inflate(R.layout.view_no_product_empty, (ViewGroup) recyclerView.getParent(), false);
         errorView = getLayoutInflater().inflate(R.layout.view_error, (ViewGroup) recyclerView.getParent(), false);
@@ -174,5 +171,27 @@ public class CollectionActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }    }
+
+
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        token= SPUtil.getString(this, Urls.lock.TOKEN);
+        if("vip".equals(from)) {
+            initData(Urls.Vip.VIPPRODUCT);
+        }else {
+            initData(Urls.product.ProductCollectionList);
+        }
     }
 }

@@ -1,6 +1,5 @@
 package cn.com.stableloan.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
@@ -52,7 +50,6 @@ import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadOptions;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,7 +57,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,21 +73,18 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.CameraEvent;
 import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.model.InputBean;
 import cn.com.stableloan.utils.BitmapUtils;
 import cn.com.stableloan.utils.Camera2Utils;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static android.R.attr.type;
 
 /**
  * Camera2 API. Android Lollipop 及以后版本的 Android 使用 Camera2 API.
@@ -855,9 +848,9 @@ public class Camera2Activity extends AutoLayoutActivity {
                                 Log.i("file-----",file1.getAbsolutePath());
                                 AppApplication.mHandler.post(() -> {
                                     mFinishCalled = true;
-                                    String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
+                                    String camera = SPUtil.getString(Camera2Activity.this, "camera", "1");
                                     if(camera==null||("1").equals(camera)){
-                                        SPUtils.put(Camera2Activity.this,"camera","ok");
+                                        SPUtil.putString(Camera2Activity.this,"camera","ok");
                                         bankPhoto(file1.getAbsolutePath());
                                     }
                                 });
@@ -880,10 +873,10 @@ public class Camera2Activity extends AutoLayoutActivity {
                                     mFinishCalled = true;
                                     AppApplication.destoryActivity("CarmeraResultActivity");
 
-                                    String camera = (String) SPUtils.get(Camera2Activity.this, "camera", "1");
-                                    SPUtils.put(Camera2Activity.this,"camera","ok");
+                                    String camera = SPUtil.getString(Camera2Activity.this, "camera", "1");
+                                    SPUtil.putString(Camera2Activity.this,"camera","ok");
                                     if(camera==null||("1").equals(camera)){
-                                        SPUtils.put(Camera2Activity.this,"camera","ok");
+                                        SPUtil.putString(Camera2Activity.this,"camera","ok");
                                         identifyPhoto(file1.getAbsolutePath());
                                     }
                                 });
@@ -934,14 +927,10 @@ public class Camera2Activity extends AutoLayoutActivity {
                         if(cardBean.getOutputs().get(0).getOutputValue().getDataValue().isSuccess()){
 
                             upImageBank(path,value.getCard_num());
-                            SPUtils.remove(Camera2Activity.this,"camera");
-                         /*   Intent intent=new Intent();
-                            intent.putExtra("card_num",value.getCard_num());
-                            setResult(type,intent);
-                            finish();*/
+                            SPUtil.remove(Camera2Activity.this,"camera");
                         }else {
                             ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
-                            SPUtils.remove(Camera2Activity.this,"camera");
+                            SPUtil.remove(Camera2Activity.this,"camera");
                         }
                     }
 
@@ -949,7 +938,7 @@ public class Camera2Activity extends AutoLayoutActivity {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
-                        SPUtils.remove(Camera2Activity.this,"camera");
+                        SPUtil.remove(Camera2Activity.this,"camera");
                         hd.dismiss();
                     }
                 });
@@ -960,11 +949,12 @@ public class Camera2Activity extends AutoLayoutActivity {
 
     private  void upImageBank( String path,String num){
             hd.show();
-            String userToken = (String) SPUtils.get(this, "token", "1");
-            String signature = (String) SPUtils.get(this, "signature", "1");
+
+
+            String userToken = SPUtil.getString(this, "token", "1");
             Map<String, String> parms = new HashMap<>();
             parms.put("token", userToken);
-            parms.put("signature", signature);
+            parms.put("signature", "");
             parms.put("source", "");
             JSONObject jsonObject = new JSONObject(parms);
             OkGo.<String>post(Urls.NEW_URL + Urls.Pictrue.GET_QINIUTOKEN)
@@ -1014,7 +1004,7 @@ public class Camera2Activity extends AutoLayoutActivity {
                         String key1 = response.getString("key");
 
                         int type = getIntent().getIntExtra("type", 0);
-                        String token = (String) SPUtils.get(Camera2Activity.this, Urls.TOKEN, "1");
+                        String token = SPUtil.getString(Camera2Activity.this, Urls.lock.TOKEN, "1");
                         switch (type) {
                             case DEBIT_CODE:
                                 UpLoadImage(token, key1,String.valueOf(DEBIT_CODE), "debit_photo",num);
@@ -1127,12 +1117,12 @@ public class Camera2Activity extends AutoLayoutActivity {
                                 Bundle bundle=new Bundle();
                                 bundle.putSerializable("carmera",value);
                                 bundle.putString("path",path);
-                                SPUtils.remove(Camera2Activity.this,"camera");
+                                SPUtil.remove(Camera2Activity.this,"camera");
                                 startActivity(new Intent(Camera2Activity.this,CarmeraResultActivity.class).putExtra("bundle",bundle));
                                 finish();
                             }else {
                                 ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
-                                SPUtils.remove(Camera2Activity.this,"camera");
+                                SPUtil.remove(Camera2Activity.this,"camera");
 
                             }
                     }
@@ -1141,7 +1131,7 @@ public class Camera2Activity extends AutoLayoutActivity {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         ToastUtils.showToast(Camera2Activity.this,"解析失败,请重新扫描");
-                        SPUtils.remove(Camera2Activity.this,"camera");
+                        SPUtil.remove(Camera2Activity.this,"camera");
 
                         hd.dismiss();
                     }

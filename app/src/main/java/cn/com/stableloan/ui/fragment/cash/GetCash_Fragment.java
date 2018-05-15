@@ -14,11 +14,9 @@ import android.widget.RelativeLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -27,16 +25,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.bean.cash.CashActivityBean;
-import cn.com.stableloan.model.integarl.CashBean;
-import cn.com.stableloan.model.integarl.InviteFriendList;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.IntegralActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.adapter.CashGetAdapter;
-import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;

@@ -10,9 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -43,15 +40,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.DescEvent;
-import cn.com.stableloan.bean.ProcuctCollectionEvent;
+import cn.com.stableloan.bean.Login;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.ActivityUtils;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
@@ -66,6 +63,7 @@ import okhttp3.Response;
 
 /**
  * 产品desc
+ * @author apple
  */
 public class ProductDesc extends BaseActivity {
 
@@ -84,10 +82,6 @@ public class ProductDesc extends BaseActivity {
     TextView repayment;
     @Bind(R.id.repayment_channels)
     TextView repaymentChannels;
-    @Bind(R.id.interest_algorithm)
-    TextView interestAlgorithm;
-    @Bind(R.id.prepayment)
-    TextView prepayment;
     @Bind(R.id.min_algorithm)
     TextView minAlgorithm;
 
@@ -107,8 +101,6 @@ public class ProductDesc extends BaseActivity {
     RelativeLayout layout3;
     @Bind(R.id.view)
     View view;
-    @Bind(R.id.crowd)
-    TextView crowd;
     @Bind(R.id.linla)
     LinearLayout linla;
     @Bind(R.id.apply)
@@ -121,8 +113,6 @@ public class ProductDesc extends BaseActivity {
     TextView tvCycle;
     @Bind(R.id.fastest_time)
     TextView fastestTime;
-    @Bind(R.id.minMax_algorithm)
-    TextView minMaxAlgorithm;
     @Bind(R.id.tv_interest_algorithm)
     TextView tvInterestAlgorithm;
     @Bind(R.id.et_MaxLimit)
@@ -151,7 +141,7 @@ public class ProductDesc extends BaseActivity {
     TextView tvProcedure;
     private int pid;
 
-    private Product_DescBean descBean;
+    private Product_DescBean.DataBean descBean;
 
     private boolean shareFlag = false;
     private static final int COLLECTION = 2000;
@@ -171,15 +161,14 @@ public class ProductDesc extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desc);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
         initToolbar();
-         token = (String) SPUtils.get(this, Urls.lock.TOKEN, null);
+        token = SPUtil.getString(this, Urls.lock.TOKEN);
+
         pid = getIntent().getIntExtra("pid", 0);
         if (pid != 0) {
             getProductDate();
         }
         setListener();
-
     }
 
 
@@ -225,7 +214,6 @@ public class ProductDesc extends BaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-
                     computations();
                 }
             }
@@ -238,8 +226,8 @@ public class ProductDesc extends BaseActivity {
 
         String hint = etMaxTime.getText().toString();
         String str = etMaxLimit.getText().toString();
-        String minimumAmount = descBean.getData().getMinimum_amount();
-        String maximumAmount = descBean.getData().getMaximum_amount();
+        String minimumAmount = descBean.getMinimum_amount();
+        String maximumAmount = descBean.getMaximum_amount();
         if (!hint.isEmpty() && !str.isEmpty() && minimumAmount != null && maximumAmount != null) {
             int lim = Integer.parseInt(str);
             if (lim < Integer.parseInt(minimumAmount)) {
@@ -251,17 +239,17 @@ public class ProductDesc extends BaseActivity {
 
             int time = Integer.parseInt(hint);
             if(time==0){
-                etMaxTime.setText(descBean.getData().getMin_cycle());
-                time= Integer.parseInt(descBean.getData().getMin_cycle());
+                etMaxTime.setText(descBean.getMin_cycle());
+                time= Integer.parseInt(descBean.getMin_cycle());
             }else {
                 etMaxTime.setText(time+"");
             }
-            String min_algorithm = descBean.getData().getMin_algorithm();
+            String min_algorithm = descBean.getMin_algorithm();
 
             Double aDouble = Double.valueOf(min_algorithm);
 
 
-            String fee = descBean.getData().getFee();
+            String fee = descBean.getFee();
             int i1 = fee.lastIndexOf(".");
             String substring = fee.substring(0, i1);
 
@@ -290,46 +278,33 @@ public class ProductDesc extends BaseActivity {
     private void getProductDate() {
         HashMap<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(pid));
-        if (!"1".equals(token)) {
+        if (!TextUtils.isEmpty(token)) {
             params.put("token", token);
         }
         params.put("terminal", "1");
         final JSONObject jsonObject = new JSONObject(params);
-        OkGo.post(Urls.NEW_Ip_url + Urls.product.Productdetail)
-                .tag(this)
-                .upJson(jsonObject.toString())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                int errorCode = object.getInt("error_code");
-                                String error_message = object.getString("error_message");
 
-                                if (errorCode == 0) {
-                                    Gson gson = new Gson();
-                                    descBean = gson.fromJson(s, Product_DescBean.class);
-                                    if (descBean != null&&descBean.getData()!=null) {
-                                         dateInset(descBean);
-                                    }
-                                } else {
-                                    ToastUtils.showToast(ProductDesc.this, error_message);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
+        ApiService.GET_SERVICE(Urls.product.PRODUCT_DETAIL, jsonObject, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    String data1 = data.getString("data");
+                    Gson gson = new Gson();
+                    descBean = gson.fromJson(data1, Product_DescBean.DataBean.class);
+                    if(descBean!=null){
+                        dateInset(descBean);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
+            }
 
-                    }
-                });
+            @Override
+            public void requestFailure(int code, String msg) {
+                ToastUtils.showToast(ProductDesc.this, msg);
+            }
+        });
 
     }
 
@@ -339,10 +314,8 @@ public class ProductDesc extends BaseActivity {
 
     private SuperTextAdapter superTextAdapter;
 
-    private void dateInset(Product_DescBean date) {
+    private void dateInset(Product_DescBean.DataBean product) {
 
-
-        Product_DescBean.DataBean product = date.getData();
         int collectioStatus = product.getCollectioStatus();
 
         if (collectioStatus == 1) {
@@ -387,13 +360,9 @@ public class ProductDesc extends BaseActivity {
         productIntroduction.setText(product.getProduct_introduction());
         String minAl = product.getMin_algorithm();
         minAlgorithm.setText(minAl + "%");
-        String product_crowd = product.getCrowd();
         String product_review = product.getReview();
         String product_repayment = product.getRepayment();
         String product_repayment_channels = product.getRepayment_channels();
-        String min = product.getMin_algorithm();
-        String max = product.getMax_algorithm();
-        String productPrepayment = product.getPrepayment();
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
         String interest_algorithm = product.getInterest_algorithm();
@@ -413,13 +382,6 @@ public class ProductDesc extends BaseActivity {
             substringmin = minimum_amount;
         }
         fastestTime.setText(product.getFastest_time());
-        if (max == null || min == null) {
-            minMaxAlgorithm.setVisibility(View.GONE);
-        } else if (max.equals(min)) {
-            setTextViewColor(minMaxAlgorithm, "利息额度: " + product.getMin_algorithm() + "%");
-        } else {
-            setTextViewColor(minMaxAlgorithm, "利息额度: " + product.getMin_algorithm() + "%" + "~" + product.getMax_algorithm() + "%");
-        }
         if (maximum_amount.length() > 4) {
             substringmax = maximum_amount.substring(0, maximum_amount.length() - 4);
             substringmax = substringmax + "万";
@@ -435,11 +397,6 @@ public class ProductDesc extends BaseActivity {
             arrive.setVisibility(View.GONE);
         }
         tvDescAmount.setText(substringmin + "~" + substringmax + "元");
-        if (product_crowd != null) {
-            setTextViewColor(crowd, "面向人群: " + product_crowd);
-        } else {
-            crowd.setVisibility(View.GONE);
-        }
         if (product_review != null && !product_review.isEmpty()) {
             setTextViewColor(review, "审核方式: " + product_review);
         } else {
@@ -456,23 +413,6 @@ public class ProductDesc extends BaseActivity {
             repaymentChannels.setVisibility(View.GONE);
 
         }
-        if (min != null && max != null) {
-            if ("0".equals(interest_algorithm)) {
-                setTextViewColor(interestAlgorithm, "利息算法: 日利率");
-            } else {
-                setTextViewColor(interestAlgorithm, "利息算法: 月利率");
-            }
-        } else {
-            interestAlgorithm.setVisibility(View.GONE);
-
-        }
-        if (productPrepayment != null && !productPrepayment.isEmpty()) {
-            prepayment.setVisibility(View.VISIBLE);
-            setTextViewColor(prepayment, "提前还款: " + productPrepayment);
-        } else {
-            prepayment.setVisibility(View.GONE);
-        }
-
         if (product.getProduct_details() != null) {
             String details = product.getProduct_details();
             String replace = details.replace("aaa", "\n");
@@ -497,7 +437,6 @@ public class ProductDesc extends BaseActivity {
         titleName.setText("产品详情");
     }
 
-    private DescDialog descDialog;
 
     @OnClick({R.id.iv_back, R.id.apply, R.id.bt_share
     })
@@ -507,15 +446,12 @@ public class ProductDesc extends BaseActivity {
                 finish();
                 break;
             case R.id.apply:
+
                 if (TextUtils.isEmpty(token)) {
-                    startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "DescError"), Token_Fail);
+                    ActivityUtils.startActivity(LoginActivity.class);
                 } else {
-                    Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                    if (dialog != null && dialog) {
-                        startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-                    } else {
-                        showApplyDialog();
-                    }
+                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+
                 }
                 break;
             case R.id.bt_share:
@@ -526,18 +462,6 @@ public class ProductDesc extends BaseActivity {
         }
     }
 
-    private void showApplyDialog() {
-        descDialog = new DescDialog(this);
-        descDialog.setMessage("确定退出登陆?");
-        descDialog.setYesOnclickListener("确定", () -> {
-            descDialog.dismiss();
-            if (descBean != null) {
-                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-            }
-        });
-
-        descDialog.show();
-    }
 
     private void setShared_Collection() {
 
@@ -569,14 +493,14 @@ public class ProductDesc extends BaseActivity {
                             shareWechat(WXShareContent.WXTimeline);
                             break;
                         case 2:
-                            String token = (String) SPUtils.get(ProductDesc.this, Urls.lock.TOKEN, "1");
-                            if (token == null || "1".equals(token)) {
-                                startActivityForResult(new Intent(ProductDesc.this, LoginActivity.class).putExtra("from", "collection"), COLLECTION);
+                            token = SPUtil.getString(this, Urls.lock.TOKEN);
+                            if (TextUtils.isEmpty(token)) {
+                                ActivityUtils.startActivity(LoginActivity.class);
                             } else {
                                 if (shareFlag) {
-                                    CollectionProduct("2");
+                                    collectionproduct("2");
                                 } else {
-                                    CollectionProduct("1");
+                                    collectionproduct("1");
                                 }
                             }
                             break;
@@ -598,9 +522,9 @@ public class ProductDesc extends BaseActivity {
         WXShareContent contentWX = new WXShareContent();
         contentWX.setScene(scence)
                 .setType(WXShareContent.share_type.WebPage)
-                .setWeb_url(Urls.KEY.PageWeb + descBean.getData().getId())
+                .setWeb_url(Urls.KEY.PageWeb + descBean.getId())
                 .setTitle("安稳钱包")
-                .setDescription(descBean.getData().getProduct_introduction())
+                .setDescription(descBean.getProduct_introduction())
                 .setImage_url(Urls.logoUrl);
         wxManager.share(contentWX);
 
@@ -610,132 +534,66 @@ public class ProductDesc extends BaseActivity {
      * 收藏
      * @param status
      */
-    private void CollectionProduct(final String status) {
+    private void collectionproduct(final String status) {
         if(TextUtils.isEmpty(token)){
             ActivityUtils.startActivity(LoginActivity.class);
         }else {
+            Map<String, String> parms = new HashMap<>();
+            parms.put("token", token);
+            parms.put("status", status);
+            parms.put("product_id", String.valueOf(pid));
+            JSONObject jsonObject = new JSONObject(parms);
+            ApiService.GET_SERVICE(Urls.product.PRODUCT_COLLECTION, jsonObject, new OnRequestDataListener() {
+                @Override
+                public void requestSuccess(int code, JSONObject data) {
+                    flag = true;
+                    if (("1").equals(status)) {
+                        shareFlag = true;
+                        ToastUtils.showToast(ProductDesc.this, "收藏成功");
+                    } else {
+                        shareFlag = false;
+                        ToastUtils.showToast(ProductDesc.this, "取消成功");
+                    }
+                }
 
-            Map<String, String> parms1 = new HashMap<>();
-            parms1.put("token", token);
-            parms1.put("status", status);
-            parms1.put("product_id", String.valueOf(pid));
-            JSONObject jsonObject = new JSONObject(parms1);
+                @Override
+                public void requestFailure(int code, String msg) {
+                    ToastUtils.showToast(ProductDesc.this, msg);
 
-            OkGo.post(Urls.Ip_url + Urls.product.CollectionDesc)
-                    .tag(this)
-                    .upJson(jsonObject)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            if (s != null) {
-                                try {
-                                    JSONObject json = new JSONObject(s);
-                                    int error_code = json.getInt("error_code");
-                                    if (error_code == 0) {
-                                        flag = true;
-                                        EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
-                                        if (("1").equals(status)) {
-                                            shareFlag = true;
-                                            ToastUtils.showToast(ProductDesc.this, "收藏成功");
-                                        } else {
-                                            shareFlag = false;
-                                            ToastUtils.showToast(ProductDesc.this, "取消成功");
-                                        }
-                                    } else if (error_code == 2) {
-                                        Intent intent = new Intent(ProductDesc.this, LoginActivity.class);
-                                        intent.putExtra("message", json.getString("error_message"));
-                                        intent.putExtra("from", "ProductDescError");
-                                        intent.putExtra("collection", status);
-                                        startActivityForResult(intent, Urls.REQUEST_CODE.PULLBLIC_CODE);
-                                    } else {
-                                        String error_message = json.getString("error_message");
-                                        ToastUtils.showToast(ProductDesc.this, error_message);
-                                    }
+                }
+            });
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                            ToastUtils.showToast(ProductDesc.this, "服务器异常");
-                        }
-                    });
         }
 
     }
 
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 刷新数据
+     * @param event
+     */
     @Subscribe
-    public void updateEvent(DescEvent msg) {
-        if (msg != null) {
-            CollectionProduct(msg.collection);
-        }
+    public void onMessageEvent(Login event) {
+        token= SPUtil.getString(this, Urls.lock.TOKEN);
+        getProductDate();
 
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        if (flag) {
-            EventBus.getDefault().post(new ProcuctCollectionEvent("ok"));
-        }
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case COLLECTION:
-                if (resultCode == 2000) {
-                    String ok = data.getStringExtra("ok");
-                    if (ok != null) {
-                        getProductDate();
-                        if (!shareFlag) {
-                            shareFlag = true;
-                        } else {
-                            ToastUtils.showToast(this, "已经收藏过了");
-                        }
-                    }
-                }
-                break;
-            case APPLY_VAIL:
-                if (resultCode == 1000) {
-                    String ok = data.getStringExtra("ok");
-                    if ("ok".equals(ok)) {
-                        Boolean dialog = (Boolean) SPUtils.get(this, "dialog", false);
-                        if (dialog != null && dialog) {
-                            startActivity(new Intent(this, HtmlActivity.class).putExtra("product", descBean));
-                        } else {
-                            showApplyDialog();
-                        }
-                    }
-                }
-                break;
-            case Token_Fail:
-                if (resultCode == 3000) {
-                    int desc = data.getIntExtra("desc", 0);
-                    if (desc == 1) {
-                        if (pid != 0) {
-                            getProductDate();
-                        }
-                    }
-                }
-                break;
-            case Urls.REQUEST_CODE.PULLBLIC_CODE:
-                getProductDate();
-                break;
-            default:
-                break;
-        }
-    }
 
 }

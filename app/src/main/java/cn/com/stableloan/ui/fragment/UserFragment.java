@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.ImmersionFragment;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +32,8 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.Login;
+import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.integarl.Personal;
 import cn.com.stableloan.ui.activity.CashActivity;
@@ -40,8 +44,9 @@ import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.integarl.InviteFriendsActivity;
 import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
+import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.utils.ActivityUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.dialog.Wechat_dialog;
 import cn.com.stableloan.view.supertextview.SuperTextView;
@@ -74,17 +79,12 @@ public class UserFragment extends ImmersionFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
+        getUserInfo();
         return view;
-    }
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden) {
-            getUserInfo();
-        }
     }
 
     private void getUserInfo() {
-        token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+        token= SPUtil.getString(getActivity(), Urls.lock.TOKEN);
         if(getToken()){
             JSONObject jsonObject = new JSONObject();
             try {
@@ -95,7 +95,6 @@ public class UserFragment extends ImmersionFragment {
                         Gson gson=new Gson();
                         Personal personal = gson.fromJson(data.toString(), Personal.class);
                         if(personal.getError_code()==0){
-                            tvNick.setText(personal.getData().getNickname());
                             tvIntegral.setText(personal.getData().getCredits());
                             btMoney.setText(personal.getData().getTotal());
                         } else {
@@ -135,9 +134,7 @@ public class UserFragment extends ImmersionFragment {
 
     private boolean getToken(){
         if(TextUtils.isEmpty(token)){
-            Intent intent=new Intent(getActivity(),LoginActivity.class);
-            intent.putExtra("user","UserFragment");
-            startActivity(intent);
+            ActivityUtils.startActivity(LoginActivity.class);
         }else {
             return true;
         }
@@ -145,7 +142,7 @@ public class UserFragment extends ImmersionFragment {
     }
 
     @OnClick({R.id.layout_my, R.id.layout_setting, R.id.feedback, R.id.layout_collection,
-            R.id.layout_Integral, R.id.laout_Money,R.id.invite,R.id.tv_vip,R.id.layout_attention})
+            R.id.layout_Integral, R.id.laout_Money,R.id.invite,R.id.tv_vip,R.id.layout_attention,R.id.User_logo})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_my:
@@ -153,8 +150,11 @@ public class UserFragment extends ImmersionFragment {
                     ActivityUtils.startActivity(UserInformationActivity.class);
                 }
                 break;
+            case R.id.User_logo:
+                getToken();
+                break;
             case R.id.tv_vip:
-
+                ActivityUtils.startActivity(VipActivity.class);
                 break;
             case R.id.layout_setting:
                 if(getToken()){
@@ -247,6 +247,30 @@ public class UserFragment extends ImmersionFragment {
         if(requestCode==200){
             getUserInfo();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        token= SPUtil.getString(getActivity(), Urls.lock.TOKEN);
+        getUserInfo();
     }
 
 }

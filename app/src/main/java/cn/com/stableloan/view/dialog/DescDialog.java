@@ -12,9 +12,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
-import butterknife.Bind;
 import cn.com.stableloan.R;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.SmoothCheckBox;
 
@@ -99,7 +98,7 @@ public class DescDialog extends Dialog {
             public void onClick(View v) {
                 if (yesOnclickListener != null) {
                     if (checkbox.isChecked()) {
-                        SPUtils.put(getContext(), "dialog", true);
+                        SPUtil.putBoolean(getContext(), "dialog", true);
                     }
                     yesOnclickListener.onYesClick();
                 }

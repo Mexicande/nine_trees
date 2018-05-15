@@ -15,9 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,14 +30,12 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.bean.Login;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperButton;
 import cn.com.stableloan.view.update.AppUpdateUtils;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * @author apple
@@ -56,7 +53,7 @@ public class FeedbackActivity extends BaseActivity {
     SuperButton btLogin;
 
     private boolean falg = false;
-
+    private String   token;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, FeedbackActivity.class));
     }
@@ -117,9 +114,11 @@ public class FeedbackActivity extends BaseActivity {
 
     private void sendMessageFeed() {
         String message = etMessage.getText().toString();
-        String userphone = (String) SPUtils.get(this, Urls.lock.USER_PHONE, null);
+
+
+        String userphone = SPUtil.getString(this, Urls.lock.USER_PHONE);
         if (!TextUtils.isEmpty(message)) {
-            String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
+               token = SPUtil.getString(this, Urls.lock.TOKEN);
             String versionName = AppUpdateUtils.getVersionName(this);
             Point point = new Point();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -144,21 +143,14 @@ public class FeedbackActivity extends BaseActivity {
             ApiService.GET_SERVICE(Urls.user.FEEDBACK, jsonObject, new OnRequestDataListener() {
                 @Override
                 public void requestSuccess(int code, JSONObject data) {
-                    try {
-                        int error_code = data.getInt("error_code");
-                        if (error_code==0) {
-                            ToastUtils.showToast(FeedbackActivity.this, "提交成功");
-                            finish();
-                        } else{
-                            ToastUtils.showToast(FeedbackActivity.this, data.getString("error_message"));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    ToastUtils.showToast(FeedbackActivity.this, "提交成功");
+                    finish();
+
                 }
 
                 @Override
                 public void requestFailure(int code, String msg) {
+                    ToastUtils.showToast(FeedbackActivity.this,msg);
 
                 }
             });
@@ -167,4 +159,28 @@ public class FeedbackActivity extends BaseActivity {
                 ToastUtils.showToast(this, "信息不能为空");
             }
         }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        token= SPUtil.getString(this, Urls.lock.TOKEN);
+        sendMessageFeed();
+    }
+
+
 }

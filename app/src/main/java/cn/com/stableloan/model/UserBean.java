@@ -18,51 +18,26 @@ public class UserBean implements Serializable {
      */
 
     private String userphone;
-    private int identity;
-    private String nickname;
     private String token;
     private String credits;  //integral
     private String total;   //amount
-    private int  cat;
-    private int  login;
-    private int  apply;
+    private String vip;
     public UserBean() {
     }
 
-    public UserBean(int apply,int login,int cat,String userphone, int identity, String nickname, String token, String credits, String total) {
+    public String getVip() {
+        return vip;
+    }
+
+    public void setVip(String vip) {
+        this.vip = vip;
+    }
+
+    public UserBean( String userphone,  String token, String credits, String total) {
         this.userphone = userphone;
-        this.identity = identity;
-        this.nickname = nickname;
         this.token = token;
         this.credits = credits;
         this.total = total;
-        this.cat=cat;
-        this.login=login;
-        this.apply=apply;
-    }
-
-    public int getCat() {
-        return cat;
-    }
-
-    public void setCat(int cat) {
-        this.cat = cat;
-    }
-
-    public int getLogin() {
-        return login;
-    }
-
-    public void setLogin(int login) {
-        this.login = login;
-    }
-
-    public int getApply() {
-        return apply;
-    }
-
-    public void setApply(int apply) {
-        this.apply = apply;
     }
 
 
@@ -91,21 +66,7 @@ public class UserBean implements Serializable {
         this.userphone = userphone;
     }
 
-    public int getIdentity() {
-        return identity;
-    }
 
-    public void setIdentity(int identity) {
-        this.identity = identity;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public String getToken() {
         return token;
@@ -119,14 +80,9 @@ public class UserBean implements Serializable {
     public String toString() {
         return "UserBean{" +
                 "userphone='" + userphone + '\'' +
-                ", identity=" + identity +
-                ", nickname='" + nickname + '\'' +
                 ", token='" + token + '\'' +
                 ", credits='" + credits + '\'' +
                 ", total='" + total + '\'' +
-                ", cat=" + cat +
-                ", login=" + login +
-                ", apply=" + apply +
                 '}';
     }
 }

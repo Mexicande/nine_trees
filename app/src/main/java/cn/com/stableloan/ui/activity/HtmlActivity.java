@@ -28,10 +28,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +42,6 @@ import cn.com.stableloan.api.DateStatisticsUtils;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.cash.CashActivityBean;
-import cn.com.stableloan.common.Api;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.model.WelfareBean;
@@ -52,9 +49,8 @@ import cn.com.stableloan.model.WelfareShutBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.ui.js.JsInteration;
 import cn.com.stableloan.utils.DownAPKService;
-import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.NetworkUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
@@ -115,34 +111,12 @@ public class HtmlActivity extends BaseActivity {
 
         boolean available = NetworkUtils.isAvailable(this);
         if (available) {
-            Product_DescBean desc = (Product_DescBean) getIntent().getSerializableExtra("product");
+            Product_DescBean.DataBean desc = (Product_DescBean.DataBean) getIntent().getSerializableExtra("product");
             if (desc != null) {
-                DateStatisticsUtils.addApplyDate(this, String.valueOf(desc.getData().getId()));
-                titleName.setText(desc.getData().getPname());
-                ivBack.setVisibility(View.VISIBLE);
-                String link = desc.getData().getLink();
+                DateStatisticsUtils.addApplyDate(this, String.valueOf(desc.getId()));
+                titleName.setText(desc.getPname());
+                String link = desc.getLink();
                 getDate(link);
-            }
-            Banner_HotBean.AdvertisingBean extra = (Banner_HotBean.AdvertisingBean) getIntent().getSerializableExtra("Advertising");
-            if (extra != null) {
-
-                titleName.setText(extra.getAdvername());
-                ivBack.setVisibility(View.VISIBLE);
-                getDate(extra.getApp());
-            }
-            Banner_HotBean.RecommendsBean hotbean = (Banner_HotBean.RecommendsBean) getIntent().getSerializableExtra("hotbean");
-            if (hotbean != null) {
-
-                titleName.setText(hotbean.getName());
-                ivBack.setVisibility(View.VISIBLE);
-                getDate(hotbean.getApp());
-            }
-            Product_DescBean desc1 = (Product_DescBean) getIntent().getSerializableExtra("Strate");
-            if (desc1 != null) {
-                titleName.setText(desc1.getData().getPlatformdetail().getPl_name() + "攻略");
-                ivBack.setVisibility(View.VISIBLE);
-                String url = desc1.getData().getRaiders_connection();
-                getDate(url);
             }
             String advertising = getIntent().getStringExtra("advertising");
             if (advertising != null) {
@@ -151,21 +125,14 @@ public class HtmlActivity extends BaseActivity {
             welfare = (WelfareBean.DataBean) getIntent().getSerializableExtra("welfare");
             if (welfare != null) {
                 titleName.setText(welfare.getName());
-                ivBack.setVisibility(View.VISIBLE);
                 getUrl(welfare.getId());
                 setListen();
             }
             Class_Special.DataBean.MdseBean aClass = (Class_Special.DataBean.MdseBean) getIntent().getSerializableExtra("class");
             if (aClass != null) {
                 DateStatisticsUtils.addApplyDate(this, String.valueOf(aClass.getId()));
-
                 titleName.setText(aClass.getMdse_name());
                 getDate(aClass.getMdse_h5_link());
-            }
-            String safe = getIntent().getStringExtra("safe");
-            if (safe != null) {
-                titleName.setText("安全小贴士");
-                getDate(Urls.HTML_URL + safe);
             }
 
             CashActivityBean.DataBean.ActivityBean cashActivityBean = (CashActivityBean.DataBean.ActivityBean) getIntent().getSerializableExtra("cashActivityBean");
@@ -179,6 +146,12 @@ public class HtmlActivity extends BaseActivity {
                 getDate(link);
                 setListen();
             }
+            String link = getIntent().getStringExtra("link");
+            if(!TextUtils.isEmpty(link)){
+                String title = getIntent().getStringExtra("title");
+                titleName.setText(title);
+                getDate(link);
+            }
 
         } else {
             ToastUtils.showToast(this, "网络异常");
@@ -186,7 +159,8 @@ public class HtmlActivity extends BaseActivity {
     }
 
     private void getUrl(int id) {
-        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
+
+        String   token = SPUtil.getString(this, Urls.lock.TOKEN);
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("id", String.valueOf(id));

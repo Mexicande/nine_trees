@@ -551,7 +551,6 @@ public final class AppUtils {
         if (tm != null) {
             str = tm.getLine1Number();
         }
-
         if(str!=null&&str.length()>11){
             str = str.substring(str.length() - 11, str.length());
         }

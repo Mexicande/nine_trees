@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,10 +28,6 @@ import com.rong360.app.crawler.CrawlerStatus;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -42,12 +37,9 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Certification;
-import cn.com.stableloan.model.UserBean;
-import cn.com.stableloan.ui.activity.settingdate.DeviceActivity;
 import cn.com.stableloan.ui.fragment.ThreeElementsFragment;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -105,7 +97,8 @@ public class CertificationActivity extends BaseActivity {
                 .setLabel(getResources().getString(R.string.wait))
                 .setCancellable(true)
                 .show();
-        String token = (String) SPUtils.get(this, "token", "1");
+        String   token = SPUtil.getString(this, Urls.lock.TOKEN);
+
 
         OkGo.<String>post(Urls.Ip_url + Urls.STATUS.GetCerftication)
                 .tag(this)
@@ -179,7 +172,7 @@ public class CertificationActivity extends BaseActivity {
                 .callback(listener)
                 .start();
 
-        phone = (String) SPUtils.get(CertificationActivity.this, Urls.lock.USER_PHONE, "1");
+        phone = SPUtil.getString(CertificationActivity.this, Urls.lock.USER_PHONE);
         crawlerStatus.privatekey = Urls.CreditrePort.PRIVATE_KEY;
         crawlerStatus.merchant_id = Urls.CreditrePort.APP_ID;
         // "1000053";
@@ -302,7 +295,7 @@ public class CertificationActivity extends BaseActivity {
                 }
                 break;
             case R.id.alipay:
-                String mApiKey = Urls.Api_Id;
+                String mApiKey = Urls.API_ID;
                 String mThemeColor = "#ff9500";
                 MxParam mxParam = new MxParam();
                 mxParam.setUserId(phone);

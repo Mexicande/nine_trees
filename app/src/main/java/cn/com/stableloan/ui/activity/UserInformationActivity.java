@@ -16,6 +16,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,10 +34,11 @@ import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.Login;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.integarl.StatusBean;
 import cn.com.stableloan.ui.activity.integarl.UpImageIdentityActivity;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 
@@ -55,6 +59,7 @@ public class UserInformationActivity extends Activity{
     @Bind(R.id.User_Pic)
     SuperTextView UserPic;
     private List<View> views;
+    private String token;
     private static  final  int IMAGE_REQUEST=100;
     private static  final  int IMAGE_RESULT=110;
     /**
@@ -132,10 +137,10 @@ public class UserInformationActivity extends Activity{
      */
     private void getStatus() {
 
-        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, null);
+        token = SPUtil.getString(this, Urls.lock.TOKEN);
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("token", token);
+            jsonObject.put(Urls.lock.TOKEN, token);
             ApiService.GET_SERVICE(Urls.user.USER_STATUS, jsonObject, new OnRequestDataListener() {
                 @Override
                 public void requestSuccess(int code, JSONObject s) {
@@ -230,8 +235,26 @@ public class UserInformationActivity extends Activity{
 
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        token= SPUtil.getString(this, Urls.lock.TOKEN);
+        getStatus();
     }
 
 }

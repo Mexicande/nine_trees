@@ -10,8 +10,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +21,11 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.luck.picture.lib.tools.ScreenUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -37,7 +33,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -49,29 +44,28 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentityProduct;
+import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.home.Hot_New_Product;
 import cn.com.stableloan.model.home.Seckill_Bean;
 import cn.com.stableloan.model.home.SpecialClassBean;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.NoticeActivity;
-import cn.com.stableloan.ui.activity.ProductClassifyActivity;
 import cn.com.stableloan.ui.activity.ProductDesc;
+import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
 import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.ui.fragment.dialogfragment.AdialogFragment;
 import cn.com.stableloan.utils.ActivityUtils;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.OnClickStatistics;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
-import cn.com.stableloan.view.GlideRoundTransform;
 import cn.com.stableloan.view.MyDecoration;
 import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.countdownview.CountdownView;
@@ -98,6 +92,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private Seckill_Bean seckillBean;
     int ACTION = 1;
     private List<String> list;
+    private String mToken;
+    private  boolean mStateEnable=true;
     public HomeFragment() {
 
     }
@@ -109,7 +105,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         initDialog();
-
         getDate();
         setListener();
         return view;
@@ -148,7 +143,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                                     long time12 = h + m + se + (1000 - millisecond);
 
-                                    LogUtils.i("time21===", time12);
                                     mSeckill_layout.setVisibility(View.VISIBLE);
                                     mCountdownView.start(time12);
                                     countdownhour.setTime(time12);
@@ -190,7 +184,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         mCardView.setVisibility(View.GONE);
                                         re_View.setVisibility(View.VISIBLE);
                                         re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-
                                         re_View.setAdapter(rc_adapter);
                                         rc_adapter.setNewData(seckillBean.getData());
                                         break;
@@ -202,6 +195,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         rc_adapter.setNewData(seckillBean.getData());
                                         break;
                                     default:
+                                        mCardView.setVisibility(View.GONE);
+                                        re_View.setVisibility(View.VISIBLE);
+                                        re_View.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+                                        re_View.setAdapter(rc_adapter);
+                                        rc_adapter.setNewData(seckillBean.getData());
                                         break;
                                 }
                             }
@@ -211,6 +209,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     }
     private void initDialog() {
+        mToken=SPUtil.getString(getActivity(),Urls.lock.TOKEN);
         String[] stringArray = getResources().getStringArray(R.array.home_money);
         list = Arrays.asList(stringArray);
 
@@ -238,19 +237,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void showAdvertising(final AdvertisingBean bean) {
-
-        long date = (long) SPUtils.get(getActivity(), "AdvertTime", 1111111111111L);
+        long date = SPUtil.getLong(getActivity(), "AdvertTime", 1111111111111L);
         boolean today = TimeUtils.isToday(date);
         if (today) {
 
         } else {
-
             AdialogFragment adialogFragment= AdialogFragment.newInstance(bean);
-            adialogFragment.show(getFragmentManager(),"adialogFragment");
-
-
+            if(isStateEnable() ){
+                adialogFragment.show(getFragmentManager(),"adialogFragment");
+            }
             long timeMillis = System.currentTimeMillis();
-            SPUtils.put(getActivity(), "AdvertTime", timeMillis);
+            SPUtil.putLong(getActivity(), "AdvertTime", timeMillis);
         }
     }
 
@@ -258,7 +255,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
      * 下拉刷新
      */
     private void setListener() {
-        //easylayout.autoRefresh();
 
         ivNotice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,15 +305,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String  token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
-                if(TextUtils.isEmpty(token)){
-                    ActivityUtils.startActivity(LoginActivity.class);
-                }else {
-                    ActivityUtils.startActivity(VipActivity.class);
-                }
-/*                if (specialClassBean.getData().get(position).getProject_name() != null) {
-                    startActivity(new Intent(getActivity(), ProductClassifyActivity.class).putExtra("class_product", specialClassBean.getData().get(position)));
-                }*/
+                OnClickStatistics.buriedStatistics(mToken, Constants.VIP_CLICK);
+
+                ActivityUtils.startActivity(VipActivity.class);
+
             }
         });
 
@@ -390,7 +381,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onBannerItemClick(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
 
-                startActivity(new Intent(getContext(), HtmlActivity.class).putExtra("Advertising", hotBean.getAdvertising().get(position)));
+                OnClickStatistics.buriedStatistics(mToken, Constants.BANNER_CLICK);
+                Banner_HotBean.AdvertisingBean advertisingBean = hotBean.getAdvertising().get(position);
+                Intent intent = new Intent(getActivity(), HtmlActivity.class);
+                intent.putExtra("link", advertisingBean.getApp());
+                intent.putExtra("title", advertisingBean.getAdvername());
+                startActivity(intent);
+
             }
         });
         //秒杀
@@ -539,17 +536,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.iv_free:
                 professional = "xiaoyaoke";
+                OnClickStatistics.buriedStatistics(mToken, Constants.FREE);
+
                 EventBus.getDefault().post(new IdentityProduct(3,100));
                 MainActivity.navigationController.setSelect(1);
 
                 break;
             case R.id.iv_work:
+                OnClickStatistics.buriedStatistics(mToken, Constants.WORK);
+
                 professional = "shangbanzu";
                 EventBus.getDefault().post(new IdentityProduct(1,100));
                 MainActivity.navigationController.setSelect(1);
 
                 break;
             case R.id.bussiones:
+                OnClickStatistics.buriedStatistics(mToken, Constants.ENTREPRENEUR);
+
                 professional = "qiyezhu";
                 EventBus.getDefault().post(new IdentityProduct(4,100));
                 MainActivity.navigationController.setSelect(1);
@@ -599,5 +602,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         pvOptions.setPicker(list);//一级选择器
         pvOptions.show();
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        // super.onStart();中将mStateSaved置为false
+        mStateEnable = true;
+    }
+    @Override
+    public void onResume() {
+        // onPause之后便可能调用onSaveInstanceState，因此onresume中也需要置true
+        mStateEnable = true;
+        super.onResume();
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // super.onSaveInstanceState();中将mStateSaved置为true
+        mStateEnable = false;
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    public void onStop() {
+        // super.onStop();中将mStateSaved置为true
+        mStateEnable = false;
+        super.onStop();
+    }
+    /**
+     * activity状态是否处于可修改周期内，避免状态丢失的错误
+     * @return
+     */
+    public boolean isStateEnable() {
+        return mStateEnable;
+    }
 }

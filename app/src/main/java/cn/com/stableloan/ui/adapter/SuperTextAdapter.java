@@ -14,7 +14,10 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.model.Product_DescBean;
 
 /**
- * Created by apple on 2017/6/15.
+ *
+ * @author apple
+ * @date 2017/6/15
+ *
  */
 
 public class SuperTextAdapter extends BaseQuickAdapter<Product_DescBean.DataBean.LabelsBean,BaseViewHolder> {

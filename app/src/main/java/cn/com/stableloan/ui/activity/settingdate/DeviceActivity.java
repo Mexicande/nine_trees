@@ -3,15 +3,11 @@ package cn.com.stableloan.ui.activity.settingdate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -20,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -30,12 +25,8 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.model.Device;
-import cn.com.stableloan.ui.activity.CertificationActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
-import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.DeviceAdapter;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.MyDecoration;
 import cn.com.stableloan.view.supertextview.SuperTextView;
@@ -74,7 +65,7 @@ public class DeviceActivity extends BaseActivity {
     }
 
     private void getDate() {
-        token = (String) SPUtils.get(this, Urls.lock.TOKEN, "1");
+        token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
         Map<String, String> parms = new HashMap<>();
         parms.put("token", token);
         JSONObject jsonObject = new JSONObject(parms);

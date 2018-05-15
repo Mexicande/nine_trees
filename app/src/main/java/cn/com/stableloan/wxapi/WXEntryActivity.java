@@ -34,7 +34,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private StateListener<String> mListener;
 
     private static final String WX_API_HOST = "https://api.weixin.qq.com";
-    private static final String TAG = "AssistActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,11 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVObject;
+import com.gyf.barlibrary.ImmersionBar;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.meituan.android.walle.WalleChannelReader;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,18 +39,17 @@ import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.common.Api;
 import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.interfaceutils.VerListener;
-import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.ui.fragment.dialogfragment.VerificationFragment;
 import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.AppUtils;
 import cn.com.stableloan.utils.CaptchaTimeCount;
 import cn.com.stableloan.utils.CommonUtil;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.StatusBarUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.SlideView;
@@ -96,7 +100,8 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     private CaptchaTimeCount captchaTimeCount;
 
     private int oldNew = 0;
-
+    private  KProgressHUD hud;
+    private ImmersionBar mImmersionBar;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
     }
@@ -105,20 +110,25 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setTransparent(this);
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.white)
+                .statusBarAlpha(0.3f)
+                .fitsSystemWindows(true)
+                .init();
         captchaTimeCount = new CaptchaTimeCount(Constants.MILLIS_IN_TOTAL, Constants.COUNT_DOWN_INTERVAL, btCode, this);
         initView();
 
     }
 
     private void initView() {
-        String code = etCode.getText().toString();
         slideview.addSlideListener(() -> {
             if (layoutCode.getVisibility() == View.VISIBLE) {
+                String code = etCode.getText().toString();
                 if (!TextUtils.isEmpty(code) && code.length() == 4) {
                     verCode(code);
+                    slideview.reset();
                 } else {
                     slideview.reset();
                     ToastUtils.showToast(AppApplication.getApp(), "验证码错误");
@@ -130,14 +140,19 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                 slideview.reset();
             }
         });
+         hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setDimAmount(0.5f);
 
     }
 
     /**
      * 验证码效验
      */
+
     private void verCode(String code) {
 
+        hud.show();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userphone", phone);
@@ -150,10 +165,12 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
         ApiService.GET_SERVICE(Urls.Login.CHECK_CODE, jsonObject, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
+                hud.dismiss();
+
                 try {
                     JSONObject date = data.getJSONObject("data");
                     String msg = date.getString("msg");
-                    String isSucess = date.getString("isSucess");
+                    String isSucess = date.getString("isSuccess");
                     if ("1".equals(isSucess)) {
                         layoutName.setVisibility(View.VISIBLE);
                         slideview.setVisibility(View.GONE);
@@ -171,6 +188,8 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
             @Override
             public void requestFailure(int code, String msg) {
                 slideview.reset();
+                hud.dismiss();
+
                 ToastUtils.showToast(AppApplication.getApp(), msg);
             }
         });
@@ -262,6 +281,8 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
      * 验证码获取
      */
     private void getCode() {
+        captchaTimeCount.start();
+
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userphone", phone);
@@ -276,9 +297,8 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                 try {
                     JSONObject date = data.getJSONObject("data");
                     String msg = date.getString("msg");
-                    String isSucess = date.getString("isSucess");
+                    String isSucess = date.getString("isSuccess");
                     if ("1".equals(isSucess)) {
-                        captchaTimeCount.start();
                         slideview.setVisibility(View.VISIBLE);
                     }
                     ToastUtils.showToast(AppApplication.getApp(), msg);
@@ -376,7 +396,7 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
         try {
             jsonObject.put("name",name);
             jsonObject.put("idcard",card);
-            jsonObject.put("userphone",phone);
+            jsonObject.put("userphone",etPhone.getText().toString());
             jsonObject.put("channel",channel);
             jsonObject.put("terminal",Constants.terminal);
             jsonObject.put("device",model);
@@ -386,15 +406,19 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        hud.show();
         ApiService.GET_SERVICE(Urls.Login.LOGIN, jsonObject, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
+                hud.dismiss();
                 try {
+
                     JSONObject date = data.getJSONObject("data");
                     String token = date.getString("token");
                     String userphone = date.getString("userphone");
-                    SPUtils.put(LoginActivity.this, Urls.lock.USER_PHONE, userphone);
+                    SPUtil.putString(LoginActivity.this, Urls.lock.TOKEN, token);
+                    SPUtil.putString(LoginActivity.this, Urls.lock.USER_PHONE, userphone);
+                    SPUtil.putString(LoginActivity.this,Constants.VIP,date.getString(Constants.VIP));
                     Intent intent=new Intent(LoginActivity.this, CareerChoiceActivity.class);
                     intent.putExtra("userPhone", etPhone.getText().toString());
                     intent.putExtra(Urls.lock.TOKEN,token);
@@ -409,7 +433,8 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
 
             @Override
             public void requestFailure(int code, String msg) {
-
+                hud.dismiss();
+                ToastUtils.showToast(LoginActivity.this,msg);
             }
         });
 
@@ -440,6 +465,50 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                 break;
             default:
                 break;
+        }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideKeyboard(v.getWindowToken());
+            }
+        }
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                v.setFocusable(false);
+                v.setFocusableInTouchMode(true);
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
+
+    private void hideKeyboard(IBinder token) {
+        if (token != null) {
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (im != null) {
+                im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+            }
         }
     }
 }

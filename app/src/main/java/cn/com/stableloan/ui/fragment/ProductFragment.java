@@ -52,7 +52,9 @@ import cn.com.stableloan.model.TagFlowBean;
 import cn.com.stableloan.model.clsaa_special.Class_Special;
 import cn.com.stableloan.model.home.ProductList_Param;
 import cn.com.stableloan.ui.activity.ProductDesc;
+import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
+import cn.com.stableloan.utils.ActivityUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.flowlayout_tag.FlowLayout;
@@ -282,7 +284,6 @@ public class ProductFragment extends ImmersionFragment {
             add("");
         }};
     }
-
     private void initRecyclView() {
 
         classify_recycler_adapter = new Recycler_Classify_Adapter(R.layout.product_trem,null);
@@ -297,24 +298,33 @@ public class ProductFragment extends ImmersionFragment {
         });
         //header
         View view = getActivity().getLayoutInflater().inflate(R.layout.product_header_layout, null);
+
         //footer
         View footer = getActivity().getLayoutInflater().inflate(R.layout.product_footer_layout, null);
+
         classify_recycler_adapter.addHeaderView(view);
         classify_recycler_adapter.addFooterView(footer);
         ImageView mCloseHeader = view.findViewById(R.id.iv_close);
-        TextView tvOpen = view.findViewById(R.id.tv_vip);
-        tvOpen.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
         mCloseHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 classify_recycler_adapter.removeAllHeaderView();
             }
         });
+        TextView tvOpen = view.findViewById(R.id.tv_vip);
+        tvOpen.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        tvOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.startActivity(VipActivity.class);
+            }
+        });
 
         classify_recycler_adapter.getFooterLayout().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast(getActivity(),"开通会员");
+                ActivityUtils.startActivity(VipActivity.class);
             }
         });
 
@@ -498,8 +508,8 @@ public class ProductFragment extends ImmersionFragment {
                             } else {
                                 classify_recycler_adapter.setNewData(null);
                                 classify_recycler_adapter.setEmptyView(notDataView);
-                                String error_message = json.getString("error_message");
-                                ToastUtils.showToast(getActivity(), error_message);
+                                String errorMessage = json.getString("errorMessage");
+                                ToastUtils.showToast(getActivity(), errorMessage);
                             }
 
                         } catch (JSONException e) {

@@ -23,7 +23,7 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IntregarlEvent;
 import cn.com.stableloan.model.integarl.ExchangeIntegralBean;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -75,7 +75,8 @@ public class IntegarlExchangeFragment extends Fragment {
                 .setCancellable(true)
                 .show();
         HashMap<String, String> params = new HashMap<>();
-        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+
+        String token = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
         params.put(Urls.lock.TOKEN, token);
         params.put("type", type);
         JSONObject object = new JSONObject(params);

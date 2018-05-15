@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
+import cn.com.stableloan.ui.activity.LoginActivity;
+import cn.com.stableloan.utils.ActivityUtils;
 import okhttp3.Call;
 
 
@@ -43,6 +45,8 @@ public class ApiService {
                                 int code = jsonObject.getInt("error_code");
                                 if(code==0){
                                     listener.requestSuccess(code, jsonObject);
+                                }else  if(code==Urls.ERROR_CODE.LOSE_CODE){
+                                    ActivityUtils.startActivity(LoginActivity.class);
                                 }else {
                                     listener.requestFailure(code, jsonObject.getString("error_message"));
                                 }

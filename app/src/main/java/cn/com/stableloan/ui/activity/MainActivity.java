@@ -7,14 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.google.gson.JsonObject;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.meituan.android.walle.WalleChannelReader;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,14 +22,10 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.model.InformationEvent;
-import cn.com.stableloan.model.UserBean;
 import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
 import cn.com.stableloan.view.update.AppUpdateUtils;
@@ -47,8 +38,6 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
-import okhttp3.Call;
-import okhttp3.Response;
 
 public class MainActivity extends BaseActivity implements ProductFragment.BackHandlerInterface{
 
@@ -78,25 +67,10 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
-        statistics();
         updateDiy();
         initView();
     }
 
-    private void statistics() {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("channel", channel);
-        JSONObject object = new JSONObject(params);
-        OkGo.post(Urls.NEW_Ip_url+Urls.statistics.Deliver).tag(this)
-                .upJson(object)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-
-                    }
-                });
-
-    }
 
     public void updateDiy() {
         NewVersionCode = AppUpdateUtils.getVersionCode(this);
@@ -108,7 +82,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                 //必须设置，实现httpManager接口的对象
                 .setHttpManager(new OkGoUpdateHttpUtil())
                 //必须设置，更新地址
-                .setUpdateUrl(Urls.Update.APP_UPDATA)
+                .setUpdateUrl(Urls.Update.APP_UPDATE)
                 //以下设置，都是可选
                 .setPost(true)
                 //不显示通知栏进度条

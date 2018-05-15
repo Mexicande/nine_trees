@@ -10,20 +10,21 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.com.stableloan.AppApplication;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by apple on 2017/10/25.
+ * @author apple
+ * @date 2017/10/25
+ *
  */
 
 public class DateStatisticsUtils {
 
     public  static void addApplyDate(Context context,String productId){
 
-        String token = (String) SPUtils.get(context, "token", "1");
+        String token = SPUtil.getString(context, Urls.lock.TOKEN, "1");
         Map<String, String> parms1 = new HashMap<>();
         parms1.put("token", token);
         parms1.put("id", productId);

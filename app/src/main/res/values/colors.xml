@@ -43,6 +43,7 @@
     <color name="grey_a5a5a5">#A5A5A5</color>
     <color name="grey_dde1e7">#DDE1E7</color>
     <color name="red_f4333c">#F4333C</color>
+    <color name="color_33">#333333</color>
     
 
     <color name="window_background">#FFF5F5F5</color>
@@ -66,6 +67,7 @@
     <color name="grey_b2b2b2">#B2B2B2</color>
     <color name="blue_78d2f6">#78D2F6</color>
     <color name="blue_01aaee">#01AAEE</color>
+    <color name="blue_fulltry">#00A0FF</color>
     <color name="red_f3323b">#F3323B</color>
     <color name="common_pressed">#20000000</color>  <!--白色背景按下去的颜色-->
     <color name="line">#e8e8e8</color>

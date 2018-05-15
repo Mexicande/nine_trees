@@ -43,7 +43,7 @@ import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.CameraEvent;
 import cn.com.stableloan.model.CardBean;
 import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.RoundButton;
 import okhttp3.Call;
@@ -142,11 +142,11 @@ public class CarmeraResultActivity extends AppCompatActivity {
 
     private void getToken() {
         hd.show();
-        userToken = (String) SPUtils.get(this, "token", "1");
-        String signature = (String) SPUtils.get(this, "signature", "1");
+
+        userToken= SPUtil.getString(this, Urls.lock.TOKEN);
         Map<String, String> parms = new HashMap<>();
         parms.put("token", userToken);
-        parms.put("signature", signature);
+        parms.put("signature", "");
         parms.put("source", "");
 
         JSONObject jsonObject = new JSONObject(parms);
@@ -231,7 +231,8 @@ public class CarmeraResultActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             String s = (String) msg.obj;
             CarmeraResultActivity activity = mWeakReference.get();
-            String token = (String) SPUtils.get(activity, Urls.TOKEN, "1");
+
+            String token= SPUtil.getString(activity, Urls.lock.TOKEN);
             if(token!=null){
                 if (activity != null) {
                     switch (msg.what) {

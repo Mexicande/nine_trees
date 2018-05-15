@@ -46,7 +46,7 @@ import cn.com.stableloan.ui.activity.CameraActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
 import cn.com.stableloan.utils.BankUtils;
 import cn.com.stableloan.utils.CommonUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperTextView;
 import okhttp3.Call;
@@ -85,7 +85,7 @@ public class User_Bank_Fragment extends Fragment {
     private TimePickerView pvTime;
 
     private Bank bankBean;
-
+    private String token;
     private static final int REQUEST_CODE = 20000;
     private static final int REQUEST_BANK = 200;
 
@@ -181,10 +181,10 @@ public class User_Bank_Fragment extends Fragment {
     private void getDate() {
 
         Map<String, String> parms = new HashMap<>();
-        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, "1");
-        String signature = (String) SPUtils.get(getActivity(), "signature", "1");
+        token = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
+
         parms.put("token", token);
-        parms.put("signature", signature);
+        parms.put("signature", "");
         parms.put("source", "");
         JSONObject jsonObject = new JSONObject(parms);
         OkGo.<String>post(Urls.Ip_url + Urls.Identity.Getbank)
@@ -314,7 +314,6 @@ public class User_Bank_Fragment extends Fragment {
             ToastUtils.showToast(getActivity(), "无修改内容");
 
         } else {
-            String token = (String) SPUtils.get(getActivity(), "token", "1");
             Bank bank = new Bank();
             bank.setToken(token);
             Bank.BankBean bean = new Bank.BankBean();

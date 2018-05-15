@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -56,15 +55,11 @@ import cn.com.stableloan.model.Identity;
 import cn.com.stableloan.model.InformationEvent;
 import cn.com.stableloan.ui.activity.Camera2Activity;
 import cn.com.stableloan.ui.activity.CameraActivity;
-import cn.com.stableloan.ui.activity.IdentityinformationActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.UserInformationActivity;
 import cn.com.stableloan.ui.activity.integarl.DateChangeActivity;
 import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.RegexUtils;
-import cn.com.stableloan.utils.SPUtils;
-import cn.com.stableloan.utils.TinyDB;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.RoundButton;
 import cn.com.stableloan.view.pickerview.PickerViewUtils;
@@ -242,13 +237,12 @@ public class User_MeansFragment extends Fragment {
     }
 
     private void getDate() {
-        phone = (String) SPUtils.get(getActivity(), Urls.lock.USER_PHONE, "1");
-        token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, "1");
+        token = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
+        phone = SPUtil.getString(getActivity(), Urls.lock.USER_PHONE, "1");
         userPhone.setRightString(phone);
         Map<String, String> parms = new HashMap<>();
-        String signature = (String) SPUtils.get(getActivity(), "signature", "1");
         parms.put("token", token);
-        parms.put("signature", signature);
+        parms.put("signature", "");
         parms.put("source", "");
 
         JSONObject jsonObject = new JSONObject(parms);

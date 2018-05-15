@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -19,12 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
-import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.bean.cash.CashFlowBean;
-import cn.com.stableloan.model.integarl.CashBean;
-import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.ui.activity.ProductDesc;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -69,8 +64,7 @@ public class CashFlowActivity extends AppCompatActivity {
     }
 
     private void getDate(String log_id) {
-
-        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
 
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);

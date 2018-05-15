@@ -28,13 +28,10 @@ import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.model.integarl.CashBean;
-import cn.com.stableloan.ui.activity.CashActivity;
-import cn.com.stableloan.ui.activity.LoginActivity;
 import cn.com.stableloan.ui.activity.cash.CashFlowActivity;
 import cn.com.stableloan.ui.activity.integarl.WithdrawalCashActivity;
 import cn.com.stableloan.ui.adapter.CashAdapter;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.supertextview.SuperButton;
 import okhttp3.Call;
@@ -114,7 +111,8 @@ public class DetailCash_Fragment extends Fragment {
                 .setLabel("Please wait.....")
                 .setCancellable(true)
                 .show();
-        String token = (String) SPUtils.get(getActivity(), Urls.lock.TOKEN, null);
+
+        String token = SPUtil.getString(getActivity(), Urls.lock.TOKEN);
         HashMap<String, String> params = new HashMap<>();
         params.put(Urls.lock.TOKEN, token);
         params.put("page", String.valueOf(page));

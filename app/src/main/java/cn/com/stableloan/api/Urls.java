@@ -12,56 +12,31 @@ public interface Urls {
     String NEW_Ip_url=API+"api.anwenqianbao.com/v2/";
 
     String puk_URL=API+"api.shoujijiekuan.com/Home/ApiLogin/";
+    String HTML_URL=API+"m.anwenqianbao.com/";
 
     String NEW_URL=API+"api.shoujijiekuan.com/Home/";
-    String Html_Down_Status=NEW_Ip_url+"audit";
-            String HTML_URL=API+"m.anwenqianbao.com/";
     String logoUrl="http://p2y9on3t5.bkt.clouddn.com/iv_logo.png";
-    String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDnj+RwgwDlUXlD3xUHXp6yQa6" +
-            "D1rqD8hg3ucR61D7XA60WpgxacPxfH8ubw3hfS8Jk75qCq98T+mkrRJ91y3N06Oi" +
-            "PUE5kRgnF33m9uoihTNcX9o0GXx17QslDH9TjXhcLHIkIXDZtbE415UdT0GnC6q4";
-    String PRIVATE_KEY = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBANSzGmJ7eD51Oc+/" +
-            "q+NG4I5UHqFzRXqoVcBvONISzUdkcKj8lGBQEcr58LJz4spSFyxh7TRpOfMNE25b" +
-            "QwCEbWVci74mjQSffKIUHhriNwxROFXHWzun8KaqT4pQCYz0UsGtPpSgrNss0qL3" +
-            "1iHrJtIwm7Jfgetcr+VTtDjhvh8zAgMBAAECgYEAs0fjzW7VA5A7kmi0sXVkgZNV" +
-            "3jATODf7T6Bv/GHstWhrrYR4bFYRKU1THJehaXeYIMjJ74tiVQOIhVRXPXBh46ve" +
-            "/jUBt/WUUB8Cc5OkX/ll293ZuUpedUlRi6jYNiXU7yjAfTIqFLMwKrpXjMnIMSwV" +
-            "NebPk9qNs9VT3gENGgECQQD4e5Ozmmj2fBW/4aKA+LtObz/Hu75XaA5Kd9WV+30r" +
-            "SGxxTh7QsHXl17xVXhMYrHcdJ9YhOWk69+sKQRlKLZWhAkEA2yJlmfzRT3J9L+2j" +
-            "PzWM0o++hbuiEte2xs3brlvGUAO/Y69UZVzecx0E6bc8rWFakv8j7Ul1vSpJPeJB" +
-            "7/kcUwJAPq1VNWGGhl4IUm1Ew0l6Xa98JBJ8UaniqPAPRRS5nvhWukHdTgCkzIQd" +
-            "cl8XbArcxNLulVTY8VHlzKFdErPq4QJBAJ4lT8/2/hPpG2G4jcTzX6MibCxVgp04" +
-            "oscNEArgXtmmKrzFbxIMGNpYyg/l1tuF0/kcOxBnoJoZZ2xK2q1WSdMCQQCQDV6/" +
-            "y0puJ4EGhEa+jwiSi8rSD/vw09CNUNTieVGqx5DzxvPUzTyvRQ9y4dpU8zufqq5p";
 
-    String Api_Id="3846f6f1e99e4f1b958111fda257c368";
-    //
-    String  TOKEN=                                                                                  "token";
-    String NUMBER_ZERO=                                                                             "0";
+    /**
+     * 第三方认证
+     */
+    String API_ID ="3846f6f1e99e4f1b958111fda257c368";
     String NUMBER_ONE=                                                                              "1";
     String NUMBER_TWO=                                                                              "2";
 
+    /**
+     * 埋点统计
+     */
+    String CLICK =NEW_Ip_url+"statistics/click";
+
+
     interface Update{
 
-        String APP_UPDATA=API+"api.shoujijiekuan.com/Home/ApiLogin/Version";
-
-        String value="url=";
+        String APP_UPDATE =API+"api.shoujijiekuan.com/Home/ApiLogin/Version";
 
     }
-    interface  times{
 
-        String MESSAGE_SEND="sms/getcode";
-
-    }
     interface Login{
-
-        String SettingPassWord="set/password";
-        //验证码发送
-        String USER_INFOMATION="person/lockPassword";
-        String GET_SIGNATURE="Mine/GetSignature";
-        String QUICK_LOGIN="quick/login";
-        String captchaURL = "geetes/captcha";
-        String validateURL = "geetes/verification";
 
         /**
          * 新老用户验证
@@ -86,6 +61,41 @@ public interface Urls {
 
 
     }
+    interface  Vip{
+        /**
+         * Vip中心
+         */
+        String vipService=NEW_Ip_url+"vip/vipService";
+        /**
+         * vip产品列表
+         */
+        String VIPPRODUCT =NEW_Ip_url+"vip/product";
+        /**
+         * 信贷报告
+         */
+        String CREDIT_INFO =NEW_Ip_url+"vip/creditInfo";
+        /**
+         * 双色球
+         */
+        String LOTTERY =NEW_Ip_url+"vip/lottery";
+        /**
+         *
+         * 信用卡
+         */
+        String CREDIT=NEW_Ip_url+"vip/creditCard";
+        /**
+         * 支付
+         *
+         */
+        String PAY=NEW_Ip_url+"recharge/pay";
+        /**
+         * 支付方式
+         */
+        String PAYMENT =NEW_Ip_url+"recharge/payment";
+
+    }
+
+
     interface CreditrePort{
 
         String PRIVATE_KEY  = "MIICXAIBAAKBgQCRMcGMrZIKu956ubKD2kDFzRtSP13ycgRtPVz+MvseTje0YgGl" +
@@ -119,7 +129,7 @@ public interface Urls {
     }
     interface STATUS{
         String GetCerftication="accredit/status";
-        String Getsetting="SaveSetting/Getsetting";
+        String Getsetting=NEW_URL+"SaveSetting/Getsetting";
         String Save_Setting="SaveSetting/setting";
     }
     interface share{
@@ -132,13 +142,12 @@ public interface Urls {
         String SPECKILL="second/kill";
         String HOT_NEW_PRODUCT="product/home";
     }
-    interface register{
-        String FORGETWORD="set/forgetpassword";
-    }
 
     interface product{
-        //产品详情
-        String Productdetail="product/detail";
+        /**
+         * 产品详情
+         */
+        String PRODUCT_DETAIL =NEW_Ip_url+"product/detail";
         /**
          * 平台详情
          */
@@ -151,13 +160,12 @@ public interface Urls {
          * 我的收藏
          */
         String ProductCollectionList=NEW_Ip_url+"product/getlist";
-        String CollectionDesc="product/collection";
+        /**
+         * 收藏
+         */
+        String PRODUCT_COLLECTION =Ip_url+"product/collection";
     }
     interface update{
-
-        String UPDATE_Word="person/setPassword";
-        String UPDATE_PROFRSSION="person/setIdentity";
-        String GET_IDENTITY="person/getIdentity";
         String DELETE_DATE="set/updatePeriod";
     }
     interface user{
@@ -194,10 +202,20 @@ public interface Urls {
         String Get_Pictrue="picture/getPicture";
     }
     interface KEY{
-        String WEICHAT_APPID="wxd8a11cffdc98f84b";
+        /**
+         * 微信
+         */
+        String WEICHAT_APPID="wxe90a89b17657d1ae";
+        /**
+         * QQ
+         */
         String QQ_APPID="1106239350";
         String PageWeb="http://m.anwenqianbao.com/#/details?pId=";
         String SHARE_INCODE="http://m.anwenqianbao.com/#/login?inviteCode=";
+        String LEAN_KEY="1Xractc2sikvNt5m6r9GP7sK";
+        String LEAN_ID="9zeHS4F8GAHi97Fkg0p80FYV-gzGzoHsz";
+
+
     }
     interface  Integarl{
         String getAccumulatePoints="point/getAccumulatePoints";
@@ -213,7 +231,7 @@ public interface Urls {
     }
     interface Invite{
         String INVITE_FRIENDS="invite/smsInvite";
-        String INVITE_LIST="invite/inviteList";
+        String INVITE_LIST=Ip_url+"invite/inviteList";
     }
     interface DateChange{
         // 个人信息
@@ -259,27 +277,15 @@ public interface Urls {
     }
 
     interface lock{
-        int  NO_VERIFICATION =                                                                   0;
-        int  PW_VERIFICATION =                                                                   2;
-        int  GESTURE_VERIFICATION =                                                              3;
-        int  GESTURE_FINGER =                                                                    4;
-        String  CAT =                                                                            "cat";
-        String  LOGIN =                                                                          "login";
-        String  APPLY =                                                                          "apply";
         String  TOKEN =                                                                          "token";
         String  USER_PHONE =                                                                     "phone";
     }
     interface ERROR_CODE{
         int FREEZING_CODE=                                                                      1136;
-        int CER_SATAS_ELEMENTS=                                                                      1800;
+        /**token失效**/
+        int LOSE_CODE=                                                                          2;
     }
     interface REQUEST_CODE{
         int PULLBLIC_CODE                                                                          =100;
     }
-    interface statistics{
-        String Deliver         =                                                                "deliver/countDeliver";
-    }
-
-
-
 }

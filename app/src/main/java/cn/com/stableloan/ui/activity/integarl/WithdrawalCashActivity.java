@@ -23,11 +23,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,13 +40,11 @@ import butterknife.OnClick;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
-import cn.com.stableloan.bean.CashEvent;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.model.integarl.CashBean;
 import cn.com.stableloan.ui.activity.CertificationActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
-import cn.com.stableloan.utils.LogUtils;
-import cn.com.stableloan.utils.SPUtils;
+import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.dialog.CashDialog;
 import cn.com.stableloan.view.keyboard.VirtualKeyboardView;
@@ -153,8 +149,7 @@ public class WithdrawalCashActivity extends BaseActivity {
     }
 
     private void getUserPopo() {
-
-        String token = (String) SPUtils.get(this, Urls.lock.TOKEN, null);
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put(Urls.lock.TOKEN, token);
         params.put("position", "2");
@@ -187,7 +182,8 @@ public class WithdrawalCashActivity extends BaseActivity {
     private void getDate() {
         double anInt = Double.parseDouble(textAmount.getText().toString());
         int i = (int) anInt;
-        String token = (String) SPUtils.get(this, "token", "1");
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
+
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("number", String.valueOf(i));
@@ -347,8 +343,8 @@ public class WithdrawalCashActivity extends BaseActivity {
     }
 
     private void userKnow() {
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
 
-        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("position", "2");
@@ -495,7 +491,7 @@ public class WithdrawalCashActivity extends BaseActivity {
 
 
     private void getCashDate() {
-        String token = (String) SPUtils.get(this, Urls.TOKEN, "1");
+        String token = SPUtil.getString(this, Urls.lock.TOKEN, "1");
         HashMap<String, String> params = new HashMap<>();
         params.put("token", token);
         JSONObject object = new JSONObject(params);
