@@ -1,12 +1,13 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by apple on 2018/5/10.
  */
 
-public class VipBean {
+public class VipBean implements Serializable{
 
     /**
      * service : [{"title":"征信报告","logo":"http://or2eh71ll.bkt.clouddn.com/152586834915073.png","desc":"免费查个人信用","explain":"credit"},{"title":"专属10款产品","logo":"http://or2eh71ll.bkt.clouddn.com/152586862847973.png","desc":"10款产品随意贷","explain":"product"},{"title":"专属客服","logo":"http://or2eh71ll.bkt.clouddn.com/152592040616353.png","desc":"vip服务","explain":"service"},{"title":"专属信用卡","logo":"http://or2eh71ll.bkt.clouddn.com/152592048639651.png","desc":"网申通道","explain":"card"},{"title":"双色球12期","logo":"http://or2eh71ll.bkt.clouddn.com/152592053447126.png","desc":"双色球12期免费送","explain":"double"}]
@@ -42,7 +43,7 @@ public class VipBean {
         this.service = service;
     }
 
-    public static class ServiceBean {
+    public static class ServiceBean implements Serializable{
         /**
          * title : 征信报告
          * logo : http://or2eh71ll.bkt.clouddn.com/152586834915073.png

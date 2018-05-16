@@ -1,5 +1,6 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * 双色球
  */
 
-public class Lottery {
+public class Lottery implements Serializable{
 
     /**
      * lottery : [{"bonuscode":"02,05,16,19,30,31,13","phase":"18042770"},{"bonuscode":"02,05,16,19,30,31,13","phase":"18042770"},{"bonuscode":"02,05,16,19,30,31,13","phase":"18042770"},{"bonuscode":"02,05,16,19,30,31,13","phase":"18042770"},{"bonuscode":"02,05,16,19,30,31,13","phase":"18042770"}]
@@ -45,7 +46,7 @@ public class Lottery {
         this.lottery = lottery;
     }
 
-    public static class LotteryBean {
+    public static class LotteryBean implements Serializable{
         /**
          * bonuscode : 02,05,16,19,30,31,13
          * phase : 18042770

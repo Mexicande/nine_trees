@@ -508,11 +508,6 @@ public static java.lang.String TABLENAME;
 -keep class com.umeng.socialize.sensor.**
 -keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
 -keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
--keep class im.yixin.sdk.api.YXMessage {*;}
--keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
--keep public class [your_pkg].R$*{
-    public static final int *;
-}
 
 # 热修复混淆
 -keep class * extends java.lang.annotation.Annotation

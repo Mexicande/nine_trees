@@ -9,9 +9,9 @@ android {
         applicationId "cn.com.stableloan"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 14
+        versionCode 16
         multiDexEnabled true
-        versionName "2.3.2"
+        versionName "2.6.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的SO库架构
@@ -55,9 +55,10 @@ android {
     }
     buildTypes {
         debug {
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //签名
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled true

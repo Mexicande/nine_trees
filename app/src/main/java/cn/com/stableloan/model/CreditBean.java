@@ -1,5 +1,7 @@
 package cn.com.stableloan.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author apple
@@ -7,7 +9,7 @@ package cn.com.stableloan.model;
  * vip信用卡
  */
 
-public class CreditBean {
+public class CreditBean implements Serializable{
 
     /**
      * logo : http://or2eh71ll.bkt.clouddn.com/152154156427944.png
