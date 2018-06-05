@@ -95,8 +95,6 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     RelativeLayout loginPhoneR2;
     private Login_DeviceDialog dialog;
     private String phone;
-    private final int Flag_User = 3000;
-    private final int LOTTERY_CODE = 500;
     private CaptchaTimeCount captchaTimeCount;
 
     private int oldNew = 0;
@@ -357,7 +355,6 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
             if (requestCode == 200) {
                 if ((AndPermission.hasAlwaysDeniedPermission(LoginActivity.this, deniedPermissions))) {
                     AndPermission.defaultSettingDialog(LoginActivity.this, 500).show();
-
                 }
             }
         }
@@ -426,7 +423,6 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
                     intent.putExtra(Urls.lock.TOKEN,token);
                     startActivity(intent);
                     finish();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

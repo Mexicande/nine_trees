@@ -739,105 +739,101 @@ public class User_Professional_Fragment extends Fragment {
     private  boolean changeTest(){
         Gson gson=new Gson();
         WorkInformation workInformation = gson.fromJson(str, WorkInformation.class);
-
         work1=workInformation.getData();
+        if(work1!=null){
+            String school = etSchool.getRightString();
+            String teather = etTeacher.getRightString();
+            String address = etSchoolAddress.getRightString();
 
-        String school = etSchool.getRightString();
-        String teather = etTeacher.getRightString();
-        String address = etSchoolAddress.getRightString();
+            work1.getOccupation().getStudent().setSchool(school);
+            work1.getOccupation().getStudent().setAddress(address);
+            work1.getOccupation().getStudent().setTeacherphone(teather);
+            work1.getOccupation().getStudent().setPreTeacherphone("");
 
-        work1.getOccupation().getStudent().setSchool(school);
-        work1.getOccupation().getStudent().setAddress(address);
-        work1.getOccupation().getStudent().setTeacherphone(teather);
-        work1.getOccupation().getStudent().setPreTeacherphone("");
+            String cComPanyName = etCompany.getRightString();
+            String cCompanyLocation = etLocation.getRightString();
+            String cCompanyEmail = etEmail.getRightString();
+            String cCincome = etCincome.getRightString();
+            String cCompanyFixedline = etFixedline.getRightString();
 
-        String cComPanyName = etCompany.getRightString();
-        String cCompanyLocation = etLocation.getRightString();
-        String cCompanyEmail = etEmail.getRightString();
-        String cCincome = etCincome.getRightString();
-        String cCompanyFixedline = etFixedline.getRightString();
-
-        work1.getOccupation().getCompany().setCompany(cComPanyName);
-        work1.getOccupation().getCompany().setLocation(cCompanyLocation);
-        work1.getOccupation().getCompany().setEmail(cCompanyEmail);
-        String string = etYears.getRightString();
-        work1.getOccupation().getCompany().setYears("");
-        for (int i = 0; i < list2.length; i++) {
-            if (list2[i].equals(string)) {
-                String s = String.valueOf(i);
-                work1.getOccupation().getCompany().setYears(s);
+            work1.getOccupation().getCompany().setCompany(cComPanyName);
+            work1.getOccupation().getCompany().setLocation(cCompanyLocation);
+            work1.getOccupation().getCompany().setEmail(cCompanyEmail);
+            String string = etYears.getRightString();
+            work1.getOccupation().getCompany().setYears("");
+            for (int i = 0; i < list2.length; i++) {
+                if (list2[i].equals(string)) {
+                    String s = String.valueOf(i);
+                    work1.getOccupation().getCompany().setYears(s);
+                }
             }
-        }
-        work1.getOccupation().getCompany().setCincome(cCincome);
-        work1.getOccupation().getCompany().setFixedline(cCompanyFixedline);
+            work1.getOccupation().getCompany().setCincome(cCincome);
+            work1.getOccupation().getCompany().setFixedline(cCompanyFixedline);
 
-        String BusinessName = BusinessCompany.getRightString();
-        String BusinessLocation = this.BusinessLocation.getRightString();
-        String BusinessFixedLine = etBusinessFixedline.getRightString();
-        String BusinessEmail = this.BusinessEmail.getRightString();
-        String BusinessCincome = this.BusinessCincome.getRightString();
+            String BusinessName = BusinessCompany.getRightString();
+            String BusinessLocation = this.BusinessLocation.getRightString();
+            String BusinessFixedLine = etBusinessFixedline.getRightString();
+            String BusinessEmail = this.BusinessEmail.getRightString();
+            String BusinessCincome = this.BusinessCincome.getRightString();
 
-        String BusinessYears = this.BusinessYears.getRightString();
+            String BusinessYears = this.BusinessYears.getRightString();
 
-        work1.getOccupation().getBusiness().setBcompany(BusinessName);
-        work1.getOccupation().getBusiness().setBlocation(BusinessLocation);
-        work1.getOccupation().getBusiness().setBfixedline(BusinessFixedLine);
-        work1.getOccupation().setOlass_time(work.getOccupation().getOlass_time());
-        work1.getOccupation().getBusiness().setByears("");
-        for (int i = 0; i < list2.length; i++) {
-            if (list2[i].equals(BusinessYears)) {
-                String s = String.valueOf(i);
-                work1.getOccupation().getBusiness().setByears(s);
+            work1.getOccupation().getBusiness().setBcompany(BusinessName);
+            work1.getOccupation().getBusiness().setBlocation(BusinessLocation);
+            work1.getOccupation().getBusiness().setBfixedline(BusinessFixedLine);
+            work1.getOccupation().setOlass_time(work.getOccupation().getOlass_time());
+            work1.getOccupation().getBusiness().setByears("");
+            for (int i = 0; i < list2.length; i++) {
+                if (list2[i].equals(BusinessYears)) {
+                    String s = String.valueOf(i);
+                    work1.getOccupation().getBusiness().setByears(s);
+                }
             }
-        }
 
-        work1.getOccupation().getBusiness().setBemail(BusinessEmail);
-        work1.getOccupation().getBusiness().setBcincome(BusinessCincome);
-
-
-
-        work1.getOccupation().getFreelancer().setSource("");
-        if (checkbox3.isChecked()) {
-            work1.getOccupation().getFreelancer().setSource("0");
-        }
-        if (checkbox4.isChecked()) {
-            work1.getOccupation().getFreelancer().setSource("1");
-        }
+            work1.getOccupation().getBusiness().setBemail(BusinessEmail);
+            work1.getOccupation().getBusiness().setBcincome(BusinessCincome);
 
 
 
-        String toString = etOperations.getRightString();
-
-        work1.getOccupation().getBusiness().setOperations("");
-        for (int i = 0; i < list2.length; i++) {
-            if (list2[i].equals(toString)) {
-                String s = String.valueOf(i);
-                work1.getOccupation().getBusiness().setOperations(s);
+            work1.getOccupation().getFreelancer().setSource("");
+            if (checkbox3.isChecked()) {
+                work1.getOccupation().getFreelancer().setSource("0");
             }
-        }
-        work1.getOccupation().getBusiness().setLicense("");
+            if (checkbox4.isChecked()) {
+                work1.getOccupation().getFreelancer().setSource("1");
+            }
 
-        if (checkbox1.isChecked()) {
-            work1.getOccupation().getBusiness().setLicense("0");
-        }
-        if (checkbox2.isChecked()) {
-            work1.getOccupation().getBusiness().setLicense("1");
-        }
-        work1.getOccupation().getFreelancer().setSource("");
-        if (checkbox3.isChecked()) {
-            work1.getOccupation().getFreelancer().setSource("0");
-        }
-        if (checkbox4.isChecked()) {
-            work1.getOccupation().getFreelancer().setSource("1");
+
+
+            String toString = etOperations.getRightString();
+
+            work1.getOccupation().getBusiness().setOperations("");
+            for (int i = 0; i < list2.length; i++) {
+                if (list2[i].equals(toString)) {
+                    String s = String.valueOf(i);
+                    work1.getOccupation().getBusiness().setOperations(s);
+                }
+            }
+            work1.getOccupation().getBusiness().setLicense("");
+
+            if (checkbox1.isChecked()) {
+                work1.getOccupation().getBusiness().setLicense("0");
+            }
+            if (checkbox2.isChecked()) {
+                work1.getOccupation().getBusiness().setLicense("1");
+            }
+            work1.getOccupation().getFreelancer().setSource("");
+            if (checkbox3.isChecked()) {
+                work1.getOccupation().getFreelancer().setSource("0");
+            }
+            if (checkbox4.isChecked()) {
+                work1.getOccupation().getFreelancer().setSource("1");
+            }
+
+            work1.getOccupation().setStatus(work.getOccupation().getStatus());
         }
 
-        work1.getOccupation().setStatus(work.getOccupation().getStatus());
-
-        if(work.equals(work1)){
-            return false;
-        }else {
-            return true;
-        }
+        return !work1.equals(work);
 
     }
 

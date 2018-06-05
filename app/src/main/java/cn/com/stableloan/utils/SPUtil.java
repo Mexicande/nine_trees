@@ -53,6 +53,7 @@ public class SPUtil {
         if(Urls.lock.USER_PHONE.equals(key)){
             AVObject testObject = new AVObject("phone");
             testObject.put("phone",value);
+            testObject.saveInBackground();
         }
         Editor editor = preferences.edit();
         editor.putString(key, value);

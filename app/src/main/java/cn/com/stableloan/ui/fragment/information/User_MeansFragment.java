@@ -388,7 +388,7 @@ public class User_MeansFragment extends Fragment {
                         } else {
                             ToastUtils.showToast(getActivity(), "获取号码失败，请手动添加");
                         }
-                        if (contacts != null) {
+                        if (contacts != null&&contacts.length>0) {
                             etContactName.setRightString(contacts[0]);
                         } else {
                             ToastUtils.showToast(getActivity(), "获取联系人失败，请手动添加");
@@ -410,7 +410,7 @@ public class User_MeansFragment extends Fragment {
                         } else {
                             ToastUtils.showToast(getActivity(), "获取号码失败，请手动添加");
                         }
-                        if (contacts != null) {
+                        if (contacts != null&&contacts.length>0) {
                             etContactName2.setRightString(contacts[0]);
 
                         } else {
@@ -820,7 +820,6 @@ public class User_MeansFragment extends Fragment {
             @Override
             public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
                 if (requestCode == 200) {
-                    LogUtils.i("location", "权限");
                     initLocation();
                     mLocationClient.start();
                 }
@@ -964,7 +963,6 @@ public class User_MeansFragment extends Fragment {
                 startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
                         REQUEST_CODE_PICK_CITY);
 
-                ToastUtils.showToast(getActivity(), bdLocation.getLocType() + "");
 
             }
 

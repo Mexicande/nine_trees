@@ -363,7 +363,9 @@ public class ProductFragment extends ImmersionFragment {
                     @Override
                     public void run() {
                         getDate(1, ACTION_DOWN);
-                        SwipeRefreshLayout.setRefreshing(false);
+                        if(SwipeRefreshLayout!=null){
+                            SwipeRefreshLayout.setRefreshing(false);
+                        }
                         MORE = 1;
                     }
                 }, 1000);

@@ -66,7 +66,6 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- 需要改写此处的appId，将tencent后面xxx的改为自己申请的appId，如tencent12098372 -->

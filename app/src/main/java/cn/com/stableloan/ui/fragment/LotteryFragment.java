@@ -23,6 +23,8 @@ import com.gyf.barlibrary.ImmersionFragment;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
+import cn.com.stableloan.bean.Login;
 import cn.com.stableloan.model.WelfareBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.LoginActivity;
@@ -100,7 +103,7 @@ public class LotteryFragment extends ImmersionFragment {
         welfareRecycler.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                mToken= SPUtil.getString(getActivity(), Urls.lock.TOKEN);
                 if (TextUtils.isEmpty(mToken)) {
                         startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("welfare", welfareAdapter.getData().get(position)));
                     } else {
@@ -142,7 +145,6 @@ public class LotteryFragment extends ImmersionFragment {
                         Gson gson = new Gson();
                         WelfareBean bean = gson.fromJson(s, WelfareBean.class);
                         if(bean.getData().size()==0){
-
                             ivDefault.setVisibility(View.VISIBLE);
 
                         }else {
@@ -160,7 +162,28 @@ public class LotteryFragment extends ImmersionFragment {
                 });
 
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 刷新数据
+     * @param event
+     */
+    @Subscribe
+    public void onMessageEvent(Login event) {
+        mToken= SPUtil.getString(getActivity(), Urls.lock.TOKEN);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

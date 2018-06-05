@@ -1,5 +1,6 @@
 package cn.com.stableloan.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -223,55 +224,56 @@ public class ProductDesc extends BaseActivity {
     }
 
     private void computations() {
+        if(descBean!=null){
+            String hint = etMaxTime.getText().toString();
+            String str = etMaxLimit.getText().toString();
+            String minimumAmount = descBean.getMinimum_amount();
+            String maximumAmount = descBean.getMaximum_amount();
+            if (!hint.isEmpty() && !str.isEmpty() && minimumAmount != null && maximumAmount != null) {
+                int lim = Integer.parseInt(str);
+                if (lim < Integer.parseInt(minimumAmount)) {
+                    etMaxLimit.setText(minimumAmount);
+                }
+                if (lim > Integer.parseInt(maximumAmount)) {
+                    etMaxLimit.setText(maximumAmount);
+                }
 
-        String hint = etMaxTime.getText().toString();
-        String str = etMaxLimit.getText().toString();
-        String minimumAmount = descBean.getMinimum_amount();
-        String maximumAmount = descBean.getMaximum_amount();
-        if (!hint.isEmpty() && !str.isEmpty() && minimumAmount != null && maximumAmount != null) {
-            int lim = Integer.parseInt(str);
-            if (lim < Integer.parseInt(minimumAmount)) {
-                etMaxLimit.setText(minimumAmount);
+                int time = Integer.parseInt(hint);
+                if(time==0){
+                    etMaxTime.setText(descBean.getMin_cycle());
+                    time= Integer.parseInt(descBean.getMin_cycle());
+                }else {
+                    etMaxTime.setText(time+"");
+                }
+                String min_algorithm = descBean.getMin_algorithm();
+
+                Double aDouble = Double.valueOf(min_algorithm);
+
+
+                String fee = descBean.getFee();
+                int i1 = fee.lastIndexOf(".");
+                String substring = fee.substring(0, i1);
+
+                double v1 = aDouble * time / 100 * lim + Integer.parseInt(substring);
+
+                DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                String format = decimalFormat.format(v1);
+                int i = format.indexOf(".");
+                if (i == 0) {
+                    zeroAlgorithm.setText("0" + format + "元");
+                } else {
+                    zeroAlgorithm.setText(format + "元");
+                }
+
+
+                double v2 = (lim + v1) / time;
+
+                int everyRate = (int) v2;
+
+                String everyTime = String.valueOf(everyRate);
+
+                tvDescTerminally.setText(everyTime + "元");
             }
-            if (lim > Integer.parseInt(maximumAmount)) {
-                etMaxLimit.setText(maximumAmount);
-            }
-
-            int time = Integer.parseInt(hint);
-            if(time==0){
-                etMaxTime.setText(descBean.getMin_cycle());
-                time= Integer.parseInt(descBean.getMin_cycle());
-            }else {
-                etMaxTime.setText(time+"");
-            }
-            String min_algorithm = descBean.getMin_algorithm();
-
-            Double aDouble = Double.valueOf(min_algorithm);
-
-
-            String fee = descBean.getFee();
-            int i1 = fee.lastIndexOf(".");
-            String substring = fee.substring(0, i1);
-
-            double v1 = aDouble * time / 100 * lim + Integer.parseInt(substring);
-
-            DecimalFormat decimalFormat = new DecimalFormat("#.00");
-            String format = decimalFormat.format(v1);
-            int i = format.indexOf(".");
-            if (i == 0) {
-                zeroAlgorithm.setText("0" + format + "元");
-            } else {
-                zeroAlgorithm.setText(format + "元");
-            }
-
-
-            double v2 = (lim + v1) / time;
-
-            int everyRate = (int) v2;
-
-            String everyTime = String.valueOf(everyRate);
-
-            tvDescTerminally.setText(everyTime + "元");
         }
     }
 
@@ -333,18 +335,22 @@ public class ProductDesc extends BaseActivity {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-        Glide.with(this).load(product.getProduct_logo()).apply(options)
-                .into(productLogo);
-        if (product.getAd_image() != null && !product.getAd_image().isEmpty()) {
-            descAdvertising.setVisibility(View.VISIBLE);
-            Glide.with(this).load(product.getAd_image())
-                    .apply(options).into(descAdvertising);
-            viewLine.setVisibility(View.GONE);
+        if (isValidContextForGlide(this)){
+            // Load image via Glide lib using context
+            Glide.with(this).load(product.getProduct_logo()).apply(options)
+                    .into(productLogo);
+            if (product.getAd_image() != null && !product.getAd_image().isEmpty()) {
+                descAdvertising.setVisibility(View.VISIBLE);
+                Glide.with(this).load(product.getAd_image())
+                        .apply(options).into(descAdvertising);
+                viewLine.setVisibility(View.GONE);
 
-        } else {
-            descAdvertising.setVisibility(View.GONE);
-            viewLine.setVisibility(View.VISIBLE);
+            } else {
+                descAdvertising.setVisibility(View.GONE);
+                viewLine.setVisibility(View.VISIBLE);
+            }
         }
+
 
         if ("1".equals(product.getActivity())) {
             ivHots.setVisibility(View.VISIBLE);
@@ -446,7 +452,7 @@ public class ProductDesc extends BaseActivity {
                 finish();
                 break;
             case R.id.apply:
-
+                token= SPUtil.getString(this, Urls.lock.TOKEN);
                 if (TextUtils.isEmpty(token)) {
                     ActivityUtils.startActivity(LoginActivity.class);
                 } else {
@@ -586,14 +592,22 @@ public class ProductDesc extends BaseActivity {
      */
     @Subscribe
     public void onMessageEvent(Login event) {
-        token= SPUtil.getString(this, Urls.lock.TOKEN);
-        getProductDate();
+        if(event.mlogin==1){
+            token= SPUtil.getString(this, Urls.lock.TOKEN);
+            getProductDate();
+        }
 
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
 
+    }
+    public static boolean isValidContextForGlide(final Context context) {
+        if (context == null) {
+            return false;
+        }
+        return true;
+    }
 
 }
