@@ -130,7 +130,6 @@ public class User_Professional_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user__professional_, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         getDate();
         initBetter();
 
@@ -336,11 +335,7 @@ public class User_Professional_Fragment extends Fragment {
     public void updateEvent(ProfessionalSelectEvent msg) {
         int message = msg.message;
         switch (message) {
-            /*case STUDENT:
-                title.setText("其他");
-                setVisibilityProfession(layoutStudent);
-                id = STUDENT;
-                break;*/
+
             case COMPANY:
                 btSelectProfession.setLeftString("上班族");
 
@@ -562,6 +557,13 @@ public class User_Professional_Fragment extends Fragment {
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
 
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override

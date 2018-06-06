@@ -141,7 +141,6 @@ public class User_MeansFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user__means, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         getDate();
         mLocationClient = new LocationClient(getActivity().getApplicationContext());
         mLocationClient.registerLocationListener(myListener);
@@ -974,7 +973,13 @@ public class User_MeansFragment extends Fragment {
 
         }
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

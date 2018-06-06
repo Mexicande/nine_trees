@@ -132,6 +132,7 @@ public class UserFragment extends ImmersionFragment {
     }
 
     private boolean getToken(){
+        token= SPUtil.getString(getActivity(), Urls.lock.TOKEN);
         if(TextUtils.isEmpty(token)){
             ActivityUtils.startActivity(LoginActivity.class);
         }else {
@@ -156,7 +157,7 @@ public class UserFragment extends ImmersionFragment {
                 ActivityUtils.startActivity(VipActivity.class);
                 break;
             case R.id.layout_setting:
-                    ActivityUtils.startActivity(SafeSettingActivity.class);
+                ActivityUtils.startActivity(SafeSettingActivity.class);
                 break;
             case R.id.feedback:
                 if(getToken()){
@@ -177,7 +178,6 @@ public class UserFragment extends ImmersionFragment {
                 if(getToken()){
                     startActivityForResult(new Intent(getActivity(),CashActivity.class),200);
                 }
-
                 break;
             case R.id.invite:
                 if(getToken()){

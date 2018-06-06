@@ -50,14 +50,6 @@ public interface Urls {
          * 验证码效验
          */
         String CHECK_CODE =Ip_url+"sms/checkCode";
-        /**
-         * 登陆
-         */
-        String LOGIN =NEW_Ip_url+"quick/login";
-        /**
-         * 完善更新用户申请信息
-         */
-        String BASIC_IDENTITY =NEW_Ip_url+"quick/addBasicIdentity";
 
 
     }

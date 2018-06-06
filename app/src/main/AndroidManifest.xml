@@ -255,8 +255,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.cash.CashFlowActivity"
             />
-        <activity android:name=".ui.activity.CareerChoiceActivity"
-            android:label="信息填写"/>
         <activity android:name=".ui.activity.vip.VipActivity"
             android:label="vip专属"/>
         <activity android:name=".ui.activity.vip.LotteryActivity"

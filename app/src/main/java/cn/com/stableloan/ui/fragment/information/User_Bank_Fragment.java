@@ -108,13 +108,14 @@ public class User_Bank_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user__bank, container, false);
         ButterKnife.bind(this, view);
 
-        EventBus.getDefault().register(this);
 
         initTime();
         setListener();
         getDate();
         return view;
     }
+
+
 
     private void setListener() {
 
@@ -542,7 +543,13 @@ public class User_Bank_Fragment extends Fragment {
 
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
     @OnClick({R.id.debit_camera, R.id.et_BankCard1, R.id.et_BankPersonName1,
             R.id.et_SelectBank1, R.id.et_ValidityTime1, R.id.et_BankPhone1,
             R.id.credit_camera, R.id.is_credit, R.id.et_BankCard2,

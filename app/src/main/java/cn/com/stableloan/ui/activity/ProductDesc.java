@@ -145,12 +145,7 @@ public class ProductDesc extends BaseActivity {
     private Product_DescBean.DataBean descBean;
 
     private boolean shareFlag = false;
-    private static final int COLLECTION = 2000;
-    private static final int APPLY_VAIL = 1000;
-    private static final int Token_Fail = 3000;
-
-
-    private boolean flag = false;
+    private static final int REQUEST_CODE = 3000;
 
     private String token;
     public static void launch(Context context) {
@@ -164,7 +159,6 @@ public class ProductDesc extends BaseActivity {
         ButterKnife.bind(this);
         initToolbar();
         token = SPUtil.getString(this, Urls.lock.TOKEN);
-
         pid = getIntent().getIntExtra("pid", 0);
         if (pid != 0) {
             getProductDate();
@@ -452,12 +446,12 @@ public class ProductDesc extends BaseActivity {
                 finish();
                 break;
             case R.id.apply:
-                token= SPUtil.getString(this, Urls.lock.TOKEN);
                 if (TextUtils.isEmpty(token)) {
-                    ActivityUtils.startActivity(LoginActivity.class);
+                    Intent intent=new Intent(this,LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+
                 } else {
                     startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
-
                 }
                 break;
             case R.id.bt_share:
@@ -470,7 +464,6 @@ public class ProductDesc extends BaseActivity {
 
 
     private void setShared_Collection() {
-
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
         menuItems.add(new MenuItem(R.mipmap.iv_share_friend, "分享到朋友圈"));
@@ -499,7 +492,6 @@ public class ProductDesc extends BaseActivity {
                             shareWechat(WXShareContent.WXTimeline);
                             break;
                         case 2:
-                            token = SPUtil.getString(this, Urls.lock.TOKEN);
                             if (TextUtils.isEmpty(token)) {
                                 ActivityUtils.startActivity(LoginActivity.class);
                             } else {
@@ -552,7 +544,6 @@ public class ProductDesc extends BaseActivity {
             ApiService.GET_SERVICE(Urls.product.PRODUCT_COLLECTION, jsonObject, new OnRequestDataListener() {
                 @Override
                 public void requestSuccess(int code, JSONObject data) {
-                    flag = true;
                     if (("1").equals(status)) {
                         shareFlag = true;
                         ToastUtils.showToast(ProductDesc.this, "收藏成功");
@@ -573,17 +564,26 @@ public class ProductDesc extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQUEST_CODE:
+                if(resultCode==100){
+                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     /**
@@ -596,12 +596,12 @@ public class ProductDesc extends BaseActivity {
             token= SPUtil.getString(this, Urls.lock.TOKEN);
             getProductDate();
         }
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        EventBus.getDefault().unregister(this);
     }
     public static boolean isValidContextForGlide(final Context context) {
         if (context == null) {
