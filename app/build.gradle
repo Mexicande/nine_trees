@@ -13,6 +13,8 @@ android {
         multiDexEnabled true
         versionName "2.6.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
         ndk {
             //设置支持的SO库架构
             abiFilters 'armeabi', 'x86', 'armeabi-v7a'//, 'x86_64', 'arm64-v8a'
@@ -154,7 +156,11 @@ dependencies {
     compile 'com.meituan.android.walle:library:1.1.5'
     compile 'com.google.android:flexbox:0.3.0-alpha2'
     //友盟
-    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.umeng.sdk:common:1.5.3'
+    compile 'com.umeng.analytics:analytics:6.1.4'
+    compile 'com.umeng.sdk:utdid:1.1.5.3'
+    //PushSDK
+    compile 'com.umeng.sdk:push:4.2.0'
     testCompile 'junit:junit:4.12'
-    implementation files('libs/alipaySdk-20160516.jar')
+    implementation files('libs/alipaySdk-20180601.jar')
 }

@@ -210,6 +210,10 @@ public interface Urls {
         String LEAN_KEY="1Xractc2sikvNt5m6r9GP7sK";
         String LEAN_ID="9zeHS4F8GAHi97Fkg0p80FYV-gzGzoHsz";
 
+        String UMENG_KEY="5a14ef858f4a9d5bd300006c";
+
+
+        String UMENG_PUSHKEY="1994921d0d6a190063cb94825f7dd8c4";
 
     }
     interface  Integarl{

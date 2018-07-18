@@ -1,6 +1,7 @@
 package cn.com.stableloan.ui.activity;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +30,13 @@ import butterknife.ButterKnife;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
+import cn.com.stableloan.ui.adapter.NoTouchViewPager;
 import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
+import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
 import cn.com.stableloan.view.update.AppUpdateUtils;
@@ -45,28 +50,29 @@ import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
 
-public class MainActivity extends BaseActivity implements ProductFragment.BackHandlerInterface{
+public class MainActivity extends BaseActivity implements ProductFragment.BackHandlerInterface {
 
     @Bind(R.id.tab)
     PageBottomTabLayout tab;
-    // public  最好使用private /set get来获取
     public static NavigationController navigationController;
-    private FragmentManager mFragmentManager;
-    private Fragment mCurrentFragment;
+    @Bind(R.id.viewPager)
+    NoTouchViewPager viewPager;
     private static final int FLAG_LOGIN = 3;
     private static final int SEND_LOGIN = 3000;
     private static final int LOTTERY_CODE = 500;
     private static final int LOTTERY_SNED = 5000;
-
-    String content="1231313";
+    private ArrayList<Fragment> mFragments;
+    private MyViewPagerAdapter myViewPagerAdapter;
+    String content = "1231313";
 
     public static final String EXIST = "exist";
-    private int NewVersionCode=0;
-    String  channel="";
+    private int NewVersionCode = 0;
+    String channel = "";
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +82,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         initView();
         AndPermission.with(this)
                 .requestCode(200)
-                .permission(Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .permission(Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .callback(permListener)
                 .start();
 
@@ -149,14 +155,14 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                         try {
                             JSONObject jsonObject = new JSONObject(json);
                             int size = jsonObject.getInt("size");
-                            Double i = (double) size / 1024/1024;
+                            Double i = (double) size / 1024 / 1024;
                             DecimalFormat df = new DecimalFormat("0.0");
                             String format = df.format(i);
                             int versioncode = jsonObject.getInt("versioncode");
 
-                            String update="No";
-                            if(versioncode>NewVersionCode){
-                                update="Yes";
+                            String update = "No";
+                            if (versioncode > NewVersionCode) {
+                                update = "Yes";
                             }
                             updateAppBean
                                     //（必须）是否更新Yes,No
@@ -174,7 +180,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                                     .setUpdateLog(jsonObject.getString("updatecontent"))
 //                                    .setUpdateLog("今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说相对于其他行业来说今天我们来聊一聊程序员枯燥的编程生活，相对于其他行业来说\r\n")
                                     //大小，不设置不显示大小，可以不设置
-                                    .setTargetSize(String.valueOf(format)+"M")
+                                    .setTargetSize(String.valueOf(format) + "M")
                                     //是否强制更新，可以不设置
                                     .setConstraint(jsonObject.getBoolean("isForce"))
                                     //设置md5，可以不设置
@@ -189,6 +195,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                     protected void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
                         updateAppManager.showDialogFragment();
                     }
+
                     /**
                      * 网络请求之前
                      */
@@ -197,6 +204,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                         CProgressDialogUtils.showProgressDialog(MainActivity.this);
 
                     }
+
                     /**
                      * 网路请求之后
                      */
@@ -208,99 +216,55 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                 });
 
 
-
     }
 
     private void initView() {
+        mFragments = new ArrayList<>();
+        mFragments.add(new HomeFragment());
+        mFragments.add(new ProductFragment());
+        mFragments.add(new LotteryFragment());
+        mFragments.add(new UserFragment());
 
-
-        mCurrentFragment = new HomeFragment();
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentManager.beginTransaction().add(R.id.app_item, mCurrentFragment).commitAllowingStateLoss();
         navigationController = tab.custom()
-                .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down,"首页"))
-                .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down,"贷款"))
-                .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down,"福利"))
-                .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down,"我的"))
+                .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down, "首页"))
+                .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down, "贷款"))
+                .addItem(newItem(R.mipmap.ic_lottery_on, R.mipmap.ic_lottery_down, "福利"))
+                .addItem(newItem(R.mipmap.ic_my_defual, R.mipmap.ic_my_down, "我的"))
                 .build();
 
-        navigationController.addTabItemSelectedListener(listener);
-
-
+        myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), mFragments);
+        viewPager.setAdapter(myViewPagerAdapter);
+        navigationController.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(0);
     }
 
-
-    OnTabItemSelectedListener listener = new OnTabItemSelectedListener() {
-        @Override
-        public void onSelected(int index, int old) {
-            switchMenu(getFragmentName(index + 1));
-        }
-        @Override
-        public void onRepeat(int index) {
-
-
-        }
-    };
-
-    private String getFragmentName(int menuId) {
-        switch (menuId) {
-            case 1:
-                return HomeFragment.class.getName();
-            case 2:
-                return ProductFragment.class.getName();
-            case 3:
-                return LotteryFragment.class.getName();
-            case 4:
-                return UserFragment.class.getName();
-            default:
-                return null;
-        }
-    }
-
-    private void switchMenu(String fragmentName) {
-
-        Fragment fragment = mFragmentManager.findFragmentByTag(fragmentName);
-
-        if (fragment != null) {
-            if (fragment == mCurrentFragment) {
-                return;
-            }
-            mFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss();
-        } else {
-            fragment = Fragment.instantiate(this, fragmentName);
-            mFragmentManager.beginTransaction().add(R.id.app_item, fragment, fragmentName).commitAllowingStateLoss();
-        }
-
-        if (mCurrentFragment != null) {
-            mFragmentManager.beginTransaction().hide(mCurrentFragment).commitAllowingStateLoss();
-        }
-        mCurrentFragment = fragment;
-    }
 
     //创建一个Item
-    private BaseTabItem newItem(int drawable, int checkedDrawable, String text){
+    private BaseTabItem newItem(int drawable, int checkedDrawable, String text) {
         NormalItemView normalItemView = new NormalItemView(this);
-        normalItemView.initialize(drawable,checkedDrawable,text);
+        normalItemView.initialize(drawable, checkedDrawable, text);
         normalItemView.setTextDefaultColor(Color.GRAY);
-        normalItemView.setTextCheckedColor(Color.rgb(253,32,33));
+        normalItemView.setTextCheckedColor(Color.rgb(253, 32, 33));
         return normalItemView;
     }
+
     private long mLastBackTime = 0;
+
     @Override
     public void onBackPressed() {
-        if(selectedFragment!=null ) {
+        if (selectedFragment != null) {
             boolean visible = ProductFragment.slideUp.isVisible();
-                if(visible){
-                    ProductFragment.slideUp.hide();
-                }else {
-                    if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
-                        finish();
-                    } else {
-                        mLastBackTime = System.currentTimeMillis();
-                        ToastUtils.showToast(this, "再按一次退出");
-                    }
+            if (visible) {
+                ProductFragment.slideUp.hide();
+            } else {
+                if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+                    finish();
+                } else {
+                    mLastBackTime = System.currentTimeMillis();
+                    ToastUtils.showToast(this, "再按一次退出");
                 }
-        }else {
+            }
+        } else {
             if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
                 finish();
             } else {
@@ -312,15 +276,14 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-
 
     }
+
     private ProductFragment selectedFragment;
+
     @Override
     public void setSelectedFragment(ProductFragment backHandledFragment) {
         this.selectedFragment = backHandledFragment;

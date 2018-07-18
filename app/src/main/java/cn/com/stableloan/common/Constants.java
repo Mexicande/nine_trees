@@ -34,6 +34,8 @@ public class Constants {
     //登录成功
     public static final String INTENT_EXTRA_LOGIN_SUCESS = "com.xinhe.intent.action.LOGIN_SUCESS";
 
+
+
     /**
      * 埋点
      */

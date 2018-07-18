@@ -42,7 +42,5 @@ public class Recycler_Adapter extends BaseQuickAdapter<Seckill_Bean.DataBean,Bas
                 ;
 
         Glide.with(mContext).load(item.getProduct_logo()).apply(options).into((ImageView) helper.getView(R.id.product_logo));
-
-       // Glide.with(mContext).load(R.mipmap.new_product).crossFade().centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into((ImageView) helper.getView(R.id.biaoqian));
     }
 }

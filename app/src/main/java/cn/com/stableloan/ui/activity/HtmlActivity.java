@@ -30,6 +30,7 @@ import com.mancj.slideup.SlideUp;
 
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -261,17 +262,26 @@ public class HtmlActivity extends BaseActivity {
 
 
     public boolean parseScheme(String url) {
-        if (url.contains("platformapi/startapp")) {
+        //支付宝支付
+        if (url.startsWith("alipays:") || url.startsWith("alipay")) {
             try {
-                Uri uri = Uri.parse(url);
-                Intent intent;
-                intent = Intent.parseUri(url,
-                        Intent.URI_INTENT_SCHEME);
-                intent.addCategory("android.intent.category.BROWSABLE");
-                intent.setComponent(null);
-                startActivity(intent);
+                startActivity(new Intent("android.intent.action.VIEW", Uri.parse(url)));
             } catch (Exception e) {
-                ToastUtils.showToast(this, "请安装最新版支付宝");
+                e.printStackTrace();
+
+/*
+                Uri uri = Uri.parse(url);
+                    Intent intent;
+                try {
+                    intent = Intent.parseUri(url,
+                            Intent.URI_INTENT_SCHEME);
+                    intent.addCategory("android.intent.category.BROWSABLE");
+                    intent.setComponent(null);
+                    startActivity(intent);
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                }*/
+
             }
             return true;
         } else if (url.contains("qqapi")) {
@@ -302,8 +312,19 @@ public class HtmlActivity extends BaseActivity {
                 downloadApk(url);
             return true;
 
-        } else {
-            return false;
+        } else if(url.startsWith("weixin://wap/pay?") || url.startsWith("weixin")|| url.startsWith("wechat")){
+            try{
+
+                startActivity(new Intent("android.intent.action.VIEW", Uri.parse(url)));
+
+            }catch(Exception e) {
+
+            e.printStackTrace();
+                ToastUtils.showToast(this,e.getMessage());
+         }
+            return true;
+        }else {
+            return  false;
         }
 
     }

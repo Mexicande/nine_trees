@@ -17,6 +17,10 @@ import com.qiniu.android.storage.UploadManager;
 import com.rong360.app.crawler.CrawlerManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
+import com.umeng.message.PushAgent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ import java.util.logging.Level;
 
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.common.Constants;
+import cn.com.stableloan.model.ProductBean;
 import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.view.update.AppUpdateUtils;
 
@@ -70,14 +75,12 @@ public class AppApplication extends Application {
         instance = this;
 
         mHandler = new Handler();
-
         initTypeface();
+
         uploadManager=new UploadManager();
         AVOSCloud.initialize(this,Urls.KEY.LEAN_ID,Urls.KEY.LEAN_KEY);
         channel = WalleChannelReader.getChannel(this.getApplicationContext());
-
         String versionName = AppUpdateUtils.getVersionName(this);
-
         HttpHeaders headers = new HttpHeaders();
         headers.put("channel", channel);
         headers.put("os", versionName);
@@ -96,15 +99,36 @@ public class AppApplication extends Application {
             e.printStackTrace();
         }
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
-        //友盟
-        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,"5a14ef858f4a9d5bd300006c"
-        ,channel));
+
 
         //只能被本应用访问
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);
 
         CrawlerManager.initSDK(this);
+        initUmeng();
 
+
+    }
+
+    private void initUmeng() {
+
+        UMConfigure.init(this, Urls.KEY.UMENG_KEY, channel, UMConfigure.DEVICE_TYPE_PHONE, Urls.KEY.UMENG_PUSHKEY);
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+
+            }
+        });
+        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SERVER); //声音
+        mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SERVER);//呼吸灯
     }
 
 

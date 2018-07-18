@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.util.Util;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import cn.com.stableloan.R;
 import cn.com.stableloan.utils.ActivityStackManager;
@@ -28,12 +29,14 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.statusBarColor(R.color.colorPrimary)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
                 .init();
-            ActivityStackManager.getInstance().pushActivity(this);
+        ActivityStackManager.getInstance().pushActivity(this);
+
     }
 
 

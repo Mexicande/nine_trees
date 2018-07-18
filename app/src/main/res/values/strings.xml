@@ -106,5 +106,6 @@
     <string name="lottery_str1">1、赠送时间：自成功购买vip服务起，每周二、四、日 号码将自动发放至您的账号中，共12期；</string>
     <string name="lottery_str2">2、号码查询：您可在此页面查看赠送号码，获奖信息 及提现请前往彩票APP中查看</string>
     <string name="double_lottery">双色球免费送</string>
+    <string name="vip">VIP特权</string>
 
 </resources>

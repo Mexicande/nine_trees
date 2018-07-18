@@ -45,7 +45,9 @@ import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.Login;
+import cn.com.stableloan.common.Api;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
+import cn.com.stableloan.model.ProductBean;
 import cn.com.stableloan.model.Product_DescBean;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.ActivityUtils;
@@ -146,7 +148,6 @@ public class ProductDesc extends BaseActivity {
 
     private boolean shareFlag = false;
     private static final int REQUEST_CODE = 3000;
-
     private String token;
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
@@ -165,7 +166,6 @@ public class ProductDesc extends BaseActivity {
         }
         setListener();
     }
-
 
     /**
      * 微信分享
@@ -301,6 +301,7 @@ public class ProductDesc extends BaseActivity {
                 ToastUtils.showToast(ProductDesc.this, msg);
             }
         });
+
 
     }
 
@@ -449,9 +450,8 @@ public class ProductDesc extends BaseActivity {
                 if (TextUtils.isEmpty(token)) {
                     Intent intent=new Intent(this,LoginActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
-
                 } else {
-                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                   startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
             case R.id.bt_share:
@@ -461,6 +461,7 @@ public class ProductDesc extends BaseActivity {
                 break;
         }
     }
+
 
 
     private void setShared_Collection() {

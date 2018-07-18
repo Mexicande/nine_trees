@@ -300,17 +300,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             }
         });
-        //分类专题
-
-        classify_recyclView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                OnClickStatistics.buriedStatistics(mToken, Constants.VIP_CLICK);
-
-                ActivityUtils.startActivity(VipActivity.class);
-
-            }
-        });
 
     }
 
@@ -333,9 +322,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private BGABanner banner;
 
-    private RecyclerView re_View, classify_recyclView;
+    private RecyclerView re_View;
     private Recycler_Adapter rc_adapter;
-    private Classify_Recycler_Adapter classify_recycler_adapter;
 
     private ImageView iv_work, iv_free, iv_enterprise;
 
@@ -403,15 +391,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(getActivity(), ProductDesc.class).putExtra("pid", seckillBean.getData().get(position).getProduct_id()));
             }
         });
-        // 分类
-        classify_recyclView = (RecyclerView) view.findViewById(R.id.recycler_special);
-        classify_recycler_adapter = new Classify_Recycler_Adapter(null);
-
-        classify_recyclView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-           SpacesItemDecoration decoration = new SpacesItemDecoration(10);
-        classify_recyclView.addItemDecoration(decoration);
-        classify_recyclView.setAdapter(classify_recycler_adapter);
-
         // 职业选择
         iv_free = (ImageView) view.findViewById(R.id.iv_free);
         iv_work = (ImageView) view.findViewById(R.id.iv_work);
@@ -498,7 +477,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 });
 
 
-        //分类专题
+      /*  //分类专题
         OkGo.post(Urls.NEW_Ip_url + Urls.HOME_FRAGMENT.Class_Product_List)
                 .tag(getActivity())
                 .execute(new StringCallback() {
@@ -517,7 +496,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             ToastUtils.showToast(getActivity(), "网络异常");
                         }
                     }
-                });
+                });*/
         getSeckill();
 
 
