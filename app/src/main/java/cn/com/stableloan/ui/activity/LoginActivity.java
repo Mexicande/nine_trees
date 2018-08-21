@@ -310,7 +310,14 @@ public class LoginActivity extends AppCompatActivity implements VerListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
-                finish();
+                String user = getIntent().getStringExtra("user");
+                if (!TextUtils.isEmpty(user)) {
+                    ActivityStackManager.getInstance().popAllActivity();
+                    MainActivity.launch(this);
+                    finish();
+                }else{
+                    finish();
+                }
                 break;
             case R.id.bt_code:
                 verPhone();

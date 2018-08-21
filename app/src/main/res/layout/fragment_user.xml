@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,230 +6,237 @@
     android:orientation="vertical"
     android:background="#f2f3f5"
     tools:context="cn.com.stableloan.ui.fragment.UserFragment">
-    <RelativeLayout
-        android:background="@color/colorPrimary"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="160dp">
-        <ImageView
-            android:id="@+id/layout_setting"
-            android:layout_marginTop="@dimen/_10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_width="45dp"
-            android:paddingTop="@dimen/_5dp"
-            android:paddingBottom="@dimen/_5dp"
-            android:paddingLeft="@dimen/_10dp"
-            android:paddingRight="@dimen/_10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_height="35dp"
-            android:src="@mipmap/iv_setting"/>
-        <TextView
-            android:id="@+id/tv_vip"
-            android:layout_marginTop="40dp"
-            android:drawablePadding="5dp"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/open_vip"
-            android:gravity="center"
-            android:drawableLeft="@mipmap/center_vip"
-            android:textColor="@color/white"
-            android:background="@drawable/vip_bg"/>
-        <ImageView
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:adjustViewBounds="true"
-            android:layout_height="wrap_content"
-            android:src="@drawable/user_corrugated"/>
-        <ImageView
-            android:id="@+id/User_logo"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/iv_userheader"/>
-
-        <TextView
-            android:id="@+id/tv_nick"
-            android:textSize="17sp"
-            android:textColor="@color/white"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            android:layout_above="@id/User_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="70dp">
-        <View
-            android:layout_marginTop="@dimen/_20dp"
-            android:layout_marginBottom="@dimen/_20dp"
-            android:id="@+id/view"
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:background="@color/colorPrimary"
-            android:layout_width="@dimen/_1dp"
-            android:layout_centerInParent="true"
-            android:layout_height="match_parent"/>
-        <RelativeLayout
-            android:id="@+id/layout_Integral"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toLeftOf="@id/view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_centerInParent="true"
+            android:layout_height="160dp">
+            <ImageView
+                android:id="@+id/layout_setting"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="45dp"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingBottom="@dimen/_5dp"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingRight="@dimen/_10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_height="35dp"
+                android:src="@mipmap/iv_setting"/>
+            <TextView
+                android:id="@+id/tv_vip"
+                android:layout_marginTop="40dp"
+                android:drawablePadding="5dp"
+                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/tv_Integral"
-                    android:textSize="17sp"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-
-                <TextView
-                    android:textSize="15sp"
-                    android:textColor="@color/text_setting"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/My_Integral"
-                    />
-            </LinearLayout>
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/laout_Money"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toRightOf="@id/view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:text="@string/open_vip"
+                android:gravity="center"
+                android:drawableLeft="@mipmap/center_vip"
+                android:textColor="@color/white"
+                android:background="@drawable/vip_bg"/>
+            <ImageView
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content"
+                android:src="@drawable/user_corrugated"/>
+            <ImageView
+                android:id="@+id/User_logo"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_userheader"/>
 
-                <TextView
-                    android:id="@+id/bt_Money"
-                    android:textSize="17sp"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-                <TextView
-                    android:textSize="15sp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/My_Cash"
-                    android:textColor="@color/text_setting"
-                    />
-
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_nick"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:layout_above="@id/User_logo"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
         </RelativeLayout>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+            <View
+                android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginBottom="@dimen/_20dp"
+                android:id="@+id/view"
+                android:background="@color/colorPrimary"
+                android:layout_width="@dimen/_1dp"
+                android:layout_centerInParent="true"
+                android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:id="@+id/layout_Integral"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_toLeftOf="@id/view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/vip"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:sLeftIconRes="@mipmap/iv_vip"
-        app:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        app:sLeftIconHeight="20dp"
-        app:sLeftTextColor="@color/select_text_color"
-        app:sLeftIconWidth="20dp"
-        app:sRightIconRes="@mipmap/iv_left"
-        app:sRightIconHeight="13dp"
-        app:sRightIconWidth="15dp"
-        app:sLeftTextSize="16dp"
-        app:sLeftTextString="@string/vip" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/invite"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:sLeftIconRes="@mipmap/iv_invite"
-        app:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        app:sLeftIconHeight="20dp"
-        app:sLeftTextColor="@color/select_text_color"
-        app:sLeftIconWidth="20dp"
-        app:sRightIconRes="@mipmap/iv_left"
-        app:sRightIconHeight="13dp"
-        app:sRightIconWidth="15dp"
-        app:sLeftTextSize="16dp"
-        app:sLeftTextString="@string/inivte" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/layout_my"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:sLeftIconRes="@mipmap/iv_my"
-        app:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        app:sLeftIconHeight="20dp"
-        app:sLeftTextColor="@color/select_text_color"
-        app:sLeftIconWidth="20dp"
-        app:sRightIconRes="@mipmap/iv_left"
-        app:sRightIconHeight="13dp"
-        app:sRightIconWidth="15dp"
-        app:sLeftTextSize="16dp"
-        app:sLeftTextString="@string/information" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/layout_collection"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:sLeftIconRes="@mipmap/iv_collectioning"
-        app:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        app:sLeftIconHeight="20dp"
-        app:sLeftTextColor="@color/select_text_color"
-        app:sLeftIconWidth="20dp"
-        app:sRightIconRes="@mipmap/iv_left"
-        app:sRightIconHeight="13dp"
-        app:sRightIconWidth="15dp"
-        app:sLeftTextSize="16dp"
-        app:sLeftTextString="@string/collection" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/layout_attention"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:sLeftIconRes="@mipmap/iv_attention"
-        app:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        app:sLeftIconHeight="20dp"
-        app:sLeftTextColor="@color/select_text_color"
-        app:sLeftIconWidth="20dp"
-        app:sRightIconRes="@mipmap/iv_left"
-        app:sRightIconHeight="13dp"
-        app:sRightIconWidth="15dp"
-        app:sLeftTextSize="16dp"
-        app:sLeftTextString="@string/setting" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
-        android:id="@+id/feedback"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:sLeftIconRes="@mipmap/iv_feedback"
-        app:sBottomLineMargin="0dp"
-        android:textSize="16sp"
-        app:sLeftIconHeight="20dp"
-        app:sLeftTextColor="@color/select_text_color"
-        app:sLeftIconWidth="20dp"
-        app:sRightIconRes="@mipmap/iv_left"
-        app:sRightIconHeight="13dp"
-        app:sRightIconWidth="15dp"
-        app:sLeftTextSize="16dp"
-        app:sLeftTextString="@string/feedback" />
+                    <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/tv_Integral"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""/>
 
-</LinearLayout>
+                    <TextView
+                        android:textSize="15sp"
+                        android:textColor="@color/text_setting"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/My_Integral"
+                        />
+                </LinearLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/laout_Money"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_toRightOf="@id/view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/bt_Money"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""/>
+                    <TextView
+                        android:textSize="15sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/My_Cash"
+                        android:textColor="@color/text_setting"
+                        />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/vip"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:sLeftIconRes="@mipmap/iv_vip"
+            app:sBottomLineMargin="0dp"
+            android:textSize="16sp"
+            app:sLeftIconHeight="20dp"
+            app:sLeftTextColor="@color/select_text_color"
+            app:sLeftIconWidth="20dp"
+            app:sRightIconRes="@mipmap/iv_left"
+            app:sRightIconHeight="13dp"
+            app:sRightIconWidth="15dp"
+            app:sLeftTextSize="16dp"
+            app:sLeftTextString="@string/vip" />
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/invite"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:sLeftIconRes="@mipmap/iv_invite"
+            app:sBottomLineMargin="0dp"
+            android:textSize="16sp"
+            app:sLeftIconHeight="20dp"
+            app:sLeftTextColor="@color/select_text_color"
+            app:sLeftIconWidth="20dp"
+            app:sRightIconRes="@mipmap/iv_left"
+            app:sRightIconHeight="13dp"
+            app:sRightIconWidth="15dp"
+            app:sLeftTextSize="16dp"
+            app:sLeftTextString="@string/inivte" />
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/layout_my"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:sLeftIconRes="@mipmap/iv_my"
+            app:sBottomLineMargin="0dp"
+            android:textSize="16sp"
+            app:sLeftIconHeight="20dp"
+            app:sLeftTextColor="@color/select_text_color"
+            app:sLeftIconWidth="20dp"
+            app:sRightIconRes="@mipmap/iv_left"
+            app:sRightIconHeight="13dp"
+            app:sRightIconWidth="15dp"
+            app:sLeftTextSize="16dp"
+            app:sLeftTextString="@string/information" />
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/layout_collection"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:sLeftIconRes="@mipmap/iv_collectioning"
+            app:sBottomLineMargin="0dp"
+            android:textSize="16sp"
+            app:sLeftIconHeight="20dp"
+            app:sLeftTextColor="@color/select_text_color"
+            app:sLeftIconWidth="20dp"
+            app:sRightIconRes="@mipmap/iv_left"
+            app:sRightIconHeight="13dp"
+            app:sRightIconWidth="15dp"
+            app:sLeftTextSize="16dp"
+            app:sLeftTextString="@string/collection" />
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/layout_attention"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:sLeftIconRes="@mipmap/iv_attention"
+            app:sBottomLineMargin="0dp"
+            android:textSize="16sp"
+            app:sLeftIconHeight="20dp"
+            app:sLeftTextColor="@color/select_text_color"
+            app:sLeftIconWidth="20dp"
+            app:sRightIconRes="@mipmap/iv_left"
+            app:sRightIconHeight="13dp"
+            app:sRightIconWidth="15dp"
+            app:sLeftTextSize="16dp"
+            app:sLeftTextString="@string/setting" />
+        <cn.com.stableloan.view.supertextview.SuperTextView
+            android:id="@+id/feedback"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:sLeftIconRes="@mipmap/iv_feedback"
+            app:sBottomLineMargin="0dp"
+            android:textSize="16sp"
+            app:sLeftIconHeight="20dp"
+            app:sLeftTextColor="@color/select_text_color"
+            app:sLeftIconWidth="20dp"
+            app:sRightIconRes="@mipmap/iv_left"
+            app:sRightIconHeight="13dp"
+            app:sRightIconWidth="15dp"
+            app:sLeftTextSize="16dp"
+            app:sLeftTextString="@string/feedback" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

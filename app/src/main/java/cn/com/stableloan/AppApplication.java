@@ -22,6 +22,10 @@ import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 
+import org.android.agoo.huawei.HuaWeiRegister;
+import org.android.agoo.mezu.MeizuRegister;
+import org.android.agoo.xiaomi.MiPushRegistar;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +37,7 @@ import java.util.logging.Level;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.common.Constants;
 import cn.com.stableloan.model.ProductBean;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.view.update.AppUpdateUtils;
 
@@ -43,6 +48,7 @@ import cn.com.stableloan.view.update.AppUpdateUtils;
 
 public class AppApplication extends Application {
     //dao
+    public static ProductBean mProductBean;
 
 
     private static AppApplication instance;
@@ -100,7 +106,6 @@ public class AppApplication extends Application {
         }
         CrashReport.initCrashReport(getApplicationContext(), "e0e8b8baa1", false);
 
-
         //只能被本应用访问
         sp = super.getSharedPreferences("eSetting", Context.MODE_PRIVATE);
 
@@ -114,11 +119,15 @@ public class AppApplication extends Application {
 
         UMConfigure.init(this, Urls.KEY.UMENG_KEY, channel, UMConfigure.DEVICE_TYPE_PHONE, Urls.KEY.UMENG_PUSHKEY);
         PushAgent mPushAgent = PushAgent.getInstance(this);
+
+
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
 
             @Override
             public void onSuccess(String deviceToken) {
+                LogUtils.i("device_token="+deviceToken+"");
+
                 //注册成功会返回device token
             }
 
@@ -129,6 +138,15 @@ public class AppApplication extends Application {
         });
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SERVER); //声音
         mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SERVER);//呼吸灯
+
+
+        MiPushRegistar.register(this,"2882303761517590311", "5331759030311");
+        HuaWeiRegister.register(this);
+        MeizuRegister.register(this, "1001232", "8e1c83beb7e24dcca7e1dcd257cf7143");
+
+
+
+
     }
 
 

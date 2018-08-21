@@ -158,6 +158,7 @@ public class ListProductAdapter  extends BaseQuickAdapter<Hot_New_Product.DataBe
                     view3.setTextColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setStrokeColor(Color.parseColor(lables.get(3).getFont()));
                     view3.setText(lables.get(3).getName());
+
                     view5.setVisibility(View.VISIBLE);
                     break;
             }

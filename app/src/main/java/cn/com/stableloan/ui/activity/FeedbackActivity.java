@@ -139,7 +139,6 @@ public class FeedbackActivity extends BaseActivity {
                 params.put("browser", "android");
                 params.put("screen", format);
                 JSONObject jsonObject = new JSONObject(params);
-
             ApiService.GET_SERVICE(Urls.user.FEEDBACK, jsonObject, new OnRequestDataListener() {
                 @Override
                 public void requestSuccess(int code, JSONObject data) {

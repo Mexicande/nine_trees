@@ -24,10 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mancj.slideup.SlideUp;
+import com.umeng.message.UmengNotifyClickActivity;
 
+import org.android.agoo.common.AgooConstants;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -63,7 +67,7 @@ import cn.com.stableloan.view.share.WXShareContent;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class HtmlActivity extends BaseActivity {
+public class HtmlActivity extends UmengNotifyClickActivity {
 
     @Bind(R.id.title_name)
     TextView titleName;
@@ -88,6 +92,7 @@ public class HtmlActivity extends BaseActivity {
     @Bind(R.id.cash_slideView)
     RelativeLayout cashSlideView;
     private SlideUp slideUp;
+    private boolean umeng=false;
 
     private WebView mWebView;
     private WelfareBean.DataBean welfare;
@@ -100,6 +105,11 @@ public class HtmlActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
+        ImmersionBar mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.colorPrimary)
+                .statusBarAlpha(0.3f)
+                .fitsSystemWindows(true)
+                .init();
         mWebView = new WebView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mWebView.setLayoutParams(lp);
@@ -107,6 +117,45 @@ public class HtmlActivity extends BaseActivity {
         initSlide();
         CheckInternet();
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bun = getIntent().getExtras();
+        if(bun!=null){
+            String title = bun.getString("title");
+            String link = bun.getString("link");
+            if(link!=null){
+                umeng=true;
+                titleName.setText(title);
+                getDate(link);
+            }
+        }
+
+    }
+
+    @Override
+    public void onMessage(Intent intent) {
+        super.onMessage(intent);
+        String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
+        if(body!=null){
+            try {
+                JSONObject jsonObject=new JSONObject(body);
+                JSONObject extra = jsonObject.getJSONObject("extra");
+                String title = extra.getString("title");
+                String link = extra.getString("link");
+                if(link!=null){
+                    umeng=true;
+                    titleName.setText(title);
+                    getDate(link);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private void CheckInternet() {
 
@@ -345,6 +394,9 @@ public class HtmlActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                if(umeng){
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 finish();
                 break;
             case R.id.web_container:
@@ -525,11 +577,14 @@ public class HtmlActivity extends BaseActivity {
             if (mWebView.canGoBack()) {
                 mWebView.goBack();
             } else {
-                super.onBackPressed();
+                if(umeng){
+                    startActivity(new Intent(this, MainActivity.class));
+                }
+                finish();
+
             }
         }
     }
-
 
     @Override
     protected void onDestroy() {

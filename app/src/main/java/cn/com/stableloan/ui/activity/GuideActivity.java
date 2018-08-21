@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 
 import butterknife.Bind;
@@ -61,7 +62,7 @@ public class GuideActivity extends AppCompatActivity {
     }
     private void processLogic() {
         // 设置数据源
-        bannerGuideBackground.setData(R.mipmap.lod_01, R.mipmap.lod_02, R.mipmap.lod_03, R.mipmap.lod_04);
+        bannerGuideBackground.setData(null,ImageView.ScaleType.FIT_XY,R.mipmap.lod_01, R.mipmap.lod_02, R.mipmap.lod_03, R.mipmap.lod_04);
 
     }
 

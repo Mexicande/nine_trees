@@ -1,9 +1,10 @@
 package cn.com.stableloan.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -22,10 +23,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
+import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.message.UmengNotifyClickActivity;
 
+import org.android.agoo.common.AgooConstants;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
@@ -33,39 +36,42 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
 import cn.com.stableloan.bean.Login;
-import cn.com.stableloan.common.Api;
 import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.ProductBean;
 import cn.com.stableloan.model.Product_DescBean;
+import cn.com.stableloan.model.home.Hot_New_Product;
+import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.SuperTextAdapter;
 import cn.com.stableloan.utils.ActivityUtils;
+import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.utils.top_menu.MenuItem;
 import cn.com.stableloan.utils.top_menu.TopRightMenu;
 import cn.com.stableloan.view.RecyclerViewDecoration;
-import cn.com.stableloan.view.dialog.DescDialog;
 import cn.com.stableloan.view.share.StateListener;
 import cn.com.stableloan.view.share.TPManager;
 import cn.com.stableloan.view.share.WXManager;
 import cn.com.stableloan.view.share.WXShareContent;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * 产品desc
+ *
  * @author apple
  */
 public class ProductDesc extends BaseActivity {
@@ -142,13 +148,18 @@ public class ProductDesc extends BaseActivity {
     View viewLine;
     @Bind(R.id.tv_procedure)
     TextView tvProcedure;
+    @Bind(R.id.recommend)
+    RecyclerView recommend;
     private int pid;
+    private ListProductAdapter productAdapter;
 
     private Product_DescBean.DataBean descBean;
-
+    private boolean umeng=false;
     private boolean shareFlag = false;
     private static final int REQUEST_CODE = 3000;
     private String token;
+    private static String TAG = ProductDesc.class.getName();
+
     public static void launch(Context context) {
         context.startActivity(new Intent(context, ProductDesc.class));
     }
@@ -158,6 +169,11 @@ public class ProductDesc extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desc);
         ButterKnife.bind(this);
+        ImmersionBar mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.colorPrimary)
+                .statusBarAlpha(0.3f)
+                .fitsSystemWindows(true)
+                .init();
         initToolbar();
         token = SPUtil.getString(this, Urls.lock.TOKEN);
         pid = getIntent().getIntExtra("pid", 0);
@@ -166,6 +182,45 @@ public class ProductDesc extends BaseActivity {
         }
         setListener();
     }
+
+
+
+/*
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bun = getIntent().getExtras();
+        if(bun!=null){
+            String id = bun.getString("id");
+            if(id!=null){
+                umeng=true;
+                pid=Integer.parseInt(id);
+                getProductDate();
+            }
+        }
+    }
+
+    @Override
+    public void onMessage(Intent intent) {
+        super.onMessage(intent);
+        String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
+        if(body!=null){
+            try {
+                JSONObject jsonObject=new JSONObject(body);
+                JSONObject extra = jsonObject.getJSONObject("extra");
+                String id = extra.getString("id");
+                if(id!=null){
+                    umeng=true;
+                    pid=Integer.parseInt(id);
+                    getProductDate();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+*/
 
     /**
      * 微信分享
@@ -214,11 +269,18 @@ public class ProductDesc extends BaseActivity {
             }
         });
 
+        productAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(ProductDesc.this, ProductDesc.class).putExtra("pid", productAdapter.getData().get(position).getId()));
+            }
+        });
+
 
     }
 
     private void computations() {
-        if(descBean!=null){
+        if (descBean != null) {
             String hint = etMaxTime.getText().toString();
             String str = etMaxLimit.getText().toString();
             String minimumAmount = descBean.getMinimum_amount();
@@ -233,11 +295,11 @@ public class ProductDesc extends BaseActivity {
                 }
 
                 int time = Integer.parseInt(hint);
-                if(time==0){
+                if (time == 0) {
                     etMaxTime.setText(descBean.getMin_cycle());
-                    time= Integer.parseInt(descBean.getMin_cycle());
-                }else {
-                    etMaxTime.setText(time+"");
+                    time = Integer.parseInt(descBean.getMin_cycle());
+                } else {
+                    etMaxTime.setText(time + "");
                 }
                 String min_algorithm = descBean.getMin_algorithm();
 
@@ -287,7 +349,7 @@ public class ProductDesc extends BaseActivity {
                     String data1 = data.getString("data");
                     Gson gson = new Gson();
                     descBean = gson.fromJson(data1, Product_DescBean.DataBean.class);
-                    if(descBean!=null){
+                    if (descBean != null) {
                         dateInset(descBean);
                     }
                 } catch (JSONException e) {
@@ -301,7 +363,30 @@ public class ProductDesc extends BaseActivity {
                 ToastUtils.showToast(ProductDesc.this, msg);
             }
         });
+        HashMap<String, String> params1 = new HashMap<>();
+        params1.put("id", String.valueOf(pid));
+        final JSONObject jsonObject1 = new JSONObject(params1);
 
+        ApiService.GET_SERVICE(Urls.product.DETAILS_LIST, jsonObject1, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    String str = data.getString("data");
+                    Gson gson=new Gson();
+                    Hot_New_Product.DataBean[] dataBeans = gson.fromJson(str, Hot_New_Product.DataBean[].class);
+                    List<Hot_New_Product.DataBean> beans = Arrays.asList(dataBeans);
+                    productAdapter.addData(beans);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
+            }
+        });
 
     }
 
@@ -330,7 +415,7 @@ public class ProductDesc extends BaseActivity {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-        if (isValidContextForGlide(this)){
+        if (isValidContextForGlide(this)) {
             // Load image via Glide lib using context
             Glide.with(this).load(product.getProduct_logo()).apply(options)
                     .into(productLogo);
@@ -367,7 +452,7 @@ public class ProductDesc extends BaseActivity {
         String minimum_amount = product.getMinimum_amount();
         String maximum_amount = product.getMaximum_amount();
         String interest_algorithm = product.getInterest_algorithm();
-        if ("0".equals(interest_algorithm )) {
+        if ("0".equals(interest_algorithm)) {
             tvInterestAlgorithm.setText("参考日利率");
             tvCycle.setText(product.getMin_cycle() + "~" + product.getMax_cycle() + "日");
             tvDescLimit.setText("贷款期限(日)");
@@ -419,7 +504,7 @@ public class ProductDesc extends BaseActivity {
             String replace = details.replace("aaa", "\n");
             productDetails.setText(replace);
         }
-        if (!"0".equals(product.getFee() )) {
+        if (!"0".equals(product.getFee())) {
             tvDesccharge.setText(product.getFee() + "元");
         }
         computations();
@@ -436,6 +521,10 @@ public class ProductDesc extends BaseActivity {
 
     private void initToolbar() {
         titleName.setText("产品详情");
+        productAdapter=new ListProductAdapter(null);
+        recommend.setLayoutManager(new LinearLayoutManager(this));
+        recommend.setAdapter(productAdapter);
+
     }
 
 
@@ -448,10 +537,10 @@ public class ProductDesc extends BaseActivity {
                 break;
             case R.id.apply:
                 if (TextUtils.isEmpty(token)) {
-                    Intent intent=new Intent(this,LoginActivity.class);
+                    Intent intent = new Intent(this, LoginActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
                 } else {
-                   startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
+                    startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
             case R.id.bt_share:
@@ -462,8 +551,6 @@ public class ProductDesc extends BaseActivity {
         }
     }
 
-
-
     private void setShared_Collection() {
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.mipmap.iv_share_wechat, "分享到微信"));
@@ -473,7 +560,7 @@ public class ProductDesc extends BaseActivity {
         } else {
             menuItems.add(new MenuItem(R.mipmap.iv_collection, "收藏"));
         }
-        TopRightMenu mTopRightMenu = new TopRightMenu(this,R.layout.trm_item_popup_menu_list);
+        TopRightMenu mTopRightMenu = new TopRightMenu(this, R.layout.trm_item_popup_menu_list);
         mTopRightMenu
                 .showIcon(true)
                 //显示菜单图标，默认为true
@@ -516,27 +603,31 @@ public class ProductDesc extends BaseActivity {
     private WXManager wxManager;
 
     private void shareWechat(int scence) {
+        if( descBean.getId()!=null){
+            WXShareContent contentWX = new WXShareContent();
+            contentWX.setScene(scence)
+                    .setType(WXShareContent.share_type.WebPage)
+                    .setWeb_url(Urls.KEY.PageWeb + descBean.getId())
+                    .setTitle("安稳钱包")
+                    .setDescription(descBean.getProduct_introduction())
+                    .setImage_url(Urls.logoUrl);
+            wxManager.share(contentWX);
+        }else {
+            ToastUtils.showToast(this,"网络异常！");
+        }
 
-
-        WXShareContent contentWX = new WXShareContent();
-        contentWX.setScene(scence)
-                .setType(WXShareContent.share_type.WebPage)
-                .setWeb_url(Urls.KEY.PageWeb + descBean.getId())
-                .setTitle("安稳钱包")
-                .setDescription(descBean.getProduct_introduction())
-                .setImage_url(Urls.logoUrl);
-        wxManager.share(contentWX);
 
     }
 
     /**
      * 收藏
+     *
      * @param status
      */
     private void collectionproduct(final String status) {
-        if(TextUtils.isEmpty(token)){
+        if (TextUtils.isEmpty(token)) {
             ActivityUtils.startActivity(LoginActivity.class);
-        }else {
+        } else {
             Map<String, String> parms = new HashMap<>();
             parms.put("token", token);
             parms.put("status", status);
@@ -568,9 +659,9 @@ public class ProductDesc extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CODE:
-                if(resultCode==100){
+                if (resultCode == 100) {
                     startActivity(new Intent(ProductDesc.this, HtmlActivity.class).putExtra("product", descBean));
                 }
                 break;
@@ -589,12 +680,13 @@ public class ProductDesc extends BaseActivity {
 
     /**
      * 刷新数据
+     *
      * @param event
      */
     @Subscribe
     public void onMessageEvent(Login event) {
-        if(event.mlogin==1){
-            token= SPUtil.getString(this, Urls.lock.TOKEN);
+        if (event.mlogin == 1) {
+            token = SPUtil.getString(this, Urls.lock.TOKEN);
             getProductDate();
         }
     }
@@ -604,6 +696,7 @@ public class ProductDesc extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     public static boolean isValidContextForGlide(final Context context) {
         if (context == null) {
             return false;

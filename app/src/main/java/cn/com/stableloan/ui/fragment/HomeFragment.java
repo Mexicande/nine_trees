@@ -10,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
@@ -42,32 +44,30 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.bean.IdentityProduct;
+import cn.com.stableloan.common.Api;
 import cn.com.stableloan.common.Constants;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
 import cn.com.stableloan.model.Banner_HotBean;
 import cn.com.stableloan.model.home.Hot_New_Product;
 import cn.com.stableloan.model.home.Seckill_Bean;
-import cn.com.stableloan.model.home.SpecialClassBean;
 import cn.com.stableloan.model.integarl.AdvertisingBean;
 import cn.com.stableloan.ui.activity.HtmlActivity;
 import cn.com.stableloan.ui.activity.MainActivity;
 import cn.com.stableloan.ui.activity.NoticeActivity;
 import cn.com.stableloan.ui.activity.ProductDesc;
-import cn.com.stableloan.ui.activity.integarl.SafeSettingActivity;
-import cn.com.stableloan.ui.activity.vip.VipActivity;
-import cn.com.stableloan.ui.adapter.Classify_Recycler_Adapter;
 import cn.com.stableloan.ui.adapter.ListProductAdapter;
 import cn.com.stableloan.ui.adapter.Recycler_Adapter;
 import cn.com.stableloan.ui.fragment.dialogfragment.AdialogFragment;
-import cn.com.stableloan.utils.ActivityUtils;
+import cn.com.stableloan.ui.fragment.dialogfragment.WeChatDialogFragment;
 import cn.com.stableloan.utils.OnClickStatistics;
 import cn.com.stableloan.utils.SPUtil;
 import cn.com.stableloan.utils.TimeUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.EasyRefreshLayout;
 import cn.com.stableloan.view.MyDecoration;
-import cn.com.stableloan.view.SpacesItemDecoration;
 import cn.com.stableloan.view.countdownview.CountdownView;
 import cn.com.stableloan.view.countdownview.EasyCountDownView;
 import okhttp3.Call;
@@ -94,6 +94,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private List<String> list;
     private String mToken;
     private  boolean mStateEnable=true;
+    private String status;
+    private String url;
+    private String name;
     public HomeFragment() {
 
     }
@@ -107,9 +110,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         initDialog();
         getDate();
         setListener();
+        getHelp();
+
+
         return view;
     }
 
+    private void getHelp() {
+        ApiService.GET_SERVICE(Urls.HOME_FRAGMENT.HELP, new JSONObject(), new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+                try {
+                    JSONObject object = data.getJSONObject("data");
+                     status = object.getString("status");
+                     url = object.getString("url");
+                     name = object.getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
+            }
+        });
+    }
 
 
     /**
@@ -124,7 +150,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         if (s != null) {
                             Gson gson = new Gson();
                             seckillBean = gson.fromJson(s, Seckill_Bean.class);
@@ -143,36 +168,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                                     long time12 = h + m + se + (1000 - millisecond);
 
-                                    mSeckill_layout.setVisibility(View.VISIBLE);
+                                    mskillLayout.setVisibility(View.VISIBLE);
                                     mCountdownView.start(time12);
                                     countdownhour.setTime(time12);
-                                    //mCountdownView.updateShow(time12);
-                                    // 总时间
-                                    // 初始化并启动倒计时
                                 }else {
-                                    mSeckill_layout.setVisibility(View.GONE);
+                                    mskillLayout.setVisibility(View.GONE);
                                 }
                                 switch (seckillBean.getData().size()) {
                                     case 1:
-                                        re_View.setVisibility(View.GONE);
+                                        reView.setVisibility(View.GONE);
                                         Seckill_Bean.DataBean dataBean = seckillBean.getData().get(0);
                                         RequestOptions options = new RequestOptions()
                                                 .centerCrop()
                                                 .dontAnimate()
                                                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-                                        Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(product_logo);
-                                        tv_amout.setText("最高" + dataBean.getAmount() + "元");
+                                        Glide.with(getActivity()).load(dataBean.getProduct_logo()).apply(options).into(productLogo);
+                                        tvAmout.setText("最高" + dataBean.getAmount() + "元");
 
                                         String activity_desc = dataBean.getHeadline();
                                         if(activity_desc!=null&&activity_desc.length()>2){
                                             StringBuffer str = new StringBuffer(activity_desc);
                                             str.insert(2,"\n");
-                                            tv_activity_desc.setText(str);
+                                            tvActivityDesc.setText(str);
                                         }else {
-                                            tv_activity_desc.setText(dataBean.getHeadline());
+                                            tvActivityDesc.setText(dataBean.getHeadline());
                                         }
-                                        tv_Desc.setText(dataBean.getActivity_desc());
-                                        tv_pname.setText(dataBean.getProduct_name());
+                                        tvDesc.setText(dataBean.getActivity_desc());
+                                        tvPname.setText(dataBean.getProduct_name());
                                         mCardView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -182,24 +204,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         break;
                                     case 2:
                                         mCardView.setVisibility(View.GONE);
-                                        re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                                        re_View.setAdapter(rc_adapter);
-                                        rc_adapter.setNewData(seckillBean.getData());
+                                        reView.setVisibility(View.VISIBLE);
+                                        reView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                                        reView.setAdapter(rcAdapter);
+                                        rcAdapter.setNewData(seckillBean.getData());
                                         break;
                                     case 3:
                                         mCardView.setVisibility(View.GONE);
-                                        re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
-                                        re_View.setAdapter(rc_adapter);
-                                        rc_adapter.setNewData(seckillBean.getData());
+                                        reView.setVisibility(View.VISIBLE);
+                                        reView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+                                        reView.setAdapter(rcAdapter);
+                                        rcAdapter.setNewData(seckillBean.getData());
                                         break;
                                     default:
                                         mCardView.setVisibility(View.GONE);
-                                        re_View.setVisibility(View.VISIBLE);
-                                        re_View.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
-                                        re_View.setAdapter(rc_adapter);
-                                        rc_adapter.setNewData(seckillBean.getData());
+                                        reView.setVisibility(View.VISIBLE);
+                                        reView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+                                        reView.setAdapter(rcAdapter);
+                                        rcAdapter.setNewData(seckillBean.getData());
                                         break;
                                 }
                             }
@@ -300,13 +322,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             }
         });
+        /**关注微信**/
+        layoutAtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                WeChatDialogFragment instance = WeChatDialogFragment.newInstance(name);
+                instance.show(getChildFragmentManager(),"weChatDialog");
+            }
+        });
+        /**帮你借**/
+        layoutHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if("1".equals(status)&& !TextUtils.isEmpty(url)){
+                    Intent intent=new Intent(getActivity(),HtmlActivity.class);
+                    intent.putExtra("title","帮你借");
+                    intent.putExtra("link",url);
+                    startActivity(intent);
+                }else {
+                    ToastUtils.showToast(getActivity(),"升级维护中...");
+                }
+            }
+        });
 
     }
 
     /**
      * 首页新品
      */
-
     private void getDate() {
 
         productAdapter = new ListProductAdapter(null);
@@ -314,48 +359,55 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recylerview.setAdapter(productAdapter);
         recylerview.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
         View view = setHeaderView();
+        View foot= setFootView();
+
         productAdapter.addHeaderView(view);
+        productAdapter.addFooterView(foot);
 
     }
+    private RelativeLayout layoutHelp, layoutAtt;
 
+    private View setFootView() {
+        View foot = getActivity().getLayoutInflater().inflate(R.layout.home_foot_layout, null);
+        layoutHelp =foot.findViewById(R.id.layout_help);
+        layoutAtt =foot.findViewById(R.id.layout_att);
+
+        return foot;
+    }
 
 
     private BGABanner banner;
 
-    private RecyclerView re_View;
-    private Recycler_Adapter rc_adapter;
-
-    private ImageView iv_work, iv_free, iv_enterprise;
+    private RecyclerView reView;
+    private Recycler_Adapter rcAdapter;
 
     private CardView mCardView;
     //秒杀
-    private LinearLayout mSeckill_layout;
-    private TextView tv_pname, tv_amout, tv_activity_desc,tv_Desc;
-
+    private LinearLayout mskillLayout;
+    private TextView tvPname, tvAmout, tvActivityDesc, tvDesc;
     private Banner_HotBean hotBean;
-
-    private ImageView product_logo;
+    private ImageView productLogo;
     private EasyCountDownView countdownhour;
-    private SpecialClassBean specialClassBean;
     private CountdownView  mCountdownView;
     private View setHeaderView() {
         View view = getActivity().getLayoutInflater().inflate(R.layout.head_layout, null);
-        banner = (BGABanner) view.findViewById(R.id.banner_fresco_demo_content);
-        product_logo = (ImageView) view.findViewById(R.id.product_logo);
-        mSeckill_layout = (LinearLayout) view.findViewById(R.id.layout_kill);
-        tv_pname = (TextView) view.findViewById(R.id.pname);
-        tv_activity_desc = (TextView) view.findViewById(R.id.activity_desc);
-        tv_amout = (TextView) view.findViewById(R.id.amount);
-        tv_Desc= (TextView) view.findViewById(R.id.desc);
-        mCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
-        mCardView = (CardView) view.findViewById(R.id.seckill_item_one);
-        countdownhour = (EasyCountDownView) view.findViewById(R.id.countdownhour);
+        banner = view.findViewById(R.id.banner_fresco_demo_content);
+        productLogo = view.findViewById(R.id.product_logo);
+        mskillLayout = view.findViewById(R.id.layout_kill);
+        tvPname = view.findViewById(R.id.pname);
+        tvActivityDesc = view.findViewById(R.id.activity_desc);
+        tvAmout = view.findViewById(R.id.amount);
+        tvDesc = view.findViewById(R.id.desc);
+        mCountdownView = view.findViewById(R.id.cv_countdownViewTest1);
+        mCardView = view.findViewById(R.id.seckill_item_one);
+        countdownhour = view.findViewById(R.id.countdownhour);
         banner.setAdapter(new BGABanner.Adapter<ImageView, Banner_HotBean.AdvertisingBean>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, Banner_HotBean.AdvertisingBean model, int position) {
 
                 RequestOptions options = new RequestOptions()
                         .dontAnimate()
+                        .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
                 Glide.with(getActivity())
                         .load(model.getPictrue())
@@ -379,12 +431,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         });
         //秒杀
-        re_View = (RecyclerView) view.findViewById(R.id.speckill_recycyler);
+        reView = view.findViewById(R.id.speckill_recycyler);
 
-        rc_adapter = new Recycler_Adapter(null);
+        rcAdapter = new Recycler_Adapter(null);
         getBannerDate(ACTION);
 
-        re_View.addOnItemTouchListener(new OnItemClickListener() {
+        reView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
 
@@ -392,13 +444,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         });
         // 职业选择
-        iv_free = (ImageView) view.findViewById(R.id.iv_free);
-        iv_work = (ImageView) view.findViewById(R.id.iv_work);
-        iv_enterprise = (ImageView) view.findViewById(R.id.bussiones);
-
-        iv_free.setOnClickListener(this);
-        iv_work.setOnClickListener(this);
-        iv_enterprise.setOnClickListener(this);
+        ImageView ivFree = (ImageView) view.findViewById(R.id.iv_free);
+        ImageView ivWork = (ImageView) view.findViewById(R.id.iv_work);
+        ImageView ivEnterprise = (ImageView) view.findViewById(R.id.bussiones);
+        ivFree.setOnClickListener(this);
+        ivWork.setOnClickListener(this);
+        ivEnterprise.setOnClickListener(this);
         return view;
     }
 
@@ -411,8 +462,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void getBannerDate(final int Action) {
 
+        JSONObject object=new JSONObject();
+        try {
+            object.put("VersionCode","2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         OkGo.post(Urls.puk_URL + Urls.HOME_FRAGMENT.BANNER_HOT)
                 .tag(getActivity())
+                .upJson(object)
                 .connTimeOut(5000)
                 // 设置当前请求的连接超时时间
                 .execute(new StringCallback() {
@@ -476,29 +536,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     }
                 });
 
-
-      /*  //分类专题
-        OkGo.post(Urls.NEW_Ip_url + Urls.HOME_FRAGMENT.Class_Product_List)
-                .tag(getActivity())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s != null) {
-                            Gson gson = new Gson();
-                            specialClassBean = gson.fromJson(s, SpecialClassBean.class);
-                            if (specialClassBean.getError_code() == 0) {
-                                classify_recycler_adapter.setNewData(specialClassBean.getData());
-                            } else {
-                                ToastUtils.showToast(getActivity(), specialClassBean.getError_message());
-                            }
-
-                        } else {
-                            ToastUtils.showToast(getActivity(), "网络异常");
-                        }
-                    }
-                });*/
         getSeckill();
-
 
     }
 
@@ -508,31 +546,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ButterKnife.unbind(this);
     }
 
-    private String professional;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_free:
-                professional = "xiaoyaoke";
                 OnClickStatistics.buriedStatistics(mToken, Constants.FREE);
-
                 EventBus.getDefault().post(new IdentityProduct(3,100));
                 MainActivity.navigationController.setSelect(1);
-
                 break;
             case R.id.iv_work:
                 OnClickStatistics.buriedStatistics(mToken, Constants.WORK);
-
-                professional = "shangbanzu";
                 EventBus.getDefault().post(new IdentityProduct(1,100));
                 MainActivity.navigationController.setSelect(1);
-
                 break;
             case R.id.bussiones:
                 OnClickStatistics.buriedStatistics(mToken, Constants.ENTREPRENEUR);
-
-                professional = "qiyezhu";
                 EventBus.getDefault().post(new IdentityProduct(4,100));
                 MainActivity.navigationController.setSelect(1);
                 break;

@@ -9,13 +9,16 @@
             <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/banner_fresco_demo_content"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="120dp"
                 style="@style/BannerDefaultStyle"
                 app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
                 app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
                 app:banner_pointAutoPlayAble="true"
                 app:banner_pointContainerBackground="@android:color/transparent"
                 app:banner_transitionEffect="defaultEffect"
+                android:scaleType="centerCrop"
+                app:banner_aspectRatio="2.5"
+                android:adjustViewBounds="true"
                 >
             </cn.bingoogolapple.bgabanner.BGABanner>
             <android.support.v7.widget.CardView

@@ -75,7 +75,6 @@ public class CarmeraResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carmera_result);
         ButterKnife.bind(this);
-        //AppApplication.addDestoryActivity(this, "CarmeraResultActivity");
         ImmersionBar.with(this).statusBarColor(R.color.window_background)
                 .statusBarAlpha(0.3f)
                 .fitsSystemWindows(true)
@@ -156,6 +155,7 @@ public class CarmeraResultActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        hd.dismiss();
                         try {
                             JSONObject object = new JSONObject(s);
                             String isSuccess = object.getString("isSuccess");
@@ -191,23 +191,20 @@ public class CarmeraResultActivity extends AppCompatActivity {
                 new UpProgressHandler() {
                     @Override
                     public void progress(String key, double percent) {
-
-                        LogUtils.i("response", "key" + key + "----" + percent);
                     }
                 }, null);
         AppApplication.getUploadManager().put(path, null, qiNiuToken, new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
+                hd.dismiss();
+
                 if (info.isOK()) {
-                    Log.i("qiniu", "Upload Success");
-                    LogUtils.i("response", response.toString());
                     try {
                         String key1 = response.getString("key");
                         Message message = Message.obtain();
                         message.obj = key1;
                         message.what = 1;
                         mHandler.sendMessage(message);
-                        hd.dismiss();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

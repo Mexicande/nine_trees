@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGABannerUtil;
+import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 import cn.com.stableloan.R;
 import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
@@ -88,10 +89,11 @@ public class UserInformationActivity extends Activity{
     private void initToolbar() {
         ivBack.setVisibility(View.VISIBLE);
         titleName.setText("申请材料");
+        BGALocalImageSize localImageSize = new BGALocalImageSize(720, 1280, 320, 640);
 
         views = new ArrayList<>();
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1));
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_information_top_bg));
+        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_infomation_top1,localImageSize,ImageView.ScaleType.FIT_XY));
+        views.add(BGABannerUtil.getItemImageView(this, R.drawable.user_information_top_bg,localImageSize,ImageView.ScaleType.FIT_XY));
         BGABanner viewById = (BGABanner) findViewById(R.id.informationBgabanner);
         viewById.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override

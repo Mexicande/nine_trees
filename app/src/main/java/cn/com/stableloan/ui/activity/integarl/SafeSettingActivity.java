@@ -209,7 +209,7 @@ public class SafeSettingActivity extends BaseActivity   {
         selfDialog.setYesOnclickListener("确定", () -> {
             selfDialog.dismiss();
             SPUtil.clear(this);
-            startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("from", "user2"));
+            startActivity(new Intent(SafeSettingActivity.this, LoginActivity.class).putExtra("user", "user"));
             finish();
         });
         selfDialog.setNoOnclickListener("取消", () -> selfDialog.dismiss());

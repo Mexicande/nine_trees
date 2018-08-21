@@ -1,21 +1,19 @@
 package cn.com.stableloan.ui.activity;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 
+import com.google.gson.Gson;
 import com.meituan.android.walle.WalleChannelReader;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,16 +25,19 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.com.stableloan.AppApplication;
 import cn.com.stableloan.R;
+import cn.com.stableloan.api.ApiService;
 import cn.com.stableloan.api.Urls;
 import cn.com.stableloan.base.BaseActivity;
+import cn.com.stableloan.interfaceutils.OnRequestDataListener;
+import cn.com.stableloan.model.ProductBean;
 import cn.com.stableloan.ui.adapter.MyViewPagerAdapter;
 import cn.com.stableloan.ui.adapter.NoTouchViewPager;
 import cn.com.stableloan.ui.fragment.HomeFragment;
 import cn.com.stableloan.ui.fragment.LotteryFragment;
 import cn.com.stableloan.ui.fragment.ProductFragment;
 import cn.com.stableloan.ui.fragment.UserFragment;
-import cn.com.stableloan.utils.ActivityStackManager;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.NormalItemView;
 import cn.com.stableloan.view.update.AppUpdateUtils;
@@ -48,7 +49,6 @@ import cn.com.stableloan.view.update.UpdateCallback;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
-import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
 
 public class MainActivity extends BaseActivity implements ProductFragment.BackHandlerInterface {
 
@@ -57,15 +57,10 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     public static NavigationController navigationController;
     @Bind(R.id.viewPager)
     NoTouchViewPager viewPager;
-    private static final int FLAG_LOGIN = 3;
-    private static final int SEND_LOGIN = 3000;
-    private static final int LOTTERY_CODE = 500;
-    private static final int LOTTERY_SNED = 5000;
     private ArrayList<Fragment> mFragments;
     private MyViewPagerAdapter myViewPagerAdapter;
     String content = "1231313";
 
-    public static final String EXIST = "exist";
     private int NewVersionCode = 0;
     String channel = "";
 
@@ -113,7 +108,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
     public void updateDiy() {
         NewVersionCode = AppUpdateUtils.getVersionCode(this);
         Map<String, String> params = new HashMap<String, String>();
-        params.put("url", channel);
+        params.put("url",channel);
         new UpdateAppManager
                 .Builder()
                 .setActivity(this)
@@ -201,7 +196,7 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
                      */
                     @Override
                     public void onBefore() {
-                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
+                       // CProgressDialogUtils.showProgressDialog(MainActivity.this);
 
                     }
 
@@ -224,7 +219,6 @@ public class MainActivity extends BaseActivity implements ProductFragment.BackHa
         mFragments.add(new ProductFragment());
         mFragments.add(new LotteryFragment());
         mFragments.add(new UserFragment());
-
         navigationController = tab.custom()
                 .addItem(newItem(R.mipmap.ic_home_defaual, R.mipmap.ic_home_down, "首页"))
                 .addItem(newItem(R.mipmap.ic_product_on, R.mipmap.ic_product_down, "贷款"))

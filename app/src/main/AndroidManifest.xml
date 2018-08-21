@@ -10,14 +10,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
@@ -56,6 +56,7 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- 需要改写此处的appId，将tencent后面xxx的改为自己申请的appId，如tencent12098372 -->
@@ -100,6 +101,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".ui.activity.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 引导页 -->
         <activity
@@ -109,6 +112,8 @@
         <activity
             android:name=".ui.activity.HtmlActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- Product详情 -->
         <activity
@@ -163,8 +168,8 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:screenOrientation="portrait"
-            />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <!-- 三方认证 -->
         <activity
             android:name=".ui.activity.CertificationActivity"
@@ -243,14 +248,44 @@
         <activity
             android:name=".ui.activity.cash.GetCashRule"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.cash.CashFlowActivity"
-            />
-        <activity android:name=".ui.activity.vip.VipActivity"
-            android:label="vip专属"/>
-        <activity android:name=".ui.activity.vip.LotteryActivity"
-            android:label="vip彩票"/>
-        <activity android:name=".ui.activity.vip.VipCreditActivity"
-            android:label="vip专属信用卡"/>
+        <activity android:name=".ui.activity.cash.CashFlowActivity" />
+        <activity
+            android:name=".ui.activity.vip.VipActivity"
+            android:label="vip专属"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.vip.LotteryActivity"
+            android:label="vip彩票"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.vip.VipCreditActivity"
+            android:label="vip专属信用卡"
+            android:screenOrientation="portrait"/>
+
+        <!-- 魅族push应用定义消息receiver声明 -->
+        <receiver
+            android:name=".MeizuTestReceiver"
+            android:permission="android.provider.Telephony.SMS_RECEIVED">
+            <intent-filter>
+
+                <!-- 接收push消息 -->
+                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
+                <!-- 接收register消息 -->
+                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+                <!-- 接收unregister消息 -->
+                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
+                <!-- 兼容低版本Flyme3推送服务配置 -->
+                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
+                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ui.activity.PushActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

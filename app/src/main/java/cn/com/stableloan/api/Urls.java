@@ -133,9 +133,10 @@ public interface Urls {
 
     interface  HOME_FRAGMENT{
         String BANNER_HOT="GetBanner";
-        String Class_Product_List="project/list";   //专题
         String SPECKILL="second/kill";
         String HOT_NEW_PRODUCT="product/home";
+
+        String HELP=NEW_Ip_url+"borrow/url";
     }
 
     interface product{
@@ -147,7 +148,6 @@ public interface Urls {
          * 平台详情
          */
         String GetSlotdetail =puk_URL+"GetSlotdetail";
-        String ClassProduct="project/information";
         String ProductList="ProductList";
         String ProTagFlow="product/getlabels";
         String ProductSelect="product/screening";
@@ -159,6 +159,11 @@ public interface Urls {
          * 收藏
          */
         String PRODUCT_COLLECTION =Ip_url+"product/collection";
+        /**
+         * 详情推荐
+         *
+         */
+        String DETAILS_LIST=NEW_Ip_url+"borrow/relation";
     }
     interface update{
         String DELETE_DATE="set/updatePeriod";
@@ -236,7 +241,6 @@ public interface Urls {
         // 个人信息
         int      NAME=                                                                              1;  // 姓名
         int      IDCARD=                                                                            2;
-        int      SEX=                                                                               3;
         int      AGE=                                                                               4;
         int      CONTACT_PHONE1=                                                                    6;
         int      CONTACT_PHONE2=                                                                    7;

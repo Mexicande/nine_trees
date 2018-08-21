@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_white"
+    android:id="@+id/out_view"
+    tools:context="cn.com.stableloan.ui.activity.PushActivity">
+    <include layout="@layout/desc_toolbar_layout"/>
+    <LinearLayout
+        android:id="@+id/linla"
+        android:layout_marginTop="50dp"
+        android:layout_above="@+id/apply"
+        android:background="@color/base_white"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include layout="@layout/product_layout_top"
+                    />
+                <include layout="@layout/product_counter"
+                    />
+                <include layout="@layout/product_desc_condition"
+                    />
+                <include layout="@layout/product_desc_jiekuanxijie"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <Button
+        android:id="@+id/apply"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textSize="20sp"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="@color/white"
+        android:text="马上申请"
+        />
+</RelativeLayout>

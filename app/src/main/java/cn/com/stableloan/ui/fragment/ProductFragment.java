@@ -55,6 +55,8 @@ import cn.com.stableloan.ui.activity.ProductDesc;
 import cn.com.stableloan.ui.activity.vip.VipActivity;
 import cn.com.stableloan.ui.adapter.Recycler_Classify_Adapter;
 import cn.com.stableloan.utils.ActivityUtils;
+import cn.com.stableloan.utils.CommonUtil;
+import cn.com.stableloan.utils.CommonUtils;
 import cn.com.stableloan.utils.LogUtils;
 import cn.com.stableloan.utils.ToastUtils;
 import cn.com.stableloan.view.flowlayout_tag.FlowLayout;
@@ -231,14 +233,16 @@ public class ProductFragment extends ImmersionFragment {
     public void onPicSatus(IdentityProduct event) {
         int msg = event.msg;
         String[] s = new String[]{String.valueOf(msg)};
-        idFlowlayout.getAdapter().setSelectedList(msg - 1);
-        AMOUT=0;
-
-        if(event.amount!=100){
-            selectProduct(s, event.amount);
-        }else {
-            selectProduct(s, 0);
+        if(CommonUtil.isNetworkAvailable(getActivity())){
+            idFlowlayout.getAdapter().setSelectedList(msg - 1);
+            AMOUT=0;
+            if(event.amount!=100){
+                selectProduct(s, event.amount);
+            }else {
+                selectProduct(s, 0);
+            }
         }
+
     }
 
 

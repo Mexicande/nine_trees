@@ -28,12 +28,7 @@
                 android:id="@+id/layou5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <!--    <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/product_list_name"
-                    android:src="@mipmap/ic_new_babel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />-->
+
                 <TextView
                     android:textStyle="bold"
                     android:layout_centerVertical="true"
@@ -72,6 +67,7 @@
                 android:layout_height="wrap_content">
                     <com.coorchice.library.SuperTextView
                         android:id="@+id/label1"
+                        android:visibility="gone"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="2dp"
@@ -86,6 +82,7 @@
                     <com.coorchice.library.SuperTextView
                         android:id="@+id/label2"
                         android:paddingLeft="5dp"
+                        android:visibility="gone"
                         android:paddingRight="5dp"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
@@ -100,6 +97,8 @@
                     <com.coorchice.library.SuperTextView
                         android:id="@+id/label3"
                         android:paddingLeft="5dp"
+                        android:visibility="gone"
+
                         android:paddingRight="5dp"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
@@ -114,6 +113,8 @@
                     <com.coorchice.library.SuperTextView
                         android:id="@+id/label4"
                         android:paddingLeft="5dp"
+                        android:visibility="gone"
+
                         android:paddingRight="5dp"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
@@ -129,6 +130,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="3dp"
                         android:id="@+id/shengluehao"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"

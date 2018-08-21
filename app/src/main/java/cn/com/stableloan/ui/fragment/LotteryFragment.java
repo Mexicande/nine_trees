@@ -56,16 +56,12 @@ public class LotteryFragment extends ImmersionFragment {
     TextView titleName;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.stateLayout)
-    StateLayout stateLayout;
     @Bind(R.id.welfare_recycler)
     RecyclerView welfareRecycler;
     @Bind(R.id.swip)
     SwipeRefreshLayout swip;
     @Bind(R.id.iv_back)
     ImageView ivBack;
-    @Bind(R.id.iv_default)
-    ImageView ivDefault;
 
     private WelfareAdapter welfareAdapter;
 
@@ -131,7 +127,6 @@ public class LotteryFragment extends ImmersionFragment {
 
 
     private void CheckInternet() {
-        stateLayout.showProgressView();
         HashMap<String, String> params = new HashMap<>();
         params.put("token", mToken);
         final JSONObject jsonObject = new JSONObject(params);
@@ -141,18 +136,11 @@ public class LotteryFragment extends ImmersionFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        stateLayout.showContentView();
                         Gson gson = new Gson();
                         WelfareBean bean = gson.fromJson(s, WelfareBean.class);
-                        if(bean.getData().size()==0){
-                            ivDefault.setVisibility(View.VISIBLE);
-
-                        }else {
-                            ivDefault.setVisibility(View.GONE);
                             welfareAdapter = new WelfareAdapter(bean.getData());
                             welfareRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
                             welfareRecycler.setAdapter(welfareAdapter);
-                        }
                     }
 
                     @Override
