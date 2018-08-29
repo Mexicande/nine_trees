@@ -8,7 +8,7 @@
     android:background="@color/white"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
 
-    tools:context="cn.com.stableloan.ui.activity.SettingPassWordActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.SettingPassWordActivity">
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_marginTop="10dp"
@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text"
         android:textSize="20sp"/>
-    <cn.com.stableloan.utils.editext.PowerfulEditText
+    <cn.com.cashninetrees.utils.editext.PowerfulEditText
         android:id="@+id/et_SettingPassWord"
         android:layout_below="@id/phone"
         android:theme="@style/MyEditText"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:text="@string/insurance"/>-->
     </LinearLayout>
-    <cn.com.stableloan.view.supertextview.SuperButton
+    <cn.com.cashninetrees.view.supertextview.SuperButton
         android:id="@+id/bt_login"
         android:layout_below="@id/layoutCheck"
         android:layout_marginTop="30dp"

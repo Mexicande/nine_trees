@@ -5,7 +5,7 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.stableloan.ui.fragment.information.User_MeansFragment">
+    tools:context="cn.com.cashninetrees.ui.fragment.information.User_MeansFragment">
 
 <LinearLayout
     android:orientation="vertical"
@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:background="@color/colorStatus"
             android:layout_height="17dp"/>
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:id="@+id/layout_camera"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -40,7 +40,7 @@
             stv:sRightTextString="一键填写"
             />
     </LinearLayout>
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_name"
         style="@style/identity_style"
         stv:sLeftTextString="真实姓名"
@@ -53,7 +53,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
         stv:sRightTextString="姓名"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/user_phone"
         style="@style/identity_style"
 
@@ -61,7 +61,7 @@
         stv:sRightTextColor="@color/text_setting"
         stv:sRightTextSize="@dimen/information_textSize"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_IDCard"
         style="@style/identity_style"
         stv:sLeftTextString="身份证"
@@ -70,7 +70,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
 
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Sex"
         style="@style/identity_style"
 
@@ -79,7 +79,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
         stv:sRightTextString="自动填写"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Age1"
         style="@style/identity_style"
 
@@ -89,7 +89,7 @@
         stv:sRightTextString="自动填写"
 
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Address"
         style="@style/identity_style"
 
@@ -124,7 +124,7 @@
             android:layout_gravity="center_vertical"
             android:textColor="@color/select_text_color"/>
     </LinearLayout>
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Marriage"
         style="@style/identity_style"
         stv:sLeftTextString="婚姻状况"
@@ -135,7 +135,7 @@
         stv:sTopDividerLineMarginLeft="10dp"
         stv:sTopDividerLineMarginRight="10dp"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_City"
         style="@style/identity_style"
         stv:sLeftTextString="现居城市"
@@ -144,7 +144,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
         stv:sRightTextString="点击自动定位"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Contact_name"
         style="@style/identity_style"
 
@@ -155,7 +155,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
         stv:sRightTextString="点击选取"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Contact1"
         style="@style/identity_style"
         stv:sLeftTextString="联系人2电话"
@@ -164,7 +164,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
         />
 
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Between1"
         style="@style/identity_style"
 
@@ -173,7 +173,7 @@
         stv:sRightTextColor="@color/text_setting"
         stv:sRightTextSize="@dimen/information_textSize"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Contact_name2"
         style="@style/identity_style"
         stv:sRightTvDrawableRight="@mipmap/iv_contact_right"
@@ -183,7 +183,7 @@
         stv:sRightTextSize="@dimen/information_textSize"
         stv:sRightTextString="点击选取"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Contact"
         style="@style/identity_style"
         stv:sLeftTextString="联系人2电话"
@@ -191,7 +191,7 @@
         stv:sRightTextColor="@color/text_setting"
         stv:sRightTextSize="@dimen/information_textSize"
         />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/et_Between2"
         style="@style/identity_style"
         stv:sLeftTextString="与您的关系"
@@ -199,7 +199,7 @@
         stv:sRightTextColor="@color/text_setting"
         stv:sRightTextSize="@dimen/information_textSize"
         />
-    <cn.com.stableloan.view.RoundButton
+    <cn.com.cashninetrees.view.RoundButton
         android:id="@+id/save"
         android:layout_marginBottom="50dp"
         android:layout_marginTop="40dp"

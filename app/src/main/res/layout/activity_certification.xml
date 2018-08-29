@@ -6,9 +6,9 @@
     android:orientation="vertical"
     android:background="@color/base_white"
     android:layout_height="match_parent"
-    tools:context="cn.com.stableloan.ui.activity.CertificationActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.CertificationActivity">
     <include layout="@layout/goback_toolbar"/>
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/alipay"
         android:layout_marginTop="@dimen/_10dp"
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         stv:sTextViewDrawablePadding="10dp"
         stv:sRightViewMarginRight="15dp"
         stv:sLeftViewGravity="left_center" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/taobao"
         android:layout_marginTop="@dimen/_10dp"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
         stv:sTextViewDrawablePadding="10dp"
         stv:sRightViewMarginRight="15dp"
         stv:sLeftViewGravity="left_center" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/mobile"
         android:layout_marginTop="@dimen/_10dp"
         android:layout_width="match_parent"
@@ -75,7 +75,7 @@
         stv:sTextViewDrawablePadding="10dp"
         stv:sRightViewMarginRight="15dp"
         stv:sLeftViewGravity="left_center" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/contact"
         android:layout_marginTop="@dimen/_10dp"
         android:layout_width="match_parent"
@@ -97,7 +97,7 @@
         stv:sTextViewDrawablePadding="10dp"
         stv:sRightViewMarginRight="15dp"
         stv:sLeftViewGravity="left_center" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/loction"
         android:layout_marginTop="@dimen/_10dp"
         android:layout_width="match_parent"

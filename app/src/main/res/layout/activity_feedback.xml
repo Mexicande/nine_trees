@@ -7,7 +7,7 @@
     xmlns:stv="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
-    tools:context="cn.com.stableloan.ui.activity.FeedbackActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.FeedbackActivity">
     <include layout="@layout/toolbar_layout"/>
     <ScrollView
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
                 android:layout_height="150dp"
                 android:layout_marginLeft="17dp"
                 android:gravity="start"
+                android:textSize="13sp"
                 android:hint="@string/hint_feedback"
                 android:inputType="textMultiLine"
                 android:background="@drawable/view_linnerlayout_border"
@@ -63,7 +64,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="咨询更多请扫码关注我们的官方公众号"/>
 
-            <cn.com.stableloan.view.supertextview.SuperButton
+            <cn.com.cashninetrees.view.supertextview.SuperButton
                 android:id="@+id/bt_login"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"

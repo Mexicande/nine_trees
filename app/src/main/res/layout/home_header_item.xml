@@ -28,8 +28,8 @@
             android:textStyle="bold"
             android:gravity="center_vertical"
             android:textSize="17sp"
-            android:text="安稳秒杀"/>
-        <cn.com.stableloan.view.countdownview.CountdownView
+            android:text="急速秒杀"/>
+        <cn.com.cashninetrees.view.countdownview.CountdownView
             android:id="@+id/cv_countdownViewTest1"
             android:layout_marginLeft="@dimen/_10dp"
             android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_marginBottom="@dimen/_1dp"
             android:textColor="@color/black"
             />
-        <cn.com.stableloan.view.countdownview.EasyCountDownView
+        <cn.com.cashninetrees.view.countdownview.EasyCountDownView
             android:id="@+id/countdownhour"
             android:layout_marginBottom="@dimen/_1dp"
             android:layout_gravity="center_vertical"

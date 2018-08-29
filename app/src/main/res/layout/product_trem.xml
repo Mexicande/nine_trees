@@ -199,16 +199,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="额度范围"/>
+
                 <TextView
                     android:id="@+id/min_max_Special"
-                    android:textSize="15sp"
-                    android:layout_marginTop="3dp"
-                    android:layout_below="@id/tv_limt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorStatus"
+                    android:layout_below="@id/tv_limt"
                     android:layout_centerHorizontal="true"
-                    />
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/colorStatus"
+                    android:textSize="15sp" />
 
             </RelativeLayout>
             <RelativeLayout

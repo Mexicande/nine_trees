@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context="cn.com.stableloan.ui.activity.vip.LotteryActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.vip.LotteryActivity">
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

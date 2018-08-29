@@ -7,7 +7,7 @@
     android:paddingLeft="20dp"
     android:background="@color/white"
     android:layout_height="wrap_content"
-    tools:context="cn.com.stableloan.ui.fragment.dialogfragment.VerificationFragment">
+    tools:context="cn.com.cashninetrees.ui.fragment.dialogfragment.VerificationFragment">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

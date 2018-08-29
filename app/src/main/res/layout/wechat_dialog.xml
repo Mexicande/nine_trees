@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="公众号文本已复制到剪切板&#x0A;打开微信号>点击搜索框>粘贴>&#x0A;搜一搜安稳钱包&#x0A;就能关注快捷安全的"
+                android:text="公众号文本已复制到剪切板&#x0A;打开微信号>点击搜索框>粘贴>&#x0A;搜一搜手机借款&#x0A;就能关注快捷安全的"
                 android:textColor="@color/select_text_color"
                 android:textSize="15sp"
                 />
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="公众号啦！"
+                android:text="公众号啦!"
                 android:layout_marginTop="@dimen/_10dp"
                 android:textColor="@color/select_text_color"
                 android:textSize="15sp" />

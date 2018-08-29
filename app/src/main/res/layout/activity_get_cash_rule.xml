@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/invite_bg"
     android:orientation="vertical"
-    tools:context="cn.com.stableloan.ui.activity.cash.GetCashRule">
+    tools:context="cn.com.cashninetrees.ui.activity.cash.GetCashRule">
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

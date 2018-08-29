@@ -9,7 +9,7 @@
 
     android:background="@color/base_white"
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.stableloan.ui.activity.integarl.DateChangeActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.integarl.DateChangeActivity">
     <include layout="@layout/toolbar_date_layout"/>
     <com.andreabaccega.widget.FormEditText
         android:id="@+id/et_name"
@@ -233,7 +233,7 @@
         whatever:testErrorString="格式不正确"
         />
 
-    <cn.com.stableloan.view.EmailAutoCompleteTextView
+    <cn.com.cashninetrees.view.EmailAutoCompleteTextView
         android:id="@+id/et_Email"
         android:paddingLeft="5dp"
         android:layout_marginTop="@dimen/_10dp"
@@ -271,7 +271,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <cn.com.stableloan.view.supertextview.SuperButton
+        <cn.com.cashninetrees.view.supertextview.SuperButton
             android:id="@+id/bt_save"
             android:layout_gravity="bottom"
             android:layout_marginTop="30dp"

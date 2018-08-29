@@ -46,7 +46,7 @@
                    />
                 <LinearLayout
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical"
                     android:layout_marginRight="@dimen/_10dp"
                     android:layout_toRightOf="@id/product_logo"

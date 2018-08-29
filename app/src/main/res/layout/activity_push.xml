@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/base_white"
     android:id="@+id/out_view"
-    tools:context="cn.com.stableloan.ui.activity.PushActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.PushActivity">
     <include layout="@layout/desc_toolbar_layout"/>
     <LinearLayout
         android:id="@+id/linla"

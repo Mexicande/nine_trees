@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/anwenqianbao.iml" filepath="$PROJECT_DIR$/anwenqianbao.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiushusudai.iml" filepath="$PROJECT_DIR$/jiushusudai.iml" />
       <module fileurl="file://$PROJECT_DIR$/pager-bottom-tab-strip/pager-bottom-tab-strip.iml" filepath="$PROJECT_DIR$/pager-bottom-tab-strip/pager-bottom-tab-strip.iml" />
     </modules>
   </component>

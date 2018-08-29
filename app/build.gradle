@@ -4,20 +4,20 @@ apply plugin: 'walle'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "cn.com.stableloan"
+        applicationId "cn.com.cashninetrees"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 18
+        versionCode 1
         multiDexEnabled true
-        versionName "2.7.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
         ndk {
             //设置支持的SO库架构
-            abiFilters 'armeabi', 'x86', 'armeabi-v7a'//, 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi'//, 'x86_64', 'arm64-v8a'
         }
         javaCompileOptions {
             annotationProcessorOptions {
@@ -97,76 +97,76 @@ android {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(path: ':pager-bottom-tab-strip')
-    compile(name: 'moxie-client-1.3.2', ext: 'aar')
+    implementation project(path: ':pager-bottom-tab-strip')
     //SystembarStatus
-    compile files('libs/BaiduLBS_Android.jar')
+    implementation files('libs/BaiduLBS_Android.jar')
     //极验验证
-    compile files('libs/commons-codec-1.5.jar')
-    compile files('libs/mta-sdk-1.6.2.jar')
-    compile files('libs/open_sdk_r5509.jar')
-    compile 'com.github.lygttpod:SuperTextView:1.1.2'
+    implementation files('libs/commons-codec-1.5.jar')
+    implementation files('libs/mta-sdk-1.6.2.jar')
+    implementation files('libs/open_sdk_r5509.jar')
+    implementation 'com.github.lygttpod:SuperTextView:1.1.2'
     //融360
-    compile 'com.rong360.sdk.crawler:crawlerlib:1.4.7-06'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.contrarywind:Android-PickerView:3.2.5'
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.android.support:cardview-v7:26.1.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.lzy.net:okgo:2.1.4'
-    compile 'com.lzy.net:okrx:0.1.2'
-    compile 'com.lzy.net:okserver:1.1.3'
-    compile 'jp.wasabeef:glide-transformations:2.0.2'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'cn.bingoogolapple:bga-banner:2.2.4@aar'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.12'
-    compile 'com.gyf.barlibrary:barlibrary:2.1.4'
-    compile 'com.github.ybq:Android-SpinKit:1.0.2'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.github.chenBingX:SuperTextView:v1.3'
-    compile 'com.github.mancj:SlideUp-Android:2.2.5'
-    compile 'com.kaopiz:kprogresshud:1.0.5'
+   // implementation 'com.rong360.sdk.crawler:crawlerlib:1.4.7-06'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation 'com.contrarywind:Android-PickerView:3.2.5'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.lzy.net:okgo:2.1.4'
+    implementation 'com.lzy.net:okrx:0.1.2'
+    implementation 'com.lzy.net:okserver:1.1.3'
+    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation 'com.jakewharton:butterknife:7.0.1'
+    implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.12'
+    implementation 'com.gyf.barlibrary:barlibrary:2.1.4'
+    implementation 'com.github.ybq:Android-SpinKit:1.0.2'
+    implementation 'com.google.code.gson:gson:2.3.1'
+    implementation 'com.github.chenBingX:SuperTextView:v1.3'
+    implementation 'com.github.mancj:SlideUp-Android:2.2.5'
+    implementation 'com.kaopiz:kprogresshud:1.0.5'
     //bugly
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
-    compile 'cn.leancloud.android:avoscloud-sdk:v4.6.4'
-    compile 'com.github.hackware1993:MagicIndicator:1.5.0'
-    compile 'com.andreabaccega:android-form-edittext:1.3.+'
-    compile 'com.yanzhenjie:permission:1.0.8'
-    compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
-    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
-    compile 'com.zaaach:citypicker:1.1'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'io.reactivex:rxjava:1.0.14'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.zhy:autolayout:+'
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.+'
-    compile 'com.meituan.android.walle:library:1.1.6'
-    compile 'com.google.android:flexbox:0.3.0-alpha2'
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+    implementation 'cn.leancloud.android:avoscloud-sdk:v4.6.4'
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation 'com.andreabaccega:android-form-edittext:1.3.+'
+    implementation 'com.yanzhenjie:permission:1.0.8'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
+    implementation 'com.qiniu:qiniu-android-sdk:7.3.+'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
+    implementation 'com.zaaach:citypicker:1.1'
+    implementation 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'io.reactivex:rxandroid:1.0.1'
+    implementation 'io.reactivex:rxjava:1.0.14'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.1.6'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.zhy:autolayout:+'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.+'
+    implementation 'com.meituan.android.walle:library:1.1.6'
+    implementation 'com.google.android:flexbox:0.3.0-alpha2'
     //友盟
-    compile 'com.umeng.sdk:common:1.5.3'
-    compile 'com.umeng.sdk:analytics:7.5.0'
+    implementation 'com.umeng.sdk:common:1.5.3'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
 
 
-    compile 'com.umeng.sdk:utdid:1.1.5.3'
+/*    implementation 'com.umeng.sdk:utdid:1.1.5.3'
     //PushSDK
-    compile 'com.umeng.sdk:push:4.2.0'
+    implementation 'com.umeng.sdk:push:4.2.0'
     //小米PushSDK
-    compile 'com.umeng.sdk:push-xiaomi:1.0.0'
+    implementation 'com.umeng.sdk:push-xiaomi:1.0.0'
     //华为Push通道
-    compile 'com.umeng.sdk:push-huawei:1.0.0'
+    implementation 'com.umeng.sdk:push-huawei:1.0.0'
     //魅族Push通道
-    compile 'com.umeng.sdk:push-meizu:1.0.0'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.umeng.sdk:push-meizu:1.0.0'*/
+
+    testImplementation 'junit:junit:4.12'
     implementation files('libs/alipaySdk-20180601.jar')
 }

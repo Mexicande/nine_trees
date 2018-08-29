@@ -5,7 +5,7 @@
     android:orientation="vertical"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.stableloan.ui.fragment.integral.IntegarlTaskFragment">
+    tools:context="cn.com.cashninetrees.ui.fragment.integral.IntegarlTaskFragment">
        <!-- <View
             android:layout_marginLeft="15dp"
             android:background="#F3F2F8"
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>-->
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:id="@+id/User_information"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -37,7 +37,7 @@
             stv:sLeftIconMarginLeft="18dp"
             stv:sRightViewMarginRight="15dp"
             stv:sLeftViewGravity="left_center" />
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:id="@+id/invite_first"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -60,7 +60,7 @@
             stv:sBottomDividerLineMarginLeft="15dp"
             stv:sRightViewMarginRight="15dp"
             stv:sLeftViewGravity="left_center" />
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:id="@+id/invite_second"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -83,7 +83,7 @@
             stv:sBottomDividerLineMarginLeft="15dp"
             stv:sRightViewMarginRight="15dp"
             stv:sLeftViewGravity="left_center" />
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:id="@+id/invite_third"
             android:layout_width="match_parent"
             android:layout_height="80dp"

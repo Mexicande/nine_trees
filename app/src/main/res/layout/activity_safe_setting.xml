@@ -7,7 +7,7 @@
     android:orientation="vertical"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context="cn.com.stableloan.ui.activity.SafeActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.SafeActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line_color"/>
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:id="@+id/select_time"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -110,7 +110,7 @@
 
         </LinearLayout>
     </LinearLayout>
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/st_deleteDate"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

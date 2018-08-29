@@ -25,8 +25,9 @@
         android:paddingBottom="@dimen/_5dp"
         android:src="@mipmap/back"/>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_gravity="right"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="25dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
         <ImageView
@@ -37,7 +38,7 @@
             android:layout_height="match_parent"
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
-            android:src="@mipmap/iv_product_desc_menu"/>
+            android:src="@drawable/heart_on"/>
     </RelativeLayout>
 
 

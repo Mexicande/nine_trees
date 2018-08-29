@@ -7,7 +7,7 @@
     android:background="@color/base_white"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="cn.com.stableloan.ui.activity.UserInformationActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.UserInformationActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -53,7 +53,7 @@
     </RelativeLayout>
 
 
-    <cn.com.stableloan.view.supertextview.SuperTextView
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/User_information"
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -75,7 +75,7 @@
         stv:sTextViewDrawablePadding="10dp"
         stv:sRightViewMarginRight="15dp"
         stv:sLeftViewGravity="left_center" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+<!--    <cn.com.stableloan.view.supertextview.SuperTextView
         android:id="@+id/User_Authorization"
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -97,8 +97,8 @@
         stv:sRightTvDrawableHeight="20dp"
         stv:sTextViewDrawablePadding="10dp"
         stv:sRightViewMarginRight="15dp"
-        stv:sLeftViewGravity="left_center" />
-    <cn.com.stableloan.view.supertextview.SuperTextView
+        stv:sLeftViewGravity="left_center" />-->
+    <cn.com.cashninetrees.view.supertextview.SuperTextView
         android:id="@+id/User_Pic"
         android:layout_width="match_parent"
         android:layout_height="55dp"

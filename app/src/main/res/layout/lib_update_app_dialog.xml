@@ -77,7 +77,7 @@
                 android:textSize="14sp"
                 android:visibility="gone"/>
 
-            <cn.com.stableloan.view.update.NumberProgressBar
+            <cn.com.cashninetrees.view.update.NumberProgressBar
                 android:id="@+id/npb"
                 style="@style/UpdateAppNumberProgressBar_Red"
                 android:paddingBottom="10dp"

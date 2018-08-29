@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cn.com.stableloan">
+    package="cn.com.cashninetrees">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -32,7 +31,7 @@
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true"
-            tools:replace="android:authorities">
+            >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -263,29 +262,7 @@
             android:screenOrientation="portrait"/>
 
         <!-- 魅族push应用定义消息receiver声明 -->
-        <receiver
-            android:name=".MeizuTestReceiver"
-            android:permission="android.provider.Telephony.SMS_RECEIVED">
-            <intent-filter>
 
-                <!-- 接收push消息 -->
-                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
-                <!-- 接收register消息 -->
-                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-                <!-- 接收unregister消息 -->
-                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
-                <!-- 兼容低版本Flyme3推送服务配置 -->
-                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
-                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
-
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </receiver>
-
-        <activity android:name=".ui.activity.PushActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

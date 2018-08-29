@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.stableloan.ui.fragment.dialogfragment.WeChatDialogFragment">
+    tools:context="cn.com.cashninetrees.ui.fragment.dialogfragment.WeChatDialogFragment">
 
     <android.support.v7.widget.CardView
         android:layout_centerInParent="true"
@@ -25,14 +25,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:textSize="15sp"
-                android:textColor="@color/load_txt_color_6"
+                android:textColor="@color/color_69"
                 android:layout_height="wrap_content"
-                android:text="公众号【安稳钱包】已复制到剪贴板"/>
+                android:text="公众号【手机借款】已复制到剪贴板"/>
             <TextView
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
                 android:layout_width="wrap_content"
-                android:textColor="@color/load_txt_color_6"
+                android:textColor="@color/text_setting"
                 android:layout_height="wrap_content"
                 android:text="去微信>点击搜索框>粘贴>搜搜>点击关注"/>
             <ImageView
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_wechat_dalog"/>
-            <cn.com.stableloan.view.supertextview.SuperButton
+            <cn.com.cashninetrees.view.supertextview.SuperButton
                 android:id="@+id/apply"
                 android:layout_marginTop="20dp"
                 app:sSolidColor="@color/colorPrimary"

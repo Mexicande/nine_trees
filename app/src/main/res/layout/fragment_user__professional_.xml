@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.stableloan.ui.fragment.information.User_Professional_Fragment">
+    tools:context="cn.com.cashninetrees.ui.fragment.information.User_Professional_Fragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -19,7 +19,7 @@
                 android:layout_centerVertical="true"
                 android:background="@color/colorStatus"
                 android:layout_height="17dp"/>
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/bt_SelectProfession"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -44,7 +44,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_School"
                 style="@style/identity_style"
                 app:sLeftTextString="学校名称"
@@ -57,7 +57,7 @@
                 app:sTopDividerLineMarginRight="10dp"
                 />
 
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_SchoolAddress"
                 style="@style/identity_style"
 
@@ -67,7 +67,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_Teacher"
                 style="@style/identity_style"
 
@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_company"
                 style="@style/identity_style"
 
@@ -97,7 +97,7 @@
                 app:sTopDividerLineMarginLeft="10dp"
                 app:sTopDividerLineMarginRight="10dp"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_location"
                 app:sLeftTextString="单位地址"
                 app:sMaxEms="13"
@@ -106,7 +106,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_fixedline"
                 style="@style/identity_style"
                 app:sLeftTextString="单位固定电话"
@@ -114,7 +114,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_years"
                 style="@style/identity_style"
                 app:sLeftTextString="工作年限"
@@ -123,7 +123,7 @@
                 app:sRightTextSize="@dimen/information_textSize"
                 />
 
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_email"
                 style="@style/identity_style"
                 app:sLeftTextString="邮箱地址"
@@ -131,7 +131,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_Cincome"
                 style="@style/identity_style"
                 app:sLeftTextString="月收入(税后)"
@@ -146,7 +146,7 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/Business_company"
                 style="@style/identity_style"
                 app:sLeftTextString="单位名称"
@@ -159,7 +159,7 @@
                 app:sTopDividerLineMarginLeft="10dp"
                 app:sTopDividerLineMarginRight="10dp"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/Business_location"
                 style="@style/identity_style"
 
@@ -169,7 +169,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/etBusiness_fixedline"
                 style="@style/identity_style"
 
@@ -178,7 +178,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/Business_years"
                 style="@style/identity_style"
                 app:sLeftTextString="工作年限"
@@ -186,7 +186,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/Business_email"
                 style="@style/identity_style"
 
@@ -198,7 +198,7 @@
 
 
 
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/Business_Cincome"
                 style="@style/identity_style"
 
@@ -207,7 +207,7 @@
                 app:sRightTextColor="@color/text_setting"
                 app:sRightTextSize="@dimen/information_textSize"
                 />
-            <cn.com.stableloan.view.supertextview.SuperTextView
+            <cn.com.cashninetrees.view.supertextview.SuperTextView
                 android:id="@+id/et_operations"
                 style="@style/identity_style"
                 app:sLeftTextString="经营年限"
@@ -229,7 +229,7 @@
                     android:layout_height="35dp"
                     android:orientation="horizontal"
                     >
-                    <cn.com.stableloan.view.SmoothCheckBox
+                    <cn.com.cashninetrees.view.SmoothCheckBox
                         android:id="@+id/checkbox1"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -243,7 +243,7 @@
                         android:layout_height="wrap_content"
                         android:text="有"
                         />
-                    <cn.com.stableloan.view.SmoothCheckBox
+                    <cn.com.cashninetrees.view.SmoothCheckBox
                         android:id="@+id/checkbox2"
                         android:layout_marginLeft="50dp"
                         android:layout_width="20dp"
@@ -289,7 +289,7 @@
                     android:layout_height="35dp"
                     android:orientation="horizontal"
                     >
-                    <cn.com.stableloan.view.SmoothCheckBox
+                    <cn.com.cashninetrees.view.SmoothCheckBox
                         android:id="@+id/checkbox3"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -303,7 +303,7 @@
                         android:layout_height="wrap_content"
                         android:text="有"
                         />
-                    <cn.com.stableloan.view.SmoothCheckBox
+                    <cn.com.cashninetrees.view.SmoothCheckBox
                         android:id="@+id/checkbox4"
                         android:layout_marginLeft="50dp"
                         android:layout_width="20dp"
@@ -331,7 +331,7 @@
                     />
             </RelativeLayout>
         </LinearLayout>
-        <cn.com.stableloan.view.RoundButton
+        <cn.com.cashninetrees.view.RoundButton
             android:id="@+id/save"
             android:layout_marginBottom="50dp"
             android:layout_marginTop="40dp"

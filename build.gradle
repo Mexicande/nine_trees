@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
         maven {
             url "http://mvn.leancloud.cn/nexus/content/repositories/public"
         }
@@ -34,8 +34,8 @@ allprojects {
         maven {//配置maven库地址
             url "https://dl.bintray.com/rongandroid/maven"
         }
-        jcenter()
         google()
+        jcenter()
     }
 }
 

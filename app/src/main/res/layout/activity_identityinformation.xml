@@ -7,13 +7,13 @@
     android:orientation="vertical"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:background="@color/base_white"
-    tools:context="cn.com.stableloan.ui.activity.IdentityinformationActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.IdentityinformationActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
         <include layout="@layout/goback_toolbar"/>
-        <cn.com.stableloan.view.supertextview.SuperTextView
+        <cn.com.cashninetrees.view.supertextview.SuperTextView
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10dp"
             android:id="@+id/stv_supertext"
@@ -22,7 +22,7 @@
             stv:sLeftTextColor="@color/text_setting"
             stv:sDividerLineType="none"
             android:layout_height="@dimen/_50dp">
-        </cn.com.stableloan.view.supertextview.SuperTextView>
+        </cn.com.cashninetrees.view.supertextview.SuperTextView>
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"
             android:layout_width="match_parent"

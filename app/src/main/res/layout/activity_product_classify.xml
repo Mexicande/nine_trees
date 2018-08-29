@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
     android:background="@color/base_white"
-    tools:context="cn.com.stableloan.ui.activity.ProductClassifyActivity">
+    tools:context="cn.com.cashninetrees.ui.activity.ProductClassifyActivity">
     <include layout="@layout/toolbar_layout"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_marginTop="50dp"
