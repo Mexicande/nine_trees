@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.activity.CashActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.CashActivity">
 
     <LinearLayout
         android:orientation="vertical"

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cn.com.cashninetrees.ui.fragment.dialogfragment.IdentitySaveFragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.dialogfragment.IdentitySaveFragment">
 
     <TextView
         android:paddingRight="@dimen/_20dp"

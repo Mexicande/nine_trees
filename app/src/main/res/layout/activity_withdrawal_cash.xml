@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/integral"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.activity.integarl.WithdrawalCashActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.integarl.WithdrawalCashActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -252,7 +252,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <cn.com.cashninetrees.view.supertextview.SuperButton
+        <cn.com.laifenqicash.view.supertextview.SuperButton
             android:id="@+id/bt_withdrawal"
             android:layout_marginLeft="@dimen/_20dp"
             android:layout_marginRight="@dimen/_20dp"
@@ -270,7 +270,7 @@
             stv:sUseSelector="true" />
 
     </LinearLayout>
-    <cn.com.cashninetrees.view.keyboard.VirtualKeyboardView
+    <cn.com.laifenqicash.view.keyboard.VirtualKeyboardView
         android:id="@+id/virtualKeyboardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

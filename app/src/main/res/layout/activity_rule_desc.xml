@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/integral"
-    tools:context="cn.com.cashninetrees.ui.activity.integarl.RuleDescActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.integarl.RuleDescActivity">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:background="@color/colorPrimary"
@@ -71,7 +71,7 @@
             android:layout_marginTop="@dimen/_10dp"
             android:textColor="@color/text_setting"
             android:text="相关问题"/>
-    <cn.com.cashninetrees.view.supertextview.SuperTextView
+    <cn.com.laifenqicash.view.supertextview.SuperTextView
         android:id="@+id/feedback"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

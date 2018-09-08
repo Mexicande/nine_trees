@@ -7,9 +7,9 @@
     android:background="@color/base_white"
     android:orientation="vertical"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.activity.settingdate.DeviceActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.settingdate.DeviceActivity">
     <include layout="@layout/toolbar_layout"/>
-    <cn.com.cashninetrees.view.supertextview.SuperTextView
+    <cn.com.laifenqicash.view.supertextview.SuperTextView
         android:id="@+id/st_Protect"
         android:layout_width="match_parent"
         android:layout_height="50dp"

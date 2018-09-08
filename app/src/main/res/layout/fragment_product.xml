@@ -1,10 +1,10 @@
-<cn.com.cashninetrees.view.statuslayout.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.com.laifenqicash.view.statuslayout.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/base_white"
-    tools:context="cn.com.cashninetrees.ui.fragment.ProductFragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.ProductFragment">
     <include layout="@layout/product_toolbar_layout"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
@@ -20,4 +20,4 @@
     <include layout="@layout/content_slide_down_view"
         />
 
-</cn.com.cashninetrees.view.statuslayout.StateLayout>
+</cn.com.laifenqicash.view.statuslayout.StateLayout>

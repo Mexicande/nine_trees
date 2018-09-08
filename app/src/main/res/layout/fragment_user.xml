@@ -5,13 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#f2f3f5"
-    tools:context="cn.com.cashninetrees.ui.fragment.UserFragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.UserFragment">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
-            android:background="@color/colorPrimary"
+            android:background="#F93D42"
             android:layout_width="match_parent"
             android:layout_height="160dp">
             <ImageView
@@ -146,23 +146,8 @@
         </RelativeLayout>-->
 
 
-<!--        <cn.com.stableloan.view.supertextview.SuperTextView
-            android:id="@+id/invite"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:sLeftIconRes="@mipmap/iv_invite"
-            app:sBottomLineMargin="0dp"
-            android:textSize="16sp"
-            app:sLeftIconHeight="20dp"
-            app:sLeftTextColor="@color/select_text_color"
-            app:sLeftIconWidth="20dp"
-            app:sRightIconRes="@mipmap/iv_left"
-            app:sRightIconHeight="13dp"
-            app:sRightIconWidth="15dp"
-            app:sLeftTextSize="16dp"
-            app:sLeftTextString="@string/inivte" />
-            -->
-        <cn.com.cashninetrees.view.supertextview.SuperTextView
+
+        <cn.com.laifenqicash.view.supertextview.SuperTextView
             android:id="@+id/vip"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -177,22 +162,8 @@
             app:sRightIconWidth="15dp"
             app:sLeftTextSize="16dp"
             app:sLeftTextString="@string/vip" />
-        <cn.com.cashninetrees.view.supertextview.SuperTextView
-            android:id="@+id/layout_my"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:sLeftIconRes="@mipmap/iv_my"
-            app:sBottomLineMargin="0dp"
-            android:textSize="16sp"
-            app:sLeftIconHeight="20dp"
-            app:sLeftTextColor="@color/select_text_color"
-            app:sLeftIconWidth="20dp"
-            app:sRightIconRes="@mipmap/iv_left"
-            app:sRightIconHeight="13dp"
-            app:sRightIconWidth="15dp"
-            app:sLeftTextSize="16dp"
-            app:sLeftTextString="@string/information" />
-        <cn.com.cashninetrees.view.supertextview.SuperTextView
+
+        <cn.com.laifenqicash.view.supertextview.SuperTextView
             android:id="@+id/layout_collection"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -207,7 +178,7 @@
             app:sRightIconWidth="15dp"
             app:sLeftTextSize="16dp"
             app:sLeftTextString="@string/collection" />
-        <cn.com.cashninetrees.view.supertextview.SuperTextView
+        <cn.com.laifenqicash.view.supertextview.SuperTextView
             android:id="@+id/layout_attention"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -222,7 +193,7 @@
             app:sRightIconWidth="15dp"
             app:sLeftTextSize="16dp"
             app:sLeftTextString="@string/setting" />
-        <cn.com.cashninetrees.view.supertextview.SuperTextView
+        <cn.com.laifenqicash.view.supertextview.SuperTextView
             android:id="@+id/feedback"
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"

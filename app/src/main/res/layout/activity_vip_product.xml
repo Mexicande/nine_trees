@@ -6,13 +6,13 @@
     android:orientation="vertical"
     android:background="@color/base_white"
     android:layout_height="match_parent"
-    tools:context="cn.com.cashninetrees.ui.activity.vip.VipCreditActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.vip.VipCreditActivity">
     <include layout="@layout/vip_toolbar"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/pinkishgrey"/>
-    <cn.com.cashninetrees.view.statuslayout.StateLayout
+    <cn.com.laifenqicash.view.statuslayout.StateLayout
         android:id="@+id/stateLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,5 +26,5 @@
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
-    </cn.com.cashninetrees.view.statuslayout.StateLayout>
+    </cn.com.laifenqicash.view.statuslayout.StateLayout>
 </LinearLayout>

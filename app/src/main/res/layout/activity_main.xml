@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.activity.MainActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.MainActivity">
 
     <me.majiajie.pagerbottomtabstrip.PageBottomTabLayout
         android:id="@+id/tab"
@@ -14,10 +14,10 @@
         android:background="@drawable/tab_background"
         android:layout_alignParentBottom="true"
         />
-    <cn.com.cashninetrees.ui.adapter.NoTouchViewPager
+    <cn.com.laifenqicash.ui.adapter.NoTouchViewPager
         android:id="@+id/viewPager"
         android:layout_above="@id/tab"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </cn.com.cashninetrees.ui.adapter.NoTouchViewPager>
+    </cn.com.laifenqicash.ui.adapter.NoTouchViewPager>
 </RelativeLayout>

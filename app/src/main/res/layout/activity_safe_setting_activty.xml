@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/base_white"
     xmlns:stv="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.activity.integarl.SafeSettingActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.integarl.SafeSettingActivity">
     <include layout="@layout/toolbar_layout"/>
     <ScrollView
         android:layout_marginTop="@dimen/_50dp"
@@ -25,7 +25,7 @@
                 android:paddingLeft="@dimen/_10dp"
                 android:textColor="@color/text_setting"
                 android:text="关于软件"/>
-            <cn.com.cashninetrees.view.supertextview.SuperTextView
+            <cn.com.laifenqicash.view.supertextview.SuperTextView
                 android:id="@+id/st_VersionCode"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -47,7 +47,7 @@
                 android:paddingLeft="@dimen/_10dp"
                 android:textColor="@color/text_setting"
                 android:text="安全"/>
-            <cn.com.cashninetrees.view.supertextview.SuperTextView
+            <cn.com.laifenqicash.view.supertextview.SuperTextView
                 android:id="@+id/sv_Terminal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -84,7 +84,7 @@
                 stv:sBottomDividerLineMarginRight="10dp"
                 />-->
 
-            <cn.com.cashninetrees.view.supertextview.SuperTextView
+            <cn.com.laifenqicash.view.supertextview.SuperTextView
                 android:id="@+id/sv_SafeNurse"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -108,7 +108,7 @@
                 android:paddingLeft="@dimen/_10dp"
                 android:textColor="@color/text_setting"
                 android:text="账号"/>
-            <cn.com.cashninetrees.view.supertextview.SuperTextView
+            <cn.com.laifenqicash.view.supertextview.SuperTextView
                 android:id="@+id/sv_QuitLogin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

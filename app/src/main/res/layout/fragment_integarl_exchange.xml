@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/base_white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.fragment.integral.IntegarlExchangeFragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.integral.IntegarlExchangeFragment">
     <LinearLayout
         android:layout_margin="@dimen/_10dp"
         android:background="@color/white"

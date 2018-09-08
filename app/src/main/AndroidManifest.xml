@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cn.com.cashninetrees">
+    package="cn.com.laifenqicash">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -49,25 +49,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- 腾讯分享 -->
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- 需要改写此处的appId，将tencent后面xxx的改为自己申请的appId，如tencent12098372 -->
-                <data android:scheme="tencent1106239350" />
-            </intent-filter>
-        </activity>
-        <!-- QQ分享 -->
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- 微信支付回调 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -95,10 +76,6 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".view.share.AssistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -119,11 +96,6 @@
             android:name=".ui.activity.ProductDesc"
             android:screenOrientation="portrait" />
         <!-- 密码修改 -->
-        <!-- 职业修改 -->
-        <activity
-            android:name=".ui.activity.PlatformInfoActivity"
-            android:screenOrientation="portrait" />
-        <!-- Product分类 -->
         <!-- 通知公告 -->
         <activity
             android:name=".ui.activity.NoticeActivity"
@@ -133,10 +105,6 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="5KizzImryGritdSFV3nNNGPYpm6AAFDB" />
 
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
 
         <!-- 高德城市选择 -->
         <meta-data
@@ -148,93 +116,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".ui.activity.UserInformationActivity"
-            android:windowSoftInputMode="adjustResize" />
-        <!-- 个人信息资料 -->
-        <activity
-            android:name=".ui.activity.IdentityinformationActivity"
-            android:screenOrientation="portrait" />
-        <!-- 安全设置 -->
-
-        <activity
-            android:name=".ui.activity.SafeActivity"
-            android:screenOrientation="portrait" />
-        <!-- 手势解锁创建 -->
-        <!-- 手势登陆 -->
-        <!-- 安全验证 -->
-        <!-- 银行卡照片 -->
 
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!-- 三方认证 -->
-        <activity
-            android:name=".ui.activity.CertificationActivity"
-            android:screenOrientation="portrait" />
-        <!-- 反馈意见 -->
         <activity
             android:name=".ui.activity.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.moxie.client.MainActivity" />
-        <activity
-            android:name=".ui.activity.CameraActivity"
-            android:screenOrientation="landscape" />
-        <activity android:name=".ui.activity.CarmeraResultActivity" />
-        <activity android:name=".ui.activity.PictureActivity" />
+            android:screenOrientation="portrait"/>
         <!-- 收藏 -->
         <activity android:name=".ui.activity.CollectionActivity" />
 
-        <meta-data
-            android:name="design_width"
-            android:value="720" />
-        <meta-data
-            android:name="design_height"
-            android:value="1280" />
-
-        <!-- Weixin -->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoDisplay" />
-        <activity
-            android:name=".ui.activity.Camera2Activity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <!-- Cash Running water -->
-        <activity
-            android:name=".ui.activity.IntegralActivity"
-            android:screenOrientation="portrait" />
-        <!-- Cash desc -->
-        <activity
-            android:name=".ui.activity.CashActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- Cash withdrawals rule -->
-        <activity
-            android:name=".ui.activity.integarl.RuleDescActivity"
-            android:screenOrientation="portrait" />
-        <!-- Cash withdrawals -->
-
-        <activity
-            android:name=".ui.activity.integarl.WithdrawalCashActivity"
-            android:screenOrientation="portrait" />
-        <!-- 好友邀请 -->
-        <activity
-            android:name=".ui.activity.integarl.InviteFriendsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 图片信息上传 -->
-        <activity
-            android:name=".ui.activity.integarl.UpImageIdentityActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.integarl.DateChangeActivity"
-            android:screenOrientation="portrait" />
         <!-- 安全设置 -->
         <activity
             android:name=".ui.activity.integarl.SafeSettingActivity"
@@ -244,10 +136,6 @@
             android:name=".ui.activity.settingdate.DeviceActivity"
             android:screenOrientation="portrait" />
         <!-- 现金规则 -->
-        <activity
-            android:name=".ui.activity.cash.GetCashRule"
-            android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.cash.CashFlowActivity" />
         <activity
             android:name=".ui.activity.vip.VipActivity"
             android:label="vip专属"

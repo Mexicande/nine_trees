@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.fragment.HomeFragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.HomeFragment">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
@@ -60,7 +60,7 @@
 
 
 
-    <cn.com.cashninetrees.view.EasyRefreshLayout
+    <cn.com.laifenqicash.view.EasyRefreshLayout
         android:id="@+id/easylayout"
         android:layout_below="@id/appbar_layout"
         android:layout_width="match_parent"
@@ -71,6 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
-    </cn.com.cashninetrees.view.EasyRefreshLayout>
+    </cn.com.laifenqicash.view.EasyRefreshLayout>
 
 </RelativeLayout>

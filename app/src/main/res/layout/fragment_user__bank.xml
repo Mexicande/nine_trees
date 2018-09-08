@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cn.com.cashninetrees.ui.fragment.information.User_Bank_Fragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.information.User_Bank_Fragment">
 
    <LinearLayout
        android:background="@color/base_white"
@@ -21,7 +21,7 @@
                android:layout_centerVertical="true"
                android:background="@color/colorStatus"
                android:layout_height="17dp"/>
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/debit_camera"
                android:layout_width="match_parent"
                android:layout_height="50dp"
@@ -38,7 +38,7 @@
                app:sRightTextString="一键填写"
                />
        </LinearLayout>
-       <cn.com.cashninetrees.view.supertextview.SuperTextView
+       <cn.com.laifenqicash.view.supertextview.SuperTextView
            android:id="@+id/et_BankCard1"
            style="@style/identity_style"
            app:sLeftTextString="@string/Debit_Id"
@@ -49,7 +49,7 @@
            app:sTopDividerLineMarginLeft="10dp"
            app:sTopDividerLineMarginRight="10dp"
            />
-       <cn.com.cashninetrees.view.supertextview.SuperTextView
+       <cn.com.laifenqicash.view.supertextview.SuperTextView
            android:id="@+id/et_BankPersonName1"
            style="@style/identity_style"
            app:sLeftTextString="@string/Debit_UserName"
@@ -59,7 +59,7 @@
            app:sMaxEms="13"
 
            />
-       <cn.com.cashninetrees.view.supertextview.SuperTextView
+       <cn.com.laifenqicash.view.supertextview.SuperTextView
            android:id="@+id/et_BankPhone1"
            style="@style/identity_style"
 
@@ -69,7 +69,7 @@
            app:sRightTextSize="@dimen/information_textSize"
 
            />
-       <cn.com.cashninetrees.view.supertextview.SuperTextView
+       <cn.com.laifenqicash.view.supertextview.SuperTextView
            android:id="@+id/et_SelectBank1"
            style="@style/identity_style"
 
@@ -80,7 +80,7 @@
            app:sRightTextString="@string/AutoEdit"
 
            />
-       <cn.com.cashninetrees.view.supertextview.SuperTextView
+       <cn.com.laifenqicash.view.supertextview.SuperTextView
            android:id="@+id/et_ValidityTime1"
            style="@style/identity_style"
 
@@ -104,7 +104,7 @@
                android:layout_centerVertical="true"
                android:background="@color/colorStatus"
                android:layout_height="17dp"/>
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/credit_camera"
                android:layout_width="match_parent"
                android:layout_height="50dp"
@@ -121,7 +121,7 @@
                app:sRightTextString="一键填写"
                />
        </LinearLayout>
-       <cn.com.cashninetrees.view.supertextview.SuperTextView
+       <cn.com.laifenqicash.view.supertextview.SuperTextView
            android:id="@+id/is_credit"
            style="@style/identity_style"
            app:sDividerLineType="both"
@@ -139,7 +139,7 @@
            android:orientation="vertical"
            android:visibility="gone"
            android:layout_height="wrap_content">
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/et_BankCard2"
                style="@style/identity_style"
                app:sLeftTextString="@string/Credit_Id"
@@ -147,7 +147,7 @@
                app:sRightTextColor="@color/text_setting"
                app:sRightTextSize="@dimen/information_textSize"
                />
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/et_BankPersonName2"
                style="@style/identity_style"
 
@@ -158,7 +158,7 @@
                app:sRightTextSize="@dimen/information_textSize"
 
                />
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/et_BankPhone2"
                style="@style/identity_style"
 
@@ -168,7 +168,7 @@
                app:sRightTextSize="@dimen/information_textSize"
 
                />
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/et_SelectBank2"
                style="@style/identity_style"
 
@@ -179,7 +179,7 @@
                app:sRightTextString="@string/AutoEdit"
 
                />
-           <cn.com.cashninetrees.view.supertextview.SuperTextView
+           <cn.com.laifenqicash.view.supertextview.SuperTextView
                android:id="@+id/et_ValidityTime2"
                style="@style/identity_style"
 
@@ -190,7 +190,7 @@
 
                />
        </LinearLayout>
-       <cn.com.cashninetrees.view.RoundButton
+       <cn.com.laifenqicash.view.RoundButton
            android:id="@+id/save"
            android:layout_marginBottom="50dp"
            android:layout_marginTop="40dp"

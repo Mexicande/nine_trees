@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="借款金额"/>
-                <cn.com.cashninetrees.view.seekbar.SeekbarWithIntervals
+                <cn.com.laifenqicash.view.seekbar.SeekbarWithIntervals
                     android:id="@+id/seekbarWithIntervals"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="10dp"
@@ -77,14 +77,14 @@
                     android:text="身份"
                     android:textSize="17dp"
                     android:textColor="@color/tag_textcolor"/>
-                <cn.com.cashninetrees.view.flowlayout_tag.TagFlowLayout
+                <cn.com.laifenqicash.view.flowlayout_tag.TagFlowLayout
                     android:id="@+id/id_flowlayout"
                     android:layout_marginTop="@dimen/_5dp"
                     android:layout_width="match_parent"
                     zhy:max_select="1"
                     app:gravity="left"
                     android:layout_height="wrap_content">
-                </cn.com.cashninetrees.view.flowlayout_tag.TagFlowLayout>
+                </cn.com.laifenqicash.view.flowlayout_tag.TagFlowLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                     android:textSize="17dp"
                     android:gravity="center_horizontal"
                     android:textColor="@color/tag_textcolor"/>
-                <cn.com.cashninetrees.view.flowlayout_tag.TagFlowLayout
+                <cn.com.laifenqicash.view.flowlayout_tag.TagFlowLayout
                     android:id="@+id/tag_flowlayout"
                     android:layout_marginTop="@dimen/_5dp"
                     android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                     zhy:max_select="-1"
                     app:gravity="left"
                     android:layout_height="wrap_content">
-                </cn.com.cashninetrees.view.flowlayout_tag.TagFlowLayout>
+                </cn.com.laifenqicash.view.flowlayout_tag.TagFlowLayout>
 
             </LinearLayout>
 
@@ -110,7 +110,7 @@
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="45dp">
-            <cn.com.cashninetrees.view.RoundButton
+            <cn.com.laifenqicash.view.RoundButton
                 android:id="@+id/button"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
@@ -124,7 +124,7 @@
                 android:textSize="17sp"
                 android:textColor="#ffffff"
                 />
-            <cn.com.cashninetrees.view.RoundButton
+            <cn.com.laifenqicash.view.RoundButton
                 android:id="@+id/reset"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"

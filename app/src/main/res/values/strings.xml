@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">九树速贷</string>
-
+    <string name="app_name">来分期贷款</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="header_reset">正在加载</string>
     <string name="header_pull">正在加载</string>

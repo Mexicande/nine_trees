@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cn.com.cashninetrees.ui.fragment.cash.GetCash_Fragment">
+    tools:context="cn.com.laifenqicash.ui.fragment.cash.GetCash_Fragment">
 
    <android.support.v7.widget.RecyclerView
        android:id="@+id/activity_recycler"

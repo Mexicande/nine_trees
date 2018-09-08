@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.com.cashninetrees.ui.activity.CollectionActivity">
+    tools:context="cn.com.laifenqicash.ui.activity.CollectionActivity">
     <include layout="@layout/toolbar_layout"/>
-    <cn.com.cashninetrees.view.statuslayout.StateLayout
+    <cn.com.laifenqicash.view.statuslayout.StateLayout
         android:layout_width="match_parent"
         android:id="@+id/stateLayout"
         android:layout_height="match_parent">
@@ -20,6 +20,6 @@
                 android:layout_height="wrap_content">
             </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
-    </cn.com.cashninetrees.view.statuslayout.StateLayout>
+    </cn.com.laifenqicash.view.statuslayout.StateLayout>
 
 </LinearLayout>

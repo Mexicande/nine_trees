@@ -4,7 +4,7 @@
     <data>
         <variable
             name="product"
-            type="cn.com.cashninetrees.model.Product_Detail"/>
+            type="cn.com.laifenqicash.model.Product_Detail"/>
     </data>
     <LinearLayout
         android:orientation="vertical"

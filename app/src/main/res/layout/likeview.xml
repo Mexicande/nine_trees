@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cn.com.cashninetrees.view.likebutton.DotsView
+    <cn.com.laifenqicash.view.likebutton.DotsView
         android:id="@+id/dots"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-    <cn.com.cashninetrees.view.likebutton.CircleView
+    <cn.com.laifenqicash.view.likebutton.CircleView
         android:id="@+id/circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
